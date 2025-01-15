@@ -33,7 +33,8 @@ import pandas as pd
 
 from blacklist import no_truth, false_truth
 false_truth_list = false_truth
-from exact_ed import truth2coeffs
+from exact_ed import truth2coeffs, unpack_seq
+
 # from results.sicor_fix_proc import success_eqs
 
 
@@ -108,15 +109,16 @@ job_id = 'dicorrep'
 #
 # # # job_id = 'sicor116'
 # # # job_id = 'sicor9'
-job_id = 'sicor9fix2'
+job_id = 'sicor9fix2'  # official sindy core. Default?
 # #
 # job_id = 'fakesilin'
-job_id = 'silin'
+job_id = 'silin'    # sindy linrec official?
 
-job_id = 'sicor1114'
+job_id = 'sicor1114'  # sindy core official?
 
-job_id = 'dilin'
-job_id = 'findicor'
+job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
+job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check equivalence
+# job_id = 'findicor'  # maybe the official diofantos core results, check it.
 
 # # # job_id = 'sideflin'  # fail: not even sindy
 # # # job_id = 'sidefcor'  # fail: not even sindy
@@ -135,14 +137,14 @@ job_id = 'findicor'
 
 # # job_id = 'transfoeis_place'
 # # job_id = 'transfoeis_acc'
-job_id = 'transfoeis_acc2'  # this are official results for n_input=25 (and n_pred=1 and 10)
+# job_id = 'transfoeis_acc2'  # this are official results for n_input=25 (and n_pred=1 and 10)
 # job_id = 'n15_acc'        # this are official results for n_input=15 (and n_pred=1 and 10)
 # # # job_id = 'n15_ord5'
 # #
 # # # 4.12.2024 - 6.12 -? mb linrec
 # # job_id = 'mblinrec'
 # # job_id = 'mblint2'      # bitsize=10
-job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec11.2024.
+# job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec11.2024.
 # job_id = 'mbcor'  # bitsize = 50   # this are the reported results from dec11.2024.
 # job_id = 'mbtmoeis'
 # job_id = 'mbtmord20'
@@ -152,8 +154,8 @@ job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec1
 print(job_id)
 # 1/0
 
-
-CHECK_EQUIV = False if job_id not in ('mblinbs50') else True  # later you can change to "if csv_filename = 'linear...'
+linears = ('dilin', 'dilin-validable', 'silin', 'sdlin', 'mblinbs50')
+CHECK_EQUIV = False if job_id not in linears else True  # later you can change to "if csv_filename = 'linear...'
 if CHECK_EQUIV:
     from eq_ideal import linear_to_vec, is_linear
     from GenFunLinRec import GenFunLinRec
@@ -164,7 +166,7 @@ base_dir = "results/goodmb/"
 # base_dir = "results/goodmavi/"  # mavicore0, maviterms50
 # if job_id in ('mblinrec', 'mblint2', 'mblinbs50', 'mbcor'):
 #     base_dir = "results/goodmb/"
-if job_id in ('dilin', 'silin', 'sdlin',
+if job_id in ('dilin', 'dilin-validable', 'silin', 'sdlin',
               'sicor9fix2', 'sicor1114', 'findicor',
               'transfoeis_acc2', 'n15_acc', ):
     base_dir = "results/good/"
@@ -344,6 +346,26 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
     if verbosity >= 2:
         print(content)
 
+    do_weird_truth_print = False
+    def weird_truth_print():
+        printed_truth = re.findall(r"truth: \n(.*)\n(.*)\n", content)
+        print(fname)
+        tlines = printed_truth[0]
+        if len(tlines[0]) < 10:
+        # if len(tlines[0]) < 10 and fname[-15:] not in ('00000_A000004.txt'):
+            if fname == 'results/good/dilin/00000_A000004.txt':
+                print('well known')
+                # 1/0
+            else:
+                print('some else')
+                1/0
+        # print(len(printed_truth[0]), printed_truth)
+        # print(len(tlines[0]), len(tlines[1]), printed_truth)
+        # print(len(printed_truth), printed_truth)
+        return
+    if do_weird_truth_print:
+        weird_truth_print()
+    # 1/0
 
     if job_id in ('dicor-ncub10', 'dicor-alibs96', ):
         eq = re.findall(r"A\d+:.*\n(.+)\nby library:", content)  # uncomment only for alibs96 and ncub10
@@ -412,11 +434,15 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
         # print()
         # print(f'{eq = }')
 
-        if eq != 'MB not reconst':
-            print(f'{eq = }')
+        if eq not in (None, 'MB not reconst', 'a(n) = ?'):
+            # print(f'{eq = }')
             task_id = int(fname[-17:-12])
             # print(f'{task_id = }')
             seq_id = fname[-11:-4]
+
+            seq_, coeffs__, truth__ = unpack_seq(seq_id, csv)
+            seq_ = list(seq_)
+            # print(f'{seq_ = }')
             # print(f'{seq_id = }')
             # print(f'{csv = }')
             # print(f'{csv[seq_id] = }')
@@ -424,7 +450,16 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
             # print(f'{truth = }')
             coeffs = [0] + list(truth2coeffs(truth))
             # print(f'{coeffs = }')
-            seq_ = [int(float(i)) for i in csv[seq_id].dropna()[1:]]
+
+            # try:
+            #     seq_ = [int(float(i)) if i[-2:] == '.0' else int(i) for i in csv[seq_id].dropna()[1:]]
+            # except :
+            #     print('excepted exception!')
+            #     safe = [i for i in csv[seq_id].dropna()[1:]]
+            #     print(safe)
+            #     seq_ = [int(float(i)) if i[-2:] == '.0' else int(i) for i in csv[seq_id].dropna()[1:]]
+            #     seq_ = [int(float(i)) for i in csv[seq_id].dropna()[1:]]
+
             # print(f'{seq_ = }')
             true_inits = seq_[:len(coeffs) - 1]
             # print(f'{true_inits = }')
@@ -439,6 +474,11 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                 # print(f'{true_inits = }')
                 # print(f'{re_reconst = }')
                 # print(f'{re_manual = }')
+                # print(f'{fname = }')
+                # print(f'{eq = }')
+                # print(f'{is_check = }')
+                # print(f'{is_reconst = }')
+                # print(f'{is_equiv = }')
                 disco_coeffs = linear_to_vec(eq, allow_constants=True)
                 # print(f'{disco_coeffs = }')
                 disco_inits = seq_[:len(disco_coeffs) - 1]
@@ -458,6 +498,7 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                     # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
             # print(f'{equiv_csv_error = }')
             # print(f'{is_equiv = }')
+            # print(f'{is_check = }')
             # 1/0
 
     cx_order_winner = 'order_fail>'
@@ -636,6 +677,14 @@ l = ['b', 'c', 'a',]
 debug = True
 
 def for_summary(aggregated: tuple, fname: str):
+
+    progress_bar = True
+    if progress_bar:
+        task_id = int(fname[:5])
+        if task_id % 20 == 0:
+            print(task_id)
+        # print(task_id)
+    # 1/0
 
     # now -> f, m, i, o
     we_found, is_reconst, is_checked, is_equiv, _, avg_is_best, trueconfs, eq, cx_order_winner, cx_nonzero_winner, reconst_order  \
@@ -855,7 +904,7 @@ print('here i am')
 
 
 scale = 40
-# scale = 240
+scale = 240
 # scale = 4000
 scale = 50100
 files_debug = files[0:scale]

@@ -339,8 +339,32 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
     # linear_expr = expr
     # linear_expr = expr
     # print('\nexpr:', linear_expr)
+
+    expr = linear_expr
+    # print(f'{expr = }')
+    # is_sindy = True in [True for i in range(1, 22) if f'a(n - {i})' in expr]
+    is_sindy = True
+    is_sindy = False
+    is_sindy = '=' in expr
+    # print(is_sindy)
+    if is_sindy:
+    #     for i in range(1, 22):
+    #         # print('i:', i)
+    #         expr = expr.replace(f'a(n - {i})', f'a(n-{i})')
+    #     expr = expr.replace('+ ', '+').replace('- ', '-')
+        rhs_sindy = expr[expr.index('=')+2:]
+    #     # print(f'{rhs_sindy = }')
+    # linear_expr = expr
+
+    # 1/0
     expr = order_optimize(linear_expr)
+    if is_sindy:
+        expr, old_expr = rhs_sindy, expr
     order = eq_order_explicit(expr)[1]
+    if is_sindy:
+        expr = old_expr
+    # print(f'{expr = }')
+    # expr = [j for j in [i.replace(' ', '') for i in summands] if j != '']  # clean-up empty strings.
 
     summands = [i for i in expr.split(' ')]
     summands = [j for j in [i.replace(' ', '') for i in summands] if j != '']  # clean-up empty strings.
@@ -359,15 +383,21 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
     # print('coef', coef)
     rhs = "".join(rhss)
     # print('rhs', rhs, len(rhs))
+    if is_sindy:
+        rhs = rhs_sindy
     rhs = pretty_to_cocoa(rhs, order) if len(rhs) != 0 else '0'
-    # print('rhs', rhs, len(rhs))
-    # 1/0
+    if is_sindy:
+        rhs_sindy = rhs
+        divided = rhs
+    else:
+        # print('rhs', rhs, len(rhs))
+        # 1/0
 
-    vars = ",".join(['a_n'] + [f'a_n_{i}' for i in range(1, order+1)])
-    # print(vars)
-    # print(rhs, 'rhs')
-    preamble = f'use P ::= QQ[{vars}];'
-    divided = cocoa_eval(preamble + f'(-1)*({rhs})/({coef});', execute_cmd=True, verbosity=verbosity, cluster=False)
+        vars = ",".join(['a_n'] + [f'a_n_{i}' for i in range(1, order+1)])
+        # print(vars)
+        # print(rhs, 'rhs')
+        preamble = f'use P ::= QQ[{vars}];'
+        divided = cocoa_eval(preamble + f'(-1)*({rhs})/({coef});', execute_cmd=True, verbosity=verbosity, cluster=False)
     if '/' in divided:
         if verbosity >= 1:
             print('linear solution has non-integer coefficients - never the case with ground truth', divided)
@@ -378,6 +408,8 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
         # print(f'{rhs = }')
         if verbosity >= 1:
             print('rhs', rhs)
+        if is_sindy:
+            rhs = rhs_sindy
         summands = re.findall(r'(\+?(-?[^ an*]*)\*?a_n_(\d+))', rhs)
         # summands = re.findall(r'\+?(-?[^ an*]*)\*?(a_n_\d+)', rhs)[0]
         if allow_constants:
@@ -396,6 +428,8 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
 
         dicty = {order_: int(cases[coef] if coef in list(cases.keys()) else coef) for _, coef, order_ in summands}
         vec += [dicty.get(str(o), 0) for o in range(1, order+1)]
+        # print(vec)
+        # 1/0
         if verbosity >= 1:
             print('vec:', vec)
     return vec
