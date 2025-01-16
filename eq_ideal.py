@@ -340,56 +340,63 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
     # linear_expr = expr
     # print('\nexpr:', linear_expr)
 
-    expr = linear_expr
     # print(f'{expr = }')
     # is_sindy = True in [True for i in range(1, 22) if f'a(n - {i})' in expr]
-    is_sindy = True
-    is_sindy = False
-    is_sindy = '=' in expr
-    # print(is_sindy)
+    # is_sindy = True
+    # is_sindy = False
+    is_sindy = '=' in linear_expr
+    # print(f'{is_sindy = }')
+    # 1/0
     if is_sindy:
+        expr = linear_expr
     #     for i in range(1, 22):
     #         # print('i:', i)
     #         expr = expr.replace(f'a(n - {i})', f'a(n-{i})')
     #     expr = expr.replace('+ ', '+').replace('- ', '-')
         rhs_sindy = expr[expr.index('=')+2:]
+        expr = order_optimize(linear_expr)
+        order = eq_order_explicit(expr)[1]
+        rhs = rhs_sindy
+        rhs = pretty_to_cocoa(rhs, order) if len(rhs) != 0 else '0'
+        # rhs_sindy = rhs
+        divided = rhs
+        # dilin_summands = re.findall(r'(\+?(-?[^ an*]*)\*?a\(n-(\d+)\))', rhs)
     #     # print(f'{rhs_sindy = }')
     # linear_expr = expr
 
     # 1/0
-    expr = order_optimize(linear_expr)
-    if is_sindy:
-        expr, old_expr = rhs_sindy, expr
-    order = eq_order_explicit(expr)[1]
-    if is_sindy:
-        expr = old_expr
-    # print(f'{expr = }')
-    # expr = [j for j in [i.replace(' ', '') for i in summands] if j != '']  # clean-up empty strings.
-
-    summands = [i for i in expr.split(' ')]
-    summands = [j for j in [i.replace(' ', '') for i in summands] if j != '']  # clean-up empty strings.
-    lhs = [summand for summand in summands if 'a(n)' in summand]
-    rhss = [summand for summand in summands if 'a(n)' not in summand]
-    if len(lhs) != 1:
-        print('a(n) monomials:', lhs)
-        raise ValueError('Strange error in linear_to_vec function!!!      '
-                         '... linear expression has more than one \'a(n)\' (or not even one) monomials !!!'
-                         f'\nThese are: {lhs}.')
-    # print("lhs, rhs:", lhs, rhss)
-    # print('summands', summands)
-    coef = re.findall(r'^\+?([^an*]*)\*?a\(n\)', lhs[0])[0]
-    cases = {'': '1', '+': '1', '-': '-1'}
-    coef = cases[coef] if coef in list(cases.keys()) else coef
-    # print('coef', coef)
-    rhs = "".join(rhss)
-    # print('rhs', rhs, len(rhs))
-    if is_sindy:
-        rhs = rhs_sindy
-    rhs = pretty_to_cocoa(rhs, order) if len(rhs) != 0 else '0'
-    if is_sindy:
-        rhs_sindy = rhs
-        divided = rhs
+    # if is_sindy:
+    #     rhs = rhs_sindy
     else:
+        expr = order_optimize(linear_expr)
+        # if is_sindy:
+        #     expr, old_expr = rhs_sindy, expr
+        order = eq_order_explicit(expr)[1]
+        # if is_sindy:
+        #     expr = old_expr
+        # print(f'{expr = }')
+        # print(f'{order = }')
+        # expr = [j for j in [i.replace(' ', '') for i in summands] if j != '']  # clean-up empty strings.
+
+        summands = [i for i in expr.split(' ')]
+        summands = [j for j in [i.replace(' ', '') for i in summands] if j != '']  # clean-up empty strings.
+        lhs = [summand for summand in summands if 'a(n)' in summand]
+        rhss = [summand for summand in summands if 'a(n)' not in summand]
+        if len(lhs) != 1:
+            print('a(n) monomials:', lhs)
+            raise ValueError('Strange error in linear_to_vec function!!!      '
+                             '... linear expression has more than one \'a(n)\' (or not even one) monomials !!!'
+                             f'\nThese are: {lhs}.')
+        # print("lhs, rhs:", lhs, rhss)
+        # print('summands', summands)
+        coef = re.findall(r'^\+?([^an*]*)\*?a\(n\)', lhs[0])[0]
+        cases = {'': '1', '+': '1', '-': '-1'}
+        coef = cases[coef] if coef in list(cases.keys()) else coef
+        # print('coef', coef)
+        rhs = "".join(rhss)
+        # print('rhs', rhs, len(rhs))
+
+        rhs = pretty_to_cocoa(rhs, order) if len(rhs) != 0 else '0'
         # print('rhs', rhs, len(rhs))
         # 1/0
 
@@ -399,6 +406,7 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
         preamble = f'use P ::= QQ[{vars}];'
         divided = cocoa_eval(preamble + f'(-1)*({rhs})/({coef});', execute_cmd=True, verbosity=verbosity, cluster=False)
     if '/' in divided:
+        # print('/ inside', divided)
         if verbosity >= 1:
             print('linear solution has non-integer coefficients - never the case with ground truth', divided)
         return None
@@ -408,10 +416,12 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
         # print(f'{rhs = }')
         if verbosity >= 1:
             print('rhs', rhs)
-        if is_sindy:
-            rhs = rhs_sindy
+        # if is_sindy:
+        #     rhs = rhs_sindy
         summands = re.findall(r'(\+?(-?[^ an*]*)\*?a_n_(\d+))', rhs)
-        # summands = re.findall(r'\+?(-?[^ an*]*)\*?(a_n_\d+)', rhs)[0]
+        # if is_sindy:
+        #     summands = dilin_summands
+        # print(f'{summands = }')
         if allow_constants:
             true_summands = rhs.split(' ')
             # print(f'{true_summands = }')
@@ -426,12 +436,14 @@ def linear_to_vec(linear_expr: str, verbosity=0, allow_constants=False) -> list:
         if verbosity >= 1:
             print('summands:', summands)
 
+        cases = {'': '1', '+': '1', '-': '-1'}
         dicty = {order_: int(cases[coef] if coef in list(cases.keys()) else coef) for _, coef, order_ in summands}
         vec += [dicty.get(str(o), 0) for o in range(1, order+1)]
         # print(vec)
         # 1/0
         if verbosity >= 1:
             print('vec:', vec)
+    # print('end linear_to_vec')
     return vec
 
 

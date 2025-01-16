@@ -157,7 +157,8 @@ print(job_id)
 linears = ('dilin', 'dilin-validable', 'silin', 'sdlin', 'mblinbs50')
 CHECK_EQUIV = False if job_id not in linears else True  # later you can change to "if csv_filename = 'linear...'
 if CHECK_EQUIV:
-    from eq_ideal import linear_to_vec, is_linear
+    # from eq_ideal import linear_to_vec, is_linear
+    from eq_ideal_new import linear_to_vec
     from GenFunLinRec import GenFunLinRec
 
 # fname = 'results/good/01234567/34500_A000032.txt'
@@ -481,8 +482,10 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                 # print(f'{is_equiv = }')
                 disco_coeffs = linear_to_vec(eq, allow_constants=True)
                 # print(f'{disco_coeffs = }')
+                # 1/0
                 disco_inits = seq_[:len(disco_coeffs) - 1]
                 # print(f'{disco_inits = }')
+                # 1/0
                 if len(seq_) <= len(disco_coeffs):
                     # print('not enough sequence elements available to check equivalence. '
                     #       'Maybe improving the csv file would help?.')
