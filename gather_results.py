@@ -157,8 +157,8 @@ print(job_id)
 linears = ('dilin', 'dilin-validable', 'silin', 'sdlin', 'mblinbs50')
 CHECK_EQUIV = False if job_id not in linears else True  # later you can change to "if csv_filename = 'linear...'
 if CHECK_EQUIV:
-    # from eq_ideal import linear_to_vec, is_linear
-    from eq_ideal_new import linear_to_vec
+    from eq_ideal import linear_to_vec, is_linear
+    # from eq_ideal_new import linear_to_vec
     from GenFunLinRec import GenFunLinRec
 
 # fname = 'results/good/01234567/34500_A000032.txt'
@@ -431,7 +431,7 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
 
     is_equiv = True if is_reconst else False
     equiv_csv_error = False
-    if CHECK_EQUIV and not is_equiv:
+    if CHECK_EQUIV and not is_equiv and is_check:
         # print()
         # print(f'{eq = }')
 
@@ -475,30 +475,37 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                 # print(f'{true_inits = }')
                 # print(f'{re_reconst = }')
                 # print(f'{re_manual = }')
-                # print(f'{fname = }')
-                # print(f'{eq = }')
+                print(f'{fname = }')
+                print(f'{eq = }')
                 # print(f'{is_check = }')
                 # print(f'{is_reconst = }')
                 # print(f'{is_equiv = }')
                 disco_coeffs = linear_to_vec(eq, allow_constants=True)
-                # print(f'{disco_coeffs = }')
+                print(f'{disco_coeffs = }')
                 # 1/0
                 disco_inits = seq_[:len(disco_coeffs) - 1]
-                # print(f'{disco_inits = }')
+                print(f'{disco_inits = }')
                 # 1/0
                 if len(seq_) <= len(disco_coeffs):
                     # print('not enough sequence elements available to check equivalence. '
                     #       'Maybe improving the csv file would help?.')
                     equiv_csv_error = True
                     is_equiv = False
+                    # print()
                 else:
                     is_equiv = GenFunLinRec(coeffs, true_inits) == GenFunLinRec(disco_coeffs, disco_inits)
+                    print(f'{is_equiv = }')
 
-                    # print(f'{coeffs = }, {true_inits = }')
-                    # gen = GenFunLinRec(coeffs, true_inits)
-                    # gen = GenFunLinRec(disco_coeffs, disco_inits)
-                    # print(gen)
+                    print(f'{coeffs = }')
+                    print(f'{true_inits = }')
+                    gen = GenFunLinRec(coeffs, true_inits)
+                    # print(str(gen))
+                    gen2 = GenFunLinRec(disco_coeffs, disco_inits)
+                    # print(gen2)
+                    # print(f'{GenFunLinRec(coeffs, true_inits) = }')
                     # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
+                    if not is_equiv and len(coeffs) < 4:
+                        1/0
             # print(f'{equiv_csv_error = }')
             # print(f'{is_equiv = }')
             # print(f'{is_check = }')
@@ -907,8 +914,8 @@ print('here i am')
 
 
 scale = 40
-scale = 240
-# scale = 4000
+# scale = 240
+# # scale = 4000
 scale = 50100
 files_debug = files[0:scale]
 files = files_debug
