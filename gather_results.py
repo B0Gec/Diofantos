@@ -475,16 +475,22 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                 # print(f'{true_inits = }')
                 # print(f'{re_reconst = }')
                 # print(f'{re_manual = }')
-                print(f'{fname = }')
-                print(f'{eq = }')
+                # print(f'{fname = }')
+                # print(f'{eq = }')
                 # print(f'{is_check = }')
                 # print(f'{is_reconst = }')
                 # print(f'{is_equiv = }')
+
                 disco_coeffs = linear_to_vec(eq, allow_constants=True)
-                print(f'{disco_coeffs = }')
                 # 1/0
                 disco_inits = seq_[:len(disco_coeffs) - 1]
-                print(f'{disco_inits = }')
+                # print(f'{coeffs = }')
+                # print(f'{true_inits = }')
+                # print(f'{disco_coeffs = }')
+                # print(f'{disco_inits = }')
+                # print([[type(j) for j in i] for i in [coeffs, true_inits, disco_inits, disco_coeffs]])
+                coeffs, true_inits, disco_inits, disco_coeffs = [list(map(int, i)) for i in [coeffs, true_inits, disco_inits, disco_coeffs]]
+
                 # 1/0
                 if len(seq_) <= len(disco_coeffs):
                     # print('not enough sequence elements available to check equivalence. '
@@ -494,18 +500,24 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                     # print()
                 else:
                     is_equiv = GenFunLinRec(coeffs, true_inits) == GenFunLinRec(disco_coeffs, disco_inits)
-                    print(f'{is_equiv = }')
+                    # print(f'{is_equiv = }')
 
-                    print(f'{coeffs = }')
-                    print(f'{true_inits = }')
                     gen = GenFunLinRec(coeffs, true_inits)
                     # print(str(gen))
                     gen2 = GenFunLinRec(disco_coeffs, disco_inits)
                     # print(gen2)
                     # print(f'{GenFunLinRec(coeffs, true_inits) = }')
                     # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
-                    if not is_equiv and len(coeffs) < 4:
-                        1/0
+                    # 4 not in time, 8?
+                    if not is_equiv and len(disco_coeffs) < 10000:
+                        print(f'{fname = }')
+                        print(f'{is_equiv = }')
+
+                        print(f'{coeffs = }')
+                        print(f'{true_inits = }')
+                        print(f'{disco_coeffs = }')
+                        print(f'{disco_inits = }')
+                        # 1/0
             # print(f'{equiv_csv_error = }')
             # print(f'{is_equiv = }')
             # print(f'{is_check = }')
@@ -914,7 +926,7 @@ print('here i am')
 
 
 scale = 40
-# scale = 240
+scale = 240
 # # scale = 4000
 scale = 50100
 files_debug = files[0:scale]
