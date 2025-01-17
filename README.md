@@ -2,6 +2,15 @@
 
 Diofantos is an algorithm implemented in Python for the discovery of exact equations from integer sequences.
 
+You can cite my paper: https://doi.org/10.3390/math12233745
+
+## Development branch:
+This is the develompent branch of Diofantos, that you are viewing at the moment. 
+
+Consider the recommended usage of stable version, available as:
+- a release titled "Revised Diofantos paper": https://github.com/B0Gec/Diofantos/releases/tag/v1.0.1_d2024_11_21
+- as well as Diofantos branch: https://github.com/B0Gec/Diofantos/tree/Diofantos.
+
 ## Apptainer/Singularity container:
 - Results from paper can be reproduced by running the doones.py file from python from the Singularity container obtained 
   from the Singularity Hub in the following way:
