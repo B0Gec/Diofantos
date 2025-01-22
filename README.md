@@ -32,9 +32,9 @@ cd Diofantos
 git restore --source cf66eec6d45f6cbc0bc5d0b2da0361332a811484 exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py
 ```
 
-In the end download linear_database_newbl.csv manually since it is stored as git lfs (large files).
+In the end download `linear_database_newbl.csv` manually from Zenodo repository (look in the paper), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
 
-And ignore files under the GitHub "Assets" section.
+And ignore files under the GitHub "Assets" section of the GitHub's release page.
 
 ## Simple example of Diofantos' execution in terminal:
 

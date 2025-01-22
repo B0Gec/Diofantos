@@ -38,6 +38,7 @@ EXECUTE_REAL = False
 EXECUTE_REAL = True
 
 OEISformer = True
+OEISformer = False
 if OEISformer:
     from loadtrans import csv_input, csv_zerows
     N_INPUT = 15
