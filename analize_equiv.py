@@ -10,7 +10,7 @@ with open(analisys_file, 'r') as f:
     content = f.read()
 
 
-# print(content[:1000])
+print(content[:1000])
 
 fails = re.findall('((fname.+)\n.+\ncoeffs = \[(.+)\].*\ntrue_inits = \[(.+)\].*\ndisco_coeffs = \[(.+)\].*\ndisco_inits = \[(.+)\].*\n)', content)
 for n, fail in enumerate(fails):
@@ -32,6 +32,8 @@ for n, fail in enumerate(fails):
         print(fail[0])
     # print()
 print(len(fails))
+# 11*5 + 2 = 50 + 7 = 57
+1/0
 
 import sympy as sp
 import pandas as pd

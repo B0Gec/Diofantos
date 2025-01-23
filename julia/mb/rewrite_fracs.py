@@ -8,9 +8,9 @@ x,y, a,b = sp.symbols('x,y,a,b')
 wxy = -(x**3 - 3*x**2*y + x**2 + y**3 - y**2 + 2*y + 2)/y
 # print(sp.diff(w,x))
 def lhs(w):
-    return sp.simplify(d(d(w,x), x) - d(d(w,y), y) - 2*d(w, x)/x - 2*d(w, y)/y )
+    return sp.simplify(sp.diff(sp.diff(w,x), x) - sp.diff(sp.diff(w,y), y) - 2*sp.diff(w, x)/x - 2*sp.diff(w, y)/y )
 # print(sp.simplify(d(d(w,x), x) - d(d(w,y), y) - 2*d(w, x)/x - 2*d(w, y)/y ))
-print(lhs(wxy))
+print(f'{lhs(wxy) = }')
 
 # a = x+y
 # b = x-y
@@ -36,11 +36,12 @@ def follows(fa, gb):
     w = (1 / y) * (fa + gb) - (x / y) * (d(fa, a) + d(gb, b))
     return sp.simplify(w.subs(a, x+y).subs(b, x-y))
 
-print(follows(fa, gb))
+print(f'{follows(fa, gb) = }')
+print(f'{lhs(follows(fa, gb)) = }')
 
 #
 w2 = (y**4 + 4*y**3 + 6*y**2 + 3*y - x**4 - 2*x**3*y - 2*x**3 +2*x*y**3 + 6*x*y**2 + 6*x*y)/(y**3 +2*y**2 +y +x**2*y +2*x*y**2 + 2*x*y)
-print(lhs(w2) )
+print(f'{lhs(w2) = }')
 # 1/0
 
 fa = a/(a+1)
@@ -53,6 +54,13 @@ print(n_o)
 print(sp.expand(n))
 print(d_o)
 print(sp.expand(d))
+
+
+#
+w3 = 1 + 6*x**2 - 2*y**2 + 3*x**3 + 15*x**4 + 10*x**2*y**2 - y**4 + 6*x**5 + 10*x**3*y**2
+
+print(f'{lhs(w3) = }')
+1/0
 
 print(sp.simplify(w2))
 print(f' {sp.expand((x*(2*(-x + y + 1)*(x + y + 1)**2 - 1) + (x + y + 1)*(x + y + (-2*x + 2*y + (x - y)**2)*(x + y + 1))))}')
