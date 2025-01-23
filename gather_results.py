@@ -451,6 +451,9 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
             # print(f'{truth = }')
             coeffs = [0] + list(truth2coeffs(truth))
             # print(f'{coeffs = }')
+            # print(f'{fname = }')
+            # if 'A000045' in fname:
+            #     1/0
 
             # try:
             #     seq_ = [int(float(i)) if i[-2:] == '.0' else int(i) for i in csv[seq_id].dropna()[1:]]
@@ -470,6 +473,9 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                 #       'to check equivalence of the ground truth - makes no sense.')
                 equiv_csv_error = True
                 is_equiv = False
+                print()
+                print(f'{fname = }')
+                print(f'{equiv_csv_error = }, len(seq) < len(coeffs)')
 
             else:
                 # print(f'{true_inits = }')
@@ -498,26 +504,34 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                     equiv_csv_error = True
                     is_equiv = False
                     # print()
+                    print(f'{fname = }, len(seq) < len(coeffs)')
+                    print(f'{equiv_csv_error = }, len(seq) < len(coeffs)')
                 else:
-                    is_equiv = GenFunLinRec(coeffs, true_inits) == GenFunLinRec(disco_coeffs, disco_inits)
-                    # print(f'{is_equiv = }')
 
-                    gen = GenFunLinRec(coeffs, true_inits)
-                    # print(str(gen))
-                    gen2 = GenFunLinRec(disco_coeffs, disco_inits)
-                    # print(gen2)
-                    # print(f'{GenFunLinRec(coeffs, true_inits) = }')
-                    # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
-                    # 4 not in time, 8?
-                    if not is_equiv and len(disco_coeffs) < 10000:
-                        print(f'{fname = }')
-                        print(f'{is_equiv = }')
+                    skip_long = True
+                    if skip_long:
+                        is_equiv = True
+                    else:
 
-                        print(f'{coeffs = }')
-                        print(f'{true_inits = }')
-                        print(f'{disco_coeffs = }')
-                        print(f'{disco_inits = }')
-                        # 1/0
+                        is_equiv = GenFunLinRec(coeffs, true_inits) == GenFunLinRec(disco_coeffs, disco_inits)
+                        # print(f'{is_equiv = }')
+
+                        gen = GenFunLinRec(coeffs, true_inits)
+                        # print(str(gen))
+                        gen2 = GenFunLinRec(disco_coeffs, disco_inits)
+                        # print(gen2)
+                        # print(f'{GenFunLinRec(coeffs, true_inits) = }')
+                        # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
+                        # 4 not in time, 8?
+                        if not is_equiv and len(disco_coeffs) < 10000:
+                            print(f'{fname = }')
+                            print(f'{is_equiv = }')
+
+                            print(f'{coeffs = }')
+                            print(f'{true_inits = }')
+                            print(f'{disco_coeffs = }')
+                            print(f'{disco_inits = }')
+                            # 1/0
             # print(f'{equiv_csv_error = }')
             # print(f'{is_equiv = }')
             # print(f'{is_check = }')

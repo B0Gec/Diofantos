@@ -1239,6 +1239,35 @@ def check_eq_man(x: sp.Matrix, seq_id: str, csv: pd.DataFrame,
     #     # 1/0
     return out
 
+
+def an_linear(till_now: list, coeffs: list):
+    """Calculate next term for linear sequence.
+
+    Input:
+        - till_now - list of terms of sequence, given so far
+        - coeffs - list of coefficients of linear equation and the constant term in front.
+            I.e., first element = constant term, second element = coefficient in front of a(n-1), etc.
+    """
+
+    coeffs_ = coeffs[1:]
+    # print(coeffs_)
+    taken = list(reversed(till_now))[:len(coeffs_)]
+    # print(taken)
+    return coeffs[0] + sum([a * b for a, b in zip(taken, coeffs_)])
+
+# example:
+# print(an_linear([0, 1, 1, 3, 5], [0, 1, 2])  # returns 11
+
+def generate_linear(coeffs: list[int], init_terms: list[int], n_terms):
+    """Generate linear sequence based on coefficients, initial terms and the prescribed number of terms."""
+
+    seq = init_terms
+    for _ in range(n_terms):
+        seq.append(an_linear(seq, coeffs))
+    return seq
+
+# print(generate_linear([0, 1, 1], [0, 1, 1], 10))  # returns [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+
 if __name__ == '__main__':
     # from proged times:
     # has_titles = 1
