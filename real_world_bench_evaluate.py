@@ -18,6 +18,12 @@ import sympy as sp
 
 # def Diofantos_csv
 from exact_ed import diofantos, grid_sympy
+from mb_oeis import moadeeb
+
+METHOD = 'Diofantos'
+# METHOD = 'MoadeeB'
+
+eq_disco = {'MoadeeB': moadeeb, 'Diofantos': diofantos}[METHOD]
 
 data_dir = 'real-bench/'
 
@@ -73,7 +79,7 @@ def do_wheel():
     print(vars_9)
     print(M_9[:5, :].__repr__())
 
-    vector, eq = diofantos(M_9, 2, vars_9)
+    vector, eq = eq_disco(M_9, 2, vars_9)
     print(eq)
     print()
     # delta(W_n) = -n + V(W_n) + 2
@@ -109,7 +115,9 @@ def evaluate(benchfile, target, n_eq, d_max, chvars=None, scale=400):
     M, vars = target_prep(M, vars, target) if target != -1 else (M, vars)
     print(vars)
     print(M[:5, :].__repr__())
-    vector, eq = diofantos(M[:scale, :], d_max, vars)
+    print('\ncut')
+    vector, eq = eq_disco(M[:scale, :], d_max, vars)
+    print('cut\n')
     print(eq)
     return
 
@@ -132,7 +140,7 @@ def evaluate(benchfile, target, n_eq, d_max, chvars=None, scale=400):
 
 
 
-# # eq 5 Trace!
+# # eq 5 Trace multiplicity!
 evaluate('tr.csv', -1, 5, 1)
 # trB*A = B*trA
     # analyzed B*trA comes from ' trA*B'

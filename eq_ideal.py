@@ -36,7 +36,7 @@ def bitsize_summand(summand: str):
     # summand = ['a(n)', '-2*a(n-1)', 'n^4', '+(-7/16875)*a(n-1)^4', '-93090916800*n^2*a(n-1)', 'tm2*a' ][5]
     # print(summand)
     coef = re.findall(r'^\+?\-?\(?\-?(\d+)/?(\d*)\)?', summand)
-    print(f'{coef = }')
+    # print(f'{coef = }')
     if coef == []:
         #     # if re.findall(r'[a-zA-Z]', coef[0]) == []: return 0 else: raise ValueError('Variable have strange name or bug in code!!!.')
         bits = 1

@@ -42,6 +42,92 @@ from mb_wrap import mb
 # from mavi_simplify import round_expr, divide_expr, simpl_disp, anform
 #
 
+def moadeeb(X: list[list], bitsize, sparsity, top_n):
+    """MoadeeB - MOeller-Buchberger Algorithm based Discovery of Exact Equations
+
+    Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting
+    the Ideal of Points with well-known Commutative Algebra Tools.
+
+    Inputs:
+        - Matrix X of observations of the variables V = {x_1, ..., x_p}.
+        - Tuple of parameters (bitsize, sparsity, top_n) determining
+            how complex and how many equations are acceptable for consideration.
+    Outputs:
+        - Sorted list of simplest polynomial equations of the form
+            f(x_1, x_2, ..., x_p) = 0.
+    """
+
+
+    points = unique(X)
+    print(f'{points = }')
+
+    # GrobnerBasis = MollerBuchberger(points)
+    # L = Filter(GronerBasis, bitsize, sparsity)
+    # L = BitsizeSort(L, top_n)
+
+    # printout = ''
+    # seq = unnan(list(csv[seq_id])[ground_truth:(ground_truth+n_of_terms)])
+    # # if verbosity > 0:
+    # echo = f'seq: {seq}'
+    # printout += echo + '\n'
+    # if verbosity > 0:
+    #     print(echo)
+    # # 1/0
+
+    # eq = 'MB not reconst'
+    # x = []
+    # orders_used = []
+    # non_linears = []
+    # # for order in range(0, max_order + 1):
+    # for order in range(19, max_order + 1):
+    #     if ground_truth and order == 0:
+    #         continue
+    #     echo = f'order: {order}'
+    #     printout += echo + '\n'
+    #     print(echo)
+    #     # print('14.10.2024 hardcoded 200 terms for MB instead of 2*order + n_more_terms')
+    #
+    #     # print('len seq:', len(seq), 'seq:', seq)
+    #     heuristic = 2 * order + n_more_terms
+    #     if len(seq) <= order:
+    #         # print('I WARNED YOU, TOO FEW TERMS to AVOID ERRORS!')
+    #         if verbosity > 0:
+    #             print('I PUT THE BRAKES ON, since TOO FEW TERMS - to AVOID ERRORS!')
+    #         break
+    #     seq_cut = seq[:heuristic]
+    #     # print('len seq:', len(seq_cut), 'seq:', seq_cut, type(seq), type(seq_cut))
+    #     # print('heuristic', heuristic, 'error-threshold', order)
+    #     # print('---> looky here onemb')
+
+
+        # first_generator, ref, ideal = one_mb(seq_cut, order, n_more_terms, execute, library, verbosity=verbosity, n_of_terms=n_of_terms)
+        # if (first_generator, ref, ideal) == (None, None, None):
+        #     break
+        # # print('---> looky here onemb after')
+        #
+        # # print(f'all generators:')
+        # if verbosity >= 2:
+        #     print(ideal)
+        # # booly = check_eq_man(eq, seq_id, csv, header=False, n_of_terms=10 ** 5, solution_ref=ref, library='n')
+        # # if bolly
+        # #     break
+        #
+        # # return ideal, ref
+        # printlen = 100
+        # # print(type(first_generator), type(ideal))
+        # # if order == 5:
+        # #     print(first_generator[:printlen], ideal[:1000])
+        # if verbosity > 0:
+        #     print(first_generator[:printlen], ideal[:printlen])
+        # # 1/0
+        # # printout += f'ideal: {ideal[:printlen]}\nequation: {first_generator[:printlen]}\n'
+        # eqs, heqs = ideal_to_eqs(ideal, top_n=10, verbosity=verbosity, max_bitsize=max_bitsize)
+        # # print('eqs:,', eqs)
+        # print('heqs:,', heqs)
+        # # 1/0
+    return
+
+
 def external_prettyprint(ideal, sol_ref= [f'a(n-{i})' for i in range(1, 16)]) -> str:
     """ a_n_1 -> a(n-1)
         function intended for external use only, no script uses this function.
@@ -91,8 +177,8 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
     x = []
     orders_used = []
     non_linears = []
-    for order in range(0, max_order + 1):
-    # for order in range(10, max_order + 1):
+    # for order in range(0, max_order + 1):
+    for order in range(19, max_order + 1):
         if ground_truth and order == 0:
             continue
         echo = f'order: {order}'
@@ -153,7 +239,9 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                     print('not useless, checking implicit:')
                 # check = check_implicit(expr, seq)
                 # check = list_evals(expr, seq)
-                check = check_implicit_batch(expr, seq, verbosity=0)  # Possible error since seq= sp.Matrix
+                check = check_implicit_batch(expr, seq, verbosity=2)  # Possible error since seq= sp.Matrix
+                print('implicit checked?', check)
+                print('checking arguments:', expr, seq)
 
                 if check:  # Save implicit equation if it is correct.
                     if verbosity >= 1:
@@ -187,6 +275,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                         x = x_candidate
                         if verbosity >= 1:
                             print('linear:', x)
+                        print('is linear!', expr, x)
                         return non_linears, expr, x, [len(x)], []
     return non_linears, eq, x, orders_used, []
 

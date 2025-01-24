@@ -39,7 +39,7 @@ EXECUTE_REAL = True
 
 
 OEISformer = True
-# OEISformer = False
+OEISformer = False
 if OEISformer:
     from loadtrans import csv_input, csv_zerows
     N_INPUT = 15
@@ -118,7 +118,7 @@ N_MORE_TERMS = 10  # original
 # N_MORE_TERMS = 70
 
 VERBOSITY = 2  # dev scena
-VERBOSITY = 1  # run scenario
+# VERBOSITY = 1  # run scenario
 # VERBOSITY = 3  # dev scenario
 
 DEBUG = True
@@ -131,7 +131,7 @@ BUGLIST_BLACKLISTING = True
 # BUGLIST ignores blacklisted sequences !!!!!
 
 CORELIST = True  # have to scrape core sequences!  # also for OEISformer
-# CORELIST = False
+CORELIST = False
 if BUGLIST:
     from buglist import buglist
 REAL_WORLD_BENCH = True
@@ -258,6 +258,7 @@ TASK_ID = 145
 TASK_ID = 26
 # TASK_ID = 51
 # TASK_ID = 1367
+TASK_ID = 11100
 
 
 JOB_ID = "000000"

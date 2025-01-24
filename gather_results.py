@@ -113,17 +113,19 @@ job_id = 'sicor9fix2'  # official sindy core. Default?
 # #
 # job_id = 'fakesilin'
 job_id = 'silin'    # sindy linrec official?
+job_id = 'silin-validable'    # manualy (sed bash) derived from dilin, to check equivalence
 
-job_id = 'sicor1114'  # sindy core official?
-
-job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
-job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check equivalence
+# job_id = 'sicor1114'  # sindy core official?
+#
+# job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
+# job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check equivalence
 # job_id = 'findicor'  # maybe the official diofantos core results, check it.
 
 # # # job_id = 'sideflin'  # fail: not even sindy
 # # # job_id = 'sidefcor'  # fail: not even sindy
 #
-# # job_id = 'sdlin'   # sindy-default-linrec
+job_id = 'sdlin'   # sindy-default-linrec
+job_id = 'sdlin-validable'
 # # # # job_id = 'sdcor'  # fail: not core
 # job_id = 'sdcor2'
 
@@ -154,7 +156,7 @@ job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check
 print(job_id)
 # 1/0
 
-linears = ('dilin', 'dilin-validable', 'silin', 'sdlin', 'mblinbs50')
+linears = ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable', 'mblinbs50')
 CHECK_EQUIV = False if job_id not in linears else True  # later you can change to "if csv_filename = 'linear...'
 if CHECK_EQUIV:
     from eq_ideal import linear_to_vec, is_linear
@@ -167,7 +169,7 @@ base_dir = "results/goodmb/"
 # base_dir = "results/goodmavi/"  # mavicore0, maviterms50
 # if job_id in ('mblinrec', 'mblint2', 'mblinbs50', 'mbcor'):
 #     base_dir = "results/goodmb/"
-if job_id in ('dilin', 'dilin-validable', 'silin', 'sdlin',
+if job_id in ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable',
               'sicor9fix2', 'sicor1114', 'findicor',
               'transfoeis_acc2', 'n15_acc', ):
     base_dir = "results/good/"
@@ -435,6 +437,8 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
         # print()
         # print(f'{eq = }')
 
+        # if eq == 'MB not reconst':
+        #     is_equiv = True
         if eq not in (None, 'MB not reconst', 'a(n) = ?'):
             # print(f'{eq = }')
             task_id = int(fname[-17:-12])
@@ -508,7 +512,8 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                     print(f'{equiv_csv_error = }, len(seq) < len(coeffs)')
                 else:
 
-                    skip_long = True
+                    skip_long = False
+                    # skip_long = True
                     if skip_long:
                         is_equiv = True
                     else:
