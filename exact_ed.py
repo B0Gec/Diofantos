@@ -49,9 +49,9 @@ def diofantos(M: sp.Matrix, d_max: int, var_names: list[str] = None) -> (sp.Matr
         x = x[0]
         # if linear:
         #     x = sp.Matrix.vstack(sp.Matrix([0]), x)
-    print('x', x)
+    # print('x', x)
     eq = solution2str(x, solution_ref=sol_ref, library=None)
-    print(eq)
+    # print(eq)
     eq = target_var + eq[4:]
     return x, eq
 
@@ -461,15 +461,15 @@ def solution2str(x: sp.Matrix, solution_ref: list[str], library: str = None) -> 
             raise ValueError('Diofantos: only one of library or solution_ref can be None, currently both are!')
         else:
             verbose_eq = solution_ref
-            print(solution_ref)
+            # print(solution_ref)
         # verbose_eq = (['a(n)'] + ['n']*(n_degree>0) + [f'n^{deg}' for deg in range(2, n_degree+1)] + [f"a(n-{i})" for i in range(1, order + 1)]
         #     + sum([[f"a(n-{i})^{degree}" for i in range(1, order+1)] for degree in range(2, degree + 1)], []))
-        print(verbose_eq)
-        print('x', x)
+        # print(verbose_eq)
+        # print('x', x)
         # 1/0
 
         verbose_eq = sp.Matrix(verbose_eq)
-        print(verbose_eq)
+        # print(verbose_eq)
         # print('verbose_eq', verbose_eq_new.shape, verbose_eq_new)
 
         # verbose_eq_new = sp.Matrix(['a(n)'] + verbose_eq)

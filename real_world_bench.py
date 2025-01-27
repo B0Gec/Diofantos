@@ -121,7 +121,7 @@ def create_det(n):
     row = f'{a.det()}, {b.det()}, {(a*b).det()}, {alf}, {(alf*a).det()}'
     return big_example, row
 
-create_det(2)
+# create_det(2)
 
 def create_dets(dim, rows):
     big_title = f'A, B, A*B, alf, alf*A, detA, detB, det(A*B), det(alf*A), detA*detB'
@@ -205,3 +205,63 @@ def create_trs(dim, rows):
     return
 
 # create_trs(3, 100)
+
+
+# MoadeeB paper:
+
+# random.seed(0)
+
+# def faces(V, E, omega):
+#     return 1 + omega - V + E
+#
+# def create_jordan():
+#     # | V | − | E | + | F | = 1 + | Ω |
+#     # - Jordan: |V | − |E| + |F | = 1 + |Ω|, \Omega = komponente, F pa lica.
+#     # |V| − |E| + |F| = 1 + |Ω|
+#     vars = 'V, E, F, Omega'
+#
+#     WRITE = False
+#     # WRITE = True
+#     if WRITE:
+#         with open(dir_path+'jordan.csv', 'w') as f:
+#             f.write(jordan_output + '\n')
+#         # with open(dir_path+'real_world_bench_ds5.csv', 'w') as f:
+#         #     f.write(det_output + '\n')
+#     return
+#
+#
+# create_jordan()
+
+def Riemann_Roch():
+    """Wiki: Riemann-Roch theorem for compact Riemann surfaces
+    (Statement of the theorem).
+
+    # l(D) = deg(D) − genus + 1
+    """
+
+    def l(degD, genus):
+        """ l(D) = deg(D) − g + 1 """
+        return degD - genus + 1
+
+    rr_out = 'l(D), deg(D), g\n'
+    # g = random.randint(0, 100)
+    # print()
+    for i in range(100):
+        g = random.randint(0, 100)
+        # g = random.gauss(1, 10)
+        # g = int(abs(g))
+        # print(g)
+        deg = random.randint(g, 100)
+        # print(deg)
+        # print()
+        rr_out += f'{l(deg, g)}, {deg}, {g}\n'
+    print(rr_out)
+
+    WRITE = False
+    if WRITE:
+        with open(dir_path+'real_world_bench_ds6.csv', 'w') as f:
+            f.write(rr_out + '\n')
+
+    return
+
+# Riemann_Roch()

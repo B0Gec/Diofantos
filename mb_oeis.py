@@ -58,12 +58,6 @@ def moadeeb(X: list[list], bitsize, sparsity, top_n):
     """
 
 
-    points = unique(X)
-    print(f'{points = }')
-
-    # GrobnerBasis = MollerBuchberger(points)
-    # L = Filter(GronerBasis, bitsize, sparsity)
-    # L = BitsizeSort(L, top_n)
 
     # printout = ''
     # seq = unnan(list(csv[seq_id])[ground_truth:(ground_truth+n_of_terms)])
@@ -100,32 +94,32 @@ def moadeeb(X: list[list], bitsize, sparsity, top_n):
     #     # print('---> looky here onemb')
 
 
-        # first_generator, ref, ideal = one_mb(seq_cut, order, n_more_terms, execute, library, verbosity=verbosity, n_of_terms=n_of_terms)
-        # if (first_generator, ref, ideal) == (None, None, None):
-        #     break
-        # # print('---> looky here onemb after')
-        #
-        # # print(f'all generators:')
-        # if verbosity >= 2:
-        #     print(ideal)
-        # # booly = check_eq_man(eq, seq_id, csv, header=False, n_of_terms=10 ** 5, solution_ref=ref, library='n')
-        # # if bolly
-        # #     break
-        #
-        # # return ideal, ref
-        # printlen = 100
-        # # print(type(first_generator), type(ideal))
-        # # if order == 5:
-        # #     print(first_generator[:printlen], ideal[:1000])
-        # if verbosity > 0:
-        #     print(first_generator[:printlen], ideal[:printlen])
-        # # 1/0
-        # # printout += f'ideal: {ideal[:printlen]}\nequation: {first_generator[:printlen]}\n'
-        # eqs, heqs = ideal_to_eqs(ideal, top_n=10, verbosity=verbosity, max_bitsize=max_bitsize)
-        # # print('eqs:,', eqs)
-        # print('heqs:,', heqs)
-        # # 1/0
-    return
+    # GrobnerBasis = MollerBuchberger(points)
+    # L = Filter(GronerBasis, bitsize, sparsity)
+    # L = BitsizeSort(L, top_n)
+    # return L
+
+    # X = X.tolist()
+    points = [i for n, i in enumerate(X) if not i in X[:n]]
+    # print(f'{points = }')
+    vars_cocoa = [f'x_{i}' for i in range(1, len(points[0])+1)]
+    first_generator, ideal = mb(points=points, execute_cmd=True, var_names=vars_cocoa)
+    # print(f'{first_generator = },\n{ideal = }')
+
+    eqs, human_eqs = ideal_to_eqs(ideal, max_bitsize=bitsize, max_complexity=sparsity, top_n=top_n, verbosity=0)
+    # print(f'{human_eqs = }')
+    # print(f'{eqs = }')
+    return human_eqs
+
+
+# def unique(X: list[list]) -> list[list]:
+#     """Return a list of unique points in a data set.
+#
+#     For now: returns list of strings. This is because of potential of having rational numbers (3/4).
+#     """
+#     # X = ["2", [1, 2], 3, 2, 3345, 3, 456]])]
+#     X = X.tolist()
+#     return [i for n, i in enumerate(X) if not i in X[:n]]
 
 
 def external_prettyprint(ideal, sol_ref= [f'a(n-{i})' for i in range(1, 16)]) -> str:
