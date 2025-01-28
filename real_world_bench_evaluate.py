@@ -58,7 +58,8 @@ vars_map = {
     'det.csv': {'x_1': 'detA', 'x_2': 'detB', 'x_3': 'detA*B', 'x_4': 'alpha', 'x_5': 'det_alpha*A_'},
     'tr.csv': {'x_1': 'trA', 'x_2': 'trB', 'x_3': 'tr(A+B)', 'x_4': 'tr(A*B)', 'x_5': 'tr(B*A)'},
     'wheel.csv': {'x_1': 'n', 'x_2': 'V(W_n)', 'x_3': 'Edges(W_n)', 'x_4': 'delta(W_n)', 'x_5': 'Delta(W_n)'},
-    'riemann-roch.csv': {'x_1': 'l(D)', 'x_2': 'deg(D)', 'x_3': 'g'}
+    'riemann-roch.csv': {'x_1': 'l(D)', 'x_2': 'deg(D)', 'x_3': 'g'},
+    'euler.csv': {'x_1': 'V', 'x_2': 'E', 'x_3': 'F', 'x_4': 'Omega'},
 }
 
 
@@ -197,8 +198,12 @@ def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=Non
 
 
 
-# MoadeeB only:
-evaluate('riemann-roch.csv', None, 11, None)
-# ['l(D) -deg(D) +g -1']
-# i.e. l(D) = deg(D) - g + 1, i.e. eq. 11 done!
+# # MoadeeB only:
+# evaluate('riemann-roch.csv', None, 11, None)
+# # ['l(D) -deg(D) +g -1']
+# # i.e. l(D) = deg(D) - g + 1, i.e. eq. 11 done!
 
+evaluate('euler.csv', None, 12, None)
+# ['E +(-3/2)*F +(-3/2)*Omega +3/2', 'V +(-1/2)*F +(-5/2)*Omega +1/2']
+# i.e. 'V +(-1/2)*F +(-5/2)*Omega +1/2 - (E +(-3/2)*F +(-3/2)*Omega +3/2) = 0'
+# i.e. 'V   - E +F  = Omega +1, done! eg. 12 solved!

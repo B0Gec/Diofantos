@@ -9,6 +9,12 @@ add of det.
 """
 import numpy as np
 
+import matplotlib.pyplot as plt
+import networkx as nx
+
+# import tulip as tlp
+from tulip import tlp
+# from tulipgui import tlpgui
 
 # 1.) Creation
 ############
@@ -209,28 +215,70 @@ def create_trs(dim, rows):
 
 # MoadeeB paper:
 
-# random.seed(0)
+random.seed(0)
 
-# def faces(V, E, omega):
-#     return 1 + omega - V + E
-#
-# def create_jordan():
-#     # | V | − | E | + | F | = 1 + | Ω |
-#     # - Jordan: |V | − |E| + |F | = 1 + |Ω|, \Omega = komponente, F pa lica.
-#     # |V| − |E| + |F| = 1 + |Ω|
-#     vars = 'V, E, F, Omega'
-#
-#     WRITE = False
-#     # WRITE = True
-#     if WRITE:
-#         with open(dir_path+'jordan.csv', 'w') as f:
-#             f.write(jordan_output + '\n')
-#         # with open(dir_path+'real_world_bench_ds5.csv', 'w') as f:
-#         #     f.write(det_output + '\n')
-#     return
-#
-#
-# create_jordan()
+
+def create_Euler():
+    """Euler's formula, generalized for components.
+
+    | V | − | E | + | F | = 1 + | Ω |
+
+    Source: notes from the course "Graph Theory" by Primož Potočnik, University of Ljubljana, 2011.
+    Also, google: "euler's formula connected components".
+    """
+    # Euler: |V | − |E| + |F | = 1 + |Ω|, \Omega = komponente, F pa lica.
+
+    def random_planar_graph(V):
+        """Generate a random planar graph with tulip-python library."""
+
+        # get a dictionnary filled with the default plugin parameters values
+        params = tlp.getDefaultPluginParameters('Planar Graph')
+        params['nodes'] = V
+        # set any input parameter value if needed
+        graph = tlp.importGraph('Planar Graph', params)
+        # tlp.saveGraph(graph, "mygraph2.tlp")
+        # print(f'{list(graph.getEdges())}')
+        # print(f'{list(graph.getNodes())}')
+        E = len(list(graph.getEdges()))
+        V2 = len(list(graph.getNodes()))
+        # print(V, E, V2)
+        return V2, E
+
+        # if the plugin declare any output parameter, its value can now be retrieved in the 'params' dictionnary
+
+    def faces(V, E, omega):
+        return 1 + omega - V + E
+
+    euler_out = 'V, E, F, Omega\n'
+    # generate 100 rows, a.k.a. 100 random planar graphs:
+    for i in range(1000):
+        omega = random.randint(1, 10)
+        # omega = 1
+        V_sum, E_sum, F_sum = 0, 0, 0
+        for component in range(omega):
+            V = random.randint(3, 100)
+            V_sum += V
+            V2, E = random_planar_graph(V)
+            if V != V2: raise ValueError('V != V2')
+            E_sum += E
+        F = faces(V_sum, E_sum, omega)
+        new_row = f'{V_sum}, {E_sum}, {F}, {omega}\n'
+        euler_out += new_row if new_row not in euler_out else ''
+    euler_out = '\n'.join(euler_out.split('\n')[:101])
+    # splitted = euler_out.split('\n')
+    # print('\n'.join(sorted(splitted)))
+    # print('\n'*5)
+    print(euler_out)
+
+    WRITE = False
+    if WRITE:
+        with open(dir_path+'real_world_bench_ds7.csv', 'w') as f:
+            f.write(euler_out + '\n')
+
+    return
+
+
+create_Euler()
 
 def Riemann_Roch():
     """Wiki: Riemann-Roch theorem for compact Riemann surfaces
