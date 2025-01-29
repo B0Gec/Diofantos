@@ -278,7 +278,7 @@ def create_Euler():
     return
 
 
-create_Euler()
+# create_Euler()
 
 def Riemann_Roch():
     """Wiki: Riemann-Roch theorem for compact Riemann surfaces
@@ -313,3 +313,88 @@ def Riemann_Roch():
     return
 
 # Riemann_Roch()
+
+def symbolic_computation(ds):
+    """
+    w1 = 1 + x + 3y + 2xy − x2 − y 2 = 2α − β 2 − β + 1
+    w2 = 2 + x − y − 4xy + 2x3 + 6xy2 = α3 − α2 + β3 + β 2 + β + 2
+    data set 0: columns: 1, a, b, w1, w2, a^2, b^2
+    randomly chosen x,y
+
+    w3:
+    data set 1: columns: w3, 1/y, x/y, a, b for moadeeb,
+        (1,1): or columns: w3, 1/y, x/y, 1/y*a, x/y*a, 1/y*b, x/y*b, 1/y*a^2,
+            x/y*a^2, 1/y*b^2, x/y*b^2, 1/y*b^3, for Diofantos/MoadeeB
+    """
+
+    shared = {(1,2): (1,1), 3: 1}
+    vars = {0: 'a, b, w1, w2\n', 1: 'w3, 1/y, x/y, a, b\n',
+            (1,1): 'w3, 1/y, x/y, a/y, ax/y, b/y, bx/y, a^2/y, a^2x/y, b^2/y, b^2x/y, b^3/y\n',
+            }
+    # vars_key = ds if isinstance(ds, tuple) else min(ds, 1)
+    vars_key = shared.get(ds, ds)
+    # symcomp_out = vars.get(ds, vars.get(min(ds, 1)))  # 0 -> 0, 1 -> 1, 3 and more -> 1.
+    symcomp_out = vars[vars_key]
+
+    limit = {(1,1): 30}.get(vars_key, 10)
+
+    # limit_bottom, limit_up = -30, 30
+    limit_bottom, limit_up = -limit, limit
+    # print(limit_bottom, limit_up)
+    # 1/0
+    # xys = []
+    for i in range(10000):
+        # for i in range(100):
+        x, y = random.randint(limit_bottom, limit_up), random.randint(limit_bottom, limit_up)
+        # print(i, x, y)
+
+        if y != 0:
+            vals = {0: f'{x+y}, {x-y}, {1 + x + 3*y + 2*x*y - x**2 - y**2}, {2 + x - y - 4*x*y + 2*x**3 + 6*x*y**2}\n',
+                    1: f'(-1/{y})*({(2*x**3 - 3*x**2*y + x**2 + y**3 - y**2 + 2*y + 2)}), 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    3: f'{1 + 6*x**2 - 2*y**2 + 3*x**3 + 15*x**4 + 10*x**2*y**2 - y**4 + 6*x**5 + 10*x**3*y**2}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    }
+            if isinstance(ds, tuple):
+                # print(i,x,y)
+            #     continue
+            # else:
+                w3 = {(1,1): -(2 * x ** 3 - 3 * x ** 2 * y + x ** 2 + y ** 3 - y ** 2 + 2 * y + 2),
+                      (1,2): x+y,
+                      }[ds]
+                # print(f'{ds = }, {w3 = }')
+                dividable = [w3, 1, x, (x+y), (x+y)*x, (x-y), (x-y)*x, (x+y)**2, (x+y)**2*x, (x-y)**2, (x-y)**2*x, (x-y)**3]
+                non_dividable = [d for d in dividable if not (d % y == 0)]
+                if non_dividable:
+                    continue
+                # else:
+
+                # , 1/{y}, {x}/{y}, {x + y}, {x - y}\n',
+                # 'w3, 1/y, x/y, a/y, ax/y, b/y, bx/y, a^2/y, a^2x/y, b^2/y, b^2x/y, b^3/y\n',
+        # else:
+        #     # print(i, x, y)
+        #     if y != 0: break
+                vals[ds] = ', '.join([str(div // y) for div in dividable]) + '\n'
+
+            new_row = vals[ds]
+            symcomp_out += new_row if new_row not in symcomp_out else ''
+            # print(len(symcomp_out[:-1].split('\n')), new_row)
+    symcomp_out = '\n'.join(symcomp_out.split('\n')[:101])[:-1]
+    # symcomp_out = symcomp_out[:-1]
+    print(len(symcomp_out.split('\n')))
+    # 1/0
+    # splitted = symcomp_out.split('\n')
+    # print('\n'.join(sorted(splitted)))
+    # print(symcomp_out)
+
+    ds_num = {(1,1): 4, (1,2): 5}.get(ds, ds)
+    WRITE = False
+    if WRITE:
+        with open(dir_path+f'real_world_bench_ds{8+ds_num}.csv', 'w') as f:
+            f.write(symcomp_out)
+
+    return symcomp_out
+
+# symbolic_computation(0)
+# symbolic_computation(1)
+# symbolic_computation(3)
+# symbolic_computation((1,1))
+symbolic_computation((1,2))

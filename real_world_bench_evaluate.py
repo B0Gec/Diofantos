@@ -21,18 +21,24 @@ from exact_ed import diofantos, grid_sympy
 from mb_oeis import moadeeb
 
 METHOD = 'Diofantos'
-METHOD = 'MoadeeB'
+# METHOD = 'MoadeeB'
 
 eq_disco = {'MoadeeB': moadeeb, 'Diofantos': diofantos}[METHOD]
 
 data_dir = 'real-bench/'
 
 benchfile = 'wheel.csv'
-def load(benchfile):
+def load(benchfile: str, df=None):
     """Load csv file, take var. names from it and convert data set first to numpy and then as sympy Matrix."""
 
-    csv = pd.read_csv('real-bench/'+benchfile)
+    if df is not None:
+        csv = df
+    else:
+        csv = pd.read_csv('real-bench/'+benchfile)
     vars = list(csv.columns)
+    # print(vars)
+    # print(csv)
+    # 1/0
     M = sp.Matrix(csv.to_numpy())
     # y = vars[-1]
     # rhs_obs_vars = vars[:-1]
@@ -60,6 +66,9 @@ vars_map = {
     'wheel.csv': {'x_1': 'n', 'x_2': 'V(W_n)', 'x_3': 'Edges(W_n)', 'x_4': 'delta(W_n)', 'x_5': 'Delta(W_n)'},
     'riemann-roch.csv': {'x_1': 'l(D)', 'x_2': 'deg(D)', 'x_3': 'g'},
     'euler.csv': {'x_1': 'V', 'x_2': 'E', 'x_3': 'F', 'x_4': 'Omega'},
+    'symcomp.csv': {'x_1': 'a', 'x_2': 'b', 'x_3': 'w1', 'x_4': 'w2'},
+    'symcomp1.csv': {'x_1': 'w3', 'x_2': '1/y', 'x_3': 'x/y', 'x_4': 'a', 'x_5': 'b'},
+    'symcomp3.csv': {'x_1': 'w3', 'x_2': '1/y', 'x_3': 'x/y', 'x_4': 'a', 'x_5': 'b'},
 }
 
 
@@ -101,7 +110,7 @@ def evaluate_cherry_picked_columns(selected_cols: list, benchfile: str, target: 
 
 # benchfile = 'pitagora.csv'
 
-def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=None, scale=400, moadeeb_args=(50, 10, 10)):
+def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=None, scale=400, moadeeb_args=(50, 10, 10), df=None):
     print(f'\nstart eq. {eq_id_tex}')
     print(  f'===========\n')
 
@@ -117,16 +126,18 @@ def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=Non
     if scale != 400:
         print('M scaled to', scale, '!!!')
     if METHOD == 'Diofantos':
+        print(f'{M = }')
         vector, eq = diofantos(M, d_max, vars)
         eqs = [eq]
     elif METHOD == 'MoadeeB':
         bitsize, sparsity, top_n = moadeeb_args
         eqs = moadeeb(M.tolist(), bitsize, sparsity, top_n)
-        eqs = [rewrite_vars(eq, benchfile) for eq in eqs]
+        vars_map_key = {'symcomp1.csv': 'symcomp1.csv', 'symcomp3.csv': 'symcomp1.csv'}.get(benchfile, benchfile)
+        eqs = [rewrite_vars(eq, vars_map_key) for eq in eqs]
     else:
         raise ValueError('METHOD must be either "Diofantos" or "MoadeeB"')
     print(eqs)
-    return
+    return eqs
 
 # # # Wheel Diofantos paper last 3 eqs. example:
 # Diofantos:
@@ -203,7 +214,83 @@ def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=Non
 # # ['l(D) -deg(D) +g -1']
 # # i.e. l(D) = deg(D) - g + 1, i.e. eq. 11 done!
 
-evaluate('euler.csv', None, 12, None)
-# ['E +(-3/2)*F +(-3/2)*Omega +3/2', 'V +(-1/2)*F +(-5/2)*Omega +1/2']
-# i.e. 'V +(-1/2)*F +(-5/2)*Omega +1/2 - (E +(-3/2)*F +(-3/2)*Omega +3/2) = 0'
-# i.e. 'V   - E +F  = Omega +1, done! eg. 12 solved!
+# evaluate('euler.csv', None, 12, None)
+# # ['E +(-3/2)*F +(-3/2)*Omega +3/2', 'V +(-1/2)*F +(-5/2)*Omega +1/2']
+# # i.e. 'V +(-1/2)*F +(-5/2)*Omega +1/2 - (E +(-3/2)*F +(-3/2)*Omega +3/2) = 0'
+# # i.e. 'V   - E +F  = Omega +1, done! eg. 12 solved!
+
+
+# evaluate('symcomp.csv', None, 1314, None)
+# # ['b^2 -2*a +b +w1 -1', 'a^3 -a^2 +2*a*b -b*w1 +2*b -w2 +2']
+# # i.e. w1 = -b^2 +2*a -b +1 and
+# # w2 = a^3 -a^2 +2*a*b +2*b  +2 -b*w1 = a^3 -a^2 +2*a*b +2*b  +2 -b*( -b^2 +2*a -b +1) = a^3 -a^2 +2*a*b +2*b  +2 +b^3 -2*ab +b^2 -b
+# #    = a^3 -a^2 +b  +2 +b^3  +b^2
+
+
+# eqs = evaluate('symcomp1.csv', None, 15, None)
+# unsuccessful
+# eqs = evaluate('symcomp1.csv', None, 15, None, moadeeb_args=(1000, 1000, 50))
+# eqs = evaluate('symcomp3.csv', None, 15, None)
+# eqs = evaluate('symcomp3.csv', None, 17, None, moadeeb_args=(1000, 1000, 50))
+# moadeeb(bitsize=, sparsity=, top_n=)
+
+# print(f'{len(eqs) = }')
+
+# ['1/y*b -x/y +1', '1/y*a -x/y -1', 'x/y*a -x/y*b -a -b', 'w3*1/y^2 +2*1/y^3 +1/y*x/y^2 +x/y^3 -3*x/y^2 +1', 'x/y^2*b +w3*1/y +2*1/y^2 +x/y^2 -2*x/y*b +(-1/2)*a +(-3/2)*b', 'x/y*b^2 +(-1/4)*a^2 +x/y*b -a*b +(1/4)*b^2 +w3 +2*1/y +(1/2)*a +(1/2)*b', 'a^3 +3*a^2*b -9*a*b^2 -3*b^3 -4*w3*a -2*a^2 +4*w3*b -4*a*b -2*b^2 -16']
+# '1/y*b -x/y +1 -> (x-y)/y - x/y + 1 = 0'
+# x/y*a -x/y*b -a -b = (x+y)x/y -(x-y)x/y -(x+y) -(x-y)  = x + x -2x = 0
+# w3*1/y^2 +2*1/y^3 +1/y*x/y^2 +x/y^3 -3*x/y^2 +1 = 0
+# w3 +2*1/y +1*x/y +x/y -3*x +1*y^2 = 0
+# w3 = -2/y -1*x/y -x/y -3*x -1*y^2 = 0
+
+# ['1/y*b -x/y +1', '1/y*a -x/y -1', 'x/y*a -x/y*b -a -b', 'w3*1/y^2 +2*1/y^3 +1/y*x/y^2 +2*x/y^3 -3*x/y^2 +1', 'x/y^2*b +(1/2)*w3*1/y +1/y^2 +(1/2)*x/y^2 +(-1/2)*x/y*b +(-1/2)*b', 'x/y*b^2 +(1/2)*x/y*b +(1/2)*b^2 +(1/2)*w3 +1/y +(1/4)*a +(1/4)*b', 'a*b^2 +(1/3)*b^3 +(1/3)*w3*a +(1/6)*a^2 +(-1/3)*w3*b +(1/3)*a*b +(1/6)*b^2 +4/3']
+# 1/y*b -x/y +1 = 0
+# b = x-y
+# w3*1/y^2 +2*1/y^3 +1/y*x/y^2 +2*x/y^3 -3*x/y^2 +1'
+# w3        +2*1/y  +(1/y)*x^2 +2*x^3/y -3*x^2 + y^2'
+# w3 = -2*1/y -x^2/y -2*x^3/y +3*x^2*y/y - y^3/y'
+# w3 = (-1/y)(2 + x^2 +2*x^3 - 3*x^2*y + y^3)'
+
+# w3, 1/y, x/y, a, b
+# (-1/3)*(13), 1/3, 2/3, 5, -1
+# x = 2, y = 3
+# w3 = (-1/3)(17)'
+
+
+# 'x/y*b^2 +(1/2)*x/y*b +(1/2)*b^2 +(1/2)*w3 +1/y +(1/2)*b +1
+# 2x/y*b^2 +x/y*b +b^2 +w3 +2/y +b +2 = 0
+# w3 =  -2x/y*b^2 -x/y*b -b^2  -2/y -b -2
+
+# 'x/y^2*b +(1/2)*w3*1/y +1/y^2 +(1/2)*x/y^2 +(-1/2)*x/y*b +(-1/2)*b',
+
+
+# 'a*b^2 +(1/3)*b^3 +(1/3)*w3*a +(1/6)*a^2 +(-1/3)*w3*b +(1/3)*a*b +(1/6)*b^2 +4/3'
+# # 'a*b^2 +(1/3)*b^3 +(1/3)*w3*(a-b) +(1/6)*a^2 +(1/3)*a*b +(1/6)*b^2 +4/3 = 0' * 3/2
+# '(3/2)*a*b^2 +b^3/2 +w3*(a-b)/2 +(1/4)*a^2 +(1/2)*a*b +(1/4)*b^2 +2 = 0'
+# 'w3 = (-1/y)*((3/2)*a*b^2 +b^3/2 +(1/4)*a^2 +(1/2)*a*b +(1/4)*b^2 +2)'
+
+
+# symcomp1.csv
+# ['1/y*b -x/y +1', '1/y*a -x/y -1', 'x/y*a -x/y*b -a -b', 'x/y*b^2 +(1/2)*x/y*b +(1/2)*b^2 +(1/2)*w3 +1/y +(1/2)*b +1', 'w3*1/y^2 +2*1/y^3 +1/y*x/y^2 +2*x/y^3 +2*1/y^2 -3*x/y^2 -1/y +1', 'x/y^2*b +(1/2)*w3*1/y +1/y^2 +(1/2)*x/y^2 +(-1/2)*x/y*b +1/y +(-1/2)*b -1/2', 'a*b^2 +(1/3)*b^3 +(1/3)*w3*a +(-1/3)*w3*b +(2/3)*a*b +(2/3)*a +(-2/3)*b +4/3']
+
+# symcomp3.csv
+# ['1/y*b -x/y +1', '1/y*a -x/y -1', 'x/y*a -x/y*b -a -b', 'a^5 +(5/2)*a^4*b +(5/2)*a^3*b^2 +(5/2)*a^2*b^3 +(5/2)*a*b^4 +b^5 +3*a^4 +8*a^3*b +8*a^2*b^2 +8*a*b^3 +3*b^4 +(3/4)*a^3 +(9/4)*a^2*b +(9/4)*a*b^2 +(3/4)*b^3 +2*a^2 +8*a*b +2*b^2 -2*w3 +2', 'x/y^3*b^2 +(-1/6)*w3*1/y^3 +(5/2)*x/y^3*b +2*x/y^2*b^2 +(1/6)*1/y^3 +1/y*x/y^2 +(1/2)*x/y^3 +(5/2)*x/y^2*b +(14/3)*x/y*b^2 +(2/3)*a^2 +(25/6)*x/y*b +(11/3)*a*b +3*b^2 +(-1/3)*1/y +2*a +(13/6)*b', 'x/y^2*b^3 +(5/2)*x/y^2*b^2 +3*x/y*b^3 +(-1/6)*w3*1/y^2 +(1/3)*a^3 +(1/2)*x/y^2*b +(3/2)*a^2*b +5*x/y*b^2 +(7/2)*a*b^2 +(7/3)*b^3 +(1/6)*1/y^2 +x/y^2 +a^2 +(1/2)*x/y*b +(14/3)*a*b +(7/2)*b^2 +(1/4)*a +(1/4)*b -1/3', 'x/y*b^4 +(1/6)*a^4 +(7/12)*a^3*b +a^2*b^2 +(5/2)*x/y*b^3 +(17/12)*a*b^3 +(5/6)*b^4 +(1/2)*a^3 +(11/6)*a^2*b +(1/2)*x/y*b^2 +(19/6)*a*b^2 +2*b^3 +(-1/6)*w3*1/y +(1/8)*a^2 +x/y*b +(1/2)*a*b +(3/8)*b^2 +(1/6)*1/y +(1/3)*a +(2/3)*b']
+
+
+# Diofantos symcomp only:
+# eqs = evaluate('pitagora.csv', -1, 15, 2)
+# eqs = evaluate('symcomp4.csv', 0, 15, 1)
+# eqs = evaluate('symcomp5.csv', 0, 15, 1)
+# eqs = evaluate('pitagora.csv', 0, 15, 1)
+
+from real_world_bench import symbolic_computation
+
+file_content = symbolic_computation((1,2))
+print(file_content[:1000])
+print(file_content[-1000:])
+splitted =  file_content.split('\n')
+cols = splitted[0].split(',')
+df = pd.DataFrame([ line.split(',') for line in  splitted[1:] ], columns=cols)
+print(df)
+eqs = evaluate('symcomp5.csv', 0, 15, 1, df=df)
+

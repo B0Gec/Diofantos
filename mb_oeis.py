@@ -57,43 +57,6 @@ def moadeeb(X: list[list], bitsize, sparsity, top_n):
             f(x_1, x_2, ..., x_p) = 0.
     """
 
-
-
-    # printout = ''
-    # seq = unnan(list(csv[seq_id])[ground_truth:(ground_truth+n_of_terms)])
-    # # if verbosity > 0:
-    # echo = f'seq: {seq}'
-    # printout += echo + '\n'
-    # if verbosity > 0:
-    #     print(echo)
-    # # 1/0
-
-    # eq = 'MB not reconst'
-    # x = []
-    # orders_used = []
-    # non_linears = []
-    # # for order in range(0, max_order + 1):
-    # for order in range(19, max_order + 1):
-    #     if ground_truth and order == 0:
-    #         continue
-    #     echo = f'order: {order}'
-    #     printout += echo + '\n'
-    #     print(echo)
-    #     # print('14.10.2024 hardcoded 200 terms for MB instead of 2*order + n_more_terms')
-    #
-    #     # print('len seq:', len(seq), 'seq:', seq)
-    #     heuristic = 2 * order + n_more_terms
-    #     if len(seq) <= order:
-    #         # print('I WARNED YOU, TOO FEW TERMS to AVOID ERRORS!')
-    #         if verbosity > 0:
-    #             print('I PUT THE BRAKES ON, since TOO FEW TERMS - to AVOID ERRORS!')
-    #         break
-    #     seq_cut = seq[:heuristic]
-    #     # print('len seq:', len(seq_cut), 'seq:', seq_cut, type(seq), type(seq_cut))
-    #     # print('heuristic', heuristic, 'error-threshold', order)
-    #     # print('---> looky here onemb')
-
-
     # GrobnerBasis = MollerBuchberger(points)
     # L = Filter(GronerBasis, bitsize, sparsity)
     # L = BitsizeSort(L, top_n)
