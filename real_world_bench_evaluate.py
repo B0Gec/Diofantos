@@ -70,6 +70,7 @@ vars_map = {
     'symcomp1.csv': {'x_1': 'w3', 'x_2': '1/y', 'x_3': 'x/y', 'x_4': 'a', 'x_5': 'b'},
     'symcomp3.csv': {'x_1': 'w3', 'x_2': '1/y', 'x_3': 'x/y', 'x_4': 'a', 'x_5': 'b'},
     'symcomp6.csv': {'x_1': 'w3', 'x_2': '1/y', 'x_3': 'x/y', 'x_4': 'a/y', 'x_5': 'ax/y', 'x_6': 'b/y', 'x_7': 'bx/y', 'x_8': 'a^2/y', 'x_9': 'a^2x/y', 'x_10': 'b^2/y', 'x_11': 'b^2x/y', 'x_12': 'b^3/y'},
+    'symcomp1yxydiof': {'x_1': 'w3', 'x_2': '1/y', 'x_3': 'x/y', 'x_4': 'a/y', 'x_5': 'ax/y', 'x_6': 'b/y', 'x_7': 'bx/y', 'x_8': 'a^2/y', 'x_9': 'a^2x/y', 'x_10': 'b^2/y', 'x_11': 'b^2x/y', 'x_12': 'b^3/y'},
     # 'symcomp6.csv': {},
 }
 vars_map.update({f'symcomp{i}.csv': vars_map['symcomp6.csv'] for i in range(4, 100)})
@@ -80,10 +81,11 @@ vars_map.update({f'symcomp5_adiof.csv': vars_map['symcomp6.csv']})
 def rewrite_vars(eq: str, csv_fname: str) -> str:
     """Rewrite the variables x_1, x_2, ... x_p to the ones denoted in the csv file."""
 
+    csv_fname = 'symcomp1yxydiof' if csv_fname not in vars_map and ('symcomp' in csv_fname) else csv_fname
     replace_map = vars_map.get(csv_fname, dict())
     for var in reversed(replace_map.keys()):
         eq = eq.replace(var, replace_map[var])
-        print(var)
+        # print(var)
 
     return eq
 
@@ -139,7 +141,8 @@ def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=Non
     elif METHOD == 'MoadeeB':
         bitsize, sparsity, top_n = moadeeb_args
         eqs = moadeeb(M.tolist(), bitsize, sparsity, top_n)
-        vars_map_key = {'symcomp1.csv': 'symcomp1.csv', 'symcomp3.csv': 'symcomp1.csv'}.get(benchfile, benchfile)
+        symbcomp1yxy = 'symcomp1yxydiof'
+        vars_map_key = benchfile
         eqs = [rewrite_vars(eq, vars_map_key) for eq in eqs]
     else:
         raise ValueError('METHOD must be either "Diofantos" or "MoadeeB"')
@@ -304,7 +307,11 @@ from real_world_bench import symbolic_computation
 # file_content = symbolic_computation((1,'x'), '-3*x**2 + 3*y**2 + 5')
 # file_content = symbolic_computation(4, '-3*x**2 + 3*y**2 + 5')
 # file_content = symbolic_computation((1,'x'), '-2*x**2 + 2*y**2')
-file_content = symbolic_computation((1,'x'), '-3*x**2 + 3*y**2 + 3*y')
+# file_content = symbolic_computation((1,'x'), '-3*x**2 + 3*y**2 + 3*y')
+# file_content = symbolic_computation((1,'diofratio'), '-3*x**2 + 3*y**2 + 3*y')
+file_content = symbolic_computation((1,'diofratio'), '-3*x**2 + 3*y**2 + 5')
+# ['a^2x/y*b^2/y -a^2/y*b^2x/y', 'bx/y*a^2/y -b/y*a^2x/y', 'b/y^2 -1/y*b^2/y', 'a/y -b/y -2', 'x/y -b/y -1', '1/y*bx/y -1/y*b^2/y -b/y', 'w3 -5*1/y +6*bx/y -3*b^2/y', '1/y*a^2/y -1/y*b^2/y -4*b/y -4', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', 'b^2/y^2 +(1/24)*b^2/y*b^2x/y -b/y*b^3/y +(-1/24)*bx/y*b^3/y']
+# sucsess moadeeb
 
 print(file_content[:1000])
 print(file_content[-1000:])
@@ -312,25 +319,43 @@ splitted =  file_content.split('\n')
 cols = splitted[0].split(',')
 df = pd.DataFrame([ line.split(',') for line in  splitted[1:] ], columns=cols)
 print(df)
-eqs = evaluate('symcomp5.csv', 0, 15, 1, df=df)
+# eqs = evaluate('symcomp5.csv', 0, 15, 1, df=df)
 # eqs = evaluate('symcomp6.csv', 0, 15, 1)
 # eqs = evaluate('symcomp1.csv', 0, 15, 1, df=df)
 
-#moadeeb:
-# eqs = evaluate('symcomp6.csv', None, 15, None)
-# successful
-# ['x_4 -x_6 -2', 'x_3 -x_6 -1', 'x_1 +2*x_7 -x_10', 'x_5 -x_7 +(-1/2)*x_8 +(1/2)*x_10', 'x_2 +x_7 +(-1/4)*x_8 +(-3/4)*x_10', 'x_6^2 +2*x_6 +(-1/4)*x_9 +(1/4)*x_11 +1', 'x_10*x_11 -x_7*x_12 +60*x_6 +(-15/2)*x_9 +(75/2)*x_11 -30*x_12 +30', 'x_6*x_10 +x_7*x_12 +(-1/4)*x_8*x_12 +(-3/4)*x_10*x_12 +2*x_6 +(-1/4)*x_9 +(5/4)*x_11 -x_12 +1', 'x_7*x_11 -x_7*x_12 +(-1/4)*x_8*x_12 +(1/4)*x_10*x_12 +50*x_6 +(-25/4)*x_9 +(125/4)*x_11 -25*x_12 +25', 'x_6*x_8 +x_7*x_12 +(-1/4)*x_8*x_12 +(-3/4)*x_10*x_12 +2*x_6 -4*x_7 +(-1/4)*x_9 +(5/4)*x_11 -x_12 +1']
-# ['a/y -b/y -2', 'x/y -b/y -1', 'w3 +2*bx/y -b^2/y', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
+# file_content = symbolic_computation((1,'diofratio'), '-3*x**2 + 3*y**2 + 3*y')
+# file_content = symbolic_computation((1,'diofratio'), '-3*x**2 + 3*y**2 + 5')
+eqs = evaluate('symcomp5', 0, 15, 1, df=df)
 
+
+# #moadeeb:
+# # Eq. 9:
+# # eqs = evaluate('symcomp6.csv', None, 15, None)
+# eqs = evaluate('symcomp6_y2-x2diof.csv', None, 15, None)
+# # successful
+# # ['x_4 -x_6 -2', 'x_3 -x_6 -1', 'x_1 +2*x_7 -x_10', 'x_5 -x_7 +(-1/2)*x_8 +(1/2)*x_10', 'x_2 +x_7 +(-1/4)*x_8 +(-3/4)*x_10', 'x_6^2 +2*x_6 +(-1/4)*x_9 +(1/4)*x_11 +1', 'x_10*x_11 -x_7*x_12 +60*x_6 +(-15/2)*x_9 +(75/2)*x_11 -30*x_12 +30', 'x_6*x_10 +x_7*x_12 +(-1/4)*x_8*x_12 +(-3/4)*x_10*x_12 +2*x_6 +(-1/4)*x_9 +(5/4)*x_11 -x_12 +1', 'x_7*x_11 -x_7*x_12 +(-1/4)*x_8*x_12 +(1/4)*x_10*x_12 +50*x_6 +(-25/4)*x_9 +(125/4)*x_11 -25*x_12 +25', 'x_6*x_8 +x_7*x_12 +(-1/4)*x_8*x_12 +(-3/4)*x_10*x_12 +2*x_6 -4*x_7 +(-1/4)*x_9 +(5/4)*x_11 -x_12 +1']
+# # ['a/y -b/y -2', 'x/y -b/y -1', 'w3 +2*bx/y -b^2/y', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
+
+# # Eq. 8:
 # eqs = evaluate('symcomp5_adiof.csv', None, 15, None)
-# sucsessful
+# # sucsessful
+# # ['a/y -b/y -2', 'x/y -b/y -1', 'w3 -b/y -2', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
+# # i.e. 'w3 -b/y -2',
+# # i.e. 'w3 = b/y +2y/y = (1/y)*(b+2(a-b)/2) = a/y
 
 # g=b^3:
 # ['a/y -b/y -2', 'x/y -b/y -1', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'w3 -2*b/y +(1/4)*a^2x/y +(7/4)*b^2x/y -1', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y -220*b/y +(55/2)*a^2x/y +(-275/2)*b^2x/y +110*b^3/y -110', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y -2*b/y +(1/4)*a^2x/y +(-5/4)*b^2x/y +b^3/y -1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y -200*b/y +25*a^2x/y -125*b^2x/y +100*b^3/y -100', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y -2*b/y -4*bx/y +(1/4)*a^2x/y +(-5/4)*b^2x/y +b^3/y -1']
 
 # sp.simplify('a**2 + 3*a + 2*b**2').subs('b', 'x - y').subs('a', 'x+y').expand()
 
-file_content = symbolic_computation((1,'x'), '-3*x**2 + 3*y**2 + 3*y')
-eqs = evaluate('symcomp5.csv', 0, 15, 1, df=df)
-# ['a/y -b/y -2', 'x/y -b/y -1', 'w3 +6*bx/y -3*b^2/y -3', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
-# success
+# file_content = symbolic_computation((1,'x'), '-3*x**2 + 3*y**2 + 3*y')
+
+# # MoadeeB:
+# # Eq. 10:
+# eqs = evaluate('symcomp10_-3x2p3y2p3y.csv', 0, 15, 1)
+# # success
+# # ['a/y -b/y -2', 'x/y -b/y -1', 'w3 +6*bx/y -3*b^2/y -3', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
+# # i.e. 'w3 +6*bx/y -3*b^2/y -3',
+# # i.e. w3 = 1/y(3*b^2) +3 -x/y(6*b)  =
+# # i.e. w3 = 1/y(3*b^2 +3(a-b)/2) -x/y(6*b); f = 3a/2, g = 3b^2 - 3b/2,
+
