@@ -314,7 +314,7 @@ def Riemann_Roch():
 
 # Riemann_Roch()
 
-def symbolic_computation(ds):
+def symbolic_computation(ds, numerator='None'):
     """
     w1 = 1 + x + 3y + 2xy − x2 − y 2 = 2α − β 2 − β + 1
     w2 = 2 + x − y − 4xy + 2x3 + 6xy2 = α3 − α2 + β3 + β 2 + β + 2
@@ -327,7 +327,9 @@ def symbolic_computation(ds):
             x/y*a^2, 1/y*b^2, x/y*b^2, 1/y*b^3, for Diofantos/MoadeeB
     """
 
-    shared = {(1,2): (1,1), 3: 1}
+
+    shared = {key: (1,1) for key in [(1,2), (1,3), (1,'x'), (1,4), (1,5)]}
+    shared.update({3: 1, 4: 1})
     vars = {0: 'a, b, w1, w2\n', 1: 'w3, 1/y, x/y, a, b\n',
             (1,1): 'w3, 1/y, x/y, a/y, ax/y, b/y, bx/y, a^2/y, a^2x/y, b^2/y, b^2x/y, b^3/y\n',
             }
@@ -352,6 +354,7 @@ def symbolic_computation(ds):
             vals = {0: f'{x+y}, {x-y}, {1 + x + 3*y + 2*x*y - x**2 - y**2}, {2 + x - y - 4*x*y + 2*x**3 + 6*x*y**2}\n',
                     1: f'(-1/{y})*({(2*x**3 - 3*x**2*y + x**2 + y**3 - y**2 + 2*y + 2)}), 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     3: f'{1 + 6*x**2 - 2*y**2 + 3*x**3 + 15*x**4 + 10*x**2*y**2 - y**4 + 6*x**5 + 10*x**3*y**2}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    4: f'{-3*x**2 + 3*y**2 + 5}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     }
             if isinstance(ds, tuple):
                 # print(i,x,y)
@@ -359,6 +362,11 @@ def symbolic_computation(ds):
             # else:
                 w3 = {(1,1): -(2 * x ** 3 - 3 * x ** 2 * y + x ** 2 + y ** 3 - y ** 2 + 2 * y + 2),
                       (1,2): x+y,
+                      (1,3): (x+y)-x,
+                      (1,4): y**2 -x**2,
+                      (1,5): -3*x**2 + 3*y**2 + 5,
+                      (1,6): -3*x**2 + 3*y**2 + 3*y,
+                      (1,'x'): eval(numerator),
                       }[ds]
                 # print(f'{ds = }, {w3 = }')
                 dividable = [w3, 1, x, (x+y), (x+y)*x, (x-y), (x-y)*x, (x+y)**2, (x+y)**2*x, (x-y)**2, (x-y)**2*x, (x-y)**3]
@@ -383,9 +391,9 @@ def symbolic_computation(ds):
     # 1/0
     # splitted = symcomp_out.split('\n')
     # print('\n'.join(sorted(splitted)))
-    # print(symcomp_out)
+    print(symcomp_out)
 
-    ds_num = {(1,1): 4, (1,2): 5}.get(ds, ds)
+    ds_num = {(1,1): 4, (1,2): 5, (1,3): 6, (1,4): 7, 4: 8, (1,5): 9, (1,6): 9}.get(ds, ds)
     WRITE = False
     if WRITE:
         with open(dir_path+f'real_world_bench_ds{8+ds_num}.csv', 'w') as f:
@@ -397,4 +405,7 @@ def symbolic_computation(ds):
 # symbolic_computation(1)
 # symbolic_computation(3)
 # symbolic_computation((1,1))
-symbolic_computation((1,2))
+# symbolic_computation((1,2))
+# symbolic_computation((1,4))
+# symbolic_computation(4)
+# symbolic_computation((1,5))
