@@ -330,7 +330,9 @@ def symbolic_computation(ds, numerator='None'):
 
     # shared = {key: (1,1) for key in [(1,2), (1,3), (1,'x'), (1,4), (1,5), (1,6)]}
     shared = dict()
-    shared.update({3: 1, 4: 1})
+    shared.update({3: 1, 4: 1, (1, 'mbratio'): 1, 'diofratio': (1,1),
+                   'mbratio': 1, 5:(1,1), 6:(1,1),
+    })
     vars = {0: 'a, b, w1, w2\n', 1: 'w3, 1/y, x/y, a, b\n',
             (1,1): 'w3, 1/y, x/y, a/y, ax/y, b/y, bx/y, a^2/y, a^2x/y, b^2/y, b^2x/y, b^3/y\n',
             }
@@ -359,9 +361,13 @@ def symbolic_computation(ds, numerator='None'):
                     1: f'(-1/{y})*({(2*x**3 - 3*x**2*y + x**2 + y**3 - y**2 + 2*y + 2)}), 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     3: f'{1 + 6*x**2 - 2*y**2 + 3*x**3 + 15*x**4 + 10*x**2*y**2 - y**4 + 6*x**5 + 10*x**3*y**2}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     4: f'{-3*x**2 + 3*y**2 + 5}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
-                    (1, 'diofratio'): ', '.join([f'{div}/{y}' for div in [eval(numerator)] + dividable]) + '\n',
-            }
-            if isinstance(ds, tuple) and not ds == (1, 'diofratio'):
+                    5: ', '.join([f'{div}/{y}' for div in [f'{y**2 - x**2}'] + dividable]) + '\n',
+                    6: ', '.join([f'{div}/{y}' for div in [f'{-3*x**2 + 3*y**2 + 3*y}'] + dividable]) + '\n',
+                    'diofratio': ', '.join([f'{div}/{y}' for div in [eval(numerator)] + dividable]) + '\n',
+                    'mbratio': f'{eval(numerator)}/{y}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    }
+
+            if isinstance(ds, tuple) and not ds in ((1, 'diofratio'), (1, 'mbratio')):
                 # print(i,x,y)
             #     continue
             # else:
@@ -388,6 +394,10 @@ def symbolic_computation(ds, numerator='None'):
         #     # print(i, x, y)
         #     if y != 0: break
                 vals[ds] = ', '.join([str(div // y) for div in dividable]) + '\n'
+            else:
+                if i > 105 and len(symcomp_out[:-1].split('\n')) >= 105:
+                    break
+                    # continue
 
             new_row = vals[ds]
             symcomp_out += new_row if new_row not in symcomp_out else ''
@@ -402,7 +412,7 @@ def symbolic_computation(ds, numerator='None'):
 
     # ds_num = {(1,1): 4, (1,2): 5, (1,3): 6, (1,4): 7, 4: 8, (1,5): 9, (1,6): 9}.get(ds, ds)
     older = 8 + ds if isinstance(ds, int) else ds
-    ds_num = {(1,1): 12, (1,2): 13, (1,3): 14, (1,4): 15, 4: 16, (1,5): 17, (1,6): 18}.get(ds, older)
+    ds_num = {(1,1): 12, (1,2): 13, (1,3): 14, (1,4): 15, 4: 16, (1,5): 17, (1,6): 18, 5: 19, 6: 20}.get(ds, older)
     WRITE = False
     if WRITE:
         with open(dir_path+f'real_world_bench_ds{ds_num}.csv', 'w') as f:
@@ -419,4 +429,5 @@ def symbolic_computation(ds, numerator='None'):
 # symbolic_computation(4)
 # symbolic_computation((1,5))
 # symbolic_computation((1,6))
-# symbolic_computation((1,6))
+# symbolic_computation(5)
+symbolic_computation(6)
