@@ -131,13 +131,13 @@ BUGLIST_BLACKLISTING = True
 # BUGLIST ignores blacklisted sequences !!!!!
 
 CORELIST = True  # have to scrape core sequences!  # also for OEISformer
-CORELIST = False
+# CORELIST = False
 if BUGLIST:
     from buglist import buglist
 REAL_WORLD_BENCH = True
 
 GROUND_TRUTH = True
-# GROUND_TRUTH = False
+GROUND_TRUTH = False
 
 # if not DEBUG and BUGLIST:
 #     print("\nWarning!!!!! buglist is used outside debug mode!!")
@@ -187,6 +187,7 @@ else:
     # MAX_ORDER = 4
     # # MAX_ORDER = 5
     MAX_ORDER = 10
+    MAX_ORDER = 20
     # MAX_ORDER = 5
     # MAX_ORDER = 2  # mavi
     GROUND_TRUTH = False
@@ -259,6 +260,9 @@ TASK_ID = 26
 # TASK_ID = 51
 # TASK_ID = 1367
 TASK_ID = 11100
+TASK_ID = 14
+TASK_ID = 9
+TASK_ID = 10
 
 
 JOB_ID = "000000"
@@ -742,11 +746,13 @@ else:
             # first_generator, sol_ref, ideal_ = increasing_mb
             # VERBOSITY = 0
 
+            # OEISformer = True  # 3.2.2025
             seq, coeffs, truth = unpack_seq(seq_id, csv) if GROUND_TRUTH else (unnan(csv[seq_id]), None, None)
             non_linears, eq, x, orders_used, eqs_explicit = increasing_mb(seq_id, csv, max_order_, n_more_terms, execute=EXECUTE_REAL,
                                                             library=library, n_of_terms=n_of_terms_ed,
                                                             ground_truth=GROUND_TRUTH, verbosity=0, max_bitsize=MAX_BITSIZE,
                                                             explicit=OEISformer)
+            # OEISformer = False  # 3.2.2025
             deg_used, order_used = 'unknown_mb', 'unknown_mb'
             output_string += f'orders_used: {orders_used}\n'
             # print(orders_used)

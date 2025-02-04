@@ -108,6 +108,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
     Run a for loop of increasing order where I run Moeller-Buchberger algorithm on a given sequence.
     """
 
+    explicit = True
     # Plan:
     # DioMull: degree, order -> list of eqs.
     # DioMull-linrec: degree, order -> list of eqs -> check em all.
@@ -134,8 +135,8 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
     x = []
     orders_used = []
     non_linears = []
-    # for order in range(0, max_order + 1):
-    for order in range(19, max_order + 1):
+    for order in range(0, max_order + 1):
+    # for order in range(19, max_order + 1):
         if ground_truth and order == 0:
             continue
         echo = f'order: {order}'
@@ -175,7 +176,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
             print(first_generator[:printlen], ideal[:printlen])
         # 1/0
         # printout += f'ideal: {ideal[:printlen]}\nequation: {first_generator[:printlen]}\n'
-        eqs, heqs = ideal_to_eqs(ideal, top_n=10, verbosity=verbosity, max_bitsize=max_bitsize)
+        eqs, heqs = ideal_to_eqs(ideal, top_n=10, verbosity=verbosity, max_bitsize=max_bitsize, max_complexity=20)
         # print('eqs:,', eqs)
         print('heqs:,', heqs)
         # 1/0
@@ -196,17 +197,20 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                     print('not useless, checking implicit:')
                 # check = check_implicit(expr, seq)
                 # check = list_evals(expr, seq)
-                check = check_implicit_batch(expr, seq, verbosity=2)  # Possible error since seq= sp.Matrix
+                expr = order_optimize(expr)
+                check = check_implicit_batch(expr, seq, verbosity=0)  # Possible error since seq= sp.Matrix
                 print('implicit checked?', check)
-                print('checking arguments:', expr, seq)
+                # print('checking arguments:', expr, seq)
 
                 if check:  # Save implicit equation if it is correct.
+                    verbosity = 1
                     if verbosity >= 1:
                         print('eqution holds!, checking if linear:')
                     non_linears += [expr]  # will count as non_id
                     orders_used += [max_order_]
                     if not ground_truth:
                         if not explicit:
+                            print('not explicit')
                             return non_linears, eq, x, orders_used, []
                         else:
                             # print()
@@ -215,7 +219,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                             eqs_explicit = eq_to_explicit(expr, list(seq))
                             if eqs_explicit:
                                 eq = eqs_explicit[0]  # all solutions are checked, so take only the first one.
-                                # print('increasing_mb\'s explicit eq:', eq)
+                                print('increasing_mb\'s explicit eq:', eq)
                                 return non_linears, eq, x, orders_used, eqs_explicit
                             else:
                                 continue
