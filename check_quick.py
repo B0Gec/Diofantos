@@ -247,3 +247,115 @@ print(len(seq))
 # next (14-th) term for a1699:
 # 1826589438944503441233944903619374450505261905526216392190051569548555311191158288867132938991947712288591383352357588138810394060302387326270400600396570764614934427901378777366474525326749920624362632713940031612926606920439054397967548375833719159919910473895631392945311389708800463637987473929840325809307030010774766185391004135689734801234068539673581567775247599312241880503731683150081948935872832347373134284011181695810360683632037786770652414081815536574735547003101607812553534569242800170074276069350462692933568357952987062502907512783970461830300863082344583363776284175469786477682472528820908926526978015048109278721956581080776106925683386344085908595453026188666824003645568312836844393452776707185739880200027267879025514835376919542018690190205951063120756542850473781070577230925264710164112775326310518062642717501439600969149569271815544827634639170896329172866372461107283724199272057496263345239855755753256127182564733694787204463894908574525220413891418053483330580952259887789470021774942960389197844364827089795451841597684516905201729687070805736504970654426537473477236030878908308197918939596663190613010418844726039496991595477200472748234610425688000727979859762123162260923333989659409377756306601300935560475769721215007921195076182116264717029818839677445322920924337245909989537974571455697822247235890130021554257214361106432165511329848470110322718943372803152992414503319736264524406991664701276287696158901
 
+print('\ncore final mb results\n')
+
+def gt2530(n, till_now):
+    res = 4*till_now[-2] - till_now[-4]
+    return res
+
+def disco2530(n, till_now):
+    # res = 4*till_now[-2] - till_now[-3]
+    # res = int((3 * (till_now[-3] + till_now[-2]) * till_now[-2] + till_now[-3] ** 2 - till_now[-3] * till_now[-1]) / till_now[-2])
+    numer = (3 * (till_now[-3] + till_now[-2]) * till_now[-2] + till_now[-3] ** 2 - till_now[-3] * till_now[-1])
+    denum = till_now[-2]
+    res = numer // denum
+    if res*denum != numer:
+        raise ValueError(f'integers not divisible, had to use floor division: {numer = }, {denum = }, {res = }')
+    # res = (3 * (till_now[-3] + till_now[-2]) * till_now[-2] + till_now[-3] ** 2 - till_now[-3] * till_now[-1]) // till_now[-2]
+
+    return res
+
+def gt1057(n, till_now):
+    res = 1 - 2 * till_now[-1] - till_now[-2]
+    return res
+
+def disco1057(n, till_now):
+    numer = (-n - 4*till_now[-1]**2 + 3*till_now[-1])
+    denum = 4*till_now[-1] - 1
+    # print(f'{denum = }, {numer = }')
+    res = numer // denum
+    # print(f'{res = }')
+    if res*denum != numer:
+        raise ValueError(f'integers not divisible, had to use floor division: {numer = }, {denum = }, {res = }')
+    return res
+
+def gt1906(n, till_now):
+    res = 1 - 2 * till_now[-1] - till_now[-2]
+    return res
+
+def disco1906(n, till_now):
+    # a(n) = FloorSqrt(5*a(n-1)^2 + 4)/2 + 3*a(n-1)/2
+    # a(n) = (FloorSqrt(5*a(n-1)^2 + 4) + 3*a(n-1))/2
+    numer = (-n - 4*till_now[-1]**2 + 3*till_now[-1])
+    numer = FloorSqrt(5*a(n-1)^2 + 4) + 3*a(n-1)
+    denum = 2
+    # print(f'{denum = }, {numer = }')
+    res = numer // denum
+    # print(f'{res = }')
+    if res*denum != numer:
+        raise ValueError(f'integers not divisible, had to use floor division: {numer = }, {denum = }, {res = }')
+    return res
+
+
+
+
+
+def reconstruct_n(n, a_init, an):
+    # print(f'reconstructing {an.__name__}, with {a_init}')
+    a = a_init.copy()
+    # print(a)
+    for i in range(n):
+        # print('i:', i)
+        if i < len(a_init):
+            # print('less than')
+            continue
+        else:
+            # print('normal')
+            a.append(an(i, a))
+        # print(a)
+    return a
+
+def compare(n, an, bn, a_init):
+    a = reconstruct_n(n, a_init, an)
+    b = reconstruct_n(n, a_init, bn)
+    print(f'{a[-1]}')
+    print(f'{b[-1]}')
+    print(len(f'{a[-1]}'))
+    return a == b
+
+import sys
+sys.set_int_max_str_digits(15000)
+
+n_terms = 3
+n_terms = 15
+n_terms = 55
+n_terms = 4*10**7
+n_terms = 110600300
+# n_terms = 50100
+# n_terms = 45000
+# n_terms = 29000
+a_init = [0, 1, -1, 2, -2, 3]
+# a_init = [0, 1, 1, 3]
+# gt = reconstruct_n(n_terms, [0, 1, 1, 3], gt2530)
+# disco = reconstruct_n(n_terms, [0, 1, 1], disco2530)
+
+gt = reconstruct_n(n_terms, a_init[:2], gt1057)
+disco = reconstruct_n(n_terms, a_init[:1], disco1057)
+
+# print(f'   {gt = }')
+# print(f'{disco = }')
+# print(f'{gt == disco = }')
+# print(f'{gt[:5]} ' + ', '.join([f'  {i}' for i in gt[5:]]))
+# print(f'{disco }')
+# print(f'{compare(n_terms, gt2530, disco2530, a_init) = }')
+print(f'{compare(n_terms, gt1057, disco1057, a_init) = }')
+print(f'{n_terms}')
+
+
+# 50000000
+# 50000000
+# 8
+# compare(n_terms, gt1057, disco1057, a_init) = True
+# 100000000
+
+

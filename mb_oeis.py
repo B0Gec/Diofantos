@@ -135,6 +135,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
     x = []
     orders_used = []
     non_linears = []
+    explicits = []
     for order in range(0, max_order + 1):
     # for order in range(19, max_order + 1):
         if ground_truth and order == 0:
@@ -203,7 +204,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                 # print('checking arguments:', expr, seq)
 
                 if check:  # Save implicit equation if it is correct.
-                    verbosity = 1
+                    verbosity = 0
                     if verbosity >= 1:
                         print('eqution holds!, checking if linear:')
                     non_linears += [expr]  # will count as non_id
@@ -220,7 +221,9 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                             if eqs_explicit:
                                 eq = eqs_explicit[0]  # all solutions are checked, so take only the first one.
                                 print('increasing_mb\'s explicit eq:', eq)
-                                return non_linears, eq, x, orders_used, eqs_explicit
+                                explicits += eqs_explicit
+                                # return non_linears, eq, x, orders_used, eqs_explicit
+                                continue
                             else:
                                 continue
 
