@@ -357,7 +357,7 @@ print(df)
 
 
 # # #moadeeb:
-# # # Eq. 9:
+# # # Eq. 8 (10.2.2025):
 # # # eqs = evaluate('symcomp6.csv', None, 15, None)
 # # eqs = evaluate('symcomp6_y2-x2diof.csv', None, 15, None)
 # eqs = evaluate('symcomp6ratio_y2-x2diof.csv', None, 15, None)
@@ -380,7 +380,7 @@ print(df)
 # file_content = symbolic_computation((1,'x'), '-3*x**2 + 3*y**2 + 3*y')
 
 # # # MoadeeB:
-# # # Eq. 10:
+# # # Eq. 9 (10.2.2025):
 # # eqs = evaluate('symcomp10_-3x2p3y2p3y.csv', 0, 15, 1)
 # # # success
 # # # ['a/y -b/y -2', 'x/y -b/y -1', 'w3 +6*bx/y -3*b^2/y -3', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
