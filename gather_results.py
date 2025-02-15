@@ -117,17 +117,17 @@ job_id = 'silin-validable'    # manualy (sed bash) derived from dilin, to check 
 
 # job_id = 'sicor1114'  # sindy core official?
 #
-# job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
+job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
 # job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check equivalence
 # job_id = 'findicor'  # maybe the official diofantos core results, check it.
 
 # # # job_id = 'sideflin'  # fail: not even sindy
 # # # job_id = 'sidefcor'  # fail: not even sindy
 #
-job_id = 'sdlin'   # sindy-default-linrec
-job_id = 'sdlin-validable'
-# # # # job_id = 'sdcor'  # fail: not core
-# job_id = 'sdcor2'
+# job_id = 'sdlin'   # sindy-default-linrec
+# job_id = 'sdlin-validable'
+# # # # # job_id = 'sdcor'  # fail: not core
+# # job_id = 'sdcor2'
 
 # # mavi:
 # job_id = 'mavicore0'
@@ -162,6 +162,7 @@ if CHECK_EQUIV:
     from eq_ideal import linear_to_vec, is_linear
     # from eq_ideal_new import linear_to_vec
     from GenFunLinRec import GenFunLinRec
+CHECK_EQUIV = False
 
 # fname = 'results/good/01234567/34500_A000032.txt'
 # base_dir = "results/good/"
@@ -1244,7 +1245,7 @@ for easy in easycas:
 # ['00024', '00128', '00133', '00134', '00177', '00231', '00270', '00273', '00306', '00307', '00328', '00330', '00331', '00378', '00379', '00380', '00381', '0
 # first 200  order 5 non_manuals: ['00158', '00369', '00463', '00479'] 4
 
-1/0
+# 1/0
 
 # print(f'all non_manuals:', non_manual_list)
 # check if new false_truth blacklist contains all old false_truths:  # experiment job_id = "blacklist76"
@@ -1268,12 +1269,16 @@ print('some fails:', fails[:10])
 
 print([fname[6:(6+7)] for fname in non_id_list][:10], [i for i in csv.columns[:10]] )
 print(len(fails))
-1/0
+# 1/0
 # a = [csv[seq_id][0] for seq_id in fails]
 failess = [ 1 for seq_id in fails if len(truth2coeffs(csv[seq_id][0])) <= 20 ]
 failmore = [ 1 for seq_id in fails if len(truth2coeffs(csv[seq_id][0])) > 20 ]
 print("sum(failess), sum(failmore), sum(failess) + sum(failmore)", sum(failess), sum(failmore), sum(failess) + sum(failmore))
 
+ten = 10
+for n in range(22):
+    print(f'first {ten} of {len(y)}  order {n} fails:',
+          (y := [seq_id for seq_id in fails if len(truth2coeffs(csv[seq_id][0])) == n ])[:ten], len(y))
 # cx_order_winner = 'order_fail<=' if len(truth2coeffs(truth)) <= 20 else 'order_fail>'
 print()
 # 1/0
