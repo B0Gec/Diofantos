@@ -49,9 +49,9 @@ def diofantos(M: sp.Matrix, d_max: int, var_names: list[str] = None) -> (sp.Matr
         x = x[0]
         # if linear:
         #     x = sp.Matrix.vstack(sp.Matrix([0]), x)
-    print('x', x)
+    # print('x', x)
     eq = solution2str(x, solution_ref=sol_ref, library=None)
-    print(eq)
+    # print(eq)
     eq = target_var + eq[4:]
     return x, eq
 
@@ -461,15 +461,15 @@ def solution2str(x: sp.Matrix, solution_ref: list[str], library: str = None) -> 
             raise ValueError('Diofantos: only one of library or solution_ref can be None, currently both are!')
         else:
             verbose_eq = solution_ref
-            print(solution_ref)
+            # print(solution_ref)
         # verbose_eq = (['a(n)'] + ['n']*(n_degree>0) + [f'n^{deg}' for deg in range(2, n_degree+1)] + [f"a(n-{i})" for i in range(1, order + 1)]
         #     + sum([[f"a(n-{i})^{degree}" for i in range(1, order+1)] for degree in range(2, degree + 1)], []))
-        print(verbose_eq)
-        print('x', x)
+        # print(verbose_eq)
+        # print('x', x)
         # 1/0
 
         verbose_eq = sp.Matrix(verbose_eq)
-        print(verbose_eq)
+        # print(verbose_eq)
         # print('verbose_eq', verbose_eq_new.shape, verbose_eq_new)
 
         # verbose_eq_new = sp.Matrix(['a(n)'] + verbose_eq)
@@ -1238,6 +1238,35 @@ def check_eq_man(x: sp.Matrix, seq_id: str, csv: pd.DataFrame,
     #     print('order 0!, ans:', out[2], '\n\n')
     #     # 1/0
     return out
+
+
+def an_linear(till_now: list, coeffs: list):
+    """Calculate next term for linear sequence.
+
+    Input:
+        - till_now - list of terms of sequence, given so far
+        - coeffs - list of coefficients of linear equation and the constant term in front.
+            I.e., first element = constant term, second element = coefficient in front of a(n-1), etc.
+    """
+
+    coeffs_ = coeffs[1:]
+    # print(coeffs_)
+    taken = list(reversed(till_now))[:len(coeffs_)]
+    # print(taken)
+    return coeffs[0] + sum([a * b for a, b in zip(taken, coeffs_)])
+
+# example:
+# print(an_linear([0, 1, 1, 3, 5], [0, 1, 2])  # returns 11
+
+def generate_linear(coeffs: list[int], init_terms: list[int], n_terms):
+    """Generate linear sequence based on coefficients, initial terms and the prescribed number of terms."""
+
+    seq = init_terms
+    for _ in range(n_terms):
+        seq.append(an_linear(seq, coeffs))
+    return seq
+
+# print(generate_linear([0, 1, 1], [0, 1, 1], 10))  # returns [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
 
 if __name__ == '__main__':
     # from proged times:

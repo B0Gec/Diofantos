@@ -113,19 +113,21 @@ job_id = 'sicor9fix2'  # official sindy core. Default?
 # #
 # job_id = 'fakesilin'
 job_id = 'silin'    # sindy linrec official?
+job_id = 'silin-validable'    # manualy (sed bash) derived from dilin, to check equivalence
 
-job_id = 'sicor1114'  # sindy core official?
-
+# job_id = 'sicor1114'  # sindy core official?
+#
 job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
-job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check equivalence
+# job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check equivalence
 # job_id = 'findicor'  # maybe the official diofantos core results, check it.
 
 # # # job_id = 'sideflin'  # fail: not even sindy
 # # # job_id = 'sidefcor'  # fail: not even sindy
 #
-# # job_id = 'sdlin'   # sindy-default-linrec
-# # # # job_id = 'sdcor'  # fail: not core
-# job_id = 'sdcor2'
+# job_id = 'sdlin'   # sindy-default-linrec
+# job_id = 'sdlin-validable'
+# # # # # job_id = 'sdcor'  # fail: not core
+# # job_id = 'sdcor2'
 
 # # mavi:
 # job_id = 'mavicore0'
@@ -154,12 +156,13 @@ job_id = 'dilin-validable'     # manualy (sed bash) derived from dilin, to check
 print(job_id)
 # 1/0
 
-linears = ('dilin', 'dilin-validable', 'silin', 'sdlin', 'mblinbs50')
+linears = ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable', 'mblinbs50')
 CHECK_EQUIV = False if job_id not in linears else True  # later you can change to "if csv_filename = 'linear...'
 if CHECK_EQUIV:
     from eq_ideal import linear_to_vec, is_linear
     # from eq_ideal_new import linear_to_vec
     from GenFunLinRec import GenFunLinRec
+CHECK_EQUIV = False
 
 # fname = 'results/good/01234567/34500_A000032.txt'
 # base_dir = "results/good/"
@@ -167,7 +170,7 @@ base_dir = "results/goodmb/"
 # base_dir = "results/goodmavi/"  # mavicore0, maviterms50
 # if job_id in ('mblinrec', 'mblint2', 'mblinbs50', 'mbcor'):
 #     base_dir = "results/goodmb/"
-if job_id in ('dilin', 'dilin-validable', 'silin', 'sdlin',
+if job_id in ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable',
               'sicor9fix2', 'sicor1114', 'findicor',
               'transfoeis_acc2', 'n15_acc', ):
     base_dir = "results/good/"
@@ -435,6 +438,8 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
         # print()
         # print(f'{eq = }')
 
+        # if eq == 'MB not reconst':
+        #     is_equiv = True
         if eq not in (None, 'MB not reconst', 'a(n) = ?'):
             # print(f'{eq = }')
             task_id = int(fname[-17:-12])
@@ -451,6 +456,9 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
             # print(f'{truth = }')
             coeffs = [0] + list(truth2coeffs(truth))
             # print(f'{coeffs = }')
+            # print(f'{fname = }')
+            # if 'A000045' in fname:
+            #     1/0
 
             # try:
             #     seq_ = [int(float(i)) if i[-2:] == '.0' else int(i) for i in csv[seq_id].dropna()[1:]]
@@ -470,21 +478,30 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                 #       'to check equivalence of the ground truth - makes no sense.')
                 equiv_csv_error = True
                 is_equiv = False
+                print()
+                print(f'{fname = }')
+                print(f'{equiv_csv_error = }, len(seq) < len(coeffs)')
 
             else:
                 # print(f'{true_inits = }')
                 # print(f'{re_reconst = }')
                 # print(f'{re_manual = }')
-                print(f'{fname = }')
-                print(f'{eq = }')
+                # print(f'{fname = }')
+                # print(f'{eq = }')
                 # print(f'{is_check = }')
                 # print(f'{is_reconst = }')
                 # print(f'{is_equiv = }')
+
                 disco_coeffs = linear_to_vec(eq, allow_constants=True)
-                print(f'{disco_coeffs = }')
                 # 1/0
                 disco_inits = seq_[:len(disco_coeffs) - 1]
-                print(f'{disco_inits = }')
+                # print(f'{coeffs = }')
+                # print(f'{true_inits = }')
+                # print(f'{disco_coeffs = }')
+                # print(f'{disco_inits = }')
+                # print([[type(j) for j in i] for i in [coeffs, true_inits, disco_inits, disco_coeffs]])
+                coeffs, true_inits, disco_inits, disco_coeffs = [list(map(int, i)) for i in [coeffs, true_inits, disco_inits, disco_coeffs]]
+
                 # 1/0
                 if len(seq_) <= len(disco_coeffs):
                     # print('not enough sequence elements available to check equivalence. '
@@ -492,20 +509,35 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
                     equiv_csv_error = True
                     is_equiv = False
                     # print()
+                    print(f'{fname = }, len(seq) < len(coeffs)')
+                    print(f'{equiv_csv_error = }, len(seq) < len(coeffs)')
                 else:
-                    is_equiv = GenFunLinRec(coeffs, true_inits) == GenFunLinRec(disco_coeffs, disco_inits)
-                    print(f'{is_equiv = }')
 
-                    print(f'{coeffs = }')
-                    print(f'{true_inits = }')
-                    gen = GenFunLinRec(coeffs, true_inits)
-                    # print(str(gen))
-                    gen2 = GenFunLinRec(disco_coeffs, disco_inits)
-                    # print(gen2)
-                    # print(f'{GenFunLinRec(coeffs, true_inits) = }')
-                    # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
-                    if not is_equiv and len(coeffs) < 4:
-                        1/0
+                    skip_long = False
+                    # skip_long = True
+                    if skip_long:
+                        is_equiv = True
+                    else:
+
+                        is_equiv = GenFunLinRec(coeffs, true_inits) == GenFunLinRec(disco_coeffs, disco_inits)
+                        # print(f'{is_equiv = }')
+
+                        gen = GenFunLinRec(coeffs, true_inits)
+                        # print(str(gen))
+                        gen2 = GenFunLinRec(disco_coeffs, disco_inits)
+                        # print(gen2)
+                        # print(f'{GenFunLinRec(coeffs, true_inits) = }')
+                        # print(f'{GenFunLinRec(disco_coeffs, disco_inits) = }')
+                        # 4 not in time, 8?
+                        if not is_equiv and len(disco_coeffs) < 10000:
+                            print(f'{fname = }')
+                            print(f'{is_equiv = }')
+
+                            print(f'{coeffs = }')
+                            print(f'{true_inits = }')
+                            print(f'{disco_coeffs = }')
+                            print(f'{disco_inits = }')
+                            # 1/0
             # print(f'{equiv_csv_error = }')
             # print(f'{is_equiv = }')
             # print(f'{is_check = }')
@@ -914,7 +946,7 @@ print('here i am')
 
 
 scale = 40
-# scale = 240
+scale = 240
 # # scale = 4000
 scale = 50100
 files_debug = files[0:scale]
@@ -1213,7 +1245,7 @@ for easy in easycas:
 # ['00024', '00128', '00133', '00134', '00177', '00231', '00270', '00273', '00306', '00307', '00328', '00330', '00331', '00378', '00379', '00380', '00381', '0
 # first 200  order 5 non_manuals: ['00158', '00369', '00463', '00479'] 4
 
-1/0
+# 1/0
 
 # print(f'all non_manuals:', non_manual_list)
 # check if new false_truth blacklist contains all old false_truths:  # experiment job_id = "blacklist76"
@@ -1237,12 +1269,16 @@ print('some fails:', fails[:10])
 
 print([fname[6:(6+7)] for fname in non_id_list][:10], [i for i in csv.columns[:10]] )
 print(len(fails))
-1/0
+# 1/0
 # a = [csv[seq_id][0] for seq_id in fails]
 failess = [ 1 for seq_id in fails if len(truth2coeffs(csv[seq_id][0])) <= 20 ]
 failmore = [ 1 for seq_id in fails if len(truth2coeffs(csv[seq_id][0])) > 20 ]
 print("sum(failess), sum(failmore), sum(failess) + sum(failmore)", sum(failess), sum(failmore), sum(failess) + sum(failmore))
 
+ten = 10
+for n in range(22):
+    print(f'first {ten} of {len(y)}  order {n} fails:',
+          (y := [seq_id for seq_id in fails if len(truth2coeffs(csv[seq_id][0])) == n ])[:ten], len(y))
 # cx_order_winner = 'order_fail<=' if len(truth2coeffs(truth)) <= 20 else 'order_fail>'
 print()
 # 1/0

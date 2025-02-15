@@ -9,6 +9,12 @@ add of det.
 """
 import numpy as np
 
+import matplotlib.pyplot as plt
+import networkx as nx
+
+# import tulip as tlp
+from tulip import tlp
+# from tulipgui import tlpgui
 
 # 1.) Creation
 ############
@@ -121,7 +127,7 @@ def create_det(n):
     row = f'{a.det()}, {b.det()}, {(a*b).det()}, {alf}, {(alf*a).det()}'
     return big_example, row
 
-create_det(2)
+# create_det(2)
 
 def create_dets(dim, rows):
     big_title = f'A, B, A*B, alf, alf*A, detA, detB, det(A*B), det(alf*A), detA*detB'
@@ -205,3 +211,223 @@ def create_trs(dim, rows):
     return
 
 # create_trs(3, 100)
+
+
+# MoadeeB paper:
+
+random.seed(0)
+
+
+def create_Euler():
+    """Euler's formula, generalized for components.
+
+    | V | − | E | + | F | = 1 + | Ω |
+
+    Source: notes from the course "Graph Theory" by Primož Potočnik, University of Ljubljana, 2011.
+    Also, google: "euler's formula connected components".
+    """
+    # Euler: |V | − |E| + |F | = 1 + |Ω|, \Omega = komponente, F pa lica.
+
+    def random_planar_graph(V):
+        """Generate a random planar graph with tulip-python library."""
+
+        # get a dictionnary filled with the default plugin parameters values
+        params = tlp.getDefaultPluginParameters('Planar Graph')
+        params['nodes'] = V
+        # set any input parameter value if needed
+        graph = tlp.importGraph('Planar Graph', params)
+        # tlp.saveGraph(graph, "mygraph2.tlp")
+        # print(f'{list(graph.getEdges())}')
+        # print(f'{list(graph.getNodes())}')
+        E = len(list(graph.getEdges()))
+        V2 = len(list(graph.getNodes()))
+        # print(V, E, V2)
+        return V2, E
+
+        # if the plugin declare any output parameter, its value can now be retrieved in the 'params' dictionnary
+
+    def faces(V, E, omega):
+        return 1 + omega - V + E
+
+    euler_out = 'V, E, F, Omega\n'
+    # generate 100 rows, a.k.a. 100 random planar graphs:
+    for i in range(1000):
+        omega = random.randint(1, 10)
+        # omega = 1
+        V_sum, E_sum, F_sum = 0, 0, 0
+        for component in range(omega):
+            V = random.randint(3, 100)
+            V_sum += V
+            V2, E = random_planar_graph(V)
+            if V != V2: raise ValueError('V != V2')
+            E_sum += E
+        F = faces(V_sum, E_sum, omega)
+        new_row = f'{V_sum}, {E_sum}, {F}, {omega}\n'
+        euler_out += new_row if new_row not in euler_out else ''
+    euler_out = '\n'.join(euler_out.split('\n')[:101])
+    # splitted = euler_out.split('\n')
+    # print('\n'.join(sorted(splitted)))
+    # print('\n'*5)
+    print(euler_out)
+
+    WRITE = False
+    if WRITE:
+        with open(dir_path+'real_world_bench_ds7.csv', 'w') as f:
+            f.write(euler_out + '\n')
+
+    return
+
+
+# create_Euler()
+
+def Riemann_Roch():
+    """Wiki: Riemann-Roch theorem for compact Riemann surfaces
+    (Statement of the theorem).
+
+    # l(D) = deg(D) − genus + 1
+    """
+
+    def l(degD, genus):
+        """ l(D) = deg(D) − g + 1 """
+        return degD - genus + 1
+
+    rr_out = 'l(D), deg(D), g\n'
+    # g = random.randint(0, 100)
+    # print()
+    for i in range(100):
+        g = random.randint(0, 100)
+        # g = random.gauss(1, 10)
+        # g = int(abs(g))
+        # print(g)
+        deg = random.randint(g, 100)
+        # print(deg)
+        # print()
+        rr_out += f'{l(deg, g)}, {deg}, {g}\n'
+    print(rr_out)
+
+    WRITE = False
+    if WRITE:
+        with open(dir_path+'real_world_bench_ds6.csv', 'w') as f:
+            f.write(rr_out + '\n')
+
+    return
+
+# Riemann_Roch()
+
+def symbolic_computation(ds, numerator='None'):
+    """
+    w1 = 1 + x + 3y + 2xy − x2 − y 2 = 2α − β 2 − β + 1
+    w2 = 2 + x − y − 4xy + 2x3 + 6xy2 = α3 − α2 + β3 + β 2 + β + 2
+    data set 0: columns: 1, a, b, w1, w2, a^2, b^2
+    randomly chosen x,y
+
+    w3:
+    data set 1: columns: w3, 1/y, x/y, a, b for moadeeb,
+        (1,1): or columns: w3, 1/y, x/y, 1/y*a, x/y*a, 1/y*b, x/y*b, 1/y*a^2,
+            x/y*a^2, 1/y*b^2, x/y*b^2, 1/y*b^3, for Diofantos/MoadeeB
+    """
+
+
+    # shared = {key: (1,1) for key in [(1,2), (1,3), (1,'x'), (1,4), (1,5), (1,6)]}
+    shared = dict()
+    shared.update({3: 1, 4: 1, (1, 'mbratio'): 1, 'diofratio': (1,1),
+                   'mbratio': 1, 5:(1,1), 6:(1,1),
+    })
+    vars = {0: 'a, b, w1, w2\n', 1: 'w3, 1/y, x/y, a, b\n',
+            (1,1): 'w3, 1/y, x/y, a/y, ax/y, b/y, bx/y, a^2/y, a^2x/y, b^2/y, b^2x/y, b^3/y\n',
+            }
+    # vars_key = ds if isinstance(ds, tuple) else min(ds, 1)
+    # vars_key = shared.get(ds, ds)
+    vars_key = shared.get(ds, (1,1) if isinstance(ds, tuple) else ds)
+    # symcomp_out = vars.get(ds, vars.get(min(ds, 1)))  # 0 -> 0, 1 -> 1, 3 and more -> 1.
+    symcomp_out = vars[vars_key]
+
+    limit = {(1,1): 30}.get(vars_key, 10)
+
+    # limit_bottom, limit_up = -30, 30
+    limit_bottom, limit_up = -limit, limit
+    # print(limit_bottom, limit_up)
+    # 1/0
+    # xys = []
+    for i in range(10000):
+        # for i in range(100):
+        x, y = random.randint(limit_bottom, limit_up), random.randint(limit_bottom, limit_up)
+        # print(i, x, y)
+
+        if y != 0:
+            dividable = [1, x, (x + y), (x + y) * x, (x - y), (x - y) * x, (x + y) ** 2, (x + y) ** 2 * x,
+                         (x - y) ** 2, (x - y) ** 2 * x, (x - y) ** 3]
+            vals = {0: f'{x+y}, {x-y}, {1 + x + 3*y + 2*x*y - x**2 - y**2}, {2 + x - y - 4*x*y + 2*x**3 + 6*x*y**2}\n',
+                    1: f'(-1/{y})*({(2*x**3 - 3*x**2*y + x**2 + y**3 - y**2 + 2*y + 2)}), 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    3: f'{1 + 6*x**2 - 2*y**2 + 3*x**3 + 15*x**4 + 10*x**2*y**2 - y**4 + 6*x**5 + 10*x**3*y**2}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    4: f'{-3*x**2 + 3*y**2 + 5}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    5: ', '.join([f'{div}/{y}' for div in [f'{y**2 - x**2}'] + dividable]) + '\n',
+                    6: ', '.join([f'{div}/{y}' for div in [f'{-3*x**2 + 3*y**2 + 3*y}'] + dividable]) + '\n',
+                    'diofratio': ', '.join([f'{div}/{y}' for div in [eval(numerator)] + dividable]) + '\n',
+                    'mbratio': f'{eval(numerator)}/{y}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
+                    }
+
+            if isinstance(ds, tuple) and not ds in ((1, 'diofratio'), (1, 'mbratio')):
+                # print(i,x,y)
+            #     continue
+            # else:
+                w3 = {(1,1): -(2 * x ** 3 - 3 * x ** 2 * y + x ** 2 + y ** 3 - y ** 2 + 2 * y + 2),
+                      (1,2): x+y,
+                      (1,3): (x+y)-x,
+                      (1,4): y**2 -x**2,
+                      (1,5): -3*x**2 + 3*y**2 + 5,
+                      (1,6): -3*x**2 + 3*y**2 + 3*y,
+                      (1,'x'): eval(numerator),
+                      # (1,'diofratio'): eval(numerator),
+                      }[ds]
+                # print(f'{ds = }, {w3 = }')
+                # dividable = [w3, 1, x, (x+y), (x+y)*x, (x-y), (x-y)*x, (x+y)**2, (x+y)**2*x, (x-y)**2, (x-y)**2*x, (x-y)**3]
+                dividable = [w3] + dividable
+                non_dividable = [d for d in dividable if not (d % y == 0)]
+                if non_dividable:
+                    continue
+                # else:
+
+                # , 1/{y}, {x}/{y}, {x + y}, {x - y}\n',
+                # 'w3, 1/y, x/y, a/y, ax/y, b/y, bx/y, a^2/y, a^2x/y, b^2/y, b^2x/y, b^3/y\n',
+        # else:
+        #     # print(i, x, y)
+        #     if y != 0: break
+                vals[ds] = ', '.join([str(div // y) for div in dividable]) + '\n'
+            else:
+                if i > 105 and len(symcomp_out[:-1].split('\n')) >= 105:
+                    break
+                    # continue
+
+            new_row = vals[ds]
+            symcomp_out += new_row if new_row not in symcomp_out else ''
+            print(len(symcomp_out[:-1].split('\n')), new_row)
+    symcomp_out = '\n'.join(symcomp_out.split('\n')[:101])[:-1]
+    # symcomp_out = symcomp_out[:-1]
+    print(len(symcomp_out.split('\n')))
+    # 1/0
+    # splitted = symcomp_out.split('\n')
+    # print('\n'.join(sorted(splitted)))
+    print(symcomp_out)
+
+    # ds_num = {(1,1): 4, (1,2): 5, (1,3): 6, (1,4): 7, 4: 8, (1,5): 9, (1,6): 9}.get(ds, ds)
+    older = 8 + ds if isinstance(ds, int) else ds
+    ds_num = {(1,1): 12, (1,2): 13, (1,3): 14, (1,4): 15, 4: 16, (1,5): 17, (1,6): 18, 5: 19, 6: 20}.get(ds, older)
+    WRITE = False
+    if WRITE:
+        with open(dir_path+f'real_world_bench_ds{ds_num}.csv', 'w') as f:
+            f.write(symcomp_out)
+
+    return symcomp_out
+
+# symbolic_computation(0)
+# symbolic_computation(1)
+# symbolic_computation(3)
+# symbolic_computation((1,1))
+# symbolic_computation((1,2))
+# symbolic_computation((1,4))
+# symbolic_computation(4)
+# symbolic_computation((1,5))
+# symbolic_computation((1,6))
+# symbolic_computation(5)
+symbolic_computation(6)

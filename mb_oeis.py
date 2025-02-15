@@ -42,6 +42,49 @@ from mb_wrap import mb
 # from mavi_simplify import round_expr, divide_expr, simpl_disp, anform
 #
 
+def moadeeb(X: list[list], bitsize, sparsity, top_n):
+    """MoadeeB - MOeller-Buchberger Algorithm based Discovery of Exact Equations
+
+    Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting
+    the Ideal of Points with well-known Commutative Algebra Tools.
+
+    Inputs:
+        - Matrix X of observations of the variables V = {x_1, ..., x_p}.
+        - Tuple of parameters (bitsize, sparsity, top_n) determining
+            how complex and how many equations are acceptable for consideration.
+    Outputs:
+        - Sorted list of simplest polynomial equations of the form
+            f(x_1, x_2, ..., x_p) = 0.
+    """
+
+    # GrobnerBasis = MollerBuchberger(points)
+    # L = Filter(GronerBasis, bitsize, sparsity)
+    # L = BitsizeSort(L, top_n)
+    # return L
+
+    # X = X.tolist()
+    points = [i for n, i in enumerate(X) if not i in X[:n]]
+    # print(f'{points = }')
+    vars_cocoa = [f'x_{i}' for i in range(1, len(points[0])+1)]
+    first_generator, ideal = mb(points=points, execute_cmd=True, var_names=vars_cocoa)
+    # print(f'{first_generator = },\n{ideal = }')
+
+    eqs, human_eqs = ideal_to_eqs(ideal, max_bitsize=bitsize, max_complexity=sparsity, top_n=top_n, verbosity=0)
+    # print(f'{human_eqs = }')
+    # print(f'{eqs = }')
+    return human_eqs
+
+
+# def unique(X: list[list]) -> list[list]:
+#     """Return a list of unique points in a data set.
+#
+#     For now: returns list of strings. This is because of potential of having rational numbers (3/4).
+#     """
+#     # X = ["2", [1, 2], 3, 2, 3345, 3, 456]])]
+#     X = X.tolist()
+#     return [i for n, i in enumerate(X) if not i in X[:n]]
+
+
 def external_prettyprint(ideal, sol_ref= [f'a(n-{i})' for i in range(1, 16)]) -> str:
     """ a_n_1 -> a(n-1)
         function intended for external use only, no script uses this function.
@@ -65,6 +108,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
     Run a for loop of increasing order where I run Moeller-Buchberger algorithm on a given sequence.
     """
 
+    explicit = True
     # Plan:
     # DioMull: degree, order -> list of eqs.
     # DioMull-linrec: degree, order -> list of eqs -> check em all.
@@ -91,8 +135,9 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
     x = []
     orders_used = []
     non_linears = []
+    explicits = []
     for order in range(0, max_order + 1):
-    # for order in range(10, max_order + 1):
+    # for order in range(19, max_order + 1):
         if ground_truth and order == 0:
             continue
         echo = f'order: {order}'
@@ -132,7 +177,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
             print(first_generator[:printlen], ideal[:printlen])
         # 1/0
         # printout += f'ideal: {ideal[:printlen]}\nequation: {first_generator[:printlen]}\n'
-        eqs, heqs = ideal_to_eqs(ideal, top_n=10, verbosity=verbosity, max_bitsize=max_bitsize)
+        eqs, heqs = ideal_to_eqs(ideal, top_n=10, verbosity=verbosity, max_bitsize=max_bitsize, max_complexity=20)
         # print('eqs:,', eqs)
         print('heqs:,', heqs)
         # 1/0
@@ -153,15 +198,20 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                     print('not useless, checking implicit:')
                 # check = check_implicit(expr, seq)
                 # check = list_evals(expr, seq)
+                expr = order_optimize(expr)
                 check = check_implicit_batch(expr, seq, verbosity=0)  # Possible error since seq= sp.Matrix
+                print('implicit checked?', check)
+                # print('checking arguments:', expr, seq)
 
                 if check:  # Save implicit equation if it is correct.
+                    verbosity = 0
                     if verbosity >= 1:
                         print('eqution holds!, checking if linear:')
                     non_linears += [expr]  # will count as non_id
                     orders_used += [max_order_]
                     if not ground_truth:
                         if not explicit:
+                            print('not explicit')
                             return non_linears, eq, x, orders_used, []
                         else:
                             # print()
@@ -170,8 +220,11 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                             eqs_explicit = eq_to_explicit(expr, list(seq))
                             if eqs_explicit:
                                 eq = eqs_explicit[0]  # all solutions are checked, so take only the first one.
-                                # print('increasing_mb\'s explicit eq:', eq)
-                                return non_linears, eq, x, orders_used, eqs_explicit
+                                print('increasing_mb\'s explicit eq:', eq)
+                                explicits += eqs_explicit
+                                print(f'{explicits = }')
+                                # return non_linears, eq, x, orders_used, eqs_explicit
+                                continue
                             else:
                                 continue
 
@@ -187,6 +240,7 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                         x = x_candidate
                         if verbosity >= 1:
                             print('linear:', x)
+                        print('is linear!', expr, x)
                         return non_linears, expr, x, [len(x)], []
     return non_linears, eq, x, orders_used, []
 

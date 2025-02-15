@@ -15,7 +15,7 @@ with open(datafile, 'r') as f:
     ids_ = re.findall(r'A\d{1,6}', content)
 
 # print(content[:10])
-print(len(ids_))
+print(f'{len(ids_) = }')
 # print(ids)
 print('ids_ ' , ids_[:10])
 idsix = [f'A{i[1:]:0>6}' for i in ids_]
@@ -28,11 +28,12 @@ csv = pd.read_csv(csv_filename, low_memory=False, nrows=0)
 cores = pd.read_csv(core_fname, low_memory=False, nrows=0)
 all_ids = [i for i in csv.columns]
 core_ids = [i for i in cores.columns]
+print(f'{len(core_ids) = }')
 print('core_ids', core_ids[:10])
 
 from opponent_match import match
 # print(len(match))
-print(len(all_ids))
+print(f'{len(all_ids) = }')
 # 1/0
 match =    [i for i in all_ids if i in idsix]
 not_match = [i for i in idsix if i not in all_ids]
@@ -49,6 +50,9 @@ print(2342+ 7658, 'for dasco', 'btw: 80 in cores')
 not_linrec_not_cores = [i for i in not_match if i not in core_ids]
 print('not_linrec_not_cores:', len(not_linrec_not_cores))
 print('in cores and linrec:', len([i for i in core_ids if i in all_ids]))
+# 1/0
+print('all OEIS sequences in MoadeeB\'s p:', len(all_ids) + len(cores) + len(not_linrec_not_cores))
+1/0
 
 # linrec = 14168, not_linrec_core = 21, rest should = 27987-14189
 not_linrec_cores = [i for i in not_match if i in core_ids]
@@ -120,3 +124,11 @@ for i in urb_cores:
     print(f'{progs[0]}: {progs[1]}\n{progs[2]}')
     print()
 
+
+def moadeeb_total_ids():
+    linrec = csv
+    # dasco = idsix
+    # cores = cores
+    count = [i for i in idsix if i not in linrec and i not in cores]
+
+    return

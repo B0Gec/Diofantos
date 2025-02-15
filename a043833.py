@@ -52,11 +52,40 @@ print(csv)
 x = sp.Matrix([0, 8, -28, 56, -70, 56, -28, 8, -1])
 inits = sp.Matrix([1, 62748517, 6103515625, 94931877133, 678223072849,
                    3142742836021, 11047398519097, 32057708828125, 80798284478113])
+
+
+# fname = 'results/good/dilin-validable/21154_A201226.txt'
+coeffs = [0, 6118, -1970319, 33501524, -1970319, 6118, -1]
+true_inits = [476425, 3499913125, 20477027135825, 118398467411226125, 684132799477496491225, 3952927722012200964659125]
+disco_coeffs = [-5690522245072434667200, 75412428595460, -461489715055383105, 149299139964082808373, -2755886028047131570274, 4037217347059660528747]
+disco_inits = [476425, 3499913125, 20477027135825, 118398467411226125, 684132799477496491225]
+
 def anr(till_now, x):
     coefs = x[:]
     coefs.reverse()
     return sp.Matrix([coefs[-1] * till_now.rows]) + till_now[-len(coefs[:-1]):, :].transpose() * sp.Matrix(coefs[:-1])
     # return (x[0] * till_now.rows + till_now[-len(x[1:]):, :].transpose() * x[1:, :])[0]
+
+def generate(coeffs, inits, upperl):
+    reconst = sp.Matrix(inits)
+    print(reconst)
+    x = sp.Matrix(coeffs)
+    for i in range(upperl):
+        reconst = reconst.col_join(anr(reconst, x))
+    return list(reconst)
+
+upperl = 4
+orig = generate(coeffs, true_inits, upperl)
+disco = generate(disco_coeffs, disco_inits, upperl)
+
+print(f'{upperl = }')
+print(f'{disco = }')
+print(f' {orig = }')
+print(f'{orig == disco = }')
+print(disco)
+
+1/0
+
 reconst = inits
 for i in range(upperl):
     # reconst = reconst.col_join(sp.Matrix([an(reconst, x)]))
@@ -72,8 +101,10 @@ seq = [an(i) for i in range(upperl)]
 #     print(i)
 # print(seq)
 print('eof')
+print(upperl)
 print(seq[199], csv[seq_id][100])
 print(seq[upperl-1], reconst[upperl-1])
 print(seq[upperl-1] == reconst[upperl-1])
+print(seq[:upperl-1] == reconst[:upperl-1])
 
 
