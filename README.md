@@ -1,23 +1,28 @@
-# Diofantos
+# MoadeeB
 
-Diofantos is an algorithm implemented in Python for the discovery of exact equations from integer sequences.
+MoadeeB - MOeller-Buchberger Algorithm based Discovery of Exact Equations 
 
-You can cite my paper: https://doi.org/10.3390/math12233745
+_"Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting the Ideal of Points with well-known Commutative Algebra Tools."_
+
+MoadeeB is an algorithm implemented in Python for the discovery of exact equations (e.g. from integer sequences).
 
 ## Development branch:
-This is the develompent branch of Diofantos, that you are viewing at the moment. 
+This is the branch of the latest release code of MoadeeB, while main branch is intended for development only. 
  
 Therefore, consider the recommended usage of stable version, available in:
-- a "published paper" release: https://github.com/B0Gec/Diofantos/releases/tag/v1.0.2_d2025_01_22
-- as well as Diofantos branch: https://github.com/B0Gec/Diofantos/tree/Diofantos.
+- a pre-release: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
+- as well as MoadeeB branch: https://github.com/B0Gec/Diofantos/tree/MoadeeB.
 
-TL;DR: Following the git procedure below (_Get essential files via git_), you get the same files from the above release/branch.
+TL;DR: Following the recommended git procedure below (_Get essential files via git_), you get the same files from the above release/branch.
 
-## How to set up Diofantos
+
+## How to set up MoadeeB
 
 To reproduce results, one could use container as an alternative to installing Python dependencies listed below.
 
 Otherwise, go ahead and install the dependencies in a new python environment.
+
+You will also need the CoCoA software as described in Prerequisites below.
 
 After that, you can clone the repository, but I recommend getting only (instead of all 7GB results) the following files:
 
@@ -27,6 +32,9 @@ After that, you can clone the repository, but I recommend getting only (instead 
     linear_database_newbl.csv
     cores_test.csv
     sindy_oeis.py
+    gather_results.py
+    mb_oeis.py
+    mb_wrap.py
 
 The list above is not checked so please make sure there are no import errors.
 
@@ -36,14 +44,15 @@ I find it easiest to use git to make an efficient clone to automatically downloa
 ```bash
 git clone -n --depth=1 --filter=tree:0 https://github.com/B0Gec/Diofantos
 cd Diofantos
-git restore --source cf66eec6d45f6cbc0bc5d0b2da0361332a811484 exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py
+git branch MoadeeB
+git restore --source MoadeeB exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py
 ```
 
-In the end download `linear_database_newbl.csv` manually from Zenodo repository (look in the paper), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
+In the end download `linear_database_newbl.csv` manually from Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
 
 And ignore files under the GitHub "Assets" section of the GitHub's release page.
 
-## Simple example of Diofantos' execution in terminal:
+## Simple example of MoadeeB' execution in terminal:
 
 ```bash
 python doones.py --task_id 14 --exper_id output_dir
@@ -52,19 +61,28 @@ python doones.py --task_id 14 --exper_id output_dir
 will produce the output file `results/output_dir/00014_A000045.txt` with similar content:
 
 ```txt
-While total time consumed by now, scale:15/164, seq_id:A000045, order:10 took:
- 0.6 seconds, i.e. 0.01 minutes or 0.0 hours.
-CORELIST True, SINDy False, GROUND_TRUTH False, SINDy_default True
-Library: n, max_order 10, threshold: 0.1
+orders_used: [2]
+Exact ED for 15-th sequence of 164 in experiment set with id A000045 for first 200 terms with max order 20 while double checking against first 199 terms. took:
+ 1.1 seconds, i.e. 0.02 minutes or 0.0 hours.
+CORELIST: True, METHOD: MB, SINDy: False (True also in case of MAVI), GROUND_TRUTH: False, SINDy_default: True, DEBUG: False, OEISformer: False
+n_of_terms_ed: 200, N_OF_TERMS_ED: 200
+Library: n, max_order 20, max_degree: 3, threshold: 0.1, 
+n_more_terms: 10
+Library: n, max_order 20, threshold: 0.1
+  MB:  n_more_terms: 10 MAX_BITSIZE: 50
 
-by degree: 1 and order: 2. 
+by degree: unknown_mb and order: 2.
+eqs_explicit:
+['a(n) = a(n-2) + a(n-1)']
+non_linears:
+['a(n) -a(n-1) -a(n-2)']
 A000045: 
-a(n) = a(n - 2) + a(n - 1)
+a(n) = a(n-2) + a(n-1)
 truth: 
+None
 
-
-  -  checked against website ground truth.     
-True  -  "manual" check if equation is correct.
+No ground truth :(  -  checked against website ground truth.     
+True  -  "manual" check if equation is correct.  
 ```
 
 ## Apptainer/Singularity container:
@@ -78,10 +96,25 @@ True  -  "manual" check if equation is correct.
 ## Experiments
 - database of _linrec_ sequences: `linear_database_newbl.csv`
 - database of _core_ sequences: `cores_test.csv`
-- script for running Diofantos and SINDy-based approaches: `doones.py`
+- script for running MoadeeB, Diofantos and SINDy-based approaches: `doones.py`
+- MoadeeB code: `mb_oeis.py`, `mb_wrap.py`
 - Diofantos code: `exact_ed.py`
 - SINDy based approaches: `sindy_oeis.py`
-- Results: directories `results` and `results_oeis`
+- Results: directories `results` (also some in `results_oeis`)
+  - results/goodmb  (MoadeeB only):
+    - mblinbs50   linrec
+    - mbcor'      core
+    - mbtmord20r  TM-OEIS n_input=15 (n_pred=1 and 10)
+    - mbtmN25     TM-OEIS n_input=25 (n_pred=1 and 10)
+  - results/good  (Diofantos and sindy only):
+    - dilin      Diofantos linrec
+    - dicorrep   Diofantos core
+    - silin      SINDy-tuned linrec
+    - sicor1114  SINDy-tuned core
+    - sdlin      SINDy-default linrec
+    - sdcor2     SINDy-default core
+    - transfoeis_acc2 Diofantos TM-OEIS n_input=25 (and n_pred=1 and 10)
+    - n15_acc         Diofantos TM-OEIS n_input=15 (and n_pred=1 and 10)
 
 ## Features
 - algebraic equations with variables `n`, `a(n-k)` for all *k* up to chosen order and
@@ -94,9 +127,14 @@ their combinations up to degree *d*.
 - sympy
 - pytest (optional)
 
-# Usage examples of script `doones.py` in first version (26.2.2024)
-- Diofantos for Fibonacci sequence in _core_ database:
-     `python doones.py --task_id 14 --exper_id output_dir`
 
+## Other prerequisites
+We need the CoCoA software (apcocoa) containing Moeller-Buchberger algorithm (function IdealOfPoints).
+After downloading write the location of directory `apcocoa2_unix` into variable
+inside of the `cocoa_location_secret.py` file, e.g. `cocoa_location_secret = '~/Documents/CoCoA/'`.
+
+# Usage examples of script `doones.py` in (tested: 26.2.2024, 18.2.2025)
+- MoadeeB for Fibonacci sequence in _core_ database:
+     `python doones.py --task_id 14 --exper_id output_dir`
 
 
