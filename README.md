@@ -7,7 +7,7 @@ _"Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting the 
 MoadeeB is an algorithm implemented in Python for the discovery of exact equations (e.g. from integer sequences).
 
 ## Development branch:
-This is the branch of the latest release code of MoadeeB, while the main `oeis` branch is intended for development only. 
+This is the branch of the latest code release of MoadeeB, while the main `oeis` branch is intended for development only. 
  
 Therefore, consider the recommended usage of stable version, available in:
 - a pre-release: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
@@ -86,6 +86,8 @@ No ground truth :(  -  checked against website ground truth.
 True  -  "manual" check if equation is correct.  
 ```
 
+This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
+
 ## Apptainer/Singularity container:
 - Results from paper can be reproduced by running the doones.py file from python from the Singularity container obtained 
   from the Singularity Hub in the following way:
@@ -134,9 +136,4 @@ We need the CoCoA software [apcocoa](https://apcocoa.uni-passau.de) containing M
 
 After downloading, write the location of directory `apcocoa2_unix` into variable `cocoa_location`
 inside of the `cocoa_location_secret.py` file, e.g. `cocoa_location_secret = '~/Documents/CoCoA/'`.
-
-# Usage examples of script `doones.py` in (tested: 26.2.2024, 18.2.2025)
-- MoadeeB for Fibonacci sequence in _core_ database:
-     `python doones.py --task_id 14 --exper_id output_dir`
-
 
