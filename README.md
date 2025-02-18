@@ -7,7 +7,7 @@ _"Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting the 
 MoadeeB is an algorithm implemented in Python for the discovery of exact equations (e.g. from integer sequences).
 
 ## Development branch:
-This is the branch of the latest release code of MoadeeB, while main branch is intended for development only. 
+This is the branch of the latest release code of MoadeeB, while the main `oeis` branch is intended for development only. 
  
 Therefore, consider the recommended usage of stable version, available in:
 - a pre-release: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
@@ -22,7 +22,7 @@ To reproduce results, one could use container as an alternative to installing Py
 
 Otherwise, go ahead and install the dependencies in a new python environment.
 
-You will also need the CoCoA software as described in Prerequisites below.
+Nonetheless, you will also need the CoCoA software as described in Prerequisites below.
 
 After that, you can clone the repository, but I recommend getting only (instead of all 7GB results) the following files:
 
@@ -35,7 +35,6 @@ After that, you can clone the repository, but I recommend getting only (instead 
     gather_results.py
     mb_oeis.py
     mb_wrap.py
-    julia/urb-and-dasco/OEIS_easy.txt 
     cocoa_location.py 
 
 The list above is not checked so please make sure there are no import errors.
@@ -47,11 +46,10 @@ I find it easiest to use git to make an efficient clone to automatically downloa
 git clone -n --depth=1 --filter=tree:0 https://github.com/B0Gec/Diofantos
 cd Diofantos
 git branch MoadeeB
-git restore --source MoadeeB exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py julia/urb-and-dasco/OEIS_easy.txt cocoa_location.py 
-
+git restore --source MoadeeB exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py julia/urb-and-dasco/OEIS_easy.txt cocoa_location.py 
 ```
 
-In the end download `linear_database_newbl.csv` manually (182.8MB) from Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
+In the end download `linear_database_newbl.csv` manually (182.8MB) from my Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
 
 And ignore files under the GitHub "Assets" section of the GitHub's release page.
 
@@ -101,23 +99,23 @@ True  -  "manual" check if equation is correct.
 - database of _core_ sequences: `cores_test.csv`
 - script for running MoadeeB, Diofantos and SINDy-based approaches: `doones.py`
 - MoadeeB code: `mb_oeis.py`, `mb_wrap.py`
-- Diofantos code: `exact_ed.py`
+- [Diofantos](https://doi.org/10.3390/math12233745) code: `exact_ed.py`
 - SINDy based approaches: `sindy_oeis.py`
 - Results: directories `results` (also some in `results_oeis`)
   - results/goodmb  (MoadeeB only):
-    - mblinbs50   linrec
-    - mbcor'      core
-    - mbtmord20r  TM-OEIS n_input=15 (n_pred=1 and 10)
-    - mbtmN25     TM-OEIS n_input=25 (n_pred=1 and 10)
+    - `mblinbs50`   linrec
+    - `mbcor`      core
+    - `mbtmord20r`  TM-OEIS n_input=15 (n_pred=1 and 10)
+    - `mbtmN25`     TM-OEIS n_input=25 (n_pred=1 and 10)
   - results/good  (Diofantos and sindy only):
-    - dilin      Diofantos linrec
-    - dicorrep   Diofantos core
-    - silin      SINDy-tuned linrec
-    - sicor1114  SINDy-tuned core
-    - sdlin      SINDy-default linrec
-    - sdcor2     SINDy-default core
-    - transfoeis_acc2 Diofantos TM-OEIS n_input=25 (and n_pred=1 and 10)
-    - n15_acc         Diofantos TM-OEIS n_input=15 (and n_pred=1 and 10)
+    - `dilin`      Diofantos linrec
+    - `dicorrep`   Diofantos core
+    - `silin`      SINDy-tuned linrec
+    - `sicor1114`  SINDy-tuned core
+    - `sdlin`      SINDy-default linrec
+    - `sdcor2`     SINDy-default core
+    - `transfoeis_acc2` Diofantos TM-OEIS n_input=25 (and n_pred=1 and 10)
+    - `n15_acc`         Diofantos TM-OEIS n_input=15 (and n_pred=1 and 10)
 
 ## Features
 - algebraic equations with variables `n`, `a(n-k)` for all *k* up to chosen order and
@@ -133,6 +131,7 @@ their combinations up to degree *d*.
 
 ## Other prerequisites
 We need the CoCoA software [apcocoa](https://apcocoa.uni-passau.de) containing Moeller-Buchberger algorithm (function IdealOfPoints).
+
 After downloading, write the location of directory `apcocoa2_unix` into variable `cocoa_location`
 inside of the `cocoa_location_secret.py` file, e.g. `cocoa_location_secret = '~/Documents/CoCoA/'`.
 
