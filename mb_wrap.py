@@ -103,7 +103,8 @@ def mb(points: list, execute_cmd=False, var_names='djus', verbosity=0):
     # print(os.getcwd())
 
     # b) execute cocoa file
-    command = f"cd ../{cocoa_location[2:]}; echo \"{cocoa_code}\" | ./CoCoAInterpreter"
+    # command = f"cd ../{cocoa_location[2:]}; echo \"{cocoa_code}\" | ./CoCoAInterpreter"
+    command = f"cd {cocoa_location}; echo \"{cocoa_code}\" | ./CoCoAInterpreter"
 
     if verbosity > 0:
         print(command)
@@ -144,7 +145,8 @@ def cocoa_eval(cocoa_code: str, execute_cmd=False, verbosity=0, cluster=False):
     if len(cocoa_code) > CALL_SIZE_LIMIT:
         # raise ValueError(f'cocoa_code is too long: {len(cocoa_code)} > {CALL_SIZE_LIMIT}!!')
         print(f'\ncocoa_code is probably too long!!!: {len(cocoa_code) = } > {CALL_SIZE_LIMIT = }!!\n')
-    command = f"cd ../{cocoa_location[2:]}; echo \"{cocoa_code}\" | ./CoCoAInterpreter"
+    # command = f"cd ../{cocoa_location[2:]}; echo \"{cocoa_code}\" | ./CoCoAInterpreter"
+    command = f"cd {cocoa_location}; echo \"{cocoa_code}\" | ./CoCoAInterpreter"
     if verbosity > 0:
         print('cocoa_code pretty printed:\n', cocoa_code.replace(';', ';\n'))
 
@@ -182,7 +184,8 @@ def mb_wrap_old(filename = 'runable.cocoa5', file_dir = 'julia/mb/'):
 
 
     # b) execute cocoa file
-    command = f"cd ../{cocoa_location[2:]}; ./CoCoAInterpreter {filefull}"
+    # command = f"cd ../{cocoa_location[2:]}; ./CoCoAInterpreter {filefull}"
+    command = f"cd {cocoa_location}; ./CoCoAInterpreter {filefull}"
     # print(command)
     p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
     (output, err) = p.communicate()

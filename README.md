@@ -1,6 +1,6 @@
 # MoadeeB
 
-MoadeeB - MOeller-Buchberger Algorithm based Discovery of Exact Equations 
+MoadeeB - M&Ouml;eller-Buchberger Algorithm based Discovery of Exact Equations 
 
 _"Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting the Ideal of Points with well-known Commutative Algebra Tools."_
 
@@ -35,6 +35,8 @@ After that, you can clone the repository, but I recommend getting only (instead 
     gather_results.py
     mb_oeis.py
     mb_wrap.py
+    julia/urb-and-dasco/OEIS_easy.txt 
+    cocoa_location.py 
 
 The list above is not checked so please make sure there are no import errors.
 
@@ -45,10 +47,11 @@ I find it easiest to use git to make an efficient clone to automatically downloa
 git clone -n --depth=1 --filter=tree:0 https://github.com/B0Gec/Diofantos
 cd Diofantos
 git branch MoadeeB
-git restore --source MoadeeB exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py
+git restore --source MoadeeB exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py julia/urb-and-dasco/OEIS_easy.txt cocoa_location.py 
+
 ```
 
-In the end download `linear_database_newbl.csv` manually from Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
+In the end download `linear_database_newbl.csv` manually (182.8MB) from Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
 
 And ignore files under the GitHub "Assets" section of the GitHub's release page.
 
@@ -129,8 +132,8 @@ their combinations up to degree *d*.
 
 
 ## Other prerequisites
-We need the CoCoA software (apcocoa) containing Moeller-Buchberger algorithm (function IdealOfPoints).
-After downloading write the location of directory `apcocoa2_unix` into variable
+We need the CoCoA software [apcocoa](https://apcocoa.uni-passau.de) containing Moeller-Buchberger algorithm (function IdealOfPoints).
+After downloading, write the location of directory `apcocoa2_unix` into variable `cocoa_location`
 inside of the `cocoa_location_secret.py` file, e.g. `cocoa_location_secret = '~/Documents/CoCoA/'`.
 
 # Usage examples of script `doones.py` in (tested: 26.2.2024, 18.2.2025)
