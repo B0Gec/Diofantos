@@ -1,15 +1,21 @@
-# Diofantos
+# MoadeeB and Diofantos
 
-Diofantos is an algorithm implemented in Python for the discovery of exact equations from integer sequences.
+This is a repo hosting MoadeeB and Diofantos, two algorithms for discovering exact equations, e.g. from integer sequences.
 
-You can cite my paper: https://doi.org/10.3390/math12233745
+They are hosted in a separate branches, in branch [Diofantos](https://github.com/B0Gec/Diofantos/tree/Diofantos) and [MoadeeB](https://github.com/B0Gec/Diofantos/tree/MoadeeB), respectively.
 
-## Development branch:
-This is the develompent branch of Diofantos, that you are viewing at the moment. 
- 
-Therefore, consider the recommended usage of stable version, available in:
-- a "published paper" release: https://github.com/B0Gec/Diofantos/releases/tag/v1.0.2_d2025_01_22
-- as well as Diofantos branch: https://github.com/B0Gec/Diofantos/tree/Diofantos.
+However, you are currently viewing the main branch `oeis`, which is a development branch for them.
+
+For first-time users or non-developers, this branch is not recommended for use. Instead refer to the branches mentioned above. 
+
+Please refer to the corresponding branches together with the installation instructions:
+  - MoadeeB: https://github.com/B0Gec/Diofantos/tree/MoadeeB
+  - Diofantos: https://github.com/B0Gec/Diofantos/tree/Diofantos
+
+Releases of this repository contain equivalents of the mentioned branches.
+
+For Diofantos, you can cite this paper: https://doi.org/10.3390/math12233745
+
 
 TL;DR: Following the git procedure below (_Get essential files via git_), you get the same files from the above release/branch.
 
