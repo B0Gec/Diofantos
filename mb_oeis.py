@@ -223,8 +223,8 @@ def increasing_mb(seq_id, csv, max_order, n_more_terms, execute, library, n_of_t
                                 print('increasing_mb\'s explicit eq:', eq)
                                 explicits += eqs_explicit
                                 print(f'{explicits = }')
-                                # return non_linears, eq, x, orders_used, eqs_explicit
-                                continue
+                                return non_linears, eq, x, orders_used, eqs_explicit
+                                # continue
                             else:
                                 continue
 
