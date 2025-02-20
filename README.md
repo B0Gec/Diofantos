@@ -10,8 +10,8 @@ MoadeeB is an algorithm implemented in Python for the discovery of exact equatio
 This is the branch of the latest code release of MoadeeB, while the main `oeis` branch is intended for development only. 
  
 Therefore, consider the recommended usage of stable version, available in:
-- a pre-release: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
-- as well as MoadeeB branch: https://github.com/B0Gec/Diofantos/tree/MoadeeB.
+- this, _MoadeeB_ branch (https://github.com/B0Gec/Diofantos/tree/MoadeeB)
+- a pre-release, equivalent to this branch: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
 
 TL;DR: Following the recommended git procedure below (_Get essential files via git_), you get the same files from the above release/branch.
 
@@ -36,6 +36,9 @@ After that, you can clone the repository, but I recommend getting only (instead 
     mb_oeis.py
     mb_wrap.py
     cocoa_location.py 
+    real-bench
+    real_world_bench.py
+    real_world_bench_evaluate.py
 
 The list above is not checked so please make sure there are no import errors.
 
@@ -43,10 +46,9 @@ The list above is not checked so please make sure there are no import errors.
 
 I find it easiest to use git to make an efficient clone to automatically download the essential files to try out the method. Run these commands in terminal: 
 ```bash
-git clone -n --depth=1 --filter=tree:0 https://github.com/B0Gec/Diofantos
+git clone --single-branch --branch MoadeeB -n --depth=1 --filter=tree:0 https://github.com/B0Gec/Diofantos
 cd Diofantos
-git branch MoadeeB
-git restore --source MoadeeB exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py julia/urb-and-dasco/OEIS_easy.txt cocoa_location.py 
+git restore --source HEAD exact_ed.py diophantine_solver.py doones.py cores_test.csv sindy_oeis.py gather_results.py mb_oeis.py mb_wrap.py cocoa_location.py real-bench real_world_bench.py real_world_bench_evaluate.py
 ```
 
 In the end download `linear_database_newbl.csv` manually (182.8MB) from my Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
@@ -100,8 +102,8 @@ This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
 - database of _linrec_ sequences: `linear_database_newbl.csv`
 - database of _core_ sequences: `cores_test.csv`
 - script for running MoadeeB, Diofantos and SINDy-based approaches: `doones.py`
-- MoadeeB code: `mb_oeis.py`, `mb_wrap.py`
 - [Diofantos](https://doi.org/10.3390/math12233745) code: `exact_ed.py`
+- MoadeeB code: `mb_oeis.py`, `mb_wrap.py`
 - SINDy based approaches: `sindy_oeis.py`
 - Results: directories `results` (also some in `results_oeis`)
   - results/goodmb  (MoadeeB only):
