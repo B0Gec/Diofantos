@@ -1,0 +1,523 @@
+\documentclass[t,usenames,dvipsnames]{beamer} % [t] pomeni poravnavo na vrh slida
+
+    % \State Randomly choose rewriting rule 
+    % \State choose rewriting rule Randomly 
+    % relation closure more verbose on slides
+
+% \usepackage{etex} % vključi ta paket, če ti javi napako, da imaš naloženih preveč paketov.
+% \usefonttheme[stillsansserifsmall,stillsansseriflarge]{serif}
+
+% \usepackage{amsfonts}
+% \usepackage[mathscr]{eucal}
+% \usepackage[mathscr]
+\usepackage{mathrsfs}
+
+
+% standardni paketi
+\usepackage[slovene]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts,amsthm} % matematični paketi
+% \usepackage{amssymb}
+% \usepackage{amsmath}
+\usepackage{diagrams}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{qtree}
+	\usepackage{forest}
+\forestset{
+dg edges/.style={for tree={parent anchor=south, child anchor=north,align=center,base=bottom,where n children=0{tier=word,edge=dotted,calign with current edge}{}}},
+dgii edges/.style={for tree={parent anchor=south, child anchor=north,base=bottom}},
+}
+
+
+\DeclareMathOperator{\Coverage}{Coverage} 
+
+% % down 4.4.2017
+\newcommand{\R}{\mathbb R}
+% \newcommand{\N}{\mathbb N}
+% \newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+% a51303
+\definecolor{softyellow}{rgb}{0.98,0.98,0.75}
+% \definecolor{dunered}{HTML}{a51303}
+\definecolor{dunered}{HTML}{eb4702}
+\definecolor{dunered}{HTML}{912010}
+\definecolor{dunered}{HTML}{bd1a03}
+
+\setbeamercolor{loweryel}{fg=black,bg=softyellow}
+% % up 4.4.2017
+\newcommand{\e}{\boldsymbol{e}}
+\newcommand{\X}{\mathscr{X}}
+\newcommand{\I}{\mathscr{I}}
+\newcommand{\rhoo}{\boldsymbol{\rho}}
+\newcommand{\q}{\boldsymbol{q}}
+\newcommand{\1}{\boldsymbol{1}}
+\newcommand{\0}{\boldsymbol{0}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Nom}{\mathbb{N}_0^m}
+\newcommand{\Z}{\boldsymbol{Z}}
+\newcommand{\Zn}{\boldsymbol{Z}_n}
+\newcommand{\M}{\boldsymbol{M}}
+\newcommand{\re}{\boldsymbol{r}}
+% \newcommand{\r}{\boldsymbol{r}}
+\renewcommand{\r}{\boldsymbol{r}}
+\newcommand{\s}{\boldsymbol{s}}
+% glej $$ \r $$ 
+% \newcommand{\e}{\boldsymbol{e}}
+\renewcommand{\e}{\boldsymbol{e}}
+
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{definition}{Definition}
+% \newtheorem{theorem}{Theorem}
+
+
+
+%\setbeamercovered{invisible} %default
+\setbeamercovered{transparent}
+%\setbeamercovered{dynamic}
+
+
+%\usepackage[dvipsnames]{color}
+
+\usepackage[normalem]{ulem} % za strikeout (prečrtat besedo)
+% na primer : \sout{Hello World}
+
+% podatki
+\title{Discovery of exact equations via \\ computing Gr\"{o}bner basis }
+\author{Bo\v{s}tjan Gec}
+\institute{ mentor: prof. dr. Ljup\v{c}o Todorovski \\
+            comentor: prof. dr. Sa\v{s}o D\v{z}eroski}
+
+% tvoj izbran stil predstavitve
+%\usetheme{Singapore}
+\usetheme{Luebeck}
+%\usecolortheme{crane}
+%\usecolortheme{red}
+
+\usepackage{color}
+\setbeamercolor{structure}{fg=Bittersweet}
+\setbeamercolor{structure}{fg=ForestGreen}
+
+
+% \usepackage{algorithmic}
+\usepackage{algpseudocode}  % za psevdokodo
+\usepackage{algorithm}
+% \floatname{algorithm}{Algoritem}
+% \renewcommand{\listalgorithmname}{Kazalo algoritmov}
+\usepackage{multirow}
+
+\usepackage{hyperref}
+
+\usepackage{booktabs}%
+
+
+
+\newcommand{\MB}{\textsl{MoadeeB}}
+\newcommand{\MoBu}{M\"oller-Buchberger}
+\newcommand{\MoBua}{M\"oller-Buchberger algorithm}
+\newcommand{\Bua}{Buchberger algorithm}
+\newcommand{\DP}{Diofantos}
+\newcommand{\linrec}{\textsl{linrec}}  % data set
+\newcommand{\core}{\textsl{core}}  % data set
+\newcommand{\GB}{Gr\"obner basis}
+
+
+\begin{document}
+
+
+\begin{frame}
+  \maketitle
+%  \fillblack{0.33}
+\end{frame}
+
+
+% \section{Equation discovery}
+% \section{Verjetnostne gramatike}
+% \section{Celo"stevilska zaporedja}
+
+\begin{frame}{\GB\ in action}
+
+    \begin{itemize}[<+->]
+        \item Variables $V = \{a_n, a_{n-1}, a_{n-2}\}$.
+        \item Polynomials over $\Q$, i.e. in $\mathbb{Q}[a_n, a_{n-1}, a_{n-2}]$.
+        \item E.g. polynomial $$ p(x,y,z) = x^2 + y z $$ ... looks like  ...
+            $$f = a_n^2 + a_{n-1}a_{n-2}$$ in $\mathbb{Q}[a_n, a_{n-1}, a_{n-2}]$.
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Inductively build the vanishing ideal}
+
+    Vanishing ideal:
+$$ I(X) := \{ f \in K[X_1, ..., X_n] \mid f(x_1, ..., x_n) = 0 \text{ for all } (x_1, ..., x_n) \in X \}\enspace $$ 
+
+    \begin{block}{$n=1$}
+        one data point ... is a variety itself \\ \uncover<2>{
+        ... corresponding ideal $I_1 = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle$.
+    }
+    \end{block}
+
+    \begin{block}{$n \to n+1$}
+        Union of varieties ... product of ideal bases \uncover<2>{($I_1 \cdot I_2$) }
+    \end{block}
+\end{frame}
+
+\begin{frame}{Inductively build the vanishing ideal}
+
+    \begin{block}{$n=1$}
+        one data point ... is a variety 
+        $V_1 := \{ (1, 1, 0) \} $
+
+        \begin{center}
+        $\updownarrow$ corresponds to
+        \end{center}
+
+        an ideal ... $I_1 = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle$.
+        \pause
+
+$$ I(X) := \{ f \in K[X_1, ..., X_n] \mid f(x_1, ..., x_n) = 0 \text{ for all } (x_1, ..., x_n) \in X \}\enspace,  $$ 
+
+        \pause
+
+         i.e. \begin{align*} I(V_1) = \{ p \in \Q[a_n, a_{n-1}, a_{n-2}] \mid p(a_n, a_{n-1}, a_{n-2}) = 0  \text{ if }  \\  (a_n, a_{n-1}, a_{n-2}) = (1,1,0) \ \} \end{align*}
+
+        \pause
+
+         i.e. \( I(V_1) = \{ p \in \Q[a_n, a_{n-1}, a_{n-2}] \mid p(1,1,0) = 0 \} \)
+    \end{block}
+
+    \begin{block}{$n \to n+1$}
+
+    \end{block}
+
+
+\end{frame}
+
+\begin{frame}{Inductively build the vanishing ideal}
+
+    \begin{block}{$n=1$}
+        one data point ... is a variety 
+        $ \{ (1, 1, 0) \} $
+
+        \begin{center}
+        $\updownarrow$ 
+        \end{center}
+
+        an ideal ... $I_1 = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle$.
+
+        \pause
+
+        \begin{itemize}[<+->]
+            \item
+        Fun fact:
+        $$a_n - a_{n-1} - a_{n-2} \in I_1$$
+            \item
+        Def. of ideal:
+for any polynomials \(p, q \in I\) and \(r \in \mathbb{Q}[a_n, a_{n-1}, a_{n-2}]\), the polynomials $0$, \(p+q\) and \(r \cdot p\) are also in $I$.
+        \end{itemize}
+
+    \end{block}
+
+
+\end{frame}
+
+
+\begin{frame}{Inductively build the vanishing ideal}
+
+    \begin{block}{$n=1$}
+        one data point ... an ideal $I_1 = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle$.
+    \end{block}
+
+    \begin{block}{$n \to n+1$}
+
+        \begin{itemize}
+            \item Union of varieties ... product of ideal bases ($I_1 \cdot I_2$) \\
+
+        \pause
+
+        \item
+        Basis of ideal of union of two varieties ... obtained by pairwise multiplications of the polynomials in the bases of ideals of the individual varieties. 
+        \pause
+
+        \item
+            $ I( V_1 \cup V_2 ) = I(V_1) \cdot I(V_2) = $ \\ \pause
+            e.g. $  = \langle f_1, f_2 \rangle \cdot \langle g_1, g_2 \rangle = $ \\ \pause
+            $  = \langle f_1\cdot g_1, f_1\cdot g_2, f_2\cdot g_1, f_2\cdot g_2 \rangle = $ \\ \pause
+                $I(\{(1,1,0)\} \cup \{(2,1,1)\}) = I(\{(1,1,0)\}) \cdot I(\{(2,1,1)\}) = $ \\ \pause
+               $ = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle \cdot \langle a_n - 2, a_{n-1} - 1, a_{n-2}-1 \rangle = $ 
+
+
+        \end{itemize}
+
+
+    \end{block}
+
+
+\end{frame}
+
+
+\begin{frame}{Inductively build the vanishing ideal}
+
+    \begin{block}{$n=1$}
+        one data point ... an ideal $I_1 = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle$.
+    \end{block}
+
+    \begin{block}{$n \to n+1$}
+
+        \begin{itemize}
+        \item
+                $ I( V_1 \cup V_2 ) = I(V_1) \cdot I(V_2) = $ \\ 
+        \uncover<3>{ e.g. $  = \langle f_1, f_2 \rangle \cdot \langle g_1, g_2 \rangle = $ \\ 
+        $  = \langle f_1\cdot g_1, f_1\cdot g_2, f_2\cdot g_1, f_2\cdot g_2 \rangle = $ \\ 
+                }
+        
+        \item
+        \item
+                $I(\{(1,1,0)\} \cup \{(2,1,1)\}) = I(\{(1,1,0)\}) \cdot I(\{(2,1,1)\}) = $ \\  
+               $ = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle \cdot \langle a_n - 2, a_{n-1} - 1, a_{n-2}-1 \rangle = $   \pause
+    \begin{align*}
+     = & \langle (a_n -1)(a_n -2), (a_n -1)(a_{n-1} -1), (a_n -1)(a_{n -2}-1), \\ 
+    & (a_{n-1} -1)(a_n -2),  (a_{n-1} -1)(a_{n-1} -1), (a_{n-1} -1)(a_{n -2}-1), \\
+    & (a_{n -2})(a_n -2), (a_{n -2})(a_{n-1} -1), (a_{n -2})(a_{n -2}-1) \rangle = \\
+    \end{align*}
+
+        \item Literature~\cite[p.~24, Section~2.1, Chapter~1]{Shafarevich}.
+
+        \end{itemize}
+
+    \end{block}
+\end{frame}
+
+\begin{frame}{Inductively build the vanishing ideal}
+
+    \begin{block}{$n=1$}
+        one data point ... an ideal $I_1 = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle$.
+    \end{block}
+
+    \begin{block}{$n \to n+1$ }
+        \begin{itemize}
+        \item
+                $I(\{(1,1,0)\} \cup \{(2,1,1)\}) = I(\{(1,1,0)\}) \cdot I(\{(2,1,1)\}) = $ \\
+               $ = \langle a_n - 1, a_{n-1} - 1, a_{n-2} \rangle \cdot \langle a_n - 2, a_{n-1} - 1, a_{n-2}-1 \rangle = $  
+    \begin{align*}
+    = & \langle a_n^2 -3a_n +2,  a_n a_{n-1} -a_n -a_{n-1} +1,  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+    & a_n a_{n-1} -a_n -2 a_{n-1} +2,  a_{n-1}^2 -2 a_{n-1} +1, \\ 
+        & a_{n-1} a_{n-2} -a_{n-1} -a_{n-2} +1, \\  
+    & a_n a_{n-2} -2 a_{n-2},  a_{n-1} a_{n-2} -a_{n-2},  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+        \item Literature~\cite[p.~24, Section~2.1, Chapter~1]{Shafarevich}
+
+        \end{itemize}
+    \end{block}
+
+
+
+\end{frame}
+
+\begin{frame}{\GB\ diagram revisited}
+
+\begin{figure}[h]
+\centering
+$$
+\begin{diagram}
+    \text{Data points} & \rTo^{\text{{\color<2-3>{ForestGreen} \textbf{union of single points}}}}  & \text{{\color<2-3>{ForestGreen}Ideal basis}} \\
+                 & \rdTo_{\text{\MoBu}}  & \dTo_{\text{{\color<3>{dunered} \textbf{Buchberger}}}} \\
+                 &  & \text{{\color<3>{dunered}\GB}} 
+\end{diagram}
+$$
+\end{figure}
+
+\end{frame}
+
+\newcommand{\eigsix}{5}
+\newcommand{\anqo}{7}
+\newcommand{\eig}{8}
+
+\begin{frame}{\Bua}
+
+       From before we have: 
+    \begin{align*}
+    I_{12} 
+    = & \langle a_n^2 -3a_n +2,  a_n a_{n-1} -a_n -a_{n-1} +1,  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+    & a_n a_{n-1} -a_n -2 a_{n-1} +2,  a_{n-1}^2 -2 a_{n-1} +1,  \\
+        & {\color<\eigsix>{dunered} a_{n-1} a_{n-2} -a_{n-1} -a_{n-2} +1}, \\  
+        & a_n a_{n-2} -2 a_{n-2}, {\color<\eigsix,\eig>{dunered} a_{n-1} a_{n-2} -a_{n-2}},  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+    \pause
+    \begin{itemize}
+        \item $(-1) \in \Q[a_n, a_{n-1}, a_{n-2}] \Rightarrow $ we can substract, \\ \pause
+            \only<1-4>{i.e. $-p = (-1)\cdot p \in I_{12}$ for any $p \in I_{12}$. \\  \pause
+            Follows from $0, p+q, r\cdot p \in I_{12}$ for $p,q \in I_{12}, r \in \Q[a_n, a_{n-1}, a_{n-2}]$. }  \pause
+        \item {\color<\eigsix>{dunered} eighth - sixth} element of the basis:{\color<\eigsix>{dunered}  {\color<\anqo>{ForestGreen} \(q_1 = a_{n-1}-1 \in I_{12}\) } } 
+            \pause
+            \pause
+        \item $a_n \in \Q[a_n, a_{n-1}, a_{n-2}] \Rightarrow $ we can multiply.
+            \pause
+        \item \(q_2 = a_n \cdot {\color<\anqo>{ForestGreen} q_1 } = a_n a_{n-1} - a_n \in I_{12}\) 
+        \item \(q_3 = a_{n-2} \cdot {\color<\anqo>{ForestGreen} q_1 } = {\color<\eig>{dunered} a_{n-2} a_{n-1} - a_{n-2}} \in I_{12}\) 
+            \pause
+        \item
+    Therefore, we can replace \(q_3\) with \(q_1\) in the basis \pause $B:= \{q_1 \text{ and the rest from the basis, except } q_3 \} $ is subset of $I_{12}$ so $ \langle B \rangle \subset I_{12}$ and 
+            $q_3$ and the rest are in $\langle B \rangle$, so $I_{12} \subset \langle B \rangle $.
+    \end{itemize}
+    Similarly, we can further update the basis by removing the second, fourth, fifth, and sixth polynomial since they equal \(q_2 - q_1\), \(q_2 - 2q_1\), \(q_3-q_1\), and \(q_1^2\), respectively, which leads to
+
+\end{frame}
+
+\begin{frame}{\Bua}
+
+    \begin{align*}
+    I_{12} 
+        = & \langle a_n^2 -3a_n +2,   a_n a_{n-1} -a_n   -a_{n-1} +1,  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+        &  a_n a_{n-1} -a_n  -2 a_{n-1} +2,  a_{n-1}^2 -2 a_{n-1} +1,  \\
+        &  a_{n-1} a_{n-2}   -a_{n-1}  -a_{n-2} +1, \\  
+        & a_n a_{n-2} -2 a_{n-2}, {\color{dunered} a_{n-1} a_{n-2} -a_{n-2}},  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+
+    \begin{itemize}
+        \item replace {\color{dunered} \(q_3\)} with {\color{ForestGreen} \(q_1\) } in basis. \pause Similarly:
+        \item second \(\mapsto {\color{blue} q_2}  {\color{ForestGreen} - q_1 }\), 
+        \item fourth \(\mapsto {\color{blue}q_2}   {\color{ForestGreen} - 2 q_1 }\),
+        \item fifth \(\mapsto {\color{ForestGreen} q_1^2}\), and
+        \item sixth  \(\mapsto {\color{dunered}  q_3} {\color{ForestGreen} - q_1}\).
+    \end{itemize}
+
+    \begin{align*}
+    I_{12} = \langle a_n^2 -3a_n +2,  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+    a_n a_{n-2} -2 a_{n-2},  a_{n-1} - 1,  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+
+
+\end{frame}
+
+\begin{frame}{\Bua}
+
+    \begin{align*}
+    I_{12} 
+        = & \langle a_n^2 -3a_n +2, {\color{blue}  a_n a_{n-1} -a_n }\ {\color{ForestGreen} - \ a_{n-1} +1},  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+        & {\color{blue} a_n a_{n-1} -a_n}\ {\color{ForestGreen} -\ 2 a_{n-1} +2}, {\color{ForestGreen} a_{n-1}^2 - 2 a_{n-1} +1},  \\
+        & {\color{dunered} a_{n-1} a_{n-2} }\ {\color{ForestGreen} -\ a_{n-1}}\ {\color{dunered} -\ a_{n-2}}\ {\color{ForestGreen}+\ 1}, \\  
+        & a_n a_{n-2} -2 a_{n-2}, {\color{dunered} a_{n-1} a_{n-2} -a_{n-2}},  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+
+    \begin{itemize}
+        \item replace {\color{dunered} \(q_3\)} with {\color{ForestGreen} \(q_1\) } in basis. \pause Similarly:
+        \item second \(\mapsto {\color{blue} q_2}  {\color{ForestGreen} - q_1 }\), 
+        \item fourth \(\mapsto {\color{blue}q_2}   {\color{ForestGreen} - 2 q_1 }\),
+        \item fifth \(\mapsto {\color{ForestGreen} q_1^2}\), and
+        \item sixth  \(\mapsto {\color{dunered}  q_3} {\color{ForestGreen} - q_1}\).
+    \end{itemize}
+
+    \pause
+    \begin{align*}
+    I_{12} = \langle a_n^2 -3a_n +2,  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+        a_n a_{n-2} -2 a_{n-2}, {\color{ForestGreen} a_{n-1} - 1},  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+
+\end{frame}
+
+
+\begin{frame}{\Bua}
+
+    \begin{align*}
+    I_{12} 
+        = & \langle a_n^2 -3a_n +2, {\color{blue}  a_n a_{n-1} -a_n }\ {\color{ForestGreen} - \ a_{n-1} +1},  a_n a_{n-2} -a_n -a_{n-2} +1, \\
+        & {\color{blue} a_n a_{n-1} -a_n}\ {\color{ForestGreen} -\ 2 a_{n-1} +2}, {\color{ForestGreen} a_{n-1}^2 - 2 a_{n-1} +1},  \\
+        & {\color{dunered} a_{n-1} a_{n-2} }\ {\color{ForestGreen} -\ a_{n-1}}\ {\color{dunered} -\ a_{n-2}}\ {\color{ForestGreen}+\ 1}, \\  
+        & a_n a_{n-2} -2 a_{n-2}, {\color{dunered} a_{n-1} a_{n-2} -a_{n-2}},  a_{n-2}^2 -a_{n-2} \rangle \enspace.
+    \end{align*}
+
+    Finally, we get: 
+
+    \(I_{12} = \langle a_{n-2}^2 -a_{n-2}, {\color{ForestGreen} a_{n-1} - 1}, {\color<3>{orange} a_n -a_{n-2} -1 } \rangle\) \pause $= \langle GB \rangle $
+
+    This is also the \GB\ of the ideal.
+
+    \pause
+
+    \begin{itemize}
+        \item Fun fact: {\color{orange} last} - {\color{ForestGreen} $q_1$ } = $ a_n - a_{n-1} - a_{n-2} \in I_{12} $.
+    \end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}{\Bua\ in practice}
+    \begin{itemize}
+        \item So far only 2 rows were used. \pause (1,1,0) and (2,1,1) 
+            \pause
+        \only<3>{\item our dataset:
+\begin{table}[ht]
+% \setlength{\tabcolsep}{7.95mm}
+% \caption{Exact equation discovery data set derived from the first 8 elements of the Fibonacci sequence. \label{tab:fibomb}}
+\begin{tabular}{cccc} 
+\toprule
+$a_n$ & $a_{n-1}$ & $a_{n-2}$
+\\
+\midrule
+1 & 1 & 0 \\
+2 & 1 & 1 \\
+3 & 2 & 1 \\
+5 & 3 & 2 \\
+8 & 5 & 3 \\
+13 & 8 & 5  \\
+\bottomrule
+\end{tabular}
+\end{table}
+            }
+            \pause
+        \item
+             % \(\textrm{Gr\"obnerBasis}(I_{12}\cdot I_3\cdot I_4\cdot I_5\cdot I_6)\) \pause of  the product of the ideals corresponding to the first six data points results in 
+             Running \Bua\ on product \(I_{12}\cdot I_3\cdot I_4\cdot I_5\cdot I_6\) \pause of ideals of six  points results in: \\
+$\langle a_{n-1}a_{n-2}^2 +26a_{n-1}^2 -85a_{n-1}a_{n-2} +55a_{n-2}^2 +6a_{n-1} +29a_{n-2} -32$, \\ $  a_{n-1}^2a_{n-2} +37a_{n-1}^2 -126a_{n-1}a_{n-2} +84a_{n-2}^2 +12a_{n-1} +41a_{n-2} -49$, \\ $  a_{n-2}^3 +18a_{n-1}^2 -57a_{n-1}a_{n-2} +36a_{n-2}^2 +3a_{n-1} +20a_{n-2} -21$,  \\
+            $a_n  -a_{n-1} -a_{n-2}$, \\
+            $a_{n-1}^3 +51a_{n-1}^2 -183a_{n-1}a_{n-2} +126a_{n-2}^2 +23a_{n-1} +57a_{n-2} -75 \rangle$ \pause
+        \item Moadeeb then filters and selects the simplest polynomials from the basis.
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{The end}
+
+
+\begin{figure}[h]
+\centering
+$$
+\begin{diagram}
+    \text{Data points} & \rTo^{\text{{\color<2-3>{ForestGreen} \textbf{union of single points}}}}  & \text{{\color<2-3>{ForestGreen}Ideal basis}} \\
+                 & \rdTo_{\text{\MoBu\cite{mb}}}  & \dTo_{\text{{\color<3>{dunered} \textbf{Buchberger\cite{bbuchphd}}}}} \\
+                 &  & \text{{\color<3>{dunered}\GB}} 
+\end{diagram}
+$$
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+        \frametitle{References}
+        \bibliographystyle{amsalpha}
+        \bibliography{moadeeb-refs.bib}
+
+
+\end{frame}
+
+% \begin{frame}
+% \bibliography{moadeeb-refs}
+% \end{frame}
+
+\section{Equation discovery}
+
+
+\end{document}
+
+% % \begin{frame}{Algoritem za odkrivanje ena"cb}
+% % \begin{itemize}
+% % [<+->]
+% %     \item dsa
+% % \end{itemize}
+% % \end{frame}
