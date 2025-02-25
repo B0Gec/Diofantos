@@ -61,10 +61,11 @@ if METHOD == 'SINDy':
     from sindy_oeis import sindy, preprocess, heuristic, sindy_grid, one_results
 
 if METHOD == 'Mavi':
+    raise ValueError('Mavi not researching ATM!')
     sys.path.append('../monomial-agnostic-vanishing-ideal')
     from mavi.vanishing_ideal import VanishingIdeal
     # from mavi_oeis import one_results
-    from mavi_oeis import domavi
+    # from mavi_oeis import domavi
 
 if METHOD == 'MB':
     MAX_BITSIZE = 30
