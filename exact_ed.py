@@ -16,7 +16,7 @@ from itertools import product
 # else:
 # from ProGED_oeis.diophantine_solver import diophantine_solve
 from diophantine_solver import diophantine_solve
-from loadtrans import trans_input, trans_output
+from loadtrans import dasco_dict, trans_input, trans_output
 
 
 # print("IDEA: max ORDER for GRAMMAR = floor(DATASET ROWS (LEN(SEQ)))/2)-1")
@@ -889,7 +889,8 @@ def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False):
     n_input=15 or 25 and n_pred=1 or 10 as in the paper by d'Ascoli."""
 
 
-    seq = trans_input(seq_id, n_input) + trans_output(seq_id, n_input, n_pred=10)
+    dic = dasco_dict()
+    seq = trans_input(seq_id, n_input, dic) + trans_output(seq_id, n_input, n_pred=10, dic=dic)
     csv = pd.DataFrame({seq_id: seq})
     # print(csv)
     # print(list(csv[seq_id]))
@@ -904,7 +905,7 @@ def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False):
         seq_pred = is_check_verbose[1]
     else:
         from eq_ideal import predict_with_explicit
-        train_seq = trans_input(seq_id, n_input)
+        train_seq = trans_input(seq_id, n_input, dic)
         # print(f'{len(train_seq) = }')
         if eq == 'MB not reconst':
             seq_pred = 'no reconst'

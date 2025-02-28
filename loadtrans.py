@@ -12,13 +12,23 @@ import pandas as pd
 
 # 1.) load into dictionary of {A000001: [-3,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], ...}
 # 0.) Analisys of the whole data:
-with open('julia/urb-and-dasco/OEIS_easy.txt', 'r') as f:
-    content = f.read()
-    pairs = re.findall(r'(A\d{6}) ,([-\d,]+),\n', content)
 
-csv_zerows = pd.DataFrame({i[0]:[] for i in pairs})
-# print(csv_zerows)
-dic = {i[0]: [int(j) for j in i[1].split(',')] for i in pairs}
+dasco_file = 'julia/urb-and-dasco/OEIS_easy.txt'
+
+def dict_csv(dasco_file=dasco_file):
+    """load data from dasco's data file"""
+    with open(dasco_file, 'r') as f:
+        content = f.read()
+        pairs = re.findall(r'(A\d{6}) ,([-\d,]+),\n', content)
+
+    csv_zerows = pd.DataFrame({i[0]:[] for i in pairs})
+    # print(csv_zerows)
+    dic = {i[0]: [int(j) for j in i[1].split(',')] for i in pairs}
+    return dic, csv_zerows
+
+def dasco_dict(dasco_file=dasco_file):
+    dic, _ = dict_csv(dasco_file)
+    return dic
 
 # print(csv_task_ids[:3])
 # print(len(dic['A000466']))
@@ -28,7 +38,7 @@ dic = {i[0]: [int(j) for j in i[1].split(',')] for i in pairs}
 # print(els[:3])
 # print(f'{len(pairs)} sequences ...             found in OEISformer database')
 
-def trans_input(seq_id, n_input):
+def trans_input(seq_id, n_input, dic):
     if n_input not in (15, 25):
         raise ValueError(f'n_input:{n_input} is not the same as in paper of  OEISformers !!!!')
     if seq_id not in dic:
@@ -38,10 +48,10 @@ def trans_input(seq_id, n_input):
     else:
         return dic[seq_id][:n_input]
 
-def csv_input(seq_id, n_input):
-    return pd.DataFrame({seq_id: trans_input(seq_id, n_input)})
+def csv_input(seq_id, n_input, dic):
+    return pd.DataFrame({seq_id: trans_input(seq_id, n_input, dic)})
 
-def trans_output(seq_id, n_input, n_pred):
+def trans_output(seq_id, n_input, n_pred, dic):
     if n_input not in (15, 25):
         raise ValueError(f'n_input:{n_input} is not the same as in paper of  OEISformers !!!!')
     if n_pred not in (1, 10):
@@ -54,12 +64,9 @@ def trans_output(seq_id, n_input, n_pred):
         return dic[seq_id][n_input:n_input+n_pred]
 
 
-
 # input = trans_input('A000466', 15)
 # output = trans_output('A000466', 15, 1)
 # print(len(input), input)
 # print(make_csv('A000045', input))
 # print(csv_input('A000002', 25))
 # print(len(output), output)
-
-

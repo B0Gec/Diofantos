@@ -39,9 +39,9 @@ EXECUTE_REAL = True
 
 
 OEISformer = True
-OEISformer = False
+# OEISformer = False
 if OEISformer:
-    from loadtrans import csv_input, csv_zerows
+    from loadtrans import dict_csv, dasco_dict, csv_input
     N_INPUT = 15
     N_INPUT = 25
     print(f'OEISformer: True, n_input: {N_INPUT}, special input database used.')
@@ -475,6 +475,7 @@ fail = (BUGLIST and task_id >= len(buglist)) or fail
 csv = pd.read_csv(csv_filename, low_memory=False, nrows=0)
 if OEISformer:
     CORELIST = False
+    dic, csv_zerows = dict_csv()
     csv = csv_zerows
 n_of_seqs = len(list(csv.columns))
 # print(csv.columns[:100])
@@ -536,7 +537,7 @@ else:
     if not OEISformer:
         csv = pd.read_csv(csv_filename, low_memory=False, usecols=[seq_id])[:N_OF_TERMS_LOAD]
     else:
-        csv = csv_input(seq_id, N_INPUT)
+        csv = csv_input(seq_id, N_INPUT, dic)
     # nans are checked by every function separately since exact_ed needs also ground truth
 
     csv.head()
