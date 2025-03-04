@@ -16,7 +16,7 @@ from itertools import product
 # else:
 # from ProGED_oeis.diophantine_solver import diophantine_solve
 from diophantine_solver import diophantine_solve
-from loadtrans import dasco_dict, trans_input, trans_output
+from loadtrans import dasco_dict, dasco_file, trans_input, trans_output
 
 
 # print("IDEA: max ORDER for GRAMMAR = floor(DATASET ROWS (LEN(SEQ)))/2)-1")
@@ -884,12 +884,12 @@ def sol_order(x: sp.Matrix, solution_ref: list[str]) -> (int, dict):
     return max([0] + [max([0] + [o for o in orders if str(o) in var]) for var, _ in x_dict.items()]), x_dict
 
 
-def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False):
+def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False, dasco_file=dasco_file):
     """Check if the equation holds for the sequence, to calculate prediction accuracy for
     n_input=15 or 25 and n_pred=1 or 10 as in the paper by d'Ascoli."""
 
 
-    dic = dasco_dict()
+    dic = dasco_dict(dasco_file)
     seq = trans_input(seq_id, n_input, dic) + trans_output(seq_id, n_input, n_pred=10, dic=dic)
     csv = pd.DataFrame({seq_id: seq})
     # print(csv)

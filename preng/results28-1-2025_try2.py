@@ -8,12 +8,16 @@ import re
 import pandas as pd
 import sympy as sp
 from jupyter_core.version import pattern
+from sympy.solvers.solveset import linear_coeffs
 
 from loadtrans import dasco_dict
 
 
 # 0. Import seq_ids of linrec_and_dasco.csv
 seq_ids = pd.read_csv('linrec_and_dasco.csv', low_memory=False, nrows=0).columns
+print(seq_ids)
+# print(seq_ids[3])
+# 1/0
 
 dasco_file = '../julia/urb-and-dasco/OEIS_easy.txt'
 dasco = dasco_dict(dasco_file)
@@ -94,55 +98,76 @@ count_id_15 = 0
 count_a_ns = 0
 count_implicit = 0
 
-def extract_eq(ans, n_input):
+def extract_lin_eq(ans, n_input):
+    """Extract linear equation from prompt answer."""
+
     ans = ans+' '
-    print(ans)
+    # print(f'{ans = }')
     # patterns = re.findall(r'(\w+_[ni] = \-?\d+\*\w+_\{[ni]\-\d+\} )(\+ \-?\d*\*?\w+_\{[ni]\-\d+\} )*', ans)
     # patterns = re.findall(r'(\w+_[ni] =)(\+? \-?\d*\*?\w+_\{[ni]\-\d+\} )*', ans)
     # print(patterns)
-    patterns = re.findall(r'\w+_[ni] = [{}*\w\d+_ -]+', ans)
-    eq = patterns[0]
-    lhs, rhs = eq.split('=')[0].strip(), eq.split('=')[1].strip()
-    a, n = lhs.split('_')
-    print(f'{lhs = }')
-    print(f'{a = }, {n = }')
-    # for term in rhs.split('+'):
-    #     print(term)
-    #     # coef_var = re.findall('(-?\d*)\*?(' + a + '_\{' + n + '-' + '\d+' + '\})', term)
-    #     coef_order = re.findall(f'(-?\d*)\*?{a}_\{{{n}-(\d+)\}}', term)
-    #     # print(f'(-?\d*)\*?({a}_\{{{n}-\d+\}})')
-    #     print(coef_order)
-    orders_coeffs = {int(order): coef for coef, order in [re.findall(f'(-?\d*)\*?{a}_\{{{n}-(\d+)\}}', term)[0] for term in rhs.split('+')]}
-    max_order = max(orders_coeffs.keys())
-    print(max_order)
-    # print(coefs_orders)
-    print(orders_coeffs)
-    lin_coeffs = [orders_coeffs.get(i, 0) for i in range(max_order, -1, -1)]
-    print(lin_coeffs)
+    patterns = re.findall(r'\w+_[ni] ?= ?[{}*\w\d+_ -]+', ans)
+    # print(f'{patterns = }')
 
+    lin_coeffs = []
+    for eq in patterns:
+        # eq = patterns[0]
+        lhs, rhs = eq.split('=')[0].strip(), eq.split('=')[1].strip()
+        a, n = lhs.split('_')
+        # print(f'{lhs = }')
+        # print(f'{a = }, {n = }')
+        # for term in rhs.split('+'):
+        #     print(term)
+        #     # coef_var = re.findall('(-?\d*)\*?(' + a + '_\{' + n + '-' + '\d+' + '\})', term)
+        #     coef_order = re.findall(f'(-?\d*)\*?{a}_\{{{n}-(\d+)\}}', term)
+        #     # print(f'(-?\d*)\*?({a}_\{{{n}-\d+\}})')
+        #     print(coef_order)
 
-    # 1/0
+        coef_pairs = [re.findall(f'^ *(-?\d*)\*?{a}_\{{{n}-(\d+)\}}', term) for term in rhs.split('+')]
+        # print(f'{coef_pairs = }')
+        if [] in coef_pairs:
+            continue
+
+        coef_dict = {'': 1, '-' : -1}
+
+        # orders_coeffs = {int(order): coef for coef, order in [y[0] for y in coef_pairs if len(y) > 0]}
+        orders_coeffs = {int(order): coef for coef, order in [y[0] for y in coef_pairs]}
+        max_order = max(orders_coeffs.keys())
+        # print(f'{max_order = }')
+        # print(coefs_orders)
+        # print(f'{orders_coeffs = }')
+        lin_coeffs = [0] + [int(coef_dict.get(orders_coeffs.get(i, 0), orders_coeffs.get(i, 0))) for i in range(1, max_order+1)]
+        # print(f'{lin_coeffs = }')
+        # print()
+
+    # if ' ' not in patterns[0][:4]:
+    #     1/0
     return lin_coeffs
 
 def extract_seq(question):
-    print('extract_seq')
-    seq = re.findall(r'[\d,]+', question)
+    """Extract first n_input sequence terms from a given prompt answer."""
+
+    # print('extract_seq')
+    seq = re.findall(r'[-\d,]+', question)
     if len(seq) > 1:
-        raise ValueError(f'found more than one sequence in the question: {seq}')
+        raise ValueError(f'found more than one sequence in the question: {seq = }\n{question = }')
     elif len(seq) == 0:
         return []
     else:
         seq = seq[0].split(',')
-        print(seq)
+        # print(seq)
         intseq = [int(i) for i in seq]
-        print(intseq)
-        print(len(intseq))
+        # print(intseq)
+        # print(len(intseq))
         return intseq
 
-def predict_accuracy(lincoeffs, seq_id, n_input, eq):
+def predict_accuracy(lincoeffs, i_row_p, n_input):
+    """Predict the next n_pred terms of the given integer sequence with a given recursive equation.
+    Subsequently, check the accuracy of the prediction.
+    """
 
+    from exact_ed import check_eq_dasco
     # from exact_ed import exact_ed, increasing_eed, timer, check_eq_man, check_truth, check_eq_dasco, unnan, unpack_seq, \
-
     #     solution_vs_truth, solution2str
     # x = sp.Matrix([0, 0, -9, 0, -36, 0, -84, 0, -126, 0, -126, 0, -84, 0, -36, 0, -9, 0, -1])
     # Idea of even simpler equation is not working:
@@ -151,9 +176,14 @@ def predict_accuracy(lincoeffs, seq_id, n_input, eq):
     from exact_ed import solution_reference
 
     sol_ref = solution_reference(library='lin', d_max=1, order=x.rows-1)
+    # print(sol_ref)
+    # 1/0
 
-    seq_id = seq_ids[i_row]
-    acc_1, acc_10 = check_eq_dasco(x, seq_id, solution_ref=sol_ref, n_input=n_input, eq=eq, mb=False)
+    seq_id = seq_ids[i_row_p]
+    if i_row_p % 10 == 0:
+        print(seq_id, i_row_p)
+    # 1/0
+    acc_1, acc_10 = check_eq_dasco(x, seq_id, solution_ref=sol_ref, n_input=n_input, mb=False, dasco_file=dasco_file)
     # print(x)
     # is_check = check_eq_man(x, id_, csv, library='lin')
     # is_reconst = acc_10
@@ -161,11 +191,29 @@ def predict_accuracy(lincoeffs, seq_id, n_input, eq):
     # dasco_result = f'dasco\'s acc_1, acc_10: {acc_1}, {acc_10} is stored in is_reconst and is_check\n'
     # output_string += dasco_result
     # output_string += f'n_input: {N_INPUT}\n'
-    return
+    return acc_1, acc_10
+
+# test predict_accuracy:
+pa = predict_accuracy([0, 1, 1, 0, 0], 8, 15)
+print(pa)
+# 1/0
+
+count_acc = [0, 0]
+count_no = 0
+count_eq_empty = 0
 
 up_limit = 6000
-up_limit = 15
-for i_row in range(min(dfres25.shape[0], up_limit)):
+# up_limit = 15
+# up_limit = 1035
+
+start_loc = 910
+start_loc = 1275
+start_loc = 1300
+start_loc = 1500
+start_loc = 2200
+# start_loc = 0
+start_loc = 3200
+for i_row in range(start_loc, min(dfres25.shape[0], up_limit)):
     # print('\nzacetek loopa')
     b1, b2, b3, b4 = [dfres15.iloc[i_row, c] for c in range(4)]
     c1, c2, c3, c4 = [dfres25.iloc[i_row, c] for c in range(4)]
@@ -181,41 +229,73 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
     # print(eqs)
     # 1/0
 
+    # print(f'{c1 = }')
+    # print(f'{i_row = }, {c3 = }')
     if [indic in c3 for indic in ['a_n = ', 'a_n=', 'x_n = ', 'f(n) = ']].count(True) > 0:
+        n_input_ = 25
         count_a_ns += 1
-        eq = extract_eq(c3, 25)
-        print(eq)
+        eq = extract_lin_eq(c3, n_input_)
+        # if i_row == 1315:
+        #     1/0
+        if eq == []:
+            count_eq_empty += 1
+            # raise ValueError(f'eq is empty: {eq = }, first of a kind')
+            continue
+        # print(f'{eq = }')
         prompt_seq = extract_seq(question=c1)
-        print(prompt_seq)
+        # print(f'{prompt_seq = }')
         needed_length = 35
-        matches = [(k, v) for k, v in dasco.items() if v[:len(prompt_seq)] == prompt_seq]
-        for _, m in matches:
-            print(m[25:35])
-        1/0
-        correct = [v[:needed_length] == matches[0][1][:needed_length] for k, v in matches]
-        print(correct)
-        print(matches)
-        print(len(matches))
-        1/0
+        pa = predict_accuracy(eq, i_row, n_input_)
+        # print(f'{pa = }')
+        # print(f'{count_acc = }')
+        count_acc = [count_acc[0] + bool(pa[0]), count_acc[1] + bool(pa[1])]
+        # print(f'{count_acc = }')
+
+        # We found collisions:
+        # matches = [(k, v) for k, v in dasco.items() if v[:len(prompt_seq)] == prompt_seq]
+        # for _, m in matches:
+        #     print(m[25:35])
+        # 1/0
+        # correct = [v[:needed_length] == matches[0][1][:needed_length] for k, v in matches]
+        # print(correct)
+        # print(matches)
+        # print(len(matches))
+        # 1/0
     elif '_{' in c3:
         count_implicit += 1
+    else:
+        count_no += 1
 
     # print('loop end')
+
+    if i_row % 100 == 0:
+        acc = count_acc[0] / count_a_ns, count_acc[1] / count_a_ns
+        print(f'Accuracy of n_pred = 15: {acc[0] * 100}%, accuracy of n_pred = 25: {acc[1] * 100}%')
 
 
 
 from exact_ed import check_eq_dasco
 
+all_rows = dfres25.shape[0]
+
 print(f'no error found in the first {up_limit} rows !!!')
 print(dfres25.columns)
 
 print(f'{count_id_15 = }, {count_id_25 = }')
-print(f'success rate of 15: {count_id_15/dfres25.shape[0]*100}%')
-print(f'success rate of 25: {count_id_25/dfres25.shape[0]*100}%')
+print(f'"Identical" success rate of 15: {count_id_15/dfres25.shape[0]*100}%')
+print(f'"Identical" success rate of 25: {count_id_25/dfres25.shape[0]*100}%')
 print(f'{count_a_ns = }, remains {dfres25.shape[0] - count_a_ns - count_implicit}')
-print(f'{count_implicit = }')
+print(f'{count_implicit = }, {count_no = }')
 # 2130 ., remains
 
+acc = count_acc[0]/dfres25.shape[0], count_acc[1]/dfres25.shape[0]
 
+print(f'{count_acc = }, {count_a_ns = }, {up_limit = }, {count_eq_empty = }')
+print(f'Accuracy of n_pred = 1: {acc[0]*100}%, accuracy of n_pred = 10: {acc[1]*100}%')
 
-
+# First complete results:
+# count_implicit = 8, count_no = 199
+# count_acc = [1497, 1339], count_a_ns = 2135, up_limit = 6000, count_eq_empty = 9
+# Accuracy of n_pred = 1: 63.919726729291206%, accuracy of n_pred = 10: 57.1733561058924%
+count_acc_exp = [1497, 1339]
+print(f'Accuracy of n_pred = 1: {count_acc_exp[0]/all_rows*100}%, accuracy of n_pred = 10: {count_acc_exp[1]/all_rows*100}%')
