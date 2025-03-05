@@ -11,6 +11,7 @@ from jupyter_core.version import pattern
 from sympy.solvers.solveset import linear_coeffs
 
 from loadtrans import dasco_dict
+from exact_ed import check_eq_dasco
 
 
 # 0. Import seq_ids of linrec_and_dasco.csv
@@ -88,15 +89,6 @@ print('\n'*1)
 
 print('Loop start!\n')
 
-count_control = 0
-count_rage = 0
-count_possible_sol = 0
-
-count_id_25 = 0
-count_id_15 = 0
-
-count_a_ns = 0
-count_implicit = 0
 
 def extract_lin_eq(ans, n_input):
     """Extract linear equation from prompt answer."""
@@ -193,110 +185,136 @@ def predict_accuracy(lincoeffs, i_row_p, n_input):
     # output_string += f'n_input: {N_INPUT}\n'
     return acc_1, acc_10
 
+
 # test predict_accuracy:
 pa = predict_accuracy([0, 1, 1, 0, 0], 8, 15)
 print(pa)
 # 1/0
 
-count_acc = [0, 0]
-count_no = 0
-count_eq_empty = 0
 
 up_limit = 6000
-# up_limit = 15
+up_limit = 15
 # up_limit = 1035
 
-start_loc = 910
-start_loc = 1275
-start_loc = 1300
-start_loc = 1500
-start_loc = 2200
-# start_loc = 0
-start_loc = 3200
-for i_row in range(start_loc, min(dfres25.shape[0], up_limit)):
-    # print('\nzacetek loopa')
-    b1, b2, b3, b4 = [dfres15.iloc[i_row, c] for c in range(4)]
-    c1, c2, c3, c4 = [dfres25.iloc[i_row, c] for c in range(4)]
-    c3 = 'nan' if str(c3) == 'nan' else c3
-    b3 = 'nan' if str(b3) == 'nan' else b3
+# start_loc = 910
+# start_loc = 1275
+# start_loc = 1300
+# start_loc = 1500
+# start_loc = 2200
+# start_loc = 3200
+start_loc = 0
 
-    if c3 == c4:
-        count_id_25 += 1
-        # print(f'{c1 = }\n{c3 = }\n{c4 = }\n')
-    if b3 == b4:
-        count_id_15 += 1
-    # eqs = re.findall('[ax]_n = (-?\d+\*[ax]_\{n-\d+\} )', c3+ ' ')
-    # print(eqs)
-    # 1/0
 
-    # print(f'{c1 = }')
-    # print(f'{i_row = }, {c3 = }')
-    if [indic in c3 for indic in ['a_n = ', 'a_n=', 'x_n = ', 'f(n) = ']].count(True) > 0:
-        n_input_ = 25
-        count_a_ns += 1
-        eq = extract_lin_eq(c3, n_input_)
-        # if i_row == 1315:
-        #     1/0
-        if eq == []:
-            count_eq_empty += 1
-            # raise ValueError(f'eq is empty: {eq = }, first of a kind')
-            continue
-        # print(f'{eq = }')
-        prompt_seq = extract_seq(question=c1)
-        # print(f'{prompt_seq = }')
-        needed_length = 35
-        pa = predict_accuracy(eq, i_row, n_input_)
-        # print(f'{pa = }')
-        # print(f'{count_acc = }')
-        count_acc = [count_acc[0] + bool(pa[0]), count_acc[1] + bool(pa[1])]
-        # print(f'{count_acc = }')
+def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
+    """Calculate the accuracy of n_pred = 1 and n_pred = 10 of the given data frame of the results.
+    """
 
-        # We found collisions:
-        # matches = [(k, v) for k, v in dasco.items() if v[:len(prompt_seq)] == prompt_seq]
-        # for _, m in matches:
-        #     print(m[25:35])
+    count_control = 0
+    count_rage = 0
+    count_possible_sol = 0
+
+    count_id = 0
+    # count_id_15 = 0
+
+    count_a_ns = 0
+    count_implicit = 0
+
+    count_acc = [0, 0]
+    count_no = 0
+    count_eq_empty = 0
+
+
+    for i_row in range(start_loc, min(df.shape[0], up_limit)):
+        # print('\nzacetek loopa')
+        # b1, b2, b3, b4 = [dfres15.iloc[i_row, c] for c in range(4)]
+        c1, c2, c3, c4 = [df.iloc[i_row, c] for c in range(4)]
+        c3 = 'nan' if str(c3) == 'nan' else c3
+        # b3 = 'nan' if str(b3) == 'nan' else b3
+
+        if c3 == c4:
+            count_id += 1
+            # print(f'{c1 = }\n{c3 = }\n{c4 = }\n')
+        # if b3 == b4:
+        #     count_id_15 += 1
+        # eqs = re.findall('[ax]_n = (-?\d+\*[ax]_\{n-\d+\} )', c3+ ' ')
+        # print(eqs)
         # 1/0
-        # correct = [v[:needed_length] == matches[0][1][:needed_length] for k, v in matches]
-        # print(correct)
-        # print(matches)
-        # print(len(matches))
-        # 1/0
-    elif '_{' in c3:
-        count_implicit += 1
-    else:
-        count_no += 1
 
-    # print('loop end')
+        # print(f'{c1 = }')
+        # print(f'{i_row = }, {c3 = }')
+        if [indic in c3 for indic in ['a_n = ', 'a_n=', 'x_n = ', 'f(n) = ']].count(True) > 0:
+            n_input_ = 25
+            count_a_ns += 1
+            eq = extract_lin_eq(c3, n_input_)
+            # if i_row == 1315:
+            #     1/0
+            if eq == []:
+                count_eq_empty += 1
+                # raise ValueError(f'eq is empty: {eq = }, first of a kind')
+                continue
+            # print(f'{eq = }')
+            # prompt_seq = extract_seq(question=c1)
+            # print(f'{prompt_seq = }')
+            needed_length = 35
+            pa = predict_accuracy(eq, i_row, n_input_)
+            # print(f'{pa = }')
+            # print(f'{count_acc = }')
+            count_acc = [count_acc[0] + bool(pa[0]), count_acc[1] + bool(pa[1])]
+            # print(f'{count_acc = }')
 
-    if i_row % 100 == 0:
-        acc = count_acc[0] / count_a_ns, count_acc[1] / count_a_ns
-        print(f'Accuracy of n_pred = 15: {acc[0] * 100}%, accuracy of n_pred = 25: {acc[1] * 100}%')
+            # We found collisions:
+            # matches = [(k, v) for k, v in dasco.items() if v[:len(prompt_seq)] == prompt_seq]
+            # for _, m in matches:
+            #     print(m[25:35])
+            # 1/0
+            # correct = [v[:needed_length] == matches[0][1][:needed_length] for k, v in matches]
+            # print(correct)
+            # print(matches)
+            # print(len(matches))
+            # 1/0
+
+        elif '_{' in c3:
+            count_implicit += 1
+        else:
+            count_no += 1
+
+        # print('loop end')
+
+        if i_row % 100 == 0:
+            acc = count_acc[0] / count_a_ns, count_acc[1] / count_a_ns
+            print(f'Accuracy of n_pred = 1: {acc[0] * 100:.2f} %, accuracy of n_pred = 10: {acc[1] * 100:.2f} %')
 
 
+    all_rows = df.shape[0]
 
-from exact_ed import check_eq_dasco
+    print(f'no error found in the first {up_limit} rows !!!')
+    print(df.columns)
 
-all_rows = dfres25.shape[0]
+    print()
+    # print(f'{count_id_15 = }')
+    print(f'{count_id = }')
+    # print(f'"Identical" success rate of 15: {count_id_15/df.shape[0]*100}%')
+    print(f'"Identical" success rate: {count_id/df.shape[0]*100}%')
+    print(f'{count_a_ns = }, remains {df.shape[0] - count_a_ns - count_implicit}')
+    print(f'{count_implicit = }, {count_no = }')
+    # 2130 ., remains
 
-print(f'no error found in the first {up_limit} rows !!!')
-print(dfres25.columns)
+    acc = count_acc[0]/df.shape[0], count_acc[1]/df.shape[0]
 
-print(f'{count_id_15 = }, {count_id_25 = }')
-print(f'"Identical" success rate of 15: {count_id_15/dfres25.shape[0]*100}%')
-print(f'"Identical" success rate of 25: {count_id_25/dfres25.shape[0]*100}%')
-print(f'{count_a_ns = }, remains {dfres25.shape[0] - count_a_ns - count_implicit}')
-print(f'{count_implicit = }, {count_no = }')
-# 2130 ., remains
+    print(f'\nResults for n_input = {n_input}:')
+    print(f'{count_acc = }, {count_a_ns = }, {up_limit = }, {count_eq_empty = }')
+    print(f'Accuracy of n_pred = 1: {acc[0]*100:.2f} %, accuracy of n_pred = 10: {acc[1]*100:.2f} %')
 
-acc = count_acc[0]/dfres25.shape[0], count_acc[1]/dfres25.shape[0]
+    # First complete results:
+    # count_implicit = 8, count_no = 199
+    # count_acc = [1497, 1339], count_a_ns = 2135, up_limit = 6000, count_eq_empty = 9
+    # Accuracy of n_pred = 1: 63.919726729291206%, accuracy of n_pred = 10: 57.1733561058924%
+    # count_acc_exp = [1497, 1339]
+    # print(f'Accuracy of n_pred = 1: {count_acc_exp[0]/all_rows*100}%, accuracy of n_pred = 10: {count_acc_exp[1]/all_rows*100}%')
+    return
 
-print(f'{count_acc = }, {count_a_ns = }, {up_limit = }, {count_eq_empty = }')
-print(f'Accuracy of n_pred = 1: {acc[0]*100}%, accuracy of n_pred = 10: {acc[1]*100}%')
+# accuracy(dfres25)
 
-# First complete results:
-# count_implicit = 8, count_no = 199
-# count_acc = [1497, 1339], count_a_ns = 2135, up_limit = 6000, count_eq_empty = 9
-# Accuracy of n_pred = 1: 63.919726729291206%, accuracy of n_pred = 10: 57.1733561058924%
-count_acc_exp = [1497, 1339]
-print(f'Accuracy of n_pred = 1: {count_acc_exp[0]/all_rows*100}%, accuracy of n_pred = 10: {count_acc_exp[1]/all_rows*100}%')
+# accuracy(dfres15, up_limit=10)
+accuracy(dfres15, n_input=15)
 

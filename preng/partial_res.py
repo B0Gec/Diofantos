@@ -10,7 +10,10 @@ df = pd.read_csv('linrec_and_dasco.csv')
 print(df.columns)
 
 # dirname = '../results/goodmb/mbtmN25'
-dirname = '../results/good/transfoeis_acc2'
+# dirname = '../results/good/transfoeis_acc2'
+# dirname = '../results/goodmb/mbtmord20r'
+dirname = '../results/good/n15_acc'
+
 files = os.listdir(dirname)
 ids = [i[6:6+7] for i in files]
 # sortids = sorted(ids)
@@ -30,12 +33,18 @@ print(len(linrec_and_dascos))
 # 1/0
 print(linrec_and_dascos[:10])
 # command = f'cp {cmd_list} ../mbtmN25-linrec_dasco'
-command = f'cp {cmd_list} ../transfoeis_acc2_lin_dasco'
+# command = f'cp {cmd_list} ../transfoeis_acc2_lin_dasco'
+# command = f'cp {cmd_list} ../mbtmord20r-linrec_dasco'
+command = f'cp {cmd_list} ../n15_acc_lin_dasco'
+
 print()
 print(command)
 
 # results:
 mb_lin_dasc = 1903, 1693
+mb_lin_dasc15 = 1753, 1525
+dp_lin_dasc15 = 1753, 1560
 print(f'mb successs rate on linrec_and_dasco: n_pred=1 {mb_lin_dasc[0]/2342*100:.2f} %, n_pred=10 {mb_lin_dasc[1]/2342*100:.2f} %')
-
+print(f'mb n_input=15 successs rate on linrec_and_dasco: n_pred=1 {mb_lin_dasc15[0]/2342*100:.2f} %, n_pred=10 {mb_lin_dasc15[1]/2342*100:.2f} %')
+print(f'dp n_input=15 successs rate on linrec_and_dasco: n_pred=1 {dp_lin_dasc15[0]/2342*100:.2f} %, n_pred=10 {dp_lin_dasc15[1]/2342*100:.2f} %')
 

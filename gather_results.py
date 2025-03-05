@@ -140,9 +140,10 @@ job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
 # # job_id = 'transfoeis_place'
 # # job_id = 'transfoeis_acc'
 job_id = 'transfoeis_acc2'  # this are official results for n_input=25 (and n_pred=1 and 10)
-# job_id = 'n15_acc'        # this are official results for n_input=15 (and n_pred=1 and 10)
+job_id = 'n15_acc'        # this are official results for n_input=15 (and n_pred=1 and 10)
 # # # job_id = 'n15_ord5'
-job_id = 'transfoeis_acc2_lin_dasco'  # this are official results for n_input=25 (and n_pred=1 and 10)
+# job_id = 'transfoeis_acc2_lin_dasco'
+job_id = 'n15_acc_lin_dasco'
 
 # #
 # # # 4.12.2024 - 6.12 -? mb linrec
@@ -151,8 +152,10 @@ job_id = 'transfoeis_acc2_lin_dasco'  # this are official results for n_input=25
 # job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec11.2024.
 # job_id = 'mbcor'  # bitsize = 50   # this are the reported results from dec11.2024.
 # job_id = 'mbtmoeis'
+
 # job_id = 'mbtmord20'
 # job_id = 'mbtmord20r'   # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10)
+# job_id = 'mbtmord20r-linrec_dasco'
 # job_id = 'mbtmN25'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
 # job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
 
@@ -175,7 +178,7 @@ base_dir = "results/goodmb/"
 #     base_dir = "results/goodmb/"
 if job_id in ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable',
               'sicor9fix2', 'sicor1114', 'findicor',
-              'transfoeis_acc2', 'transfoeis_acc2_lin_dasco', 'n15_acc', ):
+              'transfoeis_acc2', 'transfoeis_acc2_lin_dasco', 'n15_acc', 'n15_acc_lin_dasco', ):
     base_dir = "results/good/"
 
 TMOEIS = job_id in ('transfoei_place', 'transfoeis_acc', 'transfoeis_acc2', 'n15_acc', 'mbtmoeis', 'mbtmord20',
