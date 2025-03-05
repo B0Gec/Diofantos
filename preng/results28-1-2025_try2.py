@@ -299,3 +299,4 @@ print(f'Accuracy of n_pred = 1: {acc[0]*100}%, accuracy of n_pred = 10: {acc[1]*
 # Accuracy of n_pred = 1: 63.919726729291206%, accuracy of n_pred = 10: 57.1733561058924%
 count_acc_exp = [1497, 1339]
 print(f'Accuracy of n_pred = 1: {count_acc_exp[0]/all_rows*100}%, accuracy of n_pred = 10: {count_acc_exp[1]/all_rows*100}%')
+

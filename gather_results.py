@@ -139,9 +139,11 @@ job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
 
 # # job_id = 'transfoeis_place'
 # # job_id = 'transfoeis_acc'
-# job_id = 'transfoeis_acc2'  # this are official results for n_input=25 (and n_pred=1 and 10)
+job_id = 'transfoeis_acc2'  # this are official results for n_input=25 (and n_pred=1 and 10)
 # job_id = 'n15_acc'        # this are official results for n_input=15 (and n_pred=1 and 10)
 # # # job_id = 'n15_ord5'
+job_id = 'transfoeis_acc2_lin_dasco'  # this are official results for n_input=25 (and n_pred=1 and 10)
+
 # #
 # # # 4.12.2024 - 6.12 -? mb linrec
 # # job_id = 'mblinrec'
@@ -152,6 +154,7 @@ job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
 # job_id = 'mbtmord20'
 # job_id = 'mbtmord20r'   # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10)
 # job_id = 'mbtmN25'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
+# job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
 
 print(job_id)
 # 1/0
@@ -172,7 +175,7 @@ base_dir = "results/goodmb/"
 #     base_dir = "results/goodmb/"
 if job_id in ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable',
               'sicor9fix2', 'sicor1114', 'findicor',
-              'transfoeis_acc2', 'n15_acc', ):
+              'transfoeis_acc2', 'transfoeis_acc2_lin_dasco', 'n15_acc', ):
     base_dir = "results/good/"
 
 TMOEIS = job_id in ('transfoei_place', 'transfoeis_acc', 'transfoeis_acc2', 'n15_acc', 'mbtmoeis', 'mbtmord20',
@@ -189,8 +192,9 @@ CORES = job_id in ("diocores77", 'diocor-merge', 'sindycore83', 'dicor-cub', 'di
 if CORES:
     csv_cols = list(pd.read_csv('cores_test.csv').columns)
     if TMOEIS:
-        from loadtrans import csv_zerows
-        csv_cols = list(csv_zerows.columns)
+        from loadtrans import dict_csv
+        # csv_cols = list(csv_zerows.columns)
+        csv_cols = list(dict_csv()[1].columns)
     # print(csv_cols)
     # 1/0
 
