@@ -1,6 +1,8 @@
 of 28.1.2025.
 analyzed 27.2.2025
 
+All seqs: 2342
+
 identical output:
 15      25
 1170    1186    out of 2342 i.e.
@@ -38,17 +40,28 @@ Accuracy of n_pred = 1: 63.75 %, accuracy of n_pred = 10: 55.81 %
 mb n_input=15 successs rate on linrec_and_dasco: n_pred=1 74.85 %, n_pred=10 65.12 %
 dp n_input=15 successs rate on linrec_and_dasco: n_pred=1 74.85 %, n_pred=10 66.61 %
 
-Prvi rezultati so naslednji:
+# Prvi rezultati so naslednji:
+Drugi (nasel bug, gledal 25 namesto 15) rezultati so naslednji: (6.3.2025)
 
                n_input = 15        n_input = 25
 Model       n_pred=1  n_pred=10  n_pred=1  n_pred=10
 Diofantos   74.85 %   66.61%     75.02%    71.47%
 MoadeeB     74.85 %   65.12 %    81.26 %   72.29 %
-LLM         63.75 %   55.81 %    63.92 %   57.17 %
+LLM         73.27 %   58.58 %    63.92 %   57.17 %
 
             n_input = 15   n_input = 25
 Model         n_pred=10    n_pred=10
 Diofantos     66.61%       71.47%
 MoadeeB       65.12 %      72.29 %
-LLM           55.81 %      57.17 %
+LLM           58.58 %      57.17 %
 
+
+Results for n_input = 15:
+count_acc = [1716, 1372], count_a_ns = 2319, up_limit = 100000000, count_eq_empty = 13
+Accuracy of n_pred = 1: 73.27 %, accuracy of n_pred = 10: 58.58 %
+count_fail_too_big = 348, i.e. 14.86 %
+
+
+# first analysis:
+# gt length of coefficients > 15 or > 25:
+# c_b15 = 520, c_b25 = 0

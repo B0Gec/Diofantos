@@ -4,6 +4,7 @@ Analyze the results from 28.1.2025.
 
 import math
 import re
+import random
 
 import pandas as pd
 import sympy as sp
@@ -13,6 +14,7 @@ from sympy.solvers.solveset import linear_coeffs
 from loadtrans import dasco_dict
 from exact_ed import check_eq_dasco
 
+random.seed(0)
 
 # 0. Import seq_ids of linrec_and_dasco.csv
 seq_ids = pd.read_csv('linrec_and_dasco.csv', low_memory=False, nrows=0).columns
@@ -90,7 +92,7 @@ print('\n'*1)
 print('Loop start!\n')
 
 
-def extract_lin_eq(ans, n_input):
+def extract_lin_eq(ans):
     """Extract linear equation from prompt answer."""
 
     ans = ans+' '
@@ -172,6 +174,7 @@ def predict_accuracy(lincoeffs, i_row_p, n_input):
     # 1/0
 
     seq_id = seq_ids[i_row_p]
+    # if i_row_p % 1 == 0:
     if i_row_p % 10 == 0:
         print(seq_id, i_row_p)
     # 1/0
@@ -205,16 +208,16 @@ up_limit = 15
 start_loc = 0
 
 
-def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
+def accuracy(df, up_limit=10**8, start_loc=0, n_input=25, random_size=None):
     """Calculate the accuracy of n_pred = 1 and n_pred = 10 of the given data frame of the results.
     """
 
+    print('\nIn accuracy')
     count_control = 0
     count_rage = 0
     count_possible_sol = 0
 
     count_id = 0
-    # count_id_15 = 0
 
     count_a_ns = 0
     count_implicit = 0
@@ -223,8 +226,15 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
     count_no = 0
     count_eq_empty = 0
 
+    count_fail_too_big = 0
 
-    for i_row in range(start_loc, min(df.shape[0], up_limit)):
+    to_check = range(start_loc, min(df.shape[0], up_limit))
+
+    if random_size is not None:
+        random_sample = random.choices(range(df.shape[0]), k=random_size)
+        to_check = random_sample
+
+    for i_row in to_check:
         # print('\nzacetek loopa')
         # b1, b2, b3, b4 = [dfres15.iloc[i_row, c] for c in range(4)]
         c1, c2, c3, c4 = [df.iloc[i_row, c] for c in range(4)]
@@ -243,9 +253,8 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
         # print(f'{c1 = }')
         # print(f'{i_row = }, {c3 = }')
         if [indic in c3 for indic in ['a_n = ', 'a_n=', 'x_n = ', 'f(n) = ']].count(True) > 0:
-            n_input_ = 25
             count_a_ns += 1
-            eq = extract_lin_eq(c3, n_input_)
+            eq = extract_lin_eq(c3)
             # if i_row == 1315:
             #     1/0
             if eq == []:
@@ -255,8 +264,9 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
             # print(f'{eq = }')
             # prompt_seq = extract_seq(question=c1)
             # print(f'{prompt_seq = }')
-            needed_length = 35
-            pa = predict_accuracy(eq, i_row, n_input_)
+            if len(eq)-1 > n_input:
+                count_fail_too_big += 1
+            pa = predict_accuracy(eq, i_row, n_input)
             # print(f'{pa = }')
             # print(f'{count_acc = }')
             count_acc = [count_acc[0] + bool(pa[0]), count_acc[1] + bool(pa[1])]
@@ -291,9 +301,7 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
     print(df.columns)
 
     print()
-    # print(f'{count_id_15 = }')
     print(f'{count_id = }')
-    # print(f'"Identical" success rate of 15: {count_id_15/df.shape[0]*100}%')
     print(f'"Identical" success rate: {count_id/df.shape[0]*100}%')
     print(f'{count_a_ns = }, remains {df.shape[0] - count_a_ns - count_implicit}')
     print(f'{count_implicit = }, {count_no = }')
@@ -304,6 +312,7 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
     print(f'\nResults for n_input = {n_input}:')
     print(f'{count_acc = }, {count_a_ns = }, {up_limit = }, {count_eq_empty = }')
     print(f'Accuracy of n_pred = 1: {acc[0]*100:.2f} %, accuracy of n_pred = 10: {acc[1]*100:.2f} %')
+    print(f'{count_fail_too_big = }, in procentage: {count_fail_too_big/df.shape[0]*100:.2f} %, ')
 
     # First complete results:
     # count_implicit = 8, count_no = 199
@@ -316,5 +325,7 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25):
 # accuracy(dfres25)
 
 # accuracy(dfres15, up_limit=10)
-accuracy(dfres15, n_input=15)
+accuracy(dfres15, n_input=15, up_limit=30)
+# accuracy(dfres15, n_input=15, random_size=10)
+# accuracy(dfres15, n_input=15)
 
