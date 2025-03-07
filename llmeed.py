@@ -11,12 +11,14 @@ import pandas as pd
 from exact_ed import unpack_seq
 
 TESTSET = False
-TESTSET = True
+# TESTSET = True
+
+dir = 'preng/'
 
 if TESTSET:
-    test_csv = pd.read_csv('linrec_and_dasco.csv', low_memory=False)
+    test_csv = pd.read_csv(dir + 'linrec_and_dasco.csv', low_memory=False)
 else:
-    train_csv = pd.read_csv('linrec_without_dasco.csv', low_memory=False)
+    train_csv = pd.read_csv(dir + 'linrec_without_dasco.csv', low_memory=False)
     # train_csv = pd.read_csv('linrec_without_dasco.csv', low_memory=False)
     # train_csv = pd.read_csv('linrec_without_dasco.csv', low_memory=False, usecols=['A000051'])
 
@@ -30,7 +32,8 @@ def sequence_to_parts(seq, length=15):
     split = [seq[i:i+length] for i in range(0, len(seq), length) if len(seq[i:i+length]) == length]
     return split
 
-# print(sequence_to_parts(seq, 15))
+print(sequence_to_parts([1,2,3,4,5,6, 7], 9))
+# 1/0
 
 def column_to_prompts(col_id, testset=TESTSET):
     """Convert a column of a dataframe to multiple prompts."""
@@ -58,9 +61,14 @@ def column_to_prompts(col_id, testset=TESTSET):
 example = "[INST] Could you give me a linear equation for the following number sequence: 0,0,1,2,4,7,12, ... [/INST] [RESP] Certainly, the equation is the following: a_n = 1*a_{n-1} + 1*a_{n-2} [/RESP]"
 
 
-file1, file2, b1, b2 = column_to_prompts('A000004')
+# file1, file2, b1, b2 = column_to_prompts('A000004')
+file1, file2, b1, b2 = column_to_prompts('A000042')
 print(file2)
-# 1/0
+print('this was 42')
+file1, file2, b1, b2 = column_to_prompts('A003555')
+print(file2)
+print('this was 3555')
+1/0
 
 def do_csv():
     file15, file25 = "", ""
@@ -74,10 +82,10 @@ def do_csv():
         backfile25 += bfile25
     return file15, file25, backfile15, backfile25
 
-WRITE_FILES = True
-# WRITE_FILES = False
-RUN = True
-# RUN = False
+# WRITE_FILES = True
+WRITE_FILES = False
+# RUN = True
+RUN = False
 if RUN:
     file15, file25, backfile15, backfile25 = do_csv()
     print(file15)

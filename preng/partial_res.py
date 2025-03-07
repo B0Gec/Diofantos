@@ -171,28 +171,80 @@ print(f'{init == gt = }')
 # i_row = 1366, c3 = 'Certainly, the equation is the following: a_n = 0*a_{n-1} + 0*a_{n-2} + 1*a_{n-3} + 0*a_{n-4} + 1*a_{n-5} + 0*a_{n-6} + 0*a_{n-7} + 0*a_{n-8} + 0*a_{n-9} + 0*a_{n-10} + 0*a_{n-11} + 0*a_{n-12} + 0*a_{n-13} + 0*a_{n-14} + 0*a_{n-15} + 0*a_{n-16} + 0*a_{n-17} + 0*a_{n-18} + 0*a_{n-19} + 0*a_{n-20} + 0*a_{n-21} + 0*a_{n-22} + 1*a_{n-23} + 0*a_{n-24} + 1*a_{n-25} + 0*a_{n-26} + 0*a_{n-27} + 1*a_{n-28} + 0*a_{n-29} + 0*a_{n-30} + -1*a_{n-31} + 0*a_{n-32} + -1*a_{n-33} + 0*a_{n-34} + 0*a_{n-35} + -1*a_{n-36} + 0*a_{n-37} + 0*a_{n-38} + 0*a_{n-39} + 0*a_{n-40} + 0*a_{n-41} + 0*a_{n-42} + 0*a_{n-43} + 0*a_{n-44} + 0*a_{n-45} + 0*a_{n-46} + 0*a_{n-47} + 0*a_{n-48} + 0*a_{n-49} + 0*a_{n-50} + 0*a_{n-51} + 0*a_{n-52} + 0*a_{n-53} + 0*a_{n-54} + -1*a_{n-55} + 0*a_{n-56} + -1*a_{n-57} + 0*a_{n-58} + 0*a_{n-59} + -1*a_{n-60} + 0*a_{n-61} + 0*a_{n-62} + 1*a_{n-63} + 0*a_{n-64} + 1*a_{n-65} + 0*a_{n-66} + 0*a_{n-67} + 1*a_{n-68} + 0*a_{n-69} + 0*a_{n-70} + 0*a_{n-71} + 0*a_{n-72} + 0*a_{n-73} + 0*a_{n-74} + 0*a_{n-75} + 0*a_{n-76} + 0*a_{n-77} + 0*a_{n-78} + 0*a_{n-79} + 0*a_{n-80} + 0*a_{n-81} + 0*a_{n-82} + 0*a_{n-83} + 0*a_{n-84} + 0*a_{n-85} + 0*a_{n-86} + 1*a_{n-87} + 0*a_{n-88} + 1*a_{n-89} + 0*a_{n-90} + 0*a_{n-91} + -1*a_{n-92} + 0*a_{n-9'
 
 
-# 2.) data leakage:
+# # 2.) data leakage:
+#
+# # todo: repair linrec_and_dasco.csv: 2 terms, add known terms absent in it. Redownload?.
+# # todo: remove .0 from  lin_and_dacso.csv and lin_without_dacso.csv
+# # check lin_witout_dasco.csv for len(seq) < 35
+# # check wierd .0,,,,,, origin in lin_witout_dasco.csv
+# df = pd.read_csv('linrec_and_dasco.csv')
+# dfw = pd.read_csv('linrec_without_dasco.csv', low_memory=False)
+# print()
+# print('data leakage')
+# mini = min([len(dfw[i].dropna()) for i in dfw.columns])
+# print(mini)
+# # Naslednja vrstica nima veze, saj sem v prompte vklučil samo zaporedja z 15 ali 25 členi.
+# a = [(i, len(y), y[2])  for i in dfw.columns if len(y:=dfw[i].dropna()) < 25]
+# print(a)
+# print(len(a))
+#
+# print(dfw['A003555'])
+# # 1/0
+#
+# leak = 0, 0
+# lad_15_25 = tuple([df[i].dropna()[1:l] for i in df] for l in (15, 25))
+# print(lad_15_25[0][:10])
+# print(lad_15_25[1][:10])
+# # 1/0
+# # for seq in dfw:
+# #     is_in = [seq[:n_input] in lad_15_25[n] for n, n_input in enumerate(15, 25)]
+# #     leak = tuple([l + i for l, i in zip(leak, is_in)])
+import re
 
-# todo: repair linrec_and_dasco.csv: 2 terms, add known terms absent in it. Redownload?.
-# todo: remove .0 from  lin_and_dacso.csv and lin_without_dacso.csv
-# check lin_witout_dasco.csv for len(seq) < 35
-# check wierd .0,,,,,, origin in lin_witout_dasco.csv
-df = pd.read_csv('linrec_and_dasco.csv')
-dfw = pd.read_csv('linrec_without_dasco.csv', low_memory=False)
-print()
-print('data leakage')
-mini = min([len(dfw[i].dropna()) for i in dfw.columns])
-print(mini)
-a = [(i, len(y), y[2])  for i in dfw.columns if len(y:=dfw[i].dropna()) < 25]
-print(a )
-print(len(a) )
+parts15_fn = '../../Documents/data-sets/pairs_15.txt'
+parts_filename = '../../Documents/data-sets/pairs_25.txt'
+n_input = int(parts_filename[-6:-4])
+print(n_input)
+# 1/0
+with open(parts_filename, 'r') as f:
+    content = f.read()
+    seqs = re.findall('\[INST\] Could you give me a linear equation for the following number sequence: ([-\d,]+) \[\/INST\]', content)
+    # print(content)
+
+print(len(seqs))
+print(seqs[:10])
+
+from exact_ed import unpack_seq
+
+sample = 4000
+contamined = 0
+cc = 0
+for i in df:
+    seq_matrix, coeffs_matrix, truth = unpack_seq(i, df)
+    # print('in loop')
+    # print(seq_matrix)
+    # print(coeffs_matrix, truth)
+    seq_strlist = [str(j) for j in seq_matrix]
+    # print(seq_strlist)
+    seq_str = ','.join(seq_strlist[:n_input])
+    # print(seq_str)
+    if seq_str in seqs:
+        contamined += 1
+    # print(f'{contamined = }')
+    # print()
+    if cc % 30 == 0:
+        print(f'{cc = }, {contamined = }')
+    if  cc > sample:
+        break
+    cc += 1
+
+print(contamined)
+print(sample)
+print(f'percentage: {contamined/cc*100} %')
 1/0
 
-leak = 0, 0
-lad_15_25 = tuple([df[i].dropna()[1:l] for i in df] for l in (15, 25))
-print(lad_15_25[0][:10])
-print(lad_15_25[1][:10])
-1/0
-for seq in dfw:
-    is_in = [seq[:n_input] in lad_15_25[n] for n, n_input in enumerate(15, 25)]
-    leak = tuple([l + i for l, i in zip(leak, is_in)])
+# 99 all contaminations.
+# 4.23 %
+
+# 57
+# percentage: 2.43 %

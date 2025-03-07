@@ -5,7 +5,7 @@ task_limit = 1000
 # task_limit = 200
 task_limit = 20
 
-csv_filename = 'linear_database_newbl.csv'
+csv_filename = '../linear_database_newbl.csv'
 # csv_filename = 'cores_test.csv'
 
 cols = pd.read_csv(csv_filename, low_memory=False, nrows=0)
