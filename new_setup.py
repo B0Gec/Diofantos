@@ -4,12 +4,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ProGED", # Replace with your own username
-    version="0.8.5",
-    author="Jure Brence,Boštjan Gec,Nina Omejc, Sebastian Mežnar",
-    author_email="jure.brence@ijs.si",
-    description="Probabilistic generative equation discovery",
-    package_dir={"": "pgednew"},
+    name="MoadeeB", # Replace with your own username
+    version="2.0.1",
+    author="Boštjan Gec",
+    author_email="bostjan.gec@ijs.si",
+    description="MoadeeB and Diofantos - exact equation discovery tools with application in OEIS",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/B0Gec/Diofantos",
