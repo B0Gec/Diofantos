@@ -24,7 +24,7 @@ Otherwise, go ahead and install the dependencies in a new python environment.
 
 Nonetheless, you will also need the CoCoA software as described in Prerequisites below.
 
-After that, you can clone the repository, but I recommend getting only (instead of all 7GB results) the following files:
+After that, you can clone the repository, but I recommend getting only (instead of all 7GB results) the following files (or directories):
 
     exact_ed.py
     diophantine_solver.py
@@ -101,6 +101,9 @@ This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
 ## Experiments
 - database of _linrec_ sequences: `linear_database_newbl.csv`
 - database of _core_ sequences: `cores_test.csv`
+- nine data sets of real-world benchmarks (in directory `real-bench`): `pitagora-triplets.csv`, `det.csv`, `tr.csv`, 
+     `wheel.csv`, `euler.csv`, `riemann-roch.csv`, `symcomp.csv`, `symcomp6ratio_y2-x2diof.csv`, `symcomp10ratio_-3x2p3y2p3y.csv` 
+  - were generated and evaluated by: `real_world_bench.py`, `real_world_bench_evaluate.py`
 - script for running MoadeeB, Diofantos and SINDy-based approaches: `doones.py`
 - [Diofantos](https://doi.org/10.3390/math12233745) code: `exact_ed.py`
 - MoadeeB code: `mb_oeis.py`, `mb_wrap.py`
