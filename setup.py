@@ -9,7 +9,7 @@ setuptools.setup(
     author="Jure Brence,Boštjan Gec,Nina Omejc, Sebastian Mežnar",
     author_email="jure.brence@ijs.si",
     description="Probabilistic generative equation discovery",
-    package_dir={"": "pgednew"},
+    #package_dir={"": "pgednew"},
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/B0Gec/Diofantos",

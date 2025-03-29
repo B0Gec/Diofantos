@@ -3,6 +3,7 @@
 import numpy as np
 
 from ProGED.generators.grammar import GeneratorGrammar
+# from ProGED_oeis.generators.grammar import GeneratorGrammar
 
 def grammar_from_template (template_name, generator_settings):
     if template_name in GRAMMAR_LIBRARY:
