@@ -118,9 +118,9 @@ def construct_grammar_universal (p_sum=[0.2, 0.2, 0.6], p_mul = [0.2, 0.2, 0.6],
     grammar += construct_production(left="V", items=variables, probs=p_vars)
     return grammar
 
-def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 0.02, 0.78], p_rec = [0.2, 0.4, 0.4],
+def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 0.02, 0.78], p_rec = [0.1, 0.45, 0.45],
                                  variables=["'x'", "'y'"], p_vars=[0.5,0.5],
-                                 functions=["abs", "isqrt", "sign", "relu"], p_functs=[0.8, 0.05, 0.8, 0.05, 0.02], max_order=50):
+                                 functions=["abs", "isqrt", "sign", "relu"], p_functs=[0.6, 0.1, 0.17, 0.1, 0.03], max_order=50):
     """
     Grammar for OEIS sequences.
     Variables: a_n[-1], a_n[-2], ..., a_n[-max_order], distributed according to a gamma(shape=2, scale=2) distribution.
@@ -144,6 +144,7 @@ def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 
     # grammar += construct_production(left="C", items=["'C1'", "'C2'", "'C3'", "'C4'"], probs=[0.25]*4)
     grammar += construct_production(left="C", items=[f"'{i}'" for i in range(-10, 10)], probs=[1/20]*20)
     return grammar
+
 
 def unit_to_string (unit, unit_symbols=["m", "s", "kg", "T", "V"]):
     return "".join([unit_symbols[i]+str(unit[i]) for i in range(len(unit))])
