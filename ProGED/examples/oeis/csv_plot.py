@@ -154,8 +154,13 @@ print(sum(len(linseqs[seqs]) for seqs in linseqs))
 # sum([len(linseqs[order]) for order in linseqs if int(order)>25])
 
 limit = 2000
-# limit = 100
-# limit = 20
+limit = 100
+limit = 75
+limit = 60
+# limit = 55
+limit = 50
+# limit = 30
+limit = 20
 # limit = 21
 
 addage = "for orders < " + str(limit)
@@ -194,6 +199,13 @@ saved_seqs = re.findall(r'A\d{6}', text)
 print(saved_seqs)
 print(len(saved_seqs))
 
+
+# print(orders)
+# print([o for o in per_orders])
+sumup = sum(per_orders)
+# print(sumup)
+per_orders = [i/sumup for i in per_orders]
+# print(per_orders)
 
 
 # Make a random dataset:
@@ -235,3 +247,15 @@ plt.title('number of sequences per order')
 # Show graphic
 plt.show()
 plt.clf()
+
+
+print(orders)
+print([o for o in per_orders])
+sumup = sum(per_orders)
+print(sumup)
+per_orders = [i/sumup for i in per_orders]
+print(per_orders)
+sumup = sum(per_orders)
+print(sumup)
+
+

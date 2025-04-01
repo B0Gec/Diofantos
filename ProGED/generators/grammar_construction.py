@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import scipy.stats as stats
 
 from ProGED.generators.grammar import GeneratorGrammar
 # from ProGED_oeis.generators.grammar import GeneratorGrammar
@@ -117,6 +118,32 @@ def construct_grammar_universal (p_sum=[0.2, 0.2, 0.6], p_mul = [0.2, 0.2, 0.6],
     grammar += construct_production(left="V", items=variables, probs=p_vars)
     return grammar
 
+def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 0.02, 0.78], p_rec = [0.2, 0.4, 0.4],
+                                 variables=["'x'", "'y'"], p_vars=[0.5,0.5],
+                                 functions=["abs", "isqrt", "sign", "relu"], p_functs=[0.8, 0.05, 0.8, 0.05, 0.02], max_order=50):
+    """
+    Grammar for OEIS sequences.
+    Variables: a_n[-1], a_n[-2], ..., a_n[-max_order], distributed according to a gamma(shape=2, scale=2) distribution.
+        Gamma distribution was chosen because it was observed by the rule of thumb from the orders presented in the OEIS.
+    Operators: +,-,*, // (intdiv), % (modulo), abs, isqrt (integer square root), sign, relu (largely following d'Ascoli's paper)
+    Constants: -10, -9, ..., 9, 10. But more can be obtained by the operators, e.g. -10 - 10 = -20.
+    """
+
+    #grammar = construct_production(left="S", items=["E '+' 'C'"], probs=[1])
+    grammar = construct_production(left="S", items=["S '+' F", "S '-' F", "F"], probs=p_sum)
+    grammar += construct_production(left="F", items=["F '*' T", "F '//' T", "F '%' T", "T"], probs=p_mul)
+    grammar += construct_production(left="T", items=["R", "C", "V"], probs=p_rec)
+    grammar += construct_production(left="R", items=["'(' S ')'"] + ["'"+f+"(' S ')'" for f in functions], probs=p_functs)
+    # grammar += construct_production(left="V", items=variables, probs=p_vars)
+
+    orders = range(1, max_order + 1)
+    probs_gamma = [round(i, 4) for i in stats.gamma.pdf(orders, a=2.5, scale=2)]
+    grammar += construct_production(left="V", items=[f"'a_n[-{i}]'" for i in orders], probs=probs_gamma)
+    # grammar += construct_production(left="V", items=["'a_n[-' O ']'"], probs=[1])
+    # grammar += construct_production(left="O", items=["'I' O", "'I'"], probs=[0.3, 0.7])  # O = order
+    # grammar += construct_production(left="C", items=["'C1'", "'C2'", "'C3'", "'C4'"], probs=[0.25]*4)
+    grammar += construct_production(left="C", items=[f"'{i}'" for i in range(-10, 10)], probs=[1/20]*20)
+    return grammar
 
 def unit_to_string (unit, unit_symbols=["m", "s", "kg", "T", "V"]):
     return "".join([unit_symbols[i]+str(unit[i]) for i in range(len(unit))])
@@ -273,6 +300,7 @@ def construct_grammar_universal_dim (variables=["'U'", "'d'", "'k'"],
 
 GRAMMAR_LIBRARY = {
     "universal": construct_grammar_universal,
+    "universal_oeis": construct_grammar_universal_oeis,
     "universal-dim": construct_grammar_universal_dim,
     "rational": construct_grammar_rational,
     "simplerational": construct_grammar_simplerational,
@@ -303,3 +331,14 @@ if __name__ == "__main__":
     for i in range(5):
         print(grammar.generate_one())
     print("test", construct_production("s", [], []))
+
+    print('\n'*5)
+    # grammar = grammar_from_template("universal", {"variables":["'phi'", "'theta'", "'r'"], "p_vars":[0.2,0.4,0.4]})
+    # grammar = grammar_from_template("universal_oeis", {"variables":["'phi'", "'theta'", "'r'"], "p_vars":[0.2,0.4,0.4],
+                                                  # "functions" : [], "p_functs" : [0.1], })
+    grammar = grammar_from_template("universal_oeis", {})
+    print(grammar)
+    print(grammar.generate_one())
+    print('\n'*5)
+    for i in range(150):
+        print(" ".join(grammar.generate_one()[0]))
