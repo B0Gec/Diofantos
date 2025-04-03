@@ -125,8 +125,12 @@ print(len(legit))
 
 # Plan:
 #   1.) eq -> order -> init_len.
-#   2.) Generate random inits 10? times.
-#   3.) Generate sequence terms to slice them later?.
+#   2.) Generate random inits 10 times.
+#   3.) Generate sequence terms to slice them later?. I believe no need.
+#       Since sequences, based on personal experience, usually start with small numbers. Problem is usually in the bigs.
+#       Makes sense to limit the size in slices, though. If 3 times in a row the size is bigger than
+#       the "prefered limit" e.g. 10^6, then allow terms bigger than prefered limit but lower than absolute limit.
+#       Following third time's the charm rule.
 
 1/0
 
