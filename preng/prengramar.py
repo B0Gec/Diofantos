@@ -12,6 +12,8 @@
 # """
 
 import math
+import re
+
 import numpy as np
 from math import isqrt
 from numpy import sign
@@ -58,20 +60,31 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10*100):
         - sqrt of negative numbers  (isqrt)
     """
 
+    max_order = eq_order(sentence)
+    inits = inits[:max_order]
+
     try:
-         predicted = generate(sentence, inits, n_pred)
-         if any([abs(i) > term_size_limit for i in predicted]):
-             return None
-         else:
-             return predicted
+         predicted = generate(sentence, inits, n_pred-max_order)
     except Exception as e:
-        print(str(e))
+        print("Exception!!:", str(e))
         return None
+
+    if any([abs(i) > term_size_limit for i in predicted]):
+        return None
+    else:
+        return predicted
 
 
 def predict_safe(sentence, inits, n_pred=10):
     return generate_safe(sentence, inits, n_pred, term_size_limit=math.inf)
 
+def eq_order(sentence: str) -> int:
+    """Get the order of the equation."""
+    orders = re.findall(r'a_n\[-(\d+)\]', sentence)
+    max_order = max([int(i) for i in orders] + [0])
+    return max_order
+
+# print(eq_order('a_n[-1] - a_n[-4] + a_n[-2]'))
 
 # def generate(sentence: str, inits, list_size=35) -> list:
 #     """Generate a sequence from a prompted sentence."""
@@ -104,27 +117,75 @@ isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )
 grammar = grammar_from_template("universal_oeis", {})
 # print(grammar)
 
+LOW_BOUND, UP_BOUND = -10, 10
+MAX_MAGNITUDE = 10**100
+N_INPUT, SEQ_LEN = 25, 35
+MAX_ORDER = 20
+
 from random import randint
-randinits = [randint(-10, 10) for _ in range(20)]
+randinits = [randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)]
+print(randinits)
 
 # print(grammar.generate_one())
 # print('\n' * 5)
-scale = 150
-eqs = [ " ".join(grammar.generate_one()[0]) for i in range(scale*2)]
-for eq in eqs:
-    print(eq)
-    print(generate_safe(eq, randinits))
+SCALE = 150
+SCALE = 5
+print(f'{SCALE = }\n')
+eqs = [" ".join(grammar.generate_one()[0]) for i in range(SCALE*2)]
+### test generate_safe:
+# for eq in eqs:
+#     print()
+#     print(eq)
+#     print(generate_safe(eq, randinits, n_pred=10, term_size_limit=MAX_MAGNITUDE))
 
-legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq, randinits)) is not None][:scale]
+
+legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
+            randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]
+for i in legit:
+    print(i)
+    print(len(i[1]))
+
+# 1/0
+## cut the sequences to SEQ_LEN (old code):
+# legit = [(eq, seq[:SEQ_LEN]) for eq, seq in legit]
+print('legit learning pairs:')
 for eq, seq in legit:
     print(eq)
     print(seq)
+    print(len(seq))
     print()
 print()
 print(len(legit))
 
+# compare 2 approaches to maximize variety:
+# 1.) generate a sequence with random inits 10 times
+# vs 2.) generate a longer sequence with random inits 5 or less times
+
+# approach 1)
+eq_inits = []
+# trying to generate at least 10 unique inits
+randinitss = [[randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)] for i in range(20)]
+# try: set(randinitss)?
+for i in range(20):
+    randinits = [randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)]
+    print(randinits)
+    # only add if unique
+    for i in eq_inits:
+        print(f'   {i}')
+    print(randinits in eq_inits)
+    # eq_inits += [randinits] if randinits not in eq_inits else []
+    eq_inits += [randinits]
+randinitss = eq_inits[:10]
+
+# Actually generate seq, from unique inits:
+print(len(randinitss))
+for inits in randinitss:
+    seq = generate_safe(eq, inits, n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
+    print(seq)
+
+
 # Plan:
-#   1.) eq -> order -> init_len.
+#   1.) eq -> order -> init_len. [done]
 #   2.) Generate random inits 10 times.
 #   3.) Generate sequence terms to slice them later?. I believe no need.
 #       Since sequences, based on personal experience, usually start with small numbers. Problem is usually in the bigs.
@@ -132,7 +193,9 @@ print(len(legit))
 #       the "prefered limit" e.g. 10^6, then allow terms bigger than prefered limit but lower than absolute limit.
 #       Following third time's the charm rule.
 
+### Current end.
 1/0
+
 
 print('last 2')
 # print(code_to_seq(sentence_to_code("isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )"), [0, 1]))

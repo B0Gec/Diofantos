@@ -12,6 +12,8 @@ dasco: max = 42, looking at all terms, for the first 25 terms: max = 31.
 Conclusion (current, of 11.4.):
     - 6 digits or 9 digits, to optimize dasco.
     - Alternatively, 15 or 20 digits or more, since linrec seems maybe ok with 15 and cores have 11 successes with 15
+
+Plan: generate sequences with higher upper bound and then analyze how many sequences with bigger terms we have.
 """
 
 import pandas as pd
