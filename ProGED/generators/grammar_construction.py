@@ -138,7 +138,12 @@ def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 
 
     orders = range(1, max_order + 1)
     probs_gamma = [round(i, 4) for i in stats.gamma.pdf(orders, a=2.5, scale=2)]
-    grammar += construct_production(left="V", items=[f"'a_n[-{i}]'" for i in orders], probs=probs_gamma)
+    non_zeros = [i for i in probs_gamma if i>0]
+    print(f'{sum(probs_gamma) = }')
+    p_vars = [1/3] + [(2/3)*p for p in probs_gamma]
+    print(f'{sum(p_vars) = }')
+    1/0
+    grammar += construct_production(left="V", items=['n'] + [f"'a_n[-{i}]'" for i in orders], probs=p_vars)
     # grammar += construct_production(left="V", items=["'a_n[-' O ']'"], probs=[1])
     # grammar += construct_production(left="O", items=["'I' O", "'I'"], probs=[0.3, 0.7])  # O = order
     # grammar += construct_production(left="C", items=["'C1'", "'C2'", "'C3'", "'C4'"], probs=[0.25]*4)
@@ -343,3 +348,4 @@ if __name__ == "__main__":
     print('\n'*5)
     for i in range(150):
         print(" ".join(grammar.generate_one()[0]))
+

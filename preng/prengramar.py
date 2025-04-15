@@ -32,14 +32,18 @@ def sentence_to_code(sentence: str) -> Callable[[list], int]:
     # print(sentence)
     # sentence = sentence.replace('isqrt(', '(lambda input:  isqrt(relu(input)))(')
     sentence = sentence.replace('relu(', 'max(0, ')
+    # take care of a_n = n + a_{n-1}:
+    # avoid: a_n[-2] and sign
+    # sentence = "a_n[-1] + n - sign(a_n[-1]) * a_n[-2] "
+    # sentence = "a_n[-1] + n "
+    sentence = re.sub(r'([^g_])n', '\g<1>len(a_n)', sentence)
     code = 'lambda a_n : ' + sentence
-    # print(code)
+    print(code)
     # f = code
     f = eval(code)
     return f
 
 # print(sentence_to_code('a_n[-1] + a_n[-2]'))
-# 1/0
 
 
 def code_to_seq(lambda_function, inits, n_pred=10):
@@ -50,6 +54,8 @@ def code_to_seq(lambda_function, inits, n_pred=10):
         predicted.append(lambda_function(predicted))
     return predicted
 
+print(code_to_seq(sentence_to_code('a_n[-1] + a_n[-2]'), [0, 1]))
+1/0
 
 def generate(sentence, inits, n_pred=10):
     return code_to_seq(sentence_to_code(sentence), inits, n_pred)
@@ -94,6 +100,7 @@ def eq_order(sentence: str) -> int:
 
 # print(code_to_seq(lambda a_n : a_n[-1] + a_n[-2], [0, 1]))
 # print(code_to_seq(eval("lambda a_n : a_n[-1] + a_n[-2]"), [0, 1]))
+
 
 eqs = """
 abs( -1 ) + 4
@@ -141,16 +148,82 @@ eqs = [" ".join(grammar.generate_one()[0]) for i in range(SCALE*2)]
 #     print(generate_safe(eq, randinits, n_pred=10, term_size_limit=MAX_MAGNITUDE))
 
 
-legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
-            randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]
+print(eqs)
+eq = eqs[3]
+print(eq)
+# 1/0
+
+# eq, _ = legit[1]
+# approach 1)
+# trying to generate at least 10 unique inits (according to eq's order)
+eq_orderi = eq_order(eq)
+SAMPLE_SIZE = 10
+
+def generate_ten(eq: str) -> list:
+    """Generate 10 sequences for training pairs (seq, eq)."""
+
+    print(eq)
+    eq_orderi = eq_order(eq)
+    if eq_orderi == 0:
+        return [str(eq) for _ in range(SAMPLE_SIZE)]
+    randinitss = [[randint(LOW_BOUND, UP_BOUND) for _ in range(eq_orderi)] for __ in range(2 * SAMPLE_SIZE)]
+    # print(randinitss)
+
+    uniques = [eval(i) for i in set(str(i) for i in randinitss)][:SAMPLE_SIZE]
+    # print(f'{uniques = }')
+
+    # 1. first (simpler) approach:
+    # (i.e. 10 different inits for sequences)
+    parts = []
+    for inits in uniques:
+        seq = generate_safe(eq, inits, n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
+        if seq is not None:
+            parts.append(seq)
+
+    # for p in parts:
+    #     print(p)
+    # print(f'{len(uniques) = }')
+    # 1/0
+
+    # 3. third (mixed) approach:
+    cuts0, cuts1 = [], []
+    seq = generate_safe(eq, uniques[5], n_pred=SEQ_LEN * 2, term_size_limit=MAX_MAGNITUDE)
+    if seq is not None:
+        cuts0 += [seq[i * SEQ_LEN:((i + 1) * SEQ_LEN)] for i in range(2)]
+    seq = generate_safe(eq, uniques[6], n_pred=SEQ_LEN * 3, term_size_limit=MAX_MAGNITUDE)
+    if seq is not None:
+        cuts1 += [seq[i * SEQ_LEN:((i + 1) * SEQ_LEN)] for i in range(3)]
+
+    # mix together and check for uniqueness:
+    parts = parts[:5] + cuts0 + cuts1 + parts[7:]
+    parts_uniq = [eval(i) for i in set(str(i) for i in parts)]
+    if len(parts_uniq) < len(parts):
+        parts = parts_uniq[:SAMPLE_SIZE]
+    parts = parts[:SAMPLE_SIZE]
+    # for p in parts:
+    #     print(p)
+    # 1/0
+    return parts
+
+print('starting ten')
+print(generate_ten(eq))
+# 1/0
+
+# legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
+#             randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]
+
+legit = [(eq, seqs) for eq in eqs if (seqs := generate_ten(eq)) is not None][:SCALE]
+print(f'{SCALE = }')
 for i in legit:
     print(i)
-    print(len(i[1]))
+    print(f'{len(i[1])}, {len(i[1][0])}')
 
 # 1/0
-## cut the sequences to SEQ_LEN (old code):
-# legit = [(eq, seq[:SEQ_LEN]) for eq, seq in legit]
-print('legit learning pairs:')
+
+# Final printout:
+# print('Full-blown learning pairs:')
+raise ValueError("Gramatika, ne generira spremenljivke n!!! (ala a_n = n^2) Poglej si!")
+
 for eq, seq in legit:
     print(eq)
     print(seq)
@@ -158,54 +231,34 @@ for eq, seq in legit:
     print()
 print()
 print(len(legit))
+1/0
+
+
 
 # compare 2 approaches to maximize variety:
 # 1.) generate a sequence with random inits 10 times
 # vs 2.) generate a longer sequence with random inits 5 or less times
 
-print(eqs)
-1/0
-eq, _ = legit[1]
-# approach 1)
-eq_inits = []
-# trying to generate at least 10 unique inits (according to eq's order)
-eq_orderi = eq_order(eq)
-SAMPLE_SIZE = 10
-randinitss = [[randint(LOW_BOUND, UP_BOUND) for _ in range(eq_orderi)] for i in range(2*SAMPLE_SIZE)]
-print(f'{randinitss = }')
-# 1/0
-# try: set(randinitss)?
-# set(str(i) for i in randinitss)
-uniques = [eval(i) for i in set(str(i) for i in randinitss)][:SAMPLE_SIZE]
-# print(uniques)
-print(f'{len(uniques) = }')
-for i in uniques:
-    print(i)
-
-# simpler approach:
-# (i.e. 10 different inits for sequences)
-for inits in uniques:
-    seq = generate_safe(eq, inits, n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
-    print(seq)
+# # 2. second approach
+# # (i.e. 4 inits, each generates 2 sequences, which are subsequently cut to parts):
+# # print(f'{eq = }, {eq_orderi = }')
+# # print(f'\n{len(randinitss) = }')
+# cuts = []
+# for inits in uniques[:4]:
+#     seq = generate_safe(eq, inits, n_pred=SEQ_LEN*4, term_size_limit=MAX_MAGNITUDE)
+#     cuts += [seq[i*SEQ_LEN:((i+1)*SEQ_LEN)] for i in range(3)]
+#     # print(f'{inits = }')
+#     # print(seq)
+#     # print([len(i) for i in cuts])
+# cuts = cuts[:SAMPLE_SIZE]
 
 
-# 2. second approach
-# (i.e. 4 inits, each generates 2 sequences, which are subsequently cut to parts):
-# print(f'{eq = }, {eq_orderi = }')
-# print(f'\n{len(randinitss) = }')
-cuts = []
-for inits in uniques[:4]:
-    seq = generate_safe(eq, inits, n_pred=SEQ_LEN*4, term_size_limit=MAX_MAGNITUDE)
-    cuts += [seq[i*SEQ_LEN:((i+1)*SEQ_LEN)] for i in range(3)]
-    # print(f'{inits = }')
-    # print(seq)
-    # print([len(i) for i in cuts])
-cuts = cuts[:SAMPLE_SIZE]
 
-print(f'\n{len(cuts) = }')
-for i in cuts:
-    print(len(i), i)
 
+# approach 3: 1+1+1+1+1 +2+3 + repeat...
+
+# 1, 2, 3,  4, 5.
+# 1, 3, 6, 10.
 
 
 # Plan:
@@ -218,9 +271,10 @@ for i in cuts:
 #       Following third time's the charm rule.
 
 ### Current end.
+
+
+
 1/0
-
-
 print('last 2')
 # print(code_to_seq(sentence_to_code("isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )"), [0, 1]))
 # print(code_to_seq(sentence_to_code("a_n[-1] + a_n[-2]"), [0, 1]))
