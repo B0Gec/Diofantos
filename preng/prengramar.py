@@ -19,6 +19,8 @@ from math import isqrt
 from numpy import sign
 from collections.abc import Callable
 
+from torch.onnx.symbolic_opset9 import unused
+
 from ProGED.generators.grammar_construction import grammar_from_template
 
 np.random.seed(0)
@@ -161,27 +163,49 @@ print(len(legit))
 # 1.) generate a sequence with random inits 10 times
 # vs 2.) generate a longer sequence with random inits 5 or less times
 
+print(eqs)
+1/0
+eq, _ = legit[1]
 # approach 1)
 eq_inits = []
-# trying to generate at least 10 unique inits
-randinitss = [[randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)] for i in range(20)]
+# trying to generate at least 10 unique inits (according to eq's order)
+eq_orderi = eq_order(eq)
+SAMPLE_SIZE = 10
+randinitss = [[randint(LOW_BOUND, UP_BOUND) for _ in range(eq_orderi)] for i in range(2*SAMPLE_SIZE)]
+print(f'{randinitss = }')
+# 1/0
 # try: set(randinitss)?
-for i in range(20):
-    randinits = [randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)]
-    print(randinits)
-    # only add if unique
-    for i in eq_inits:
-        print(f'   {i}')
-    print(randinits in eq_inits)
-    # eq_inits += [randinits] if randinits not in eq_inits else []
-    eq_inits += [randinits]
-randinitss = eq_inits[:10]
+# set(str(i) for i in randinitss)
+uniques = [eval(i) for i in set(str(i) for i in randinitss)][:SAMPLE_SIZE]
+# print(uniques)
+print(f'{len(uniques) = }')
+for i in uniques:
+    print(i)
 
-# Actually generate seq, from unique inits:
-print(len(randinitss))
-for inits in randinitss:
+# simpler approach:
+# (i.e. 10 different inits for sequences)
+for inits in uniques:
     seq = generate_safe(eq, inits, n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
     print(seq)
+
+
+# 2. second approach
+# (i.e. 4 inits, each generates 2 sequences, which are subsequently cut to parts):
+# print(f'{eq = }, {eq_orderi = }')
+# print(f'\n{len(randinitss) = }')
+cuts = []
+for inits in uniques[:4]:
+    seq = generate_safe(eq, inits, n_pred=SEQ_LEN*4, term_size_limit=MAX_MAGNITUDE)
+    cuts += [seq[i*SEQ_LEN:((i+1)*SEQ_LEN)] for i in range(3)]
+    # print(f'{inits = }')
+    # print(seq)
+    # print([len(i) for i in cuts])
+cuts = cuts[:SAMPLE_SIZE]
+
+print(f'\n{len(cuts) = }')
+for i in cuts:
+    print(len(i), i)
+
 
 
 # Plan:
