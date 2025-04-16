@@ -137,13 +137,42 @@ def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 
     # grammar += construct_production(left="V", items=variables, probs=p_vars)
 
     orders = range(1, max_order + 1)
-    probs_gamma = [round(i, 4) for i in stats.gamma.pdf(orders, a=2.5, scale=2)]
+    rounding = 3
+    probs_gamma = [round(i, rounding) for i in stats.gamma.pdf(orders, a=2.5, scale=2)]
     non_zeros = [i for i in probs_gamma if i>0]
-    print(f'{sum(probs_gamma) = }')
-    p_vars = [1/3] + [(2/3)*p for p in probs_gamma]
-    print(f'{sum(p_vars) = }')
-    1/0
-    grammar += construct_production(left="V", items=['n'] + [f"'a_n[-{i}]'" for i in orders], probs=p_vars)
+    # print(f'{non_zeros = }')
+    # print(f'{sum(non_zeros) = }')
+    # print(f'{sum(non_zeros[:20])+sum(non_zeros[20:]) = }')
+    # print(f'{non_zeros[20:] = }')
+    surplus = 1 - sum(non_zeros)
+    # print(f'{surplus = }')
+    idx = non_zeros.index(max(non_zeros))
+    non_zeros = non_zeros[:idx] + [round(non_zeros[idx]+surplus, rounding)] + non_zeros[idx+1:]
+    # print(f'{non_zeros = }')
+    # print(f'{surplus = }')
+    # print(f'{sum(non_zeros) = }')
+    # 1/0
+    # probs_gamma = [round(i/sum(non_zeros), 4) for i in non_zeros]
+    # print(f'{probs_gamma = }')
+    # print(f'{sum(probs_gamma) = }')
+    p_vars = [1/3] + [(2/3)*p for p in non_zeros]
+    # probs_gamma = probs_gamma[:-1] + [probs_gamma[-1]*2/3]
+    # probs_gamma = [round(i, 4) for i in probs_gamma]
+    # p_vars = [0.0] + probs_gamma
+    p_vars = [round(i, rounding) for i in p_vars]
+    # print(f'{sum(p_vars) = }')
+    # print(f'{1-sum(p_vars) = }')
+    sign = np.sign(sum(p_vars) - 1)
+    # print(sign)
+    idx = p_vars[1:].index(max(p_vars[1:])) + 1
+    p_vars = p_vars[:idx] + [round(p_vars[idx] - 0.001*sign, rounding)] + p_vars[idx+1:]
+    # print(f'{sum(p_vars) = }')
+    # print(f'{1-sum(p_vars) = }')
+
+    # 1/0
+
+    grammar += construct_production(left="V", items=["'n'"] + [f"'a_n[-{i}]'" for i in orders[:len(p_vars)-1]],
+                                    probs=p_vars)
     # grammar += construct_production(left="V", items=["'a_n[-' O ']'"], probs=[1])
     # grammar += construct_production(left="O", items=["'I' O", "'I'"], probs=[0.3, 0.7])  # O = order
     # grammar += construct_production(left="C", items=["'C1'", "'C2'", "'C3'", "'C4'"], probs=[0.25]*4)
