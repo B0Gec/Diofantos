@@ -28,7 +28,7 @@ np.random.seed(0)
 MAX_MAGNITUDE = 10**100
 # MAX_MAGNITUDE = 10**32  # seems cool crom pre-analysis
 MAX_MAGNITUDE = 10**10
-print(f'{MAX_MAGNITUDE = }')
+# print(f'{MAX_MAGNITUDE = }')
 # 1/0
 
 
@@ -57,17 +57,17 @@ def code_to_seq(lambda_function, inits, n_pred=10):
     """Calculate next sequence terms by a recursive formula."""
     # print(len(inits), )
     predicted = inits.copy()
-    print(predicted)
+    # print(predicted)
     for _ in range(n_pred):
         next = lambda_function(predicted)
         if abs(next) > MAX_MAGNITUDE:
             return None
         else:
             predicted.append(next)
-            print(next)
+            # print(next)
     return predicted
 
-print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
+# print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
 # 1/0
 
 def generate(sentence, inits, n_pred=10):
@@ -81,11 +81,10 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10*100):
         - sqrt of negative numbers  (isqrt)
     """
 
-
     try:
          predicted = generate(sentence, inits, n_pred)
     except Exception as e:
-        print("Exception!!:", str(e))
+        # print("Exception!!:", str(e))
         return None
 
     # if any([abs(i) > term_size_limit for i in predicted]):
@@ -141,111 +140,121 @@ import random
 random.seed(0)
 
 randinits = [random.randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)]
-print(randinits)
+# print(randinits)
 
 # print(grammar.generate_one())
 # print('\n' * 5)
 SCALE = 150
 SCALE = 5
 SCALE = 10
-SCALE = 100
-SCALE = 140
-SCALE = 150
+# SCALE = 100
+# SCALE = 140
+# SCALE = 150
+
 # SCALE = 154
 # SCALE = 155
 # SCALE = 160
 # SCALE = 180
 # SCALE = 360
 # SCALE = 200
-SCALE = 300
-SCALE = 330
-SCALE = 1530
 
-print(f'{SCALE = }\n')
+# SCALE = 300
+# SCALE = 330
+# SCALE = 1000
+# # SCALE = 5530
+# SCALE = 10530
+# # SCALE = 20530
+# SCALE = 25000
+# SCALE = 50000
+# SCALE = 75000
+
+# print(f'{SCALE = }\n')
 eqs = [" ".join(grammar.generate_one()[0]) for i in range(SCALE*2)]
 ### test generate_safe:
 # for eq in eqs:
-#     print()
+#     # print()
 #     print(eq)
 #     print(generate_safe(eq, randinits, n_pred=10, term_size_limit=MAX_MAGNITUDE))
 
 eqs = eqs[:SCALE]
 
-print(eqs)
-eq = eqs[3]
-print(eq)
+# print(eqs)
+# eq = eqs[3]
+# print(eq)
 # 1/0
 
 # eq, _ = legit[1]
 # approach 1)
 # trying to generate at least 10 unique inits (according to eq's order)
-eq_orderi = eq_order(eq)
+# eq_orderi = eq_order(eq)
 SAMPLE_SIZE = 10
 
-gented = generate_safe('7', [], n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
+# gented = generate_safe('7', [], n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
 # print(len(gented))
-print(gented)
+# print(gented)
 
 def generate_ten(eq: str) -> list:
     """Generate 10 sequences for training pairs (seq, eq)."""
 
     eq_orderi = eq_order(eq)
-    # if eq_orderi == 0:
-    #     return [str(eq) for _ in range(SAMPLE_SIZE)]
-    # raise ValueError(f'Poglej case a_n = 8 + n (Order = 0) {eq_orderi}!!')
-    # eq_orderi = 0
     randinitss = [[random.randint(LOW_BOUND, UP_BOUND) for _ in range(eq_orderi)] for __ in range(2 * SAMPLE_SIZE)]
     # print(f'{randinitss = }')
 
-    uniques = [eval(i) for i in set(str(i) for i in randinitss)][:SAMPLE_SIZE]
+    uniques = [eval(i) for i in set(str(i) for i in randinitss)]
     # print(f'{uniques = }')
 
     # 1. first (simpler) approach:
     # (i.e. 10 different inits for sequences)
     parts = []
+    c = 0
     for inits in uniques:
-        seq_len = random.randint(5, 36)
+        # seq_len = random.randint(5, 36)
         # n_pred = random.randint(5, min(30, 36-eq_orderi))
-        n_pred = max(0, seq_len - eq_orderi)
-        print(f'{inits = }')
+        # n_pred = max(0, seq_len - eq_orderi)
+        n_pred = random.randint(max(0, 5-eq_orderi), 36-eq_orderi)
+        # print(f'{inits = }')
         # print('here we go before')
-        seq = generate_safe(eq, inits, n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
-        print('here we go')
+        seq = generate_safe(eq, inits, n_pred=n_pred, term_size_limit=MAX_MAGNITUDE)
+        # print('here we go')
         if seq is not None:
             parts.append(seq)
+            c += 1
         # print(f'{seq = }')
+        if c >= SAMPLE_SIZE:
+            break
 
     # for p in parts:
     #     print(p)
     # print(f'{len(uniques) = }')
     # 1/0
 
-    # 3. third (mixed) approach:
-    if len(uniques) != 1:
-        cuts0, cuts1 = [], []
-        print('uniques 5:')
-        seq = generate_safe(eq, uniques[5], n_pred=SEQ_LEN * 2, term_size_limit=MAX_MAGNITUDE)
-        if seq is not None:
-            cuts0 += [seq[i * SEQ_LEN:((i + 1) * SEQ_LEN)] for i in range(2)]
-        print('uniques 6:')
-        seq = generate_safe(eq, uniques[6], n_pred=SEQ_LEN * 3, term_size_limit=MAX_MAGNITUDE)
-        if seq is not None:
-            cuts1 += [seq[i * SEQ_LEN:((i + 1) * SEQ_LEN)] for i in range(3)]
+    # # 3. third (mixed) approach:
+    # if len(uniques) != 1:
+    #     cuts0, cuts1 = [], []
+    #     print('uniques 5:')
+    #     seq = generate_safe(eq, uniques[5], n_pred=SEQ_LEN * 2, term_size_limit=MAX_MAGNITUDE)
+    #     if seq is not None:
+    #         cuts0 += [seq[i * SEQ_LEN:((i + 1) * SEQ_LEN)] for i in range(2)]
+    #     print('uniques 6:')
+    #     seq = generate_safe(eq, uniques[6], n_pred=SEQ_LEN * 3, term_size_limit=MAX_MAGNITUDE)
+    #     if seq is not None:
+    #         cuts1 += [seq[i * SEQ_LEN:((i + 1) * SEQ_LEN)] for i in range(3)]
+    #
+    #     print('after')
+    #     # mix together and check for uniqueness:
+    #     parts = parts[:5] + cuts0 + cuts1 + parts[7:]
+    #     parts_uniq = [eval(i) for i in set(str(i) for i in parts)]
+    #     if len(parts_uniq) < len(parts):
+    #         parts = parts_uniq[:SAMPLE_SIZE]
 
-        print('after')
-        # mix together and check for uniqueness:
-        parts = parts[:5] + cuts0 + cuts1 + parts[7:]
-        parts_uniq = [eval(i) for i in set(str(i) for i in parts)]
-        if len(parts_uniq) < len(parts):
-            parts = parts_uniq[:SAMPLE_SIZE]
-    parts = parts[:SAMPLE_SIZE]
+    # parts = parts[:SAMPLE_SIZE]
     # for p in parts:
     #     print(p)
     # 1/0
     # print(f'{parts = }')
     return parts
 
-print('starting ten')
+# print('starting ten')
 # eq = 'n + 8'
 # print(generate_ten(eq))
 # 1/0
@@ -262,9 +271,14 @@ def prompt(eq:str, seqs:list[list] ) -> str:
         - 10 learning pairs (seq, eq) in prompt format.
     """
 
-    printout = [ f'{seq} -> lambda a_n: {eq}' for seq in seqs ]
+    # [INST] Could you give me a linear equation for the following number sequence: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 [/INST] [RESP] Certainly, the equation is the following: a_n = 1*a_{n-1} [/RESP]
+    printout = [ f'[INST] Could you give me a recursive equation in a form of a Python code for the following number '
+                  f'sequence: {str(seq)[1:-1].replace(" ", "")} [/INST]'
+                 f'[RESP] Certainly, the Python code is the following: lambda a_n: {eq} [/RESP]' for seq in seqs ]
     return '\n'.join(printout)
 
+eq, seqs = '1*a_n[-1]', '[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]'
+# print(prompt(eq, [seqs]))
 # print(prompt(eq, [[i for i in range(j, j+35)] for j in range(10)]))
 # 1/0
 
@@ -278,6 +292,23 @@ legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
 
 legit = [(intercept(eq, n), eq, seqs) for n, eq in enumerate(eqs) if (seqs := generate_ten(eq)) is not None][:SCALE]
 
+# print(f'{len(legit) = }')
+# analyze = [len(seqs) for n, eq, seqs in legit]
+# analyze_lens_0 = len([eq for n, eq, seqs in legit if len(seqs) == 0])
+# analyze_lens_1 = len([eq for n, eq, seqs in legit if len(seqs) == 1])
+# analyze_lens_betw = len([eq for n, eq, seqs in legit if (10 > len(seqs)) and (len(seqs) > 1)])
+# print(analyze)
+# print(f'{analyze_lens_0 = }, {analyze_lens_1 = }, {analyze_lens_betw = }')
+# print(f'{analyze_lens_0 + analyze_lens_1 + analyze_lens_betw}')
+
+printout = ""
+for n, eq, seqs in legit:
+    printout += prompt(eq, seqs)
+
+print(printout)
+# print(len(printout.split('\n')))
+
+# 1/0
 
 # generate_ten('3 + 1 - a_n[-3] // a_n[-15] * a_n[-2]')
 # 1/0
@@ -314,25 +345,25 @@ legit = [(intercept(eq, n), eq, seqs) for n, eq in enumerate(eqs) if (seqs := ge
 # learning_pairs = '\n'.join([ prompt(eq, seqs) for eq, seqs in legit ])
 # print(learning_pairs)
 
-print(f'{SCALE = }')
-for i in legit:
-    print(i)
-    print(f'{len(i[1])}')
-    if len(i[1]) > 0:
-        print(f'{len(i[1][0])}')
-
+# print(f'{SCALE = }')
+# for i in legit:
+#     print(i)
+#     print(f'{len(i[1])}')
+#     if len(i[1]) > 0:
+#         print(f'{len(i[1][0])}')
+#
 # 1/0
 
 
-for n, eq, seq in legit:
-    print(n)
-    print(eq)
-    print(seq)
-    print(len(seq))
-    print()
-print()
-print(len(legit))
-1/0
+# for n, eq, seqs in legit:
+#     # print(n)
+#     print(eq)
+#     print(seqs)
+#     print(len(seq))
+#     print()
+# print()
+# print(len(legit))
+# 1/0
 
 
 
@@ -375,16 +406,17 @@ print(len(legit))
 
 
 
-1/0
-print('last 2')
-# print(code_to_seq(sentence_to_code("isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )"), [0, 1]))
-# print(code_to_seq(sentence_to_code("a_n[-1] + a_n[-2]"), [0, 1]))
-inits = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946]
-# print(code_to_seq(sentence_to_code("a_n[-1] + a_n[-2]"), inits))
+# # OLD:
 # 1/0
-
-for eq in eqs.split('\n'):
-    if eq:
-        seq_pred = code_to_seq(sentence_to_code(eq), inits)
-        print(len(seq_pred))
-        print(seq_pred)
+# print('last 2')
+# # print(code_to_seq(sentence_to_code("isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )"), [0, 1]))
+# # print(code_to_seq(sentence_to_code("a_n[-1] + a_n[-2]"), [0, 1]))
+# inits = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946]
+# # print(code_to_seq(sentence_to_code("a_n[-1] + a_n[-2]"), inits))
+# # 1/0
+#
+# for eq in eqs.split('\n'):
+#     if eq:
+#         seq_pred = code_to_seq(sentence_to_code(eq), inits)
+#         print(len(seq_pred))
+#         print(seq_pred)
