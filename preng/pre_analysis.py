@@ -14,6 +14,8 @@ Conclusion (current, of 11.4.):
     - Alternatively, 15 or 20 digits or more, since linrec seems maybe ok with 15 and cores have 11 successes with 15
 
 Plan: generate sequences with higher upper bound and then analyze how many sequences with bigger terms we have.
+
+Current decision: 10^10 is magnitude limit.
 """
 
 import pandas as pd
@@ -75,20 +77,22 @@ cores = pd.read_csv('../cores_test.csv', low_memory=False)
 # print(len([i for i in success_cores if i in cores.columns]))
 # 1/0
 
-inits_len = 25
+INITS_LEN = 25
+INITS_LEN = 10
 # upper_bound = 10**6
 upper_bound = 10**100
-upper_bound = 10**15
+upper_bound = 10**10
 print(f'{upper_bound = }')
 
 
-from maxs_linrec import maxs_linrec
-maxs = maxs_linrec
-print(maxs[:10])
-print(len(maxs))
-sele = [i for i in maxs if i[1] > upper_bound]
-print(len(sele))
-1/0
+# # linrec?
+# from maxs_linrec import maxs_linrec
+# maxs = maxs_linrec
+# print(maxs[:10])
+# print(len(maxs))
+# sele = [i for i in maxs if i[1] > upper_bound]
+# print(len(sele))
+# # 1/0
 
 # 1/0
 c = 0  # counter for limmiting the verbosity
@@ -100,7 +104,7 @@ for i in ids:
     c += 1
 
     # get max absolute term of the first 25 terms of the sequence i:
-    col = max([abs(int(term)) for term in sp.Matrix(cores[i][:inits_len].dropna())])
+    col = max([abs(int(term)) for term in sp.Matrix(cores[i][:INITS_LEN].dropna())])
     # save max into maxs:
     maxs.append((i, col))
     # save current max into mmm:
@@ -118,12 +122,14 @@ print(c, len(maxs), mmm, maxs)
 sel = [(i, len(str(mx))) for i, mx in maxs if mx > 10**(15)]
 print(sel)
 print(len(sel))
-# 1/0
+1/0
+
+#### a142
 
 
 ################################################
 # one time processing of the linrec, to get the maxs (in maxs_linrec.py)
-# maxs = [(id_, max([abs(int(term)) for term in sp.Matrix(cores[id_].dropna())][:inits_len]))  for id_ in cores]
+# maxs = [(id_, max([abs(int(term)) for term in sp.Matrix(cores[id_].dropna())][:INITS_LEN]))  for id_ in cores]
 maxi = max([ maxj for idj, maxj in maxs])
 # maxs_limitted = [ maxj for idj, maxj in maxs if maxj < upper_bound]
 # maxs_unbounded = [ (idj, maxj) for idj, maxj in maxs if maxj > upper_bound]

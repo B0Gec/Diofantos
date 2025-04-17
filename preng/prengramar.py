@@ -27,8 +27,10 @@ from ProGED.generators.grammar_construction import grammar_from_template
 np.random.seed(0)
 MAX_MAGNITUDE = 10**100
 # MAX_MAGNITUDE = 10**32  # seems cool crom pre-analysis
+MAX_MAGNITUDE = 10**10
 print(f'{MAX_MAGNITUDE = }')
-1/0
+# 1/0
+
 
 def sentence_to_code(sentence: str) -> Callable[[list], int]:
     """Convert a sentence outputed by a prompt to a Python function object
@@ -79,11 +81,9 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10*100):
         - sqrt of negative numbers  (isqrt)
     """
 
-    max_order = eq_order(sentence)
-    inits = inits[:max_order]
 
     try:
-         predicted = generate(sentence, inits, n_pred-max_order)
+         predicted = generate(sentence, inits, n_pred)
     except Exception as e:
         print("Exception!!:", str(e))
         return None
@@ -131,6 +131,9 @@ grammar = grammar_from_template("universal_oeis", {})
 
 LOW_BOUND, UP_BOUND = -10, 10
 N_INPUT, SEQ_LEN = 25, 35
+# dascoli: seq_len between 5 and 36
+    # n_pred: 5 to 30
+    # us: n_pred = 5 to min(30, 36-order)
 MAX_ORDER = 20
 
 import random
@@ -186,7 +189,6 @@ print(gented)
 def generate_ten(eq: str) -> list:
     """Generate 10 sequences for training pairs (seq, eq)."""
 
-    print(eq)
     eq_orderi = eq_order(eq)
     # if eq_orderi == 0:
     #     return [str(eq) for _ in range(SAMPLE_SIZE)]
@@ -202,6 +204,9 @@ def generate_ten(eq: str) -> list:
     # (i.e. 10 different inits for sequences)
     parts = []
     for inits in uniques:
+        seq_len = random.randint(5, 36)
+        # n_pred = random.randint(5, min(30, 36-eq_orderi))
+        n_pred = max(0, seq_len - eq_orderi)
         print(f'{inits = }')
         # print('here we go before')
         seq = generate_safe(eq, inits, n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)

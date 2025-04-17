@@ -151,7 +151,7 @@ def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 
     # print(f'{non_zeros = }')
     # print(f'{surplus = }')
     # print(f'{sum(non_zeros) = }')
-    # 1/0
+
     # probs_gamma = [round(i/sum(non_zeros), 4) for i in non_zeros]
     # print(f'{probs_gamma = }')
     # print(f'{sum(probs_gamma) = }')
