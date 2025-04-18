@@ -145,9 +145,11 @@ randinits = [random.randint(LOW_BOUND, UP_BOUND) for _ in range(MAX_ORDER)]
 # print(grammar.generate_one())
 # print('\n' * 5)
 SCALE = 150
+SCALE = 2
+SCALE = 3
 SCALE = 5
 SCALE = 10
-# SCALE = 100
+SCALE = 100
 # SCALE = 140
 # SCALE = 150
 
@@ -274,8 +276,8 @@ def prompt(eq:str, seqs:list[list] ) -> str:
     # [INST] Could you give me a linear equation for the following number sequence: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 [/INST] [RESP] Certainly, the equation is the following: a_n = 1*a_{n-1} [/RESP]
     printout = [ f'[INST] Could you give me a recursive equation in a form of a Python code for the following number '
                   f'sequence: {str(seq)[1:-1].replace(" ", "")} [/INST]'
-                 f'[RESP] Certainly, the Python code is the following: lambda a_n: {eq} [/RESP]' for seq in seqs ]
-    return '\n'.join(printout)
+                 f'[RESP] Certainly, the Python code is the following: lambda a_n: {eq} [/RESP]\n' for seq in seqs ]
+    return ''.join(printout)
 
 eq, seqs = '1*a_n[-1]', '[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]'
 # print(prompt(eq, [seqs]))
