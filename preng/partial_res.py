@@ -1,5 +1,6 @@
 """
-Look results for moadeeb and filter sequences that are in dasco_and_linrec.csv
+6.5.2025:
+Look results for moadeeb and Diofantos and filter sequences that are in dasco_and_linrec.csv
 make new directory and calculate accuracy.
 """
 
@@ -206,6 +207,7 @@ parts_filename = '../../Documents/data-sets/pairs_25.txt'
 n_input = int(parts_filename[-6:-4])
 print(n_input)
 # 1/0
+# Extract sequence:
 with open(parts_filename, 'r') as f:
     content = f.read()
     seqs = re.findall('\[INST\] Could you give me a linear equation for the following number sequence: ([-\d,]+) \[\/INST\]', content)
@@ -213,7 +215,9 @@ with open(parts_filename, 'r') as f:
 
 print(len(seqs))
 print(seqs[:10])
+# 1/0
 
+# Check if our dataset was contaminated:
 from exact_ed import unpack_seq
 
 sample = 4000

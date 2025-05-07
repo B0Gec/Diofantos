@@ -1,5 +1,6 @@
 """
-Analyze the results from 28.1.2025.
+Analyze the predictive accuracy of the results from 28.1.2025.
+Almost exclusively relying on linear recurrences.
 """
 
 import math
@@ -33,6 +34,7 @@ print(lens[:10])
 print(max(lens))
 # print(seq[:5] == [0, 1, 1, 2, 3])
 given_seq = [0, 1, 1, 2, 3, 5, 8, 13, 21]
+# Give me all (id's of) sequences that start with given_seq:
 a = [(k,v) for k, v in dasco.items() if v[:len(given_seq)] == given_seq]
 print(a)
 print(len(a))

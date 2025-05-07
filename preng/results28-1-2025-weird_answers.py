@@ -1,5 +1,6 @@
 """
-Analyze the results from 28.1.2025.
+Analyze the results from 28.1.2025 from the perspective of weird answers.
+Results are tsv of 4 columns and 2342 rows.
 """
 
 import pandas as pd
@@ -30,6 +31,7 @@ print(dfres25.columns)
 # print(dfw)
 
 
+# Getting familiar with (the first) row(s) of the dataframe:
 # dfres25.iloc[:1, 0].str[:].get(0)
 # orig_prompt = dfres25.iloc[:1, 0].str[:].get(0)
 # orig_prompt = dfres25.iloc[:1, 0].str.cat()
@@ -66,6 +68,7 @@ other_non_a_nss = []
 count__ = 0
 _s = []
 
+# Categories of answers: Normal .. expected, a_ns_nonnormal .. has f(x), '__' has underscore,
 cats = {'normal': [], 'a_ns_nonnormal': [], '__': [], 'possible_sol': [], 'nan': [], 'control': [], 'rage': [], 'other_non_a_ns': []}
 
 import math
@@ -81,6 +84,8 @@ up_limit = 6000
 
 for i_row in range(min(dfres25.shape[0], up_limit)):
     print('\nzacetek loopa')
+
+    # The four cells in a row:
     c1, c2, c3, c4 = [dfres25.iloc[i_row, c] for c in range(4)]
     # print(c3)
     # print(type(c3))
@@ -96,16 +101,21 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
     # print(f'{c3 = }')
 
 
+    # Expected format:
     samples = ["Could you give me a ",  "<s>[INST] Could you ",  "Certainly, the equat", "Certainly, the equat"]
     # print([len(i) for i in samples])
     first = 20
     # print(c1[:first], c2[:first], c3[:first], c4[:first])
     # print(type(c), c)
+
+    # Nothing, just checking out:
     row_pairs = [(n, c) for n, c in enumerate([c1, c2, c3, c4])]
     row_types = [type(c) for n, c in enumerate([c1, c2, c3, c4])]
     # print(row_pairs)
     # print(row_types)
     # print(f'{i_row = }')
+
+    # Check if all cells start as expected:
     check_row = [c[:first] == samples[n] for n, c in enumerate([c1, c2, c3, c4])]
     # print(check_row)
     n_terms = len(c1.split(':')[1].split(','))
@@ -113,14 +123,18 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
     # for c in [c1, c2, c3, c4]:
     #     print(c)
     if check_row.count(True) != 4:
+        # This is unexpected, i.e. not normal. Some response is not in the exactly expected format.
         print()
         if [ i in c3 for i in ['a_n = ', 'a_n=', 'x_n = ']].count(True) > 0:
+            # This is prefered format.
             count_a_ns_nonnormal += 1
             cats['a_ns_nonnormal'] += [c3]
             print('\n'*2)
             print(f'{c3 = }')
             print('\n'*2)
+
         elif 'f(n) = ' in c3:
+            # Quite unconventional.
             count_a_ns_nonnormal += 1
             cats['a_ns_nonnormal'] += [c3]
             print()
@@ -132,11 +146,13 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
             if i_row > 1381:
                 1/0
         elif '_{' in c3:
+            # Another tracked down format.
             count__ += 1
             _s += [c3]
             cats['__'] += [c3]
 
         elif [opening[:olength] == c3[:olength] for opening, olength in
+            # Unconventional format, but seems to be a solution:
             [('like so: a_n', 12), ('Possible solution: a_n', 22),
              ('Answer: x_n =', 13), ('Some other possibilities: a_n =', 31),
              ('Possibly the following: a_n =', 29),
@@ -146,6 +162,7 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
             cats['possible_sol'] += [c3]
             print('possible solution found !!!')
             print(f'culprit: {c3}')
+
         # elif 'equation' in c3:
         #     count_possible_sol += 1
         #     print('possible solution found !!!')
@@ -161,6 +178,7 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
             print(f'culprit: {c3}')
         else:
 
+            # Unexpected format. Category 'rage'.
             others = ['given in one answer', 'you\'ve requ', 'nan',
                       'Given your question, we can say that you have a basic understand of number sequences. However, more practice would be helpful in order for you to write more complex linear equations. For example, you can try and write a quadratic number sequence and try to fit a line to it.',
                       'In order to get our result we\'ll have to have a common difference,',
@@ -184,6 +202,7 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
                       'which ',
                       ]
 
+            # Unconventional format, wtf-like, category 'rage':
             to_equals = ['possibly', 'I don\'t think so.', 'which is the same as the initial number sequence.',
                          'certainty: 70%',
                          'to do what?',
@@ -191,25 +210,31 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
                          'There, I\'ve found it for you.',
                          'why is that?',
                          ]
+            # At least one 'rage'-like answer:
             equals_pos = [eq == c3 for eq in to_equals].count(True) > 0
 
             others_ = [ans in c3 for ans in others]
+            # At least one 'other'-like answer:
             others_positive = others_.count(True) > 0
             # print(f'{a = }')
             print(f'{others = }')
             print(f'{others_ = }')
             print(f'{others_positive = }')
             till = 2
+
+            # Unimportant / not essential:
             print(f'{c3[:till] == others[1][:till] = }')
             print(f'{c3[:till] = }, {others[1][:till] = }')
             # 1/0
 
             if 'why do you want the equation??' == c3 or others_positive or equals_pos:
+                # Sum up all other and rage-like answers:
                 count_rage += 1
                 cats['rage'] += [c3]
                 print('why tf rage found !!!')
                 print(f'culprit: {c3}')
             else:
+                # Unidentified unexpected format.
                 other_non_a_ns += 1
                 other_non_a_nss += [(i_row, c3)]
                 print()
@@ -217,12 +242,14 @@ for i_row in range(min(dfres25.shape[0], up_limit)):
                 for cell in [c1, c2, c3, c4]:
                     print(cell)
                 # raise ValueError(f'Row {i_row} beginning is not as expected !!!')
+
     # or n_terms != 25:
     else:
+        # The answer is normal, no worries. Count me in! :)
         count_normal += 1
         cats['normal'] += [c3]
         if 'a_n = ' in c3 or 'x_n = ' in c3:
-            count_a_ns += 1
+            count_a_ns += 1   # even more normal situation
 
     # print(c3==c4)
     # print(c3)
