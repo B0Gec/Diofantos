@@ -1,4 +1,7 @@
 # """
+# usage example:
+# $ py prengramar.py > ../bigdata/pairs_proged_75k.txt
+#
 # code-based llm
 # Answer: the program is:
 # lambda a_n : a_n[-1] + a_n[-2]
