@@ -30,7 +30,7 @@ def prompt(seq:list[int], n_input: int) -> str:
     """
 
     # [INST] Could you give me a linear equation for the following number sequence: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 [/INST] [RESP] Certainly, the equation is the following: a_n = 1*a_{n-1} [/RESP]
-    out = (f'[INST] Could you give me a recursive equation in a form of a Python code for the following number '
+    out = (f'[INST] Could you give me a recursive equation in a form of a Python code for the following number sequence: '
            f'{str(seq[:n_input])[1:-1].replace(" ", "")} [/INST] '
            f'[RESP] Ground truth, i.e. next 10 terms are {seq[n_input:n_input+10]}. [/RESP]\n'
            )
@@ -41,9 +41,10 @@ def prompt(seq:list[int], n_input: int) -> str:
 
 SCALE = 1234567
 # SCALE = 1
+# SCALE = 12
 
-# n_input = 25
-n_input = 15
+n_input = 25
+# n_input = 15
 
 printfile = ''.join([prompt(seq, n_input=n_input) for seq in list(dasco.values())[:SCALE]])
 print(printfile)

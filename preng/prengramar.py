@@ -56,7 +56,7 @@ def sentence_to_code(sentence: str) -> Callable[[list], int]:
 # print(sentence_to_code('a_n[-1] + a_n[-2]'))
 
 
-def code_to_seq(lambda_function, inits, n_pred=10):
+def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE):
     """Calculate next sequence terms by a recursive formula."""
     # print(len(inits), )
     predicted = inits.copy()
@@ -73,11 +73,11 @@ def code_to_seq(lambda_function, inits, n_pred=10):
 # print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
 # 1/0
 
-def generate(sentence, inits, n_pred=10):
-    return code_to_seq(sentence_to_code(sentence), inits, n_pred)
+def generate(sentence, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE):
+    return code_to_seq(sentence_to_code(sentence), inits, n_pred, max_magnitude=MAX_MAGNITUDE)
 
 
-def generate_safe(sentence, inits, n_pred=10, term_size_limit=10*100):
+def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100):
     """Generate sequences safely to ignore the following situations:
         - ZeroDivisionError (//)
         - modulo by zero    (%)
@@ -85,7 +85,7 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10*100):
     """
 
     try:
-         predicted = generate(sentence, inits, n_pred)
+         predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit)
     except Exception as e:
         # print("Exception!!:", str(e))
         return None
