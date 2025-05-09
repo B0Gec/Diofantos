@@ -328,7 +328,9 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25, random_size=None):
 
 # accuracy(dfres15, up_limit=10)
 # accuracy(dfres15, n_input=15, up_limit=30)
-accuracy(dfres15, n_input=15, up_limit=60)
+# accuracy(dfres15, n_input=15, up_limit=60)
+# accuracy(dfres15, n_input=15, up_limit=123460)
+accuracy(dfres15, n_input=15, up_limit=1000)
 # accuracy(dfres15, n_input=15, up_limit=110)
 # accuracy(dfres15, n_input=15, up_limit=190)
 # accuracy(dfres15, n_input=15, random_size=10)

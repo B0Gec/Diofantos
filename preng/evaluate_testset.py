@@ -5,15 +5,16 @@
 
 
 from prengramar import predict_safe
+from exact_ed import is_dasco
 
 # Fake test results for now:
-test_results = 'fake_test-results.txt'
+test_results_file = 'fake_test-results.txt'
 
 testset_file = 'test_proged25u2.txt'
 testset_file = 'test_proged15u2.txt'
 
 
-with open(test_results, 'r') as f:
+with open(test_results_file, 'r') as f:
     test_results = f.readlines()
 
 with open(testset_file, 'r') as f:
@@ -95,7 +96,10 @@ def evaluate_results(test_results, test_set):
     if len(test_results) != len(test_set):
         raise IndexError('Test results and test set do not have the same number of rows!!')
 
+    count_acc1, count_acc10 = 0, 0
+    i_row = 0
     for test_res_row, test_set_row in zip(test_results, test_set):
+        i_row += 1
         print()
         # Parse the test results
         input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results')
@@ -107,9 +111,20 @@ def evaluate_results(test_results, test_set):
         predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=10)
         print(f'{predicted_full = }')
 
-        # TODO: check dasco exact_ed file to see/remerber how is the evaluation implemented.
+        acc_1, acc_10 = is_dasco(predicted_full, ten_next_terms)
+        count_acc1 += acc_1
+        count_acc10 += acc_10
 
-    return
+        if i_row % 100 == 0:
+            acc_t = count_acc1 / i_row, count_acc10 / i_row
+            print(f'Accuracy measured so far ({i_row}-th row): of n_pred = 1: {acc_t[0] * 100:.2f} %, accuracy of n_pred = 10: {acc_t[1] * 100:.2f} %')
+
+    acc = count_acc1 / len(test_results), count_acc10 / len(test_results)
+
+    print(f'\nResults for results_file = {test_results_file} and n_input = {len(input_sequence)}:')
+    print(f'Accuracy of n_pred = 1: {acc[0]*100:.2f} %, accuracy of n_pred = 10: {acc[1]*100:.2f} %')
+
+    return count_acc1, count_acc10
 
 SCALE = 3
 evaluate_results(test_results[:SCALE], test_set[:SCALE])
