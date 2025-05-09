@@ -884,6 +884,38 @@ def sol_order(x: sp.Matrix, solution_ref: list[str]) -> (int, dict):
     return max([0] + [max([0] + [o for o in orders if str(o) in var]) for var, _ in x_dict.items()]), x_dict
 
 
+def is_dasco(seq_pred, ground_truth):
+    """Use d'Ascoli's paper way of checking if the next n_pred terms were predicted correctly.
+
+    Input:
+        - seq_pred ... predicted sequence
+        - ground_truth ... ground truth sequence
+    Output:
+        - True if the prediction was correct, False otherwise.
+    """
+
+    if len(ground_truth) != 10:
+        raise IndexError('Wrong length of the ground_truth input !!')
+    elif len(seq_pred) > 10:
+        raise IndexError('Wrong length of the predicted sequence input !!')
+
+    seq = ground_truth
+    n_pred = 10
+    tau = 10 ** (-10)
+    acc_10 = False if len(seq_pred) < n_pred else max([abs((seq_pred[i] - seq[i])/seq[i]) if seq[i] != 0 else (0 if seq_pred[i]==0 else math.inf)
+                                                       for i in range(0, n_pred)]) <= tau
+    acc_1 =      (abs((seq_pred[0] - seq[0])/seq[0]) if seq[0] != 0 else (0 if seq_pred[0]==0 else math.inf)) <= tau
+    return acc_1, acc_10
+
+# print(is_dasco([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]))
+print(is_dasco([1, 1, 3, 4, 2, 33, 4, 55, 3, 45], [1, 1, 3, 4, 2, 33, 4, 55, 3, 45]))
+print(is_dasco([1, 1, 3, 4, 245, 33, 4, 55, 3, 45], [1, 1, 3, 4, 2, 33, 4, 55, 3, 45]))
+
+# Bug before 9.5.2025:
+print(is_dasco([0, 1, 3, 4, 245, 33, 4, 55, 3, 45], [0, 0, 0, 0, 2, 33, 4, 55, 3, 45]))
+# 1/0
+
+
 def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False, dasco_file=dasco_file):
     """Check if the equation holds for the sequence, to calculate prediction accuracy for
     n_input=15 or 25 and n_pred=1 or 10 as in the paper by d'Ascoli."""
@@ -949,21 +981,9 @@ def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False, dasco_fi
     # seq[1] = 121392.99999
     # diff = max([abs((an - seq[n])/seq[n]) for n, an in enumerate(seq_pred[n_input: n_input+n_pred]]) if n !=0]
     # is_check = False if
-    n_pred = 10
-    tau = 10 ** (-10)
-    acc_10 = False if len(seq_pred) < n_pred else max([abs((seq_pred[i] - seq[i])/seq[i]) if seq[i] != 0 else (0 if seq_pred[0]==0 else math.inf)
-                  for i in range(0, n_pred)]) <= tau
-    acc_1 =      (abs((seq_pred[0] - seq[0])/seq[0]) if seq[0] != 0 else (0 if seq_pred[0]==0 else math.inf)) <= tau
-    # print('acc_1, acc_10:', acc_1, acc_10)
-    # print(seq)
-    # print(seq_pred)
-    # print(len(seq), len(seq_pred))
-    # diff = [(i+1)  for i in range(0, n_pred)]
-    # diffc = [(seq[i], seq_pred[i])  for i in range(0, n_pred)]
-    # diffca = [seq[i]== seq_pred[i]  for i in range(0, n_pred)]
-    # print('diff:', diffc, diffca)
-    # return diff < tau
+    acc_1, acc_10 = is_dasco(seq_pred, seq)
     return acc_1, acc_10
+
 
 # 4 cases: (n_input, n_pred) pairs: (15, 1), (15, 10), (25, 1), (25, 10)
 # tau = 10^(-10)
