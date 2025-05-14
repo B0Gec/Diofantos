@@ -158,8 +158,16 @@ def extract_seq(question):
         return intseq
 
 def predict_accuracy(lincoeffs, i_row_p, n_input):
-    """Predict the next n_pred terms of the given integer sequence with a given recursive equation.
+    """Predict next terms of a sequence and check the accuracy of this prediction.
+
+    In more detail:Predict the next n_pred terms of the given integer sequence with a given linear-recursive equation.
     Subsequently, check the accuracy of the prediction.
+    Inputs:
+        - lincoeffs: linear coefficients i.e. the linear-recursive equation.
+        - i_row_p: index of the row in the test set.
+        - n_input: number of input terms of the test sequence.
+    Outputs:
+        - acc_1 and acc_10 : accuracy of the prediction corresponding to n_pred=1 and 10.
     """
 
     from exact_ed import check_eq_dasco
@@ -330,9 +338,10 @@ def accuracy(df, up_limit=10**8, start_loc=0, n_input=25, random_size=None):
 # accuracy(dfres15, n_input=15, up_limit=30)
 # accuracy(dfres15, n_input=15, up_limit=60)
 # accuracy(dfres15, n_input=15, up_limit=123460)
-accuracy(dfres15, n_input=15, up_limit=1000)
+# accuracy(dfres15, n_input=15, up_limit=1000)
 # accuracy(dfres15, n_input=15, up_limit=110)
 # accuracy(dfres15, n_input=15, up_limit=190)
 # accuracy(dfres15, n_input=15, random_size=10)
 # accuracy(dfres15, n_input=15)
 
+accuracy(dfres25, n_input=25, up_limit=12345678)

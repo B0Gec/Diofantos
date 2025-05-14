@@ -158,9 +158,16 @@ job_id = 'n15_acc_lin_dasco'
 # job_id = 'mbtmord20r-linrec_dasco'
 # job_id = 'mbtmN25'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
 # job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
+job_id = 'rewrite6'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
 
 print(job_id)
 # 1/0
+
+N_INPUT_dict = {'mbtmord20r-linrec_dasco': 15,
+                'mbtmN25-linrec_dasco': 25,
+                }
+N_INPUT = N_INPUT_dict.get(job_id, None)
+bug_dasco_acc_files = list(N_INPUT_dict.keys())
 
 linears = ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable', 'mblinbs50')
 CHECK_EQUIV = False if job_id not in linears else True  # later you can change to "if csv_filename = 'linear...'
@@ -426,6 +433,7 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
     if verbosity >= 1:
         print('we_found:', we_found)
 
+    seq_id = fname[-11:-4]
     def truefalse(the_list):
         if black_check and the_list == []:
             return 0
@@ -438,6 +446,11 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
         else:
             return 1 if string == 'True' else 0
     is_reconst, is_check = tuple(map(truefalse, [re_reconst, re_manual]))
+    # print(f'before is_dasco {fname}')
+    # if job_id in bug_dasco_acc_files:
+    #     from bug_dasco_zeroterms import acc
+    #     is_reconst, is_check = acc(eq, seq_id, N_INPUT, is_mb=True)
+    # print('after is_dasco')
 
     is_equiv = True if is_reconst else False
     equiv_csv_error = False
@@ -451,7 +464,6 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
             # print(f'{eq = }')
             task_id = int(fname[-17:-12])
             # print(f'{task_id = }')
-            seq_id = fname[-11:-4]
 
             seq_, coeffs__, truth__ = unpack_seq(seq_id, csv)
             seq_ = list(seq_)
@@ -1075,6 +1087,9 @@ print('\nComplexities:')
 
 print(f'Dasco: n_pred=1:  {official_success: > 5} = {official_success / n_of_seqs * 100: 0.3} % - official')
 print(f'Dasco: n_pred=10: {id_oeis: >5} = {id_oeis/n_of_seqs*100:0.3} %')
+#
+print(f'Dasco success rate, i.e. success files/all files: n_pred=1:  {official_success: > 5} = {official_success / len(files) * 100: 0.3} % - official')
+print(f'Dasco success rate, i.e. success files/all files: n_pred=10:  {id_oeis: > 5} = {id_oeis / len(files) * 100: 0.3} % - official')
 # 1/0
 
 printout = f"""
