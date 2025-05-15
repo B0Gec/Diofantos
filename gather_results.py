@@ -139,8 +139,8 @@ job_id = 'dilin'     # maybe the official diofantos linrec results, check it.
 
 # # job_id = 'transfoeis_place'
 # # job_id = 'transfoeis_acc'
-job_id = 'transfoeis_acc2'  # this are official results for n_input=25 (and n_pred=1 and 10)
-job_id = 'n15_acc'        # this are official results for n_input=15 (and n_pred=1 and 10)
+job_id = 'transfoeis_acc2'  # this are official Diofantos results for n_input=25 (and n_pred=1 and 10)
+job_id = 'n15_acc'        # this are official Diofantos results for n_input=15 (and n_pred=1 and 10)
 # # # job_id = 'n15_ord5'
 # job_id = 'transfoeis_acc2_lin_dasco'
 job_id = 'n15_acc_lin_dasco'
@@ -154,11 +154,16 @@ job_id = 'n15_acc_lin_dasco'
 # job_id = 'mbtmoeis'
 
 # job_id = 'mbtmord20'
-# job_id = 'mbtmord20r'   # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10)
+# job_id = 'mbtmord20r'   # max_order=20. This were once official results for n_input=15, before the bug was discovered
 # job_id = 'mbtmord20r-linrec_dasco'
-# job_id = 'mbtmN25'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
-# job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10)
-job_id = 'rewrite6'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
+# job_id = 'mbtmN25'    # max_order=20. This were once official results for n_input=25, before the bug was discovered
+# job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This were once official results for n_input=25 (and n_pred=1 and 10), before the bug was discovered
+# job_id = 'rewritten-mbtmN25'    # incorrect results based on mbtmN25
+job_id = 're2-mbtmN25'    # max_order=20. This are official Moadeeb results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
+job_id = 'rewritten-mbtmord20r'    # max_order=20. This are official Moadeeb results for n_input=15 (and n_pred=1 and 10) BUGSFREE hopefully.
+job_id = 're2-mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) for linrec_dasco
+job_id = 'rewritten-mbtmord20r-linrec_dasco'    # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10) for linrec_dasco
+
 
 print(job_id)
 # 1/0
@@ -192,9 +197,9 @@ TMOEIS = job_id in ('transfoei_place', 'transfoeis_acc', 'transfoeis_acc2', 'n15
                     'mbtmord20r', 'mbtmN25')
 
 CORES = job_id in ("diocores77", 'diocor-merge', 'sindycore83', 'dicor-cub', 'dicor-cub19',
-                           'fdiocores', 'fdiocorefix', 'fdiocorefix2', 'sicor116', 'dicorrep', 'sicor9fix2', 'sicor1114',
-                           'findicor', 'sdcor2', 'mavicore0', 'maviterms50', 'dicor-atMb', 'sicor-atMb',
-                           'transfoeis_place', 'mbcor', 'mbtmoeis', 'mbtmord20', 'mbtmord20r', ) or TMOEIS
+                   'fdiocores', 'fdiocorefix', 'fdiocorefix2', 'sicor116', 'dicorrep', 'sicor9fix2', 'sicor1114',
+                   'findicor', 'sdcor2', 'mavicore0', 'maviterms50', 'dicor-atMb', 'sicor-atMb',
+                   'transfoeis_place', 'mbcor', 'mbtmoeis', 'mbtmord20', 'mbtmord20r', ) or TMOEIS
 
 
 # CORES = True
@@ -640,6 +645,11 @@ def extract_file(fname, verbosity=VERBOSITY, job_id=job_id):
     # 1/0
 
     f.close()
+    # if seq_id == 'A000015':
+    #     print(seq_id)
+    #     print(fname)
+    #     print(is_reconst, is_check)
+    #     1/0
 
     return we_found, is_reconst, is_check, is_equiv, n_of_seqs, avg_is_best, confs, eq, cx_order_winner, cx_nonzero_winner, reconst_order
 

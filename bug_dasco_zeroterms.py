@@ -40,19 +40,19 @@ def rewrite_history(content, seq_id, n_input, is_mb=True):
     re_found = re.findall(r"NOT RECONSTRUCTED", content)
     eq = None if len(re_found) > 0 or len(eq) == 0 else eq[0]
 
-    bugfix = acc(eq, seq_id=seq_id, n_input=n_input, is_mb=is_mb)
+    acc_1, acc_10 = acc(eq, seq_id=seq_id, n_input=n_input, is_mb=is_mb)
     # print(f"bugfix: {bugfix}")
 
 
     content = re.sub(
           r"\n(\w{4,5})  -  checked against website ground truth",
-        f"\n{bugfix[0]}  -  checked against website ground truth",
+        f"\n{acc_10}  -  checked against website ground truth",
         content)
     # print(f"new content: \n{content}")
     # re_reconst = re.findall(r"\n(\w{4,5}).+" + f"checked {added}against website ground truth", content)
     content = re.sub(
         r"\n(\w{4,5})  -  " + f"\"manual\" check if equation is correct",
-        f"\n{bugfix[1]}  -  " + f"\"manual\" check if equation is correct",
+        f"\n{acc_1}  -  " + f"\"manual\" check if equation is correct",
         content)
     # print(f"new content: \n{content}")
 
@@ -69,6 +69,7 @@ if __name__ == '__main__':
     TASK_ID = 0
     # EXPERIMENT_ID = 'rewrite-history0'
     EXPERIMENT_ID = 'rewrite-mbtmN25'
+    EXPERIMENT_ID = 'rewrite-nin15'
     N_INPUT_dict = {
         'mbtmord20r-linrec_dasco': 15,
         'mbtmord20r': 15,
@@ -94,7 +95,8 @@ if __name__ == '__main__':
     local_dir = '' if is_cluster else f'good{mbext}/'
     base_dir = f"results/{local_dir}"
     print(f'{base_dir = }')
-    job_id = 'mbtmN25'
+    # job_id = 'mbtmN25'
+    job_id = 'mbtmord20r'
     n_input = N_INPUT_dict.get(job_id, None)
     job_dir = base_dir + job_id + '/'
 
