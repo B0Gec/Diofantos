@@ -163,6 +163,13 @@ job_id = 're2-mbtmN25'    # max_order=20. This are official Moadeeb results for 
 job_id = 'rewritten-mbtmord20r'    # max_order=20. This are official Moadeeb results for n_input=15 (and n_pred=1 and 10) BUGSFREE hopefully.
 job_id = 're2-mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) for linrec_dasco
 job_id = 'rewritten-mbtmord20r-linrec_dasco'    # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10) for linrec_dasco
+# job_id = 'rewritten-n15_acc'
+# job_id = 'rewritten-transfoeis_acc2'
+# job_id = 're2-n15_acc'
+job_id = 're3-n15_acc'    # this are official Diofantos results for n_input=15 (and n_pred=1 and 10)
+job_id = 're3-n15_acc-dasco_linrec'    # this are official dasco_linrec Diofantos results for n_input=15 (and n_pred=1 and 10)
+job_id = 're2-transfoeis_acc2'  # this are official Diofantos results for n_input=25 (and n_pred=1 and 10)
+job_id = 're2-transfoeis_acc2-dasco_linrec'  # this are dasco_linrec official Diofantos results for n_input=25 (and n_pred=1 and 10)
 
 
 print(job_id)
@@ -190,7 +197,12 @@ base_dir = "results/goodmb/"
 #     base_dir = "results/goodmb/"
 if job_id in ('dilin', 'dilin-validable', 'silin', 'silin-validable', 'sdlin', 'sdlin-validable',
               'sicor9fix2', 'sicor1114', 'findicor',
-              'transfoeis_acc2', 'transfoeis_acc2_lin_dasco', 'n15_acc', 'n15_acc_lin_dasco', ):
+              'transfoeis_acc2', 'transfoeis_acc2_lin_dasco', 'n15_acc', 'n15_acc_lin_dasco',
+              'rewritten-transfoeis_acc2', 'rewritten-n15_acc',
+              're2-transfoeis_acc2', 're2-n15_acc',
+              're3-transfoeis_acc2', 're3-n15_acc',
+              're2-transfoeis_acc2-dasco_linrec', 're3-n15_acc-dasco_linrec',
+              ):
     base_dir = "results/good/"
 
 TMOEIS = job_id in ('transfoei_place', 'transfoeis_acc', 'transfoeis_acc2', 'n15_acc', 'mbtmoeis', 'mbtmord20',
@@ -1056,6 +1068,7 @@ print(n_of_seqs_db)
 n_of_seqs = n_of_seqs - ignored
 jobs_fail = n_of_seqs - len(files)  # or corrected_sum.
 print(n_of_seqs)
+print(f'{n_of_seqs = }')
 print('job_fails:', jobs_fail)
 
 id_oeis, id_equiv, non_id, non_manual, ed_fail, reconst_non_manual, avg_is_best, buglist, \
@@ -1095,12 +1108,15 @@ print('\nComplexities:')
 #                in nonzeros_cxs.items() if 'ail' not in ky]))
 # 1/0
 
-print(f'Dasco: n_pred=1:  {official_success: > 5} = {official_success / n_of_seqs * 100: 0.3} % - official')
-print(f'Dasco: n_pred=10: {id_oeis: >5} = {id_oeis/n_of_seqs*100:0.3} %')
+print(f'Dasco: n_pred=1:  {official_success: > 5} = {official_success / n_of_seqs * 100: 0.5} % - official')
+print(f'Dasco: n_pred=10: {id_oeis: >5} = {id_oeis/n_of_seqs*100:0.5} %')
 #
-print(f'Dasco success rate, i.e. success files/all files: n_pred=1:  {official_success: > 5} = {official_success / len(files) * 100: 0.3} % - official')
-print(f'Dasco success rate, i.e. success files/all files: n_pred=10:  {id_oeis: > 5} = {id_oeis / len(files) * 100: 0.3} % - official')
+print(f'Dasco success rate, i.e. success files/all files: n_pred=1:  {official_success: > 5} = {official_success / len(files) * 100: 0.5} % - official')
+print(f'Dasco success rate, i.e. success files/all files: n_pred=10:  {id_oeis: > 5} = {id_oeis / len(files) * 100: 0.5} % - official')
 # 1/0
+dasco_linrec_nfiles = 2342
+print(f'Dasco & linrec: n_pred=1:  {official_success: > 5} = {official_success / dasco_linrec_nfiles * 100: 0.5} % - official')
+print(f'Dasco & linrec: n_pred=10: {id_oeis: >5} = {id_oeis/dasco_linrec_nfiles*100:0.5} %')
 
 printout = f"""
     {id_oeis: >5} = {id_oeis/n_of_seqs*100:0.3} % ... (id_oeis) ... successfully found equations that are identical to the recursive equations written in OEIS (hereinafter - OEIS equation)

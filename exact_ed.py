@@ -952,7 +952,6 @@ def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False, dasco_fi
             # seq_pred = []
             # seq_pred = ([seq_pred[:i+1] for i in range(len(seq_pred)) if (max([len(str(j)) for j in seq_pred[:i+1]]) < limit)] or ['no reconst'])[-1]
             seq_pred = [seq_pred[:i+1] for i in range(len(seq_pred)) if (max([len(str(j)) for j in seq_pred[:i+1]]) < limit)][-1]
-            # print(f'{seq_pred = }')
             # print(f'{n_input = }, {len(seq_pred) = }')
             # if len(str(seq_pred[0])) > limit:
             #     seq_pred = 'no reconst'
@@ -974,7 +973,6 @@ def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False, dasco_fi
     # print('my simplified acc:' ,quick_check)
     # 1/0
 
-    # print(f'     {seq = }, \n{seq_pred = }')
     seq, seq_pred = seq[n_input:], seq_pred[n_input:]
     # print(f'{len(seq_pred) = }, {len(seq) = }, {seq_pred = }, {seq = }')
     # print(f'{seq_pred[:3] = }')

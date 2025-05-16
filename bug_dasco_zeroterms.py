@@ -38,10 +38,11 @@ def rewrite_history(content, seq_id, n_input, is_mb=True):
 
     eq = re.findall(r"A\d+:.*\n(.+)\ntruth:", content)
     re_found = re.findall(r"NOT RECONSTRUCTED", content)
-    eq = None if len(re_found) > 0 or len(eq) == 0 else eq[0]
+    eq = 'MB not reconst' if len(re_found) > 0 or len(eq) == 0 else eq[0]
 
-    acc_1, acc_10 = acc(eq, seq_id=seq_id, n_input=n_input, is_mb=is_mb)
-    # print(f"bugfix: {bugfix}")
+    if not is_mb:
+        eq = re.sub(r'a\(n - (\d+)\)', r'a(n-\1)', eq).replace('**', '^')
+    acc_1, acc_10 = acc(eq, seq_id=seq_id, n_input=n_input, is_mb=True)
 
 
     content = re.sub(
@@ -66,16 +67,28 @@ if __name__ == '__main__':
     import os
 
     IS_MB = True
+    IS_MB = False
     TASK_ID = 0
+    TASK_ID = 12
+    TASK_ID = 10
+    TASK_ID = 32
+    TASK_ID = 1011
+    TASK_ID = 1876
+    TASK_ID = 4329
     # EXPERIMENT_ID = 'rewrite-history0'
     EXPERIMENT_ID = 'rewrite-mbtmN25'
     EXPERIMENT_ID = 'rewrite-nin15'
+    EXPERIMENT_ID = 'rewrite-n15_acc'
+    EXPERIMENT_ID = 'rewrite-debug'
     N_INPUT_dict = {
         'mbtmord20r-linrec_dasco': 15,
         'mbtmord20r': 15,
         'mbtmN25-linrec_dasco': 25,
         'mbtmN25': 25,
+        'n15_acc': 15,
+        'transfoeis_acc2': 25,
         }
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
     parser.add_argument("--exper_id", type=str, default=EXPERIMENT_ID)
@@ -96,7 +109,10 @@ if __name__ == '__main__':
     base_dir = f"results/{local_dir}"
     print(f'{base_dir = }')
     # job_id = 'mbtmN25'
-    job_id = 'mbtmord20r'
+    # job_id = 'mbtmord20r'
+    # job_id = 'n15_acc'
+    job_id = 'transfoeis_acc2'
+
     n_input = N_INPUT_dict.get(job_id, None)
     job_dir = base_dir + job_id + '/'
 
