@@ -43,42 +43,48 @@ def parse_response(row: str, result_vs_gt: str) -> str:
     Input:
         - row: str, row from the test results file or the test dataset ground truth file.
         - result_vs_gt: str, 'results' or 'test set ground truth'
+    Output:
+        - input_sequence: list[int], first 15 or 25 sequence terms
+        - predicted equation or
+            - next 10 terms (i.e. ground truth) to test against predicted equation.
     """
 
     # re.findall(r'sequence:  [/INST]', row)
     instruction, response = row.split(' [/INST]')
-    print(f'{instruction = }', f'{response = }')
+    # print(f'{instruction = }', f'{response = }')
     # 1/0
     input_sequence = re.findall(r'sequence: ([\d,-]+)', instruction)[0]
     input_sequence = [int(term) for term in input_sequence.split(',')]
-    print(input_sequence)
+    # print(input_sequence)
     if result_vs_gt == 'results':
-        print('no ground truth, which means this is test result and we have an equation')
+        # print('no ground truth, which means this is test result and we have an equation')
         predicted_eq = re.findall(r'^\[RESP\] Certainly, the Python code is the following: (lambda a_n: [ absignqrt()/*_\[\]\d+-]+) \[/RESP\]$', response)
 
         if len(predicted_eq) == 0:
-            print('had to soften the regex to: <lambda a_n: karkoli >')
-            # predicted_eq = re.findall(r'\[RESP\] Certainly, the Python code is the following: (lambda a_n: .+) \[/RESP\]', response)
+            # print('had to soften the regex to: <lambda a_n: karkoli >')
             predicted_eq = re.findall(r'\[RESP\] Certainly, the Python code is the following: (lambda a_n: .+) \[/RESP\]', response)
         if len(predicted_eq) == 0:
             response = response.strip('[\/RESP]\n')
             predicted_eq = re.findall( r'lambda a_n: [ absignqrt()/*_\[\]\d+-]+', response)
         if len(predicted_eq) == 0:
             predicted_eq = re.findall(r'(lambda a_n: .+)', response)
-        print(f'{predicted_eq = }')
+
+        predicted_eq = predicted_eq[0][len('lambda a_n: '):]
+        # print(f'{predicted_eq = }')
         return input_sequence, predicted_eq
     elif result_vs_gt == 'test set ground truth':
         ground_truth_next_terms = re.findall(r'\[RESP\] Ground truth, i\.e\. next 10 terms are \[([ \d,-]+)\]\. \[/RESP\]', response)
         ground_truth_next_terms = [int(term) for term in ground_truth_next_terms[0].replace(' ', '').split(',')]
-        print(f'{ground_truth_next_terms = }')
+        # print(f'{ground_truth_next_terms = }')
         return input_sequence, ground_truth_next_terms
     else:
         raise ValueError('unknown input row type!!')
 
 
 print(parse_response(test_row, 'results'))
-print('\n'*10)
+# print('\n'*10)
 print(parse_response(test_set_row, 'test set ground truth'))
+# 1/0
 
 def evaluate_results(test_results, test_set):
     """Evaluate the test results against the ground truth.
@@ -88,10 +94,13 @@ def evaluate_results(test_results, test_set):
         - test_set: str, path to the test set file which contains also next 10 terms.
     """
 
-    print(test_results)
+    print('\nEvaluating results: ---')
+    # print(test_results)
+    # print(test_set)
     print(len(test_results))
-    print(test_set)
     print(len(test_set))
+    # print(test_results[-2:])
+    # print(test_set[-2:])
 
     if len(test_results) != len(test_set):
         raise IndexError('Test results and test set do not have the same number of rows!!')
@@ -100,20 +109,29 @@ def evaluate_results(test_results, test_set):
     i_row = 0
     for test_res_row, test_set_row in zip(test_results, test_set):
         i_row += 1
-        print()
+        # print()
         # Parse the test results
         input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results')
         input_sequence, ten_next_terms = parse_response(test_set_row, result_vs_gt='test set ground truth')
-        print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
+        # print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
 
         # Check if the predicted equation is correct:
-        # check_eq_dasco(predicted_eq, input_sequence)
+        # print('\n'*3, ' --- Checking equation... --- ')
         predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=10)
-        print(f'{predicted_full = }')
+        # print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
+        # print(f'{predicted_full = }')
+        # print(' '*44, f'{ten_next_terms = }')
+        n_input = len(input_sequence)
+        if predicted_full is None or predicted_full[:n_input] != input_sequence:
+            acc_1, acc_10 = False, False
+        else:
+            acc_1, acc_10 = is_dasco(predicted_full[n_input:], ten_next_terms)
+        # 1/0
 
-        acc_1, acc_10 = is_dasco(predicted_full, ten_next_terms)
+        # print(f'{acc_1 = }, {acc_10 = }')
         count_acc1 += acc_1
         count_acc10 += acc_10
+        # 1/0
 
         if i_row % 100 == 0:
             acc_t = count_acc1 / i_row, count_acc10 / i_row
@@ -126,6 +144,12 @@ def evaluate_results(test_results, test_set):
 
     return count_acc1, count_acc10
 
-SCALE = 3
-evaluate_results(test_results[:SCALE], test_set[:SCALE])
+
+SCALE = 1
+SCALE = 100
+SCALE = 1000
+SCALE = 10000
+k = 0
+# evaluate_results(test_results[:SCALE], test_set[:SCALE])
+evaluate_results(test_results[k:SCALE+k], test_set[k:SCALE+k])
 

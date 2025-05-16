@@ -70,7 +70,7 @@ def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE):
             # print(next)
     return predicted
 
-# print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
+print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
 # 1/0
 
 def generate(sentence, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE):
@@ -84,8 +84,12 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100):
         - sqrt of negative numbers  (isqrt)
     """
 
+    # print(f'{sentence = }, {inits = }')
+    # predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit)
+    # print(predicted)
     try:
-         predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit)
+        # print(f'{sentence = }, {inits = }')
+        predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit)
     except Exception as e:
         # print("Exception!!:", str(e))
         return None
@@ -291,29 +295,30 @@ def intercept(eq, n):
     # print(f'{n = }, {eq = }')
     return
 
+if __name__ == '__main__':
 
-legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
-            randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]
+    legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
+                randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]
 
-legit = [(intercept(eq, n), eq, seqs) for n, eq in enumerate(eqs) if (seqs := generate_ten(eq)) is not None][:SCALE]
+    legit = [(intercept(eq, n), eq, seqs) for n, eq in enumerate(eqs) if (seqs := generate_ten(eq)) is not None][:SCALE]
 
-# print(f'{len(legit) = }')
-# analyze = [len(seqs) for n, eq, seqs in legit]
-# analyze_lens_0 = len([eq for n, eq, seqs in legit if len(seqs) == 0])
-# analyze_lens_1 = len([eq for n, eq, seqs in legit if len(seqs) == 1])
-# analyze_lens_betw = len([eq for n, eq, seqs in legit if (10 > len(seqs)) and (len(seqs) > 1)])
-# print(analyze)
-# print(f'{analyze_lens_0 = }, {analyze_lens_1 = }, {analyze_lens_betw = }')
-# print(f'{analyze_lens_0 + analyze_lens_1 + analyze_lens_betw}')
+    # print(f'{len(legit) = }')
+    # analyze = [len(seqs) for n, eq, seqs in legit]
+    # analyze_lens_0 = len([eq for n, eq, seqs in legit if len(seqs) == 0])
+    # analyze_lens_1 = len([eq for n, eq, seqs in legit if len(seqs) == 1])
+    # analyze_lens_betw = len([eq for n, eq, seqs in legit if (10 > len(seqs)) and (len(seqs) > 1)])
+    # print(analyze)
+    # print(f'{analyze_lens_0 = }, {analyze_lens_1 = }, {analyze_lens_betw = }')
+    # print(f'{analyze_lens_0 + analyze_lens_1 + analyze_lens_betw}')
 
-printout = ""
-for n, eq, seqs in legit:
-    printout += prompt(eq, seqs)
+    printout = ""
+    for n, eq, seqs in legit:
+        printout += prompt(eq, seqs)
 
-print(printout)
-# print(len(printout.split('\n')))
+    # print(printout)
+    # print(len(printout.split('\n')))
 
-# 1/0
+    # 1/0
 
 # generate_ten('3 + 1 - a_n[-3] // a_n[-15] * a_n[-2]')
 # 1/0
