@@ -202,6 +202,7 @@ SAMPLE_SIZE = 10
 # print(len(gented))
 # print(gented)
 
+
 def generate_ten(eq: str) -> list:
     """Generate 10 sequences for training pairs (seq, eq)."""
 
