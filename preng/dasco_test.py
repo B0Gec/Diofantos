@@ -19,7 +19,7 @@ l = 35
 # print(lens[:10])
 # print(max(lens))
 
-def prompt(seq:list[int], n_input: int) -> str:
+def prompt(seq:list[int], n_input: int, no_response=False) -> str:
     """
     Generate a prompt for evaluation of LLMs.
 
@@ -32,21 +32,26 @@ def prompt(seq:list[int], n_input: int) -> str:
     # [INST] Could you give me a linear equation for the following number sequence: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 [/INST] [RESP] Certainly, the equation is the following: a_n = 1*a_{n-1} [/RESP]
     out = (f'[INST] Could you give me a recursive equation in a form of a Python code for the following number sequence: '
            f'{str(seq[:n_input])[1:-1].replace(" ", "")} [/INST] '
-           f'[RESP] Ground truth, i.e. next 10 terms are {seq[n_input:n_input+10]}. [/RESP]\n'
            )
+    if not no_response:
+        out += f'[RESP] Ground truth, i.e. next 10 terms are {seq[n_input:n_input + 10]}. [/RESP]'
+    out += '\n'
     return out
 
-# print(prompt(seq, n_input=25))
+print(prompt(seq, n_input=25))
+print(prompt(seq, n_input=25, no_response=True))
+# 1/0
 
 
 SCALE = 1234567
 # SCALE = 1
-# SCALE = 12
+SCALE = 12
 
 n_input = 25
 # n_input = 15
 
-printfile = ''.join([prompt(seq, n_input=n_input) for seq in list(dasco.values())[:SCALE]])
+# printfile = ''.join([prompt(seq, n_input=n_input) for seq in list(dasco.values())[:SCALE]])
+printfile = ''.join([prompt(seq, n_input=n_input, no_response=True) for seq in list(dasco.values())[:SCALE]])
 print(printfile)
 import re
 # print(len(re.findall('\n', printfile)))
