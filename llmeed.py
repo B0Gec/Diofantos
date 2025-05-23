@@ -117,26 +117,34 @@ def linearLLM():
 # linearLLM()
 
 
-def prompt(seq):
+def prompt_test(seq_in, seq_pred, seq_id, eq):
     """Generate a prompt from sequence terms."""
-    return (f'[INST] Could you give me a recursive equation in a form of a Python code for the following number sequence: '
-           f'{str(seq)[1:-1].replace(" ", "")} [/INST] ')
+    printout = ( f'[INST] Could you give me a recursive equation in a form of a Python code for the following number '
+                 f'sequence: {str(seq_in)[1:-1].replace(" ", "")} [/INST]'
+                 f'[RESP] The correct answer is: Certainly, Python code is the following: lambda a_n: {eq} and '
+                 f'the next sequence terms are: {str(seq_pred)[1:-1].replace(" ", "")} '
+                 f'while the OEIS ID is: {seq_id} [/RESP]\n')
+    return printout
+
+# print(prompt_test([1, 2, 3, 4, 5], [6, 7, 8, 9, 10], 'A000001', 'a_n = a_{n-1} + a_{n-2}'))
+# 1/0
 
 
-def load_seq(seq_id, csv, is_linrec=False):
+def load_seq(seq_id, csv: pd.DataFrame, is_linrec=False):
     """Load a sequence from linrec/core csv file."""
     if is_linrec:
-        seq_matrix, _coeffs_matrix, _truth = unpack_seq(seq_id, csv)
-        return list(seq_matrix)
+        seq_matrix, _coeffs_matrix, truth = unpack_seq(seq_id, csv)
+        truth = truth.replace('\n', '')
+        return list(seq_matrix), truth
     else:
         header = 0
         seq =  unnan(list(csv[seq_id][header:]))
         seq = list(seq)
-        # print(seq)
-        return seq
+        print(seq)
+        return seq, 'Unsaved equation'
 
 
-def filter_biggies(seq):
+def split_biggies(seq):
     """Select first low profile terms of a sequence.
 
     I.e., cut off all terms from the first with value > 10^10. 
@@ -164,11 +172,12 @@ def csv_to_testset(filename, n_input=25, verbosity=0):
     elif filename == 'cores_test.csv':
         is_linrec = False
     scale = 30000
+    scale = 3
     for n, col_id in enumerate(csv.columns[:scale]):
         # print(n, col_id)
-        seq = load_seq(col_id, csv, is_linrec=is_linrec)
+        seq, eq = load_seq(col_id, csv, is_linrec=is_linrec)
         seq = filter_biggies(seq[:n_input])
-        row = prompt(seq)
+        row = prompt_test(seq)
         file_content += row + '\n'
         if verbosity > 0 and n % verbosity == 0:
             print(f'{n=}, {col_id=}, {seq=}')
@@ -198,8 +207,9 @@ if __name__ == '__main__':
     # linrec n_input=25:
     linrec_csv = 'linear_database_newbl.csv'
     # cores_csv = 'cores_test.csv'
+    write_prompts('test_linrec25o.txt', input_csv_filename=linrec_csv, n_input=25, verbosity=1)
     # write_prompts('test_linrec25o.txt', input_csv_filename=linrec_csv, n_input=25, for_real=True, verbosity=100)
-    write_prompts('test_linrec15o.txt', input_csv_filename=linrec_csv, n_input=15, for_real=True, verbosity=500)
+    # write_prompts('test_linrec15o.txt', input_csv_filename=linrec_csv, n_input=15, for_real=True, verbosity=500)
     # write_prompts('test_cores25o.txt', input_csv_filename=cores_csv, n_input=25, for_real=True, verbosity=100)
     # write_prompts('test_cores15o.txt', input_csv_filename=cores_csv, n_input=15, for_real=True, verbosity=100)
 

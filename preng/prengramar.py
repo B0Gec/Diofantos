@@ -56,28 +56,35 @@ def sentence_to_code(sentence: str) -> Callable[[list], int]:
 # print(sentence_to_code('a_n[-1] + a_n[-2]'))
 
 
-def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE):
+def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE, incremental_file=None):
     """Calculate next sequence terms by a recursive formula."""
     # print(len(inits), )
     predicted = inits.copy()
     # print(predicted)
+    if incremental_file is not None:
+        with open(incremental_file, 'a') as f:
+            f.write(f'{str(predicted)[:-1]}, ')
     for _ in range(n_pred):
         next = lambda_function(predicted)
-        if abs(next) > MAX_MAGNITUDE:
+        if incremental_file is not None:
+            with open(incremental_file, 'a') as f:
+                f.write(f'{next}, ')
+        if abs(next) > max_magnitude:
             return None
         else:
             predicted.append(next)
             # print(next)
     return predicted
 
+
 print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
 # 1/0
 
-def generate(sentence, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE):
-    return code_to_seq(sentence_to_code(sentence), inits, n_pred, max_magnitude=MAX_MAGNITUDE)
+def generate(sentence, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE, incremental_file=None):
+    return code_to_seq(sentence_to_code(sentence), inits, n_pred, max_magnitude=MAX_MAGNITUDE, incremental_file=incremental_file)
 
 
-def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100):
+def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100, incremental_file=None):
     """Generate sequences safely to ignore the following situations:
         - ZeroDivisionError (//)
         - modulo by zero    (%)
@@ -89,7 +96,7 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100):
     # print(predicted)
     try:
         # print(f'{sentence = }, {inits = }')
-        predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit)
+        predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit, incremental_file=incremental_file)
     except Exception as e:
         # print("Exception!!:", str(e))
         return None
@@ -100,8 +107,8 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100):
     return predicted
 
 
-def predict_safe(sentence, inits, n_pred=10):
-    return generate_safe(sentence, inits, n_pred, term_size_limit=math.inf)
+def predict_safe(sentence, inits, n_pred=10, incremental_file=None):
+    return generate_safe(sentence, inits, n_pred, term_size_limit=math.inf, incremental_file=incremental_file)
 
 def eq_order(sentence: str) -> int:
     """Get the order of the equation."""
