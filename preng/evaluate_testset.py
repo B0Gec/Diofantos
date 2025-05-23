@@ -7,30 +7,10 @@
 from prengramar import predict_safe
 from exact_ed import is_dasco
 
-# Fake test results for now:
-test_results_file = 'fake_test-results.txt'
-
-testset_file = 'test_proged25u2.txt'
-testset_file = 'test_proged15u2.txt'
-
-
-with open(test_results_file, 'r') as f:
-    test_results = f.readlines()
-
-with open(testset_file, 'r') as f:
-    test_set = f.readlines()
-
-indx = 0
-
-test_row = test_results[indx]
-test_set_row = test_set[indx]
-print(test_row)
-print(test_set_row)
-# 1/0
 
 
 import re
-def parse_response(row: str, result_vs_gt: str) -> str:
+def parse_response(row: str, result_vs_gt: str, allow_no_eq=False) -> str:
     """Extract/parse the equation from the response.
     
     So that the sentence_to_code can parse it.
@@ -50,6 +30,7 @@ def parse_response(row: str, result_vs_gt: str) -> str:
     """
 
     # re.findall(r'sequence:  [/INST]', row)
+    # print(f'{row = }')
     instruction, response = row.split(' [/INST]')
     # print(f'{instruction = }', f'{response = }')
     # 1/0
@@ -69,7 +50,10 @@ def parse_response(row: str, result_vs_gt: str) -> str:
         if len(predicted_eq) == 0:
             predicted_eq = re.findall(r'(lambda a_n: .+)', response)
 
-        predicted_eq = predicted_eq[0][len('lambda a_n: '):]
+        if not allow_no_eq:
+            predicted_eq = predicted_eq[0][len('lambda a_n: '):]
+        else:
+            predicted_eq = 'dummy test set'
         # print(f'{predicted_eq = }')
         return input_sequence, predicted_eq
     elif result_vs_gt == 'test set ground truth':
@@ -80,11 +64,6 @@ def parse_response(row: str, result_vs_gt: str) -> str:
     else:
         raise ValueError('unknown input row type!!')
 
-
-print(parse_response(test_row, 'results'))
-# print('\n'*10)
-print(parse_response(test_set_row, 'test set ground truth'))
-# 1/0
 
 def evaluate_results(test_results, test_set):
     """Evaluate the test results against the ground truth.
@@ -145,11 +124,40 @@ def evaluate_results(test_results, test_set):
     return count_acc1, count_acc10
 
 
-SCALE = 1
-SCALE = 100
-SCALE = 1000
-SCALE = 10000
-k = 0
-# evaluate_results(test_results[:SCALE], test_set[:SCALE])
-evaluate_results(test_results[k:SCALE+k], test_set[k:SCALE+k])
+if __name__ == '__main__':
+
+    # Fake test results for now:
+    test_results_file = 'fake_test-results.txt'
+
+    testset_file = 'test_proged25u2.txt'
+    testset_file = 'test_proged15u2.txt'
+
+
+    with open(test_results_file, 'r') as f:
+        test_results = f.readlines()
+
+    with open(testset_file, 'r') as f:
+        test_set = f.readlines()
+
+    indx = 0
+
+    test_row = test_results[indx]
+    test_set_row = test_set[indx]
+    print(test_row)
+    print(test_set_row)
+    # 1/0
+
+    print(parse_response(test_row, 'results'))
+    # print('\n'*10)
+    print(parse_response(test_set_row, 'test set ground truth'))
+    # 1/0
+
+
+    SCALE = 1
+    SCALE = 100
+    SCALE = 1000
+    SCALE = 10000
+    k = 0
+    # evaluate_results(test_results[:SCALE], test_set[:SCALE])
+    evaluate_results(test_results[k:SCALE+k], test_set[k:SCALE+k])
 

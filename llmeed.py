@@ -140,7 +140,7 @@ def load_seq(seq_id, csv: pd.DataFrame, is_linrec=False):
         header = 0
         seq =  unnan(list(csv[seq_id][header:]))
         seq = list(seq)
-        print(seq)
+        # print(seq)
         return seq, 'Unsaved equation'
 
 
