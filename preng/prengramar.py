@@ -24,7 +24,7 @@ from numpy import sign
 from collections.abc import Callable
 
 
-from ProGED.generators.grammar_construction import grammar_from_template
+# from ProGED.generators.grammar_construction import grammar_from_template
 
 np.random.seed(0)
 MAX_MAGNITUDE = 10**100
@@ -129,27 +129,12 @@ def eq_order(sentence: str) -> int:
 # print(code_to_seq(eval("lambda a_n : a_n[-1] + a_n[-2]"), [0, 1]))
 
 
-eqs = """
-abs( -1 ) + 4
-sign( 6 ) * -3
-a_n[-14] - 6 * -1 // a_n[-6] // a_n[-5] * a_n[-5]
-a_n[-4] + a_n[-3] + a_n[-9]
-4
-a_n[-12] * a_n[-6] + -4 * ( a_n[-3] - ( a_n[-7] - a_n[-13] ) )
-8 + 3
-5
-isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )
-"""
-
-
-grammar = grammar_from_template("universal_oeis", {})
-# print(grammar)
 
 LOW_BOUND, UP_BOUND = -10, 10
 N_INPUT, SEQ_LEN = 25, 35
 # dascoli: seq_len between 5 and 36
-    # n_pred: 5 to 30
-    # us: n_pred = 5 to min(30, 36-order)
+# n_pred: 5 to 30
+# us: n_pred = 5 to min(30, 36-order)
 MAX_ORDER = 20
 
 import random
@@ -187,30 +172,7 @@ SCALE = 100
 # SCALE = 50000
 # SCALE = 75000
 
-# print(f'{SCALE = }\n')
-eqs = [" ".join(grammar.generate_one()[0]) for i in range(SCALE*2)]
-### test generate_safe:
-# for eq in eqs:
-#     # print()
-#     print(eq)
-#     print(generate_safe(eq, randinits, n_pred=10, term_size_limit=MAX_MAGNITUDE))
-
-eqs = eqs[:SCALE]
-
-# print(eqs)
-# eq = eqs[3]
-# print(eq)
-# 1/0
-
-# eq, _ = legit[1]
-# approach 1)
-# trying to generate at least 10 unique inits (according to eq's order)
-# eq_orderi = eq_order(eq)
 SAMPLE_SIZE = 10
-
-# gented = generate_safe('7', [], n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
-# print(len(gented))
-# print(gented)
 
 
 def generate_ten(eq: str) -> list:
@@ -231,7 +193,7 @@ def generate_ten(eq: str) -> list:
         # seq_len = random.randint(5, 36)
         # n_pred = random.randint(5, min(30, 36-eq_orderi))
         # n_pred = max(0, seq_len - eq_orderi)
-        n_pred = random.randint(max(0, 5-eq_orderi), 36-eq_orderi)
+        n_pred = random.randint(max(0, 5 - eq_orderi), 36 - eq_orderi)
         # print(f'{inits = }')
         # print('here we go before')
         seq = generate_safe(eq, inits, n_pred=n_pred, term_size_limit=MAX_MAGNITUDE)
@@ -274,13 +236,14 @@ def generate_ten(eq: str) -> list:
     # print(f'{parts = }')
     return parts
 
+
 # print('starting ten')
 # eq = 'n + 8'
 # print(generate_ten(eq))
 # 1/0
 
 
-def prompt(eq:str, seqs:list[list] ) -> str:
+def prompt(eq: str, seqs: list[list]) -> str:
     """
     Generate a prompts for learning LLM.
 
@@ -292,12 +255,15 @@ def prompt(eq:str, seqs:list[list] ) -> str:
     """
 
     # [INST] Could you give me a linear equation for the following number sequence: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 [/INST] [RESP] Certainly, the equation is the following: a_n = 1*a_{n-1} [/RESP]
-    printout = [ f'[INST] Could you give me a recursive equation in a form of a Python code for the following number '
-                  f'sequence: {str(seq)[1:-1].replace(" ", "")} [/INST]'
-                 f'[RESP] Certainly, the Python code is the following: lambda a_n: {eq} [/RESP]\n' for seq in seqs ]
+    printout = [f'[INST] Could you give me a recursive equation in a form of a Python code for the following number '
+                f'sequence: {str(seq)[1:-1].replace(" ", "")} [/INST]'
+                f'[RESP] Certainly, the Python code is the following: lambda a_n: {eq} [/RESP]\n' for seq in seqs]
     return ''.join(printout)
 
+
 eq, seqs = '1*a_n[-1]', '[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]'
+
+
 # print(prompt(eq, [seqs]))
 # print(prompt(eq, [[i for i in range(j, j+35)] for j in range(10)]))
 # 1/0
@@ -306,7 +272,48 @@ def intercept(eq, n):
     # print(f'{n = }, {eq = }')
     return
 
+
+
 if __name__ == '__main__':
+
+    eqs = """
+        abs( -1 ) + 4
+        sign( 6 ) * -3
+        a_n[-14] - 6 * -1 // a_n[-6] // a_n[-5] * a_n[-5]
+        a_n[-4] + a_n[-3] + a_n[-9]
+        4
+        a_n[-12] * a_n[-6] + -4 * ( a_n[-3] - ( a_n[-7] - a_n[-13] ) )
+        8 + 3
+        5
+        isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )
+        """
+
+    grammar = grammar_from_template("universal_oeis", {})
+    # print(grammar)
+    # print(f'{SCALE = }\n')
+
+    eqs = [" ".join(grammar.generate_one()[0]) for i in range(SCALE * 2)]
+    ### test generate_safe:
+    # for eq in eqs:
+    #     # print()
+    #     print(eq)
+    #     print(generate_safe(eq, randinits, n_pred=10, term_size_limit=MAX_MAGNITUDE))
+
+    eqs = eqs[:SCALE]
+
+    # print(eqs)
+    # eq = eqs[3]
+    # print(eq)
+    # 1/0
+
+    # eq, _ = legit[1]
+    # approach 1)
+    # trying to generate at least 10 unique inits (according to eq's order)
+    # eq_orderi = eq_order(eq)
+
+    # gented = generate_safe('7', [], n_pred=SEQ_LEN, term_size_limit=MAX_MAGNITUDE)
+    # print(len(gented))
+    # print(gented)
 
     legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
                 randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]

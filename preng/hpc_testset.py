@@ -43,13 +43,14 @@ def evaluate_one_result(test_res_row, dataset_csv, task_id, is_linrec, output_fi
 
     predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=len(seq_pred), incremental_file=output_filename)
     print(predicted_full)
-    print(f'{len(predicted_full) = }, {len(input_sequence + seq_pred) = }')
+    print_eo2_1 = f'\n{len(predicted_full) = }, {len(input_sequence + seq_pred) = }'
+    print(print_eo2_1)
     is_manual_check = predicted_full == input_sequence + seq_pred
     print_eo3 = f'\nis_manual_check: {is_manual_check}\n'
     print(print_eo3)
     if output_filename is not None:
         with open(output_filename, 'a') as f:
-            f.write(print_eo3)
+            f.write(print_eo2_1 + print_eo3)
 
     return
 
