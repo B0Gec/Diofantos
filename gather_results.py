@@ -149,28 +149,28 @@ job_id = 'n15_acc_lin_dasco'
 # # # 4.12.2024 - 6.12 -? mb linrec
 # # job_id = 'mblinrec'
 # # job_id = 'mblint2'      # bitsize=10
-# job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec11.2024.
+job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec11.2024.
 # job_id = 'mbcor'  # bitsize = 50   # this are the reported results from dec11.2024.
 # job_id = 'mbtmoeis'
 
-# job_id = 'mbtmord20'
-# job_id = 'mbtmord20r'   # max_order=20. This were once official results for n_input=15, before the bug was discovered
-# job_id = 'mbtmord20r-linrec_dasco'
-# job_id = 'mbtmN25'    # max_order=20. This were once official results for n_input=25, before the bug was discovered
-# job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This were once official results for n_input=25 (and n_pred=1 and 10), before the bug was discovered
-# job_id = 'rewritten-mbtmN25'    # incorrect results based on mbtmN25
-job_id = 're2-mbtmN25'    # max_order=20. This are official Moadeeb results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
-job_id = 'rewritten-mbtmord20r'    # max_order=20. This are official Moadeeb results for n_input=15 (and n_pred=1 and 10) BUGSFREE hopefully.
-job_id = 're2-mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) for linrec_dasco
-job_id = 'rewritten-mbtmord20r-linrec_dasco'    # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10) for linrec_dasco
-# job_id = 'rewritten-n15_acc'
-# job_id = 'rewritten-transfoeis_acc2'
-# job_id = 're2-n15_acc'
-job_id = 're3-n15_acc'    # this are official Diofantos results for n_input=15 (and n_pred=1 and 10)
-job_id = 're3-n15_acc-dasco_linrec'    # this are official dasco_linrec Diofantos results for n_input=15 (and n_pred=1 and 10)
-job_id = 're2-transfoeis_acc2'  # this are official Diofantos results for n_input=25 (and n_pred=1 and 10)
-job_id = 're2-transfoeis_acc2-dasco_linrec'  # this are dasco_linrec official Diofantos results for n_input=25 (and n_pred=1 and 10)
-
+# # job_id = 'mbtmord20'
+# # job_id = 'mbtmord20r'   # max_order=20. This were once official results for n_input=15, before the bug was discovered
+# # job_id = 'mbtmord20r-linrec_dasco'
+# # job_id = 'mbtmN25'    # max_order=20. This were once official results for n_input=25, before the bug was discovered
+# # job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This were once official results for n_input=25 (and n_pred=1 and 10), before the bug was discovered
+# # job_id = 'rewritten-mbtmN25'    # incorrect results based on mbtmN25
+# job_id = 're2-mbtmN25'    # max_order=20. This are official Moadeeb results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
+# job_id = 'rewritten-mbtmord20r'    # max_order=20. This are official Moadeeb results for n_input=15 (and n_pred=1 and 10) BUGSFREE hopefully.
+# job_id = 're2-mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) for linrec_dasco
+# job_id = 'rewritten-mbtmord20r-linrec_dasco'    # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10) for linrec_dasco
+# # job_id = 'rewritten-n15_acc'
+# # job_id = 'rewritten-transfoeis_acc2'
+# # job_id = 're2-n15_acc'
+# job_id = 're3-n15_acc'    # this are official Diofantos results for n_input=15 (and n_pred=1 and 10)
+# job_id = 're3-n15_acc-dasco_linrec'    # this are official dasco_linrec Diofantos results for n_input=15 (and n_pred=1 and 10)
+# job_id = 're2-transfoeis_acc2'  # this are official Diofantos results for n_input=25 (and n_pred=1 and 10)
+# job_id = 're2-transfoeis_acc2-dasco_linrec'  # this are dasco_linrec official Diofantos results for n_input=25 (and n_pred=1 and 10)
+#
 
 print(job_id)
 # 1/0
@@ -1279,6 +1279,7 @@ print(len(non_id_list))
 n = 1700
 n = 17
 n = 200
+n = 20000
 print(f'first {n} non_manuals:', sorted(non_manual_list[:n]))
 ord1 = [('A000004', 1), ('A000012', 1), ('A000079', 1), ('A000244', 1), ('A000302', 1), ('A000351', 1), ('A000400', 1), ('A000420', 1), ('A001018', 1), ('A001019', 1), ('A001020', 1), ('A001021', 1), ('A001022', 1), ('A001023', 1), ('A001024', 1), ('A001025', 1), ('A001026', 1), ('A001027', 1), ('A001029', 1), ('A002023', 1), ('A002042', 1), ('A002063', 1), ('A002066', 1), ('A002089', 1), ('A004171', 1), ('A005009', 1), ('A005010', 1), ('A005015', 1), ('A005029', 1), ('A005030', 1), ('A005032', 1), ('A005051', 1), ('A005052', 1), ('A005055', 1), ('A007283', 1), ('A007395', 1)]
 ord2 = [('A000027', 2), ('A000032', 2), ('A000034', 2), ('A000035', 2), ('A000042', 2), ('A000045', 2), ('A000051', 2), ('A000129', 2), ('A000204', 2), ('A000225', 2), ('A000285', 2), ('A000748', 2), ('A000918', 2), ('A001045', 2), ('A001047', 2), ('A001060', 2), ('A001075', 2), ('A001076', 2), ('A001077', 2), ('A001078', 2), ('A001079', 2), ('A001080', 2), ('A001081', 2), ('A001084', 2), ('A001085', 2), ('A001090', 2), ('A001091', 2), ('A001109', 2), ('A001333', 2), ('A001353', 2), ('A001477', 2), ('A001478', 2), ('A001489', 2), ('A001519', 2), ('A001541', 2), ('A001542', 2), ('A001570', 2), ('A001607', 2), ('A001653', 2), ('A001787', 2), ('A001792', 2), ('A001834', 2), ('A001835', 2), ('A001906', 2), ('A001946', 2), ('A001947', 2), ('A002203', 2), ('A002249', 2), ('A002250', 2), ('A002275', 2), ('A002276', 2), ('A002277', 2), ('A002278', 2), ('A002279', 2), ('A002280', 2), ('A002281', 2), ('A002282', 2), ('A002283', 2), ('A002310', 2), ('A002315', 2), ('A002320', 2), ('A002446', 2), ('A002450', 2), ('A002452', 2), ('A002532', 2), ('A002533', 2), ('A002534', 2), ('A002535', 2), ('A002605', 2), ('A002697', 2), ('A002699', 2), ('A002878', 2), ('A003063', 2), ('A003462', 2), ('A003463', 2), ('A003464', 2), ('A003499', 2), ('A003500', 2), ('A003501', 2), ('A003665', 2), ('A003683', 2), ('A003688', 2), ('A004187', 2), ('A004189', 2), ('A004190', 2), ('A004191', 2), ('A004253', 2), ('A004254', 2), ('A004643', 2), ('A004766', 2), ('A004767', 2), ('A004768', 2), ('A004769', 2), ('A004770', 2), ('A004771', 2), ('A005057', 2), ('A005059', 2), ('A005060', 2), ('A005061', 2), ('A005062', 2), ('A005248', 2), ('A005319', 2), ('A005320', 2), ('A005408', 2), ('A005609', 2), ('A005610', 2), ('A005618', 2), ('A005667', 2), ('A005668', 2), ('A005843', 2), ('A006012', 2), ('A006130', 2), ('A006131', 2), ('A006138', 2), ('A006190', 2), ('A006234', 2), ('A006495', 2), ('A006496', 2), ('A006497', 2), ('A006516', 2), ('A007051', 2), ('A007052', 2), ('A007070', 2), ('A007482', 2), ('A007483', 2), ('A007484', 2), ('A007572', 2), ('A007582', 2), ('A007583', 2), ('A007613', 2), ('A007655', 2), ('A007689', 2), ('A007805', 2), ('A008585', 2), ('A008586', 2), ('A008587', 2), ('A008588', 2), ('A008589', 2), ('A008590', 2), ('A008591', 2), ('A008592', 2), ('A008593', 2), ('A008594', 2), ('A008595', 2), ('A008596', 2), ('A008597', 2), ('A008598', 2), ('A008599', 2), ('A008600', 2), ('A008601', 2), ('A008602', 2), ('A008603', 2), ('A008604', 2), ('A008605', 2), ('A008606', 2), ('A008607', 2)]
