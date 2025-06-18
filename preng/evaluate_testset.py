@@ -22,6 +22,7 @@ def parse_response(row: str, result_vs_gt: str, allow_no_eq=False) -> str:
 
     Input:
         - row: str, row from the test results file or the test dataset ground truth file.
+            or tuple(str, str) row, already split into instruction and response.
         - result_vs_gt: str, 'results' or 'test set ground truth'
     Output:
         - input_sequence: list[int], first 15 or 25 sequence terms
@@ -30,20 +31,28 @@ def parse_response(row: str, result_vs_gt: str, allow_no_eq=False) -> str:
     """
 
     # re.findall(r'sequence:  [/INST]', row)
-    # print(f'{row = }')
-    instruction, response = row.split(' [/INST]')
-    # print(f'{instruction = }', f'{response = }')
+    print(f'{row = }')
+    is_tsv = type(row) == tuple and isinstance(row[0], str) and isinstance(row[1], str)
+    instruction, response = row if is_tsv else row.split(' [/INST]')
+    # print( f'{instruction = }', f'{response = }')
     # 1/0
     input_sequence = re.findall(r'sequence: ([\d,-]+)', instruction)[0]
     input_sequence = [int(term) for term in input_sequence.split(',')]
     # print(input_sequence)
     if result_vs_gt == 'results':
         # print('no ground truth, which means this is test result and we have an equation')
-        predicted_eq = re.findall(r'^\[RESP\] Certainly, the Python code is the following: (lambda a_n: [ absignqrt()/*_\[\]\d+-]+) \[/RESP\]$', response)
+        if not is_tsv:
+            predicted_eq = re.findall(r'^\[RESP\] Certainly, the Python code is the following: (lambda a_n: [ absignqrt()/*_\[\]\d+-]+) \[/RESP\]$', response)
+        else:
+            predicted_eq = re.findall(r'^Certainly, the Python code is the following: (lambda a_n: [ absignqrt()/*_\[\]\d+-]+)$', response)
+        # print(predicted_eq)
 
         if len(predicted_eq) == 0:
             # print('had to soften the regex to: <lambda a_n: karkoli >')
-            predicted_eq = re.findall(r'\[RESP\] Certainly, the Python code is the following: (lambda a_n: .+) \[/RESP\]', response)
+            if not is_tsv:
+                predicted_eq = re.findall(r'\[RESP\] Certainly, the Python code is the following: (lambda a_n: .+) \[/RESP\]', response)
+            else:
+                predicted_eq = re.findall(r'Certainly, the Python code is the following: (lambda a_n: .+)', response)
         if len(predicted_eq) == 0:
             response = response.strip('[\/RESP]\n')
             predicted_eq = re.findall( r'lambda a_n: [ absignqrt()/*_\[\]\d+-]+', response)
@@ -69,8 +78,8 @@ def evaluate_results(test_results, test_set):
     """Evaluate the test results against the ground truth.
 
     Input:
-        - test_results: str, path to the test results file.
-        - test_set: str, path to the test set file which contains also next 10 terms.
+        - test_results: list[str], list of rows of the test results file.
+        - test_set: list[str],  list of rows of the test set file (which contains also next 10 terms?).
     """
 
     print('\nEvaluating results: ---')
@@ -127,6 +136,7 @@ def evaluate_results(test_results, test_set):
 if __name__ == '__main__':
 
     # Fake test results for now:
+    test_results_file = 'fake_test-results.txt'
     test_results_file = 'fake_test-results.txt'
 
     testset_file = 'test_proged25u2.txt'

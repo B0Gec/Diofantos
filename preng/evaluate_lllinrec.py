@@ -12,11 +12,15 @@ from llmeed import load_seq
 from preng.evaluate_testset import parse_response
 
 
-def check_test_set(i_row: int, seq_input: list[int], csv_df, is_linrec):
+def check_test_set(seq_input: list[int], csv_df, is_linrec):
     """Check if the input sequence terms from test set is identical to the originating csv file."""
 
 
-    seq_id = csv_df.columns[i_row]
+    # print(f'{i_row = }')
+    # print(f'{csv_df = }')
+    # print(f'{csv_df.columns = }')
+    # seq_id = csv_df.columns[i_row]
+    seq_id = csv_df.columns[0]
     # print(f'{seq_id = }')
     # print(f'{seq_input = }')
     seq, _eq = load_seq(seq_id, csv_df, is_linrec)

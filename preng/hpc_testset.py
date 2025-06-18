@@ -15,7 +15,7 @@ from evaluate_testset import parse_response
 from evaluate_lllinrec import check_test_set
 from prengramar import predict_safe
 
-def evaluate_one_result(test_res_row, dataset_csv, task_id, is_linrec, output_filename):
+def evaluate_one_result(test_res_row, dataset_csv, is_linrec, output_filename):
     """Evaluate one test result against the ground truth.
 
     For given equation and initial input sequence, generate all remaining sequence terms available
@@ -24,8 +24,9 @@ def evaluate_one_result(test_res_row, dataset_csv, task_id, is_linrec, output_fi
     """
 
     input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results', allow_no_eq=False)
+    print(f'{input_sequence = } -> {predicted_eq = }')
     # print('to check')
-    seq_pred = check_test_set(task_id, input_sequence, dataset_csv, is_linrec=is_linrec)
+    seq_pred = check_test_set(input_sequence, dataset_csv, is_linrec=is_linrec)
     # print(f'{input_sequence = }, {predicted_eq = }, {seq_pred = }')
 
     # # DEBUGGING:
@@ -38,17 +39,23 @@ def evaluate_one_result(test_res_row, dataset_csv, task_id, is_linrec, output_fi
     print_eo2 = f'Predicted:    '
     print(print_eo2, end='')
     if output_filename is not None:
+        print(f'Writing first output to {output_filename}')
         with open(output_filename, 'a') as f:
             f.write(print_eo1+print_eo2)
 
     predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=len(seq_pred), incremental_file=output_filename)
     print(predicted_full)
-    print_eo2_1 = f'\n{len(predicted_full) = }, {len(input_sequence + seq_pred) = }'
+    print('\n', end='')
+    if predicted_full is None:
+        print_eo2_1 = 'predicting not 100% successful, i.e. predicted_full is None'
+    else:
+        print_eo2_1 = f'\n{len(predicted_full) = }, {len(input_sequence + seq_pred) = }'
     print(print_eo2_1)
     is_manual_check = predicted_full == input_sequence + seq_pred
     print_eo3 = f'\nis_manual_check: {is_manual_check}\n'
     print(print_eo3)
     if output_filename is not None:
+        print(f'Writing is_manual_check to {output_filename}')
         with open(output_filename, 'a') as f:
             f.write(print_eo2_1 + print_eo3)
 
@@ -57,6 +64,28 @@ def evaluate_one_result(test_res_row, dataset_csv, task_id, is_linrec, output_fi
 
 # print(f'Checking integrity of the test set {test_results_file} against the dataset {dataset_filename}.')
 # print(evaluate_results(test_results, csv, is_linrec=('linear' in dataset_filename), check_integrity_only=True))
+
+
+def compare_original_true_prompt(original_prompt, true_prompt):
+    """tsv with results has seemingly identical first two columns. Need to check if they are equal."""
+
+    true = true_prompt.split('[INST]')[1].split('[/INST]')[0].strip(' ')
+    # print(f'{original_prompt = }')
+    # print(f'{           true = }')
+    # print(f'{           true == original_prompt = }')
+
+    return true == original_prompt
+
+
+def original_vs_true_prompts(tsv):
+    """Do loop of compare_original_true_prompt."""
+    # bools = [compare_original_true_prompt(row[0], row[1]) for row in tsv]
+    # print('\n'*4)
+    # print(tsv.shape[0])
+    # bools = [(tsv[tsv.columns[0]][nrow], tsv[tsv.columns[1]][nrow]) for nrow in range(tsv.shape[0])]
+    bools = [compare_original_true_prompt(tsv[tsv.columns[0]][nrow], tsv[tsv.columns[1]][nrow]) for nrow in range(tsv.shape[0])]
+    # print(bools)
+    return not (False in bools)
 
 
 if __name__ == '__main__':
@@ -74,7 +103,7 @@ if __name__ == '__main__':
     WRITE_REAL = False
     WRITE_REAL = True
 
-    TASK_ID = 0
+    TASK_ID = 9
     # EXPERIMENT_ID
     timestamp = time.strftime("%Hh%Mm%Ss-%dd%m-%Y", time.localtime())
     EXPERIMENT_ID = timestamp
@@ -92,9 +121,12 @@ if __name__ == '__main__':
     # test_results_file = 'data/test_cores15.txt'
     # test_results_file = 'data/test_linrec25.txt'
     # test_results_file = 'data/test_linrec15.txt'
+    test_results_file = 'data/test_cores25.tsv'
+    test_results_file = 'data/test_cores15.tsv'
 
     experiment_memo = ""
     print1 = f'test results being evaluated: {test_results_file}\n'
+    print(print1)
     experiment_memo += print1
 
     dataset_filename = '../cores_test.csv'
@@ -109,14 +141,36 @@ if __name__ == '__main__':
     seq_id = list(csv.columns)[task_id]
     csv = pd.read_csv(dataset_filename, low_memory=False, usecols=[seq_id])
 
+    print2_1 = f'The sequence ID inspected: {seq_id}\n'
+    print(print2_1)
 
-    with open(test_results_file, 'r') as f:
-        test_results = f.readlines()
+    print2_5 = f'csv results file used: {dataset_filename}\n'
+    experiment_memo += print2_1 + print2_5
 
-    # with open(testset_file, 'r') as f:
-    #     test_set = f.readlines()
+    # text vs tsv results:
+    # print(f'{test_results_file[-4:] = }')
+    if test_results_file[-4:] == '.tsv':
+        test_results = pd.read_csv(test_results_file, low_memory=False, sep='\t')
+        # print(test_results)
+        # print(f'{test_results.columns = }')
+        # print(f'{test_results[test_results.columns[0]][0] = }')
+        # print(f'{test_results[test_results.columns[1]][0] = }')
+        # print(f'{test_results[test_results.columns[2]][0] = }')
+        # compare_original_true_prompt(test_results[test_results.columns[0]][0], test_results[test_results.columns[1]][0])
+        print(f'Checking consistence of the results: {original_vs_true_prompts(test_results) = }')
+        # we can ignore second column.
+        columns = test_results.columns
+        test_row = test_results[columns[0]][task_id], test_results[columns[2]][task_id]
+        # print(f'{test_row = }')
 
-    test_row = test_results[task_id]
+    else:
+        with open(test_results_file, 'r') as f:
+            test_results = f.readlines()
+
+        # with open(testset_file, 'r') as f:
+        #     test_set = f.readlines()
+
+        test_row = test_results[task_id]
     # test_set_row = test_set[indx]
     print3 = f'Results we are looking at now:\n{test_row}\n'
     print(print3)
@@ -153,7 +207,7 @@ if __name__ == '__main__':
             with open(out_fname, 'w') as f:
                 f.write(experiment_memo)
 
-            print(seq_id, f' done and written! (to {out_fname})')
+            print(seq_id, f' experimental details written! (to {out_fname})')
         else:
             # print(output_string)
             print('seems no file was or will be created by this [hpc_testset.py] file')
@@ -162,7 +216,7 @@ if __name__ == '__main__':
 
         # print('before')
         # evaluate_one_result(test_row, csv, is_linrec=('linear' in dataset_filename))
-        evaluate_one_result(test_row, csv, task_id, is_linrec=('linear' in dataset_filename), output_filename=incremental_file)
+        evaluate_one_result(test_row, csv, is_linrec=('linear' in dataset_filename), output_filename=incremental_file)
         # print('after')
 
 

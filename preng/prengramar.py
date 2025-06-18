@@ -64,7 +64,12 @@ def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE, 
         with open(incremental_file, 'a') as f:
             f.write(f'{str(predicted)[:-1]}')
     for _ in range(n_pred):
-        next = lambda_function(predicted)
+        # print(predicted)
+        try:
+            next = lambda_function(predicted)
+        except Exception as e:
+            return None
+        # print(next)
         if incremental_file is not None:
             with open(incremental_file, 'a') as f:
                 f.write(f', {next}')
@@ -79,7 +84,7 @@ def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE, 
     return predicted
 
 
-print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
+# print(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1]))
 # print('len', len(code_to_seq(sentence_to_code('a_n[-1] + n'), [0, 1])))
 # 1/0
 
@@ -97,12 +102,12 @@ def generate_safe(sentence, inits, n_pred=10, term_size_limit=10**100, increment
     # print(f'{sentence = }, {inits = }')
     # predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit)
     # print(predicted)
-    try:
-        # print(f'{sentence = }, {inits = }')
-        predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit, incremental_file=incremental_file)
-    except Exception as e:
-        # print("Exception!!:", str(e))
-        return None
+    # try:
+    #     # print(f'{sentence = }, {inits = }')
+    predicted = generate(sentence, inits, n_pred, max_magnitude=term_size_limit, incremental_file=incremental_file)
+    # except Exception as e:
+    #     # print("Exception!!:", str(e))
+    #     return None
 
     # if any([abs(i) > term_size_limit for i in predicted]):
     #     return None
