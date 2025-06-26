@@ -46,10 +46,10 @@ def extract_file(file_content: str):
 
 if __name__ == '__main__':
     EXPERIMENT_ID = 'llevaluate0'
-    EXPERIMENT_ID = 'llevalcor4'
-    EXPERIMENT_ID = 'llevalcorlen15'
-    EXPERIMENT_ID = 'llevalinrectest'
-    EXPERIMENT_ID = 'llevalinrec15len'
+    EXPERIMENT_ID = 'llevalcor4'    # pgeq LLM core n_input=25
+    EXPERIMENT_ID = 'llevalcorlen15'  # pgeq LLM core n_input=15
+    EXPERIMENT_ID = 'llevalinrectest'  # pgeq LLM linrec n_input=25
+    EXPERIMENT_ID = 'llevalinrec15len'  # pgeq LLM linrec n_input=15
 
     results_dir = f'../results/llevaluate/{EXPERIMENT_ID}/'
     print(f'{results_dir=}')
