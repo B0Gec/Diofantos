@@ -11,7 +11,7 @@ import argparse
 
 import pandas as pd
 
-from evaluate_testset import parse_response
+from evaluate_testset import parse_response, compare_original_true_prompt, original_vs_true_prompts
 from evaluate_lllinrec import check_test_set
 from prengramar import predict_safe
 
@@ -34,9 +34,9 @@ def evaluate_one_result(test_res_row, dataset_csv, is_linrec, output_filename):
     # predicted_eq = 'a_n[-1] + 1'
     # seq_pred = [6,7,8,9]
 
-    print_eo1 = f'Ground truth: {input_sequence + seq_pred}\n'
+    print_eo1 = f'Ground truth: \n{input_sequence + seq_pred}\n'
     print(print_eo1)
-    print_eo2 = f'Predicted:    '
+    print_eo2 = f'Predicted:    \n'
     print(print_eo2, end='')
     if output_filename is not None:
         print(f'Writing first output to {output_filename}')
@@ -66,26 +66,6 @@ def evaluate_one_result(test_res_row, dataset_csv, is_linrec, output_filename):
 # print(evaluate_results(test_results, csv, is_linrec=('linear' in dataset_filename), check_integrity_only=True))
 
 
-def compare_original_true_prompt(original_prompt, true_prompt):
-    """tsv with results has seemingly identical first two columns. Need to check if they are equal."""
-
-    true = true_prompt.split('[INST]')[1].split('[/INST]')[0].strip(' ')
-    # print(f'{original_prompt = }')
-    # print(f'{           true = }')
-    # print(f'{           true == original_prompt = }')
-
-    return true == original_prompt
-
-
-def original_vs_true_prompts(tsv):
-    """Do loop of compare_original_true_prompt."""
-    # bools = [compare_original_true_prompt(row[0], row[1]) for row in tsv]
-    # print('\n'*4)
-    # print(tsv.shape[0])
-    # bools = [(tsv[tsv.columns[0]][nrow], tsv[tsv.columns[1]][nrow]) for nrow in range(tsv.shape[0])]
-    bools = [compare_original_true_prompt(tsv[tsv.columns[0]][nrow], tsv[tsv.columns[1]][nrow]) for nrow in range(tsv.shape[0])]
-    # print(bools)
-    return not (False in bools)
 
 
 if __name__ == '__main__':
@@ -123,6 +103,8 @@ if __name__ == '__main__':
     # test_results_file = 'data/test_linrec15.txt'
     test_results_file = 'data/test_cores25.tsv'
     test_results_file = 'data/test_cores15.tsv'
+    test_results_file = 'data/test_linrec25.tsv'
+    test_results_file = 'data/test_linrec15.tsv'
 
     experiment_memo = ""
     print1 = f'test results being evaluated: {test_results_file}\n'
@@ -130,7 +112,7 @@ if __name__ == '__main__':
     experiment_memo += print1
 
     dataset_filename = '../cores_test.csv'
-    # dataset_filename = '../linear_database_newbl.csv'
+    dataset_filename = '../linear_database_newbl.csv'
 
     print2 = f'csv file used: {dataset_filename}\n'
     print(print2)
@@ -216,6 +198,7 @@ if __name__ == '__main__':
 
         # print('before')
         # evaluate_one_result(test_row, csv, is_linrec=('linear' in dataset_filename))
+
         evaluate_one_result(test_row, csv, is_linrec=('linear' in dataset_filename), output_filename=incremental_file)
         # print('after')
 

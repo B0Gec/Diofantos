@@ -38,7 +38,7 @@ def sentence_to_code(sentence: str) -> Callable[[list], int]:
     """Convert a sentence outputed by a prompt to a Python function object
     corresponding to a recursive formula."""
 
-    # print(sentence)
+    print(f'{sentence = }')
     # sentence = sentence.replace('isqrt(', '(lambda input:  isqrt(relu(input)))(')
     sentence = sentence.replace('relu(', 'max(0, ')
     # take care of a_n = n + a_{n-1}:
@@ -49,7 +49,10 @@ def sentence_to_code(sentence: str) -> Callable[[list], int]:
     code = 'lambda a_n : ' + sentence
     # print(code)
     # f = code
-    f = eval(code)
+    try:
+        f = eval(code)
+    except SyntaxError as se:
+        return None
     return f
 
 # print(sentence_to_code('a_n[-1] + a_n[-2]'))

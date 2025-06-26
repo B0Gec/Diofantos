@@ -1,4 +1,5 @@
 # Evaluate our method on the test set
+# --- Actually used only by other scripts, not intended to be used as a single script file ---
 #
 # I.e. use outputs from test_results and the test set file with ground truth
 # to evaluate the outputed equations against the ground truth sequence terms.
@@ -10,17 +11,19 @@ from prengramar import predict_safe
 from exact_ed import is_dasco
 from llmeed import load_seq
 from preng.evaluate_testset import parse_response
+from evaluate_testset import compare_original_true_prompt, original_vs_true_prompts
 
 
-def check_test_set(seq_input: list[int], csv_df, is_linrec):
+def check_test_set(seq_input: list[int], csv_df, is_linrec, column=0):
     """Check if the input sequence terms from test set is identical to the originating csv file."""
 
 
+    # print(f'here {is_linrec = }')
     # print(f'{i_row = }')
     # print(f'{csv_df = }')
     # print(f'{csv_df.columns = }')
     # seq_id = csv_df.columns[i_row]
-    seq_id = csv_df.columns[0]
+    seq_id = csv_df.columns[column]
     # print(f'{seq_id = }')
     # print(f'{seq_input = }')
     seq, _eq = load_seq(seq_id, csv_df, is_linrec)
@@ -58,7 +61,7 @@ def evaluate_results(test_results, data_csv, i_row_target='all', is_linrec=True,
         raise IndexError(f'Test results and test set do not have the same number of rows!! '
                          f'{len(test_results) = }, {data_csv.shape[1] = }')
 
-    count_acc1, count_acc10 = 0, 0
+    count_acc1, count_acc10 = 0, None
     i_row = -1
     for test_res_row in test_results:
 
@@ -68,18 +71,19 @@ def evaluate_results(test_results, data_csv, i_row_target='all', is_linrec=True,
         # print(f'{i_row = }')
         # print(f'{test_res_row = }')
         input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results', allow_no_eq=check_integrity_only)
-        seq_pred = check_test_set(i_row, input_sequence, data_csv, is_linrec=is_linrec)
+        # input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results')
+        seq_gt_next = check_test_set(input_sequence, data_csv, is_linrec=is_linrec, column=i_row)
         if i_row % 100 == 0:
             print(f'{i_row = }')
         if check_integrity_only:
             continue
         # print('what')
         # print('here I am')
-        print(f'{input_sequence = }, {predicted_eq = }, {seq_pred = }')
+        # print(f'{input_sequence = }, {predicted_eq = }, {seq_gt_next = }')
 
         # Check if the predicted equation is correct:
         # print('\n'*3, ' --- Checking equation... --- ')
-        predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=len())
+        predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=len(seq_gt_next))
         # print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
         # print(f'{predicted_full = }')
         # print(' '*44, f'{ten_next_terms = }')
@@ -87,17 +91,21 @@ def evaluate_results(test_results, data_csv, i_row_target='all', is_linrec=True,
         if predicted_full is None or predicted_full[:n_input] != input_sequence:
             acc_1, acc_10 = False, False
         else:
-            acc_1, acc_10 = is_dasco(predicted_full[n_input:], ten_next_terms)
+        #     acc_1, acc_10 = is_dasco(predicted_full[n_input:], ten_next_terms)
+            acc_1 = predicted_full == input_sequence + seq_gt_next
         # 1/0
 
-        # print(f'{acc_1 = }, {acc_10 = }')
+
         count_acc1 += acc_1
-        count_acc10 += acc_10
+        # count_acc10 += acc_10
         # 1/0
 
-        if i_row % 100 == 0:
-            acc_t = count_acc1 / i_row, count_acc10 / i_row
-            print(f'Accuracy measured so far ({i_row}-th row): of n_pred = 1: {acc_t[0] * 100:.2f} %, accuracy of n_pred = 10: {acc_t[1] * 100:.2f} %')
+        rate = 1
+        if i_row % rate == 0 and i_row > 0:
+            print(f'Valid: {acc_1}')
+            acc_t = count_acc1 / (i_row+1), None
+            # print(f'Accuracy measured so far ({i_row}-th row): of n_pred = 1: {acc_t[0] * 100:.2f} %, accuracy of n_pred = 10: {acc_t[1] * 100:.2f} %')
+            print(f'\nAccuracy measured so far ({i_row+1}-th row): valid: {acc_t[0] * 100:.2f} %')
 
     # acc = count_acc1 / len(test_results), count_acc10 / len(test_results)
     #
@@ -121,18 +129,35 @@ if __name__ == '__main__':
     # test_results_file = 'data/test_cores15.txt'
     # test_results_file = 'data/test_linrec25.txt'
     # test_results_file = 'data/test_linrec15.txt'
+    test_results_file = 'data/test_linrec25.tsv'
 
 
-    dataset = '../cores_test.csv'
+    # dataset = '../cores_test.csv'
     dataset = '../linear_database_newbl.csv'
 
-    with open(test_results_file, 'r') as f:
-        test_results = f.readlines()
+    # with open(test_results_file, 'r') as f:
+    #     test_results = f.readlines()
+
+    print(f'Analyzing results from file: {test_results_file} ...')
+    test_results = pd.read_csv(test_results_file, low_memory=False, sep='\t')
+    print(f'Checking consistence of the results: {original_vs_true_prompts(test_results) = }')
+    # we can ignore second column.
+    print(test_results.shape)
+    columns = test_results.columns
+    test_results = [(test_results[columns[0]][task_id], test_results[columns[2]][task_id]) for task_id in range(test_results.shape[0])]
+    print(test_results[:4])
 
     # with open(testset_file, 'r') as f:
     #     test_set = f.readlines()
 
-    data_csv = pd.read_csv(dataset, low_memory=False)
+    SCALE = 10
+    SCALE = 1000
+
+    # data_csv = pd.read_csv(dataset, low_memory=False)
+    csv = pd.read_csv(dataset, low_memory=False, nrows=0)
+    print(list(csv.columns)[0:SCALE])
+    # 1/0
+    data_csv = pd.read_csv(dataset, low_memory=False, usecols=list(csv.columns)[0:SCALE])
 
     indx = 0
 
@@ -149,5 +174,6 @@ if __name__ == '__main__':
         print(f'{data_csv.shape = }')
         print(f'{data_csv = }')
     print(f'Checking integrity of the test set {test_results_file} against the dataset {dataset}.')
-    print(evaluate_results(test_results, data_csv, is_linrec=('linear' in dataset), check_integrity_only=True))
+    # print(evaluate_results(test_results, data_csv, is_linrec=('linear' in dataset), check_integrity_only=True))
+    print(evaluate_results(test_results, data_csv, is_linrec=('linear' in dataset), check_integrity_only=False))
 
