@@ -902,6 +902,8 @@ def is_dasco(seq_pred, ground_truth):
     seq = ground_truth
     n_pred = 10
     tau = 10 ** (-10)
+    # print(f'{[len(str(j)) for j in seq_pred] = }')
+    # print(f'{max([len(str(j)) for j in seq_pred]) = }')
     acc_10 = False if len(seq_pred) < n_pred else max([abs((seq_pred[i] - seq[i])/seq[i]) if seq[i] != 0 else (0 if seq_pred[i]==0 else math.inf)
                                                        for i in range(0, n_pred)]) <= tau
     acc_1 =      (abs((seq_pred[0] - seq[0])/seq[0]) if seq[0] != 0 else (0 if seq_pred[0]==0 else math.inf)) <= tau
@@ -947,7 +949,9 @@ def check_eq_dasco(x, seq_id, solution_ref, n_input, eq=None, mb=False, dasco_fi
             # print(f'{seq_pred = }, {len(seq_pred) = }')
             # print(f'{len(train_seq) = }')
             limit = 310  # For python's float division: cutting us some slack.
+            limit = 308 # For python's float division: cutting us some slack.
             # limit = 2
+
             # seq_pred = [10**1000]
             # seq_pred = []
             # seq_pred = ([seq_pred[:i+1] for i in range(len(seq_pred)) if (max([len(str(j)) for j in seq_pred[:i+1]]) < limit)] or ['no reconst'])[-1]
