@@ -101,7 +101,7 @@ def random_wheel():
         print(''.join([f'{j}, ' for j in shuffled]))
     return
 
-# random_wheel()
+random_wheel()
 
 
 import re
@@ -129,7 +129,7 @@ def create_pitagora():
             f.write(pitagora_out + '\n')
     return
 
-# create_pitagora()
+create_pitagora()
 
 def random_pitagora():
     "Randomized to avoid data leakage."
@@ -158,7 +158,7 @@ def random_pitagora():
         print(''.join([f'{j}, ' for j in shuffled]))
     return
 
-# random_pitagora()
+random_pitagora()
 # 1/0
 
 
@@ -185,7 +185,7 @@ def create_det(n):
     row = f'{a.det()}, {b.det()}, {(a*b).det()}, {alf}, {(alf*a).det()}'
     return big_example, row
 
-# create_det(2)
+create_det(2)
 
 def create_dets(dim, rows):
     big_title = f'A, B, A*B, alf, alf*A, detA, detB, det(A*B), det(alf*A), detA*detB'
@@ -215,19 +215,19 @@ def create_dets(dim, rows):
     return det_output
 
 # original:
-# create_dets(2, 100)
+create_dets(2, 100)
 
 # shuffled for o3:
-def shuffled_dets(data_string):
+def shuffled_dets(data_string, sample_size=SAMPLE_SIZE):
     "Shuffle dets or trs dataset to avoid data leakage."
 
     dets_str = data_string
     dets = [row.split(', ') for row in dets_str.split('\n')]
-    print('dets:')
-    for row in dets:
-        print(row)
+    # print('dets:')
+    # for row in dets:
+    #     print(row)
 
-    print()
+    # print()
     mask = [i for i in range(len(dets[0]))]
     random.shuffle(mask)
     print(f'{mask = }')
@@ -236,8 +236,8 @@ def shuffled_dets(data_string):
 
     print(f'\n{PROMPT}')
     print(', '.join(ALPHABET[:len(mask)]))
-    for i in range(SAMPLE_SIZE):
-        randi = random.randint(1, SAMPLE_SIZE)
+    for i in range(sample_size):
+        randi = random.randint(1, sample_size)
         shuffled = [dets[randi][m] for m in mask]
         print(''.join([f'{j}, ' for j in shuffled]))
 
@@ -269,7 +269,7 @@ def create_tr(dim):
     row = f'{a.trace()}, {b.trace()}, {(a+b).trace()}, {(a*b).trace()}, {(b*a).trace()}'
     return big_example, row
 
-# create_tr(2)
+create_tr(2)
 
 def create_trs(dim, rows):
     big_title = f'A, B, A+B, A*B, B*A, trA, trB, trA+B, trA*B, trB*A'
@@ -299,7 +299,7 @@ def create_trs(dim, rows):
     return det_output
 
 # original:
-# create_trs(3, 100)
+create_trs(3, 100)
 # for o3:
 # shuffled_dets(create_trs(3, SAMPLE_SIZE))
 # 1/0
@@ -307,7 +307,7 @@ def create_trs(dim, rows):
 
 # MoadeeB paper:
 
-# random.seed(0)
+random.seed(0)
 
 
 def create_Euler():
@@ -370,7 +370,7 @@ def create_Euler():
     return euler_out
 
 
-# create_Euler()
+create_Euler()
 
 # shuffled_dets(create_Euler())
 # 1/0
@@ -407,7 +407,7 @@ def Riemann_Roch():
 
     return rr_out
 
-# Riemann_Roch()
+Riemann_Roch()
 
 # shuffled_dets(Riemann_Roch())
 # 1/0
@@ -455,12 +455,12 @@ def symbolic_computation(ds, numerator='None'):
         if y != 0:
             dividable = [1, x, (x + y), (x + y) * x, (x - y), (x - y) * x, (x + y) ** 2, (x + y) ** 2 * x,
                          (x - y) ** 2, (x - y) ** 2 * x, (x - y) ** 3]
-            vals = {0: f'{x+y}, {x-y}, {1 + x + 3*y + 2*x*y - x**2 - y**2}, {2 + x - y - 4*x*y + 2*x**3 + 6*x*y**2}\n',
+            vals = {0: f'{x+y}, {x-y}, {1 + x + 3*y + 2*x*y - x**2 - y**2}, {2 + x - y - 4*x*y + 2*x**3 + 6*x*y**2}\n',  # symb comp 1 and 2 ( MB paper)
                     1: f'(-1/{y})*({(2*x**3 - 3*x**2*y + x**2 + y**3 - y**2 + 2*y + 2)}), 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     3: f'{1 + 6*x**2 - 2*y**2 + 3*x**3 + 15*x**4 + 10*x**2*y**2 - y**4 + 6*x**5 + 10*x**3*y**2}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     4: f'{-3*x**2 + 3*y**2 + 5}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
-                    5: ', '.join([f'{div}/{y}' for div in [f'{y**2 - x**2}'] + dividable]) + '\n',
-                    6: ', '.join([f'{div}/{y}' for div in [f'{-3*x**2 + 3*y**2 + 3*y}'] + dividable]) + '\n',
+                    5: ', '.join([f'{div}/{y}' for div in [f'{y**2 - x**2}'] + dividable]) + '\n',   # seems like symb comp 3 (from MB paper) for MB
+                    6: ', '.join([f'{div}/{y}' for div in [f'{-3*x**2 + 3*y**2 + 3*y}'] + dividable]) + '\n',   # seems like symb comp 4 (from MB paper) for MB
                     'diofratio': ', '.join([f'{div}/{y}' for div in [eval(numerator)] + dividable]) + '\n',
                     'mbratio': f'{eval(numerator)}/{y}, 1/{y}, {x}/{y}, {x+y}, {x-y}\n',
                     }
@@ -472,9 +472,9 @@ def symbolic_computation(ds, numerator='None'):
                 w3 = {(1,1): -(2 * x ** 3 - 3 * x ** 2 * y + x ** 2 + y ** 3 - y ** 2 + 2 * y + 2),
                       (1,2): x+y,
                       (1,3): (x+y)-x,
-                      (1,4): y**2 -x**2,
+                      (1,4): y**2 -x**2,  # seems like symb comp 3 (from MB paper) intended to evaluate DP (since integers)
                       (1,5): -3*x**2 + 3*y**2 + 5,
-                      (1,6): -3*x**2 + 3*y**2 + 3*y,
+                      (1,6): -3*x**2 + 3*y**2 + 3*y,  # seems like symb comp 4 (from MB paper) intended to evaluate DP (since integers)
                       (1,'x'): eval(numerator),
                       # (1,'diofratio'): eval(numerator),
                       }[ds]
@@ -499,7 +499,7 @@ def symbolic_computation(ds, numerator='None'):
 
             new_row = vals[ds]
             symcomp_out += new_row if new_row not in symcomp_out else ''
-            print(len(symcomp_out[:-1].split('\n')), new_row)
+            # print(len(symcomp_out[:-1].split('\n')), new_row)
     symcomp_out = '\n'.join(symcomp_out.split('\n')[:101])[:-1]
     # symcomp_out = symcomp_out[:-1]
     print(len(symcomp_out.split('\n')))
@@ -519,9 +519,20 @@ def symbolic_computation(ds, numerator='None'):
     return symcomp_out
 
 symbolic_computation(0)
-1/0
-# symbolic_computation(1)
-# symbolic_computation(3)
+
+### start for o3:
+# data_str = symbolic_computation(0)
+print('\n'*10)
+print(' --- here --- ')
+# print(data_str)
+# data_str = symbolic_computation(5)
+data_str = symbolic_computation(6)
+shuffled_dets(data_str, sample_size=20)
+
+### end for o3:
+
+symbolic_computation(5)
+# 1/0
 # symbolic_computation((1,1))
 # symbolic_computation((1,2))
 # symbolic_computation((1,4))
