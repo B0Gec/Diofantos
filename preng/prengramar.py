@@ -19,12 +19,13 @@ import math
 import re
 
 import numpy as np
+import sympy as sp
 from math import isqrt
 from numpy import sign
 from collections.abc import Callable
 
 
-# from ProGED.generators.grammar_construction import grammar_from_template
+from ProGED.generators.grammar_construction import grammar_from_template
 
 np.random.seed(0)
 MAX_MAGNITUDE = 10**100
@@ -38,7 +39,7 @@ def sentence_to_code(sentence: str) -> Callable[[list], int]:
     """Convert a sentence outputed by a prompt to a Python function object
     corresponding to a recursive formula."""
 
-    print(f'{sentence = }')
+    # print(f'{sentence = }')
     # sentence = sentence.replace('isqrt(', '(lambda input:  isqrt(relu(input)))(')
     sentence = sentence.replace('relu(', 'max(0, ')
     # take care of a_n = n + a_{n-1}:
@@ -70,13 +71,16 @@ def code_to_seq(lambda_function, inits, n_pred=10, max_magnitude=MAX_MAGNITUDE, 
         # print(predicted)
         try:
             next = lambda_function(predicted)
+            # print(' --- success --- ')
         except Exception as e:
+            # print(e)
             return None
         # print(next)
         if incremental_file is not None:
             with open(incremental_file, 'a') as f:
                 f.write(f', {next}')
         if abs(next) > max_magnitude:
+            # print(f'{abs(next)} > {max_magnitude}!!')
             return None
         else:
             predicted.append(next)
@@ -159,39 +163,52 @@ SCALE = 2
 SCALE = 3
 SCALE = 5
 SCALE = 10
+# SCALE = 20
+# SCALE = 50
 SCALE = 100
-# SCALE = 140
-# SCALE = 150
+# # SCALE = 140
+# # SCALE = 150
+#
+# # SCALE = 154
+# # SCALE = 155
+# # SCALE = 160
+# # SCALE = 180
+# # SCALE = 360
+SCALE = 200
+# # #
+# # # # SCALE = 300
+# # # # SCALE = 330
+SCALE = 1000
+SCALE = 2000
+# # # SCALE = 3000
+SCALE = 5000
+SCALE = 10000
+# # # # SCALE = 20530
+# # # SCALE = 25000
+SCALE = 50000
+# # # SCALE = 75000
 
-# SCALE = 154
-# SCALE = 155
-# SCALE = 160
-# SCALE = 180
-# SCALE = 360
-# SCALE = 200
+SAMPLE_SIZE = 1
+# SAMPLE_SIZE = 10
+SAMPLE_SIZE = 20
+# SAMPLE_SIZE = 50
 
-# SCALE = 300
-# SCALE = 330
-# SCALE = 1000
-# # SCALE = 5530
-# SCALE = 10530
-# # SCALE = 20530
-# SCALE = 25000
-# SCALE = 50000
-# SCALE = 75000
-
-SAMPLE_SIZE = 10
+PGLINEAR = True
 
 
 def generate_ten(eq: str) -> list:
     """Generate 10 sequences for training pairs (seq, eq)."""
 
     eq_orderi = eq_order(eq)
-    randinitss = [[random.randint(LOW_BOUND, UP_BOUND) for _ in range(eq_orderi)] for __ in range(2 * SAMPLE_SIZE)]
+    # print(f'{eq_orderi = }, {eq = }')
+    try_slack = 2 if (SAMPLE_SIZE > 1 or not PGLINEAR) else 10
+    randinitss = [[random.randint(LOW_BOUND, UP_BOUND) for _ in range(eq_orderi)] for __ in range(try_slack * SAMPLE_SIZE)]
     # print(f'{randinitss = }')
 
     uniques = [eval(i) for i in set(str(i) for i in randinitss)]
-    # print(f'{uniques = }')
+    # for unique in uniques:
+    #     print(f'{unique = }')
+    # 1/0
 
     # 1. first (simpler) approach:
     # (i.e. 10 different inits for sequences)
@@ -201,7 +218,8 @@ def generate_ten(eq: str) -> list:
         # seq_len = random.randint(5, 36)
         # n_pred = random.randint(5, min(30, 36-eq_orderi))
         # n_pred = max(0, seq_len - eq_orderi)
-        n_pred = random.randint(max(0, 5 - eq_orderi), 36 - eq_orderi)
+        # n_pred = random.randint(max(0, 5 - eq_orderi), 36 - eq_orderi)  # old (LinearMM and PGLMM)
+        n_pred = random.randint(5, 30)  # dascoli-like
         # print(f'{inits = }')
         # print('here we go before')
         seq = generate_safe(eq, inits, n_pred=n_pred, term_size_limit=MAX_MAGNITUDE)
@@ -209,6 +227,8 @@ def generate_ten(eq: str) -> list:
         if seq is not None:
             parts.append(seq)
             c += 1
+        # else:
+        #     print('\nseq is none !!!!!\n')
         # print(f'{seq = }')
         if c >= SAMPLE_SIZE:
             break
@@ -281,6 +301,19 @@ def intercept(eq, n):
     return
 
 
+def list_to_var(eq: str):
+    """E.g. a_n[-2] -> a_n_2
+    or a_n[-19] -> a_n_19
+    """
+
+    return re.sub(r'a_n\[-(\d{1,3})\]', 'a_n_\g<1>', eq)
+
+
+def var_to_list(eq: str):
+    """E.g. a_n_2 -> a_n[-2]"""
+
+    return re.sub(r'a_n_(\d{1,3})', 'a_n[-\g<1>]', eq)
+
 
 if __name__ == '__main__':
 
@@ -296,9 +329,17 @@ if __name__ == '__main__':
         isqrt( 9 + a_n[-9] + 1 - a_n[-4] + a_n[-2] )
         """
 
-    grammar = grammar_from_template("universal_oeis", {})
-    # print(grammar)
-    # print(f'{SCALE = }\n')
+    # grammar = grammar_from_template("universal_oeis", {})
+    # grammar = grammar_from_template("linear_oeis", {})
+    # grammar = grammar_from_template("linear_oeis", {'p_recurs': [0.8, 0.2], 'max_order': 20})
+    # grammar = grammar_from_template("linear_oeis", {'p_recurs': [0.99, 0.11], 'max_order': 20})
+    grammar = grammar_from_template("linear_oeis",
+                                    {'p_recurs': [0.7, 0.3], 'p_hascoef': [0.8, 0.2],
+                                     'p_coef_nv': [0.2, 0.8], 'p_leaf': [0.4, 0.2, 0.4], 'max_order': 6})
+
+
+    print(grammar)
+    print(f'{SCALE = }\n')
 
     eqs = [" ".join(grammar.generate_one()[0]) for i in range(SCALE * 2)]
     ### test generate_safe:
@@ -307,11 +348,47 @@ if __name__ == '__main__':
     #     print(eq)
     #     print(generate_safe(eq, randinits, n_pred=10, term_size_limit=MAX_MAGNITUDE))
 
+    # eqs = eqs[:SCALE]
+    for eq in eqs:
+        print(f'{eq = }')
+    print('before simplify')
+    eqs = [var_to_list(str(sp.simplify(list_to_var(eq)))) for eq in eqs]
+    # 1/0
+    print()
+    for eq in eqs:
+        print(f'{eq = }')
+    # 1/0
+
+    print('before unique')
+    eqs = list(set(eqs))
+    print('\nround 3')
+    for eq in eqs:
+        print(f'{eq = }')
+    print(len(eqs))
+    # 1/0
     eqs = eqs[:SCALE]
 
     # print(eqs)
-    # eq = eqs[3]
-    # print(eq)
+    count = 0
+    if len(eqs) < SCALE:
+        while len(eqs) < SCALE:
+            count += 1
+            eq = grammar.generate_one()[0][0]
+            # print(f'{eq = }')
+            eq = var_to_list(str(sp.simplify(list_to_var(eq))))
+            if not eq in eqs:
+                # print(f'{eq = }')
+                # print(f'{len(eqs) = }')
+                eqs.append(eq)
+            if count % SCALE == 0:
+                print(f'{count = }')
+                print(f'{len(eqs) = }')
+    # print(eqs)
+    print('\nround 4')
+    for eq in eqs:
+        print(f'{eq = }')
+    # print()
+    print(len(eqs))
     # 1/0
 
     # eq, _ = legit[1]
@@ -326,9 +403,13 @@ if __name__ == '__main__':
     legit = [(eq, seq) for eq in eqs if (seq:=generate_safe(eq,
                 randinits, n_pred=(SEQ_LEN), term_size_limit=MAX_MAGNITUDE)) is not None][:SCALE]
 
+    # 1/0
     legit = [(intercept(eq, n), eq, seqs) for n, eq in enumerate(eqs) if (seqs := generate_ten(eq)) is not None][:SCALE]
+    # 1/0
 
-    # print(f'{len(legit) = }')
+    # for i in legit:
+    #     print(len(i[2]))
+    print(f'{len(legit) = }', )
     # analyze = [len(seqs) for n, eq, seqs in legit]
     # analyze_lens_0 = len([eq for n, eq, seqs in legit if len(seqs) == 0])
     # analyze_lens_1 = len([eq for n, eq, seqs in legit if len(seqs) == 1])
@@ -336,13 +417,19 @@ if __name__ == '__main__':
     # print(analyze)
     # print(f'{analyze_lens_0 = }, {analyze_lens_1 = }, {analyze_lens_betw = }')
     # print(f'{analyze_lens_0 + analyze_lens_1 + analyze_lens_betw}')
+    # 1/0
 
     printout = ""
     for n, eq, seqs in legit:
         printout += prompt(eq, seqs)
 
-    # print(printout)
-    # print(len(printout.split('\n')))
+    print(printout)
+
+    # summary:
+    print(f'Summary: \nnumber of equations: {len(eqs)}')
+    print(f'number of sequences per equation: {SAMPLE_SIZE}')
+    print(f'number of prompts: ', end='')
+    print(len(printout.split('\n')))
 
     # 1/0
 

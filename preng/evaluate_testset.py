@@ -57,7 +57,7 @@ def parse_response(row: tuple, result_vs_gt: str, allow_no_eq=False) -> tuple[li
     print(f'{row = }')
     is_tsv = type(row) == tuple and isinstance(row[0], str) and isinstance(row[1], str)
     instruction, response = row if is_tsv else row.split(' [/INST]')
-    print( f'{instruction = }', f'{response = }')
+    print( f'parse_response\'s {instruction = }', f'{response = }')
     # 1/0
     input_sequence = re.findall(r'sequence: ([\d,-]+)', instruction)[0]
     input_sequence = [int(term) for term in input_sequence.split(',')]
@@ -98,9 +98,6 @@ def parse_response(row: tuple, result_vs_gt: str, allow_no_eq=False) -> tuple[li
 
 
 def load_lin_dasco():
-    print(os.listdir())
-    print(os.listdir('../julia'))
-    print(os.listdir('../julia/urb-and-dasco'))
     # 1/0
     with open('../julia/urb-and-dasco/OEIS_easy.txt', 'r') as f:
         lines = f.readlines()
@@ -140,9 +137,11 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
 
     if results_id == 'linrec and dasco':
         dasco_readlines, lin_dasco_ids = load_lin_dasco()
+        print(f'{len(dasco_readlines) = }, {len(lin_dasco_ids) = }')
 
-    count_acc1, count_acc10 = 0, 0
+    count_acc1, count_acc10, count_None, count_bugs = 0, 0, 0, 0
     i_row = 0
+    i_lin_dasc = 0
     for test_res_row, test_set_row in zip(test_results, test_set):
 
         i_row += 1
@@ -152,15 +151,17 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
             if seq_id not in lin_dasco_ids:
                 print(f'seq_id {seq_id} not in lin_dasco_ids')
                 continue
-
+            else:
+                i_lin_dasc += 1
 
         # if i_row % 100 == 0:
         print(f'{i_row = }')
         # if i_row == 0:
-        if i_row == 248:
+        # if i_row == 248:
+        if i_row == 248 and False:
             # test_res_row = ('Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,2,4,6,9,12,17,22,29,36,45,54,67,80,97,114,135,156,183,210,243,276,315,354,403', '  Certainly, the Python code is the following: lambda a_n: relu( n * abs( ( 4 ) + -1 // -6 ) ) - a_n[-1] // n * 1 // -10'
             test_res_row = (test_res_row[0], '  Certainly, the Python code is the following: lambda a_n: a_n[-1] + a_n[-4]')
-        if results_id == 'test_proged25u2.tsv':
+        if results_id in ('test_proged25u2.tsv', 'linrec and dasco'):
             if i_row == 9946:
                 test_res_row = (test_res_row[0], '  Certainly, the Python code is the following: lambda a_n: n * ( 5 + -6 - n - -8 - -8 + n + 0 - 0 - 0 - 0 - 0 - 0 - 0 - 0 + a_n[-1] ')
             elif i_row in (8793, 9157, 9800):
@@ -177,7 +178,7 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
         # Check if the predicted equation is correct:
         # print('\n'*3, ' --- Checking equation... --- ')
         predicted_full = predict_safe(predicted_eq, input_sequence, n_pred=10)
-        # print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
+        print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
 
         limit = 308  # For python's float division: cutting us some slack.
         postpone = False
@@ -189,15 +190,16 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
         # print(' '*44, f'{ten_next_terms = }')
         n_input = len(input_sequence)
 
-        if predicted_full is None or predicted_full[:n_input] != input_sequence:
-            acc_1, acc_10 = False, False
+        acc_1, acc_10, add_none, buggy = 0, 0, 0, 0
+        if predicted_full is None:
+            add_none = True
+        elif predicted_full[:n_input] != input_sequence:
+            buggy = True
         elif results_id in ('test_proged25u2.tsv', 'test_proged15u2.tsv'):
             predicted_full = [predicted_full[:i + 1] for i in range(len(predicted_full)) if
                               (max([abs(j) for j in predicted_full[:i + 1]]) < 10**limit)][-1]
             if postpone:
                 print(f'{predicted_full = }')
-            if predicted_full[:n_input] != input_sequence:
-                acc_1, acc_10 = False, False
             else:
                 acc_1, acc_10 = is_dasco(predicted_full[n_input:], ten_next_terms)
         else:
@@ -207,13 +209,26 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
         print(f'{acc_1 = }, {acc_10 = }')
         count_acc1 += acc_1
         count_acc10 += acc_10
+        count_None += add_none
+        count_bugs += buggy
         # 1/0
 
         if i_row % 100 == 0:
             acc_t = count_acc1 / i_row, count_acc10 / i_row
             print(f'Accuracy measured so far ({i_row}-th row): of n_pred = 1: {acc_t[0] * 100:.2f} %, accuracy of n_pred = 10: {acc_t[1] * 100:.2f} %')
+            print(f'None predicted so far ({i_row}-th row, {i_lin_dasc}-th treated row): {count_None/i_lin_dasc * 100:.2f} %, bugs ratio so far: {count_bugs/i_lin_dasc * 100:.2f} %')
 
     acc = count_acc1 / len(test_results), count_acc10 / len(test_results)
+
+    if results_id == 'linrec and dasco':
+        print(f'{len(lin_dasco_ids) = }')
+        print(f'n_pred = 1: {count_acc1} correct equations, n_pred = 10: {count_acc10} correct equations.\n'
+              f'out of {len(lin_dasco_ids)} tests passed.')
+        print(f'\nResults for results_file = {test_results_file}, linear and dasco file and n_input = {len(input_sequence)}:')
+        print(f'Accuracy of n_pred = 1: {count_acc1/len(lin_dasco_ids)*100:.2f} %, accuracy of n_pred = 10: {count_acc10/len(lin_dasco_ids)*100:.2f} %')
+        print( f'\nNone predicted: {count_None}, extreme bugs predicted: {count_bugs}')
+        print( f'None predicted procentage ({i_row}-th row, {i_lin_dasc}-th treated rows): {count_None / i_lin_dasc * 100:.2f} %, extreme bugs ratio so far: {count_bugs / i_lin_dasc * 100:.2f} %')
+        print('Below are results calculated for whole 10k dataset, i.e. number of equtions / 10k')
 
     print(f'\nResults for results_file = {test_results_file} and n_input = {len(input_sequence)}:')
     print(f'Accuracy of n_pred = 1: {acc[0]*100:.2f} %, accuracy of n_pred = 10: {acc[1]*100:.2f} %')
@@ -228,7 +243,7 @@ if __name__ == '__main__':
     test_results_file = 'fake_test-results.txt'
     test_results_file = 'test_proged25u2.tsv'
     test_results_file = 'test_proged15u2.tsv'
-    test_results_file = 'test_proged25u2.tsv'
+    # test_results_file = 'test_proged25u2.tsv'
 
     testset_file = 'test_proged25u2.txt'
     testset_file = 'test_proged15u2.txt'
@@ -236,6 +251,7 @@ if __name__ == '__main__':
     data_dir = 'data/'
 
     print(f'Analyzing results from file: {test_results_file} ...')
+    print(f'against the ground truth of sequences from the file: {testset_file} ...')
     # with open(test_results_file, 'r') as f:
     #     test_results = f.readlines()
     test_results = pd.read_csv(data_dir + test_results_file, low_memory=False, sep='\t')
@@ -288,3 +304,24 @@ if __name__ == '__main__':
 # n_input = 25: Accuracy of n_pred = 1: 11.30 %, accuracy of n_pred = 10: 7.19 %
 # n_input = 15: Accuracy of n_pred = 1: 12.96 %, accuracy of n_pred = 10: 7.09 %
 
+
+# linrec and dasco
+# n_input = 25
+# n_pred = 1: 690 correct equations, n_pred = 10: 588 correct equations.
+# out of 2342 tests passed.
+#
+# Results for results_file = test_proged25u2.tsv, linear and dasco file and n_input = 25:
+# Accuracy of n_pred = 1: 29.46 %, accuracy of n_pred = 10: 25.11 %
+
+# n_input = 15
+# n_pred = 1: 741 correct equations, n_pred = 10: 585 correct equations.
+# out of 2342 tests passed.
+# None predicted: 46, extreme bugs predicted: 0
+# None predicted procentage (10000-th row, 2342-th treated rows): 1.96 %, extreme bugs ratio so far: 0.00 %
+#
+# Results for results_file = test_proged15u2.tsv, linear and dasco file and n_input = 15:
+# Accuracy of n_pred = 1: 31.64 %, accuracy of n_pred = 10: 24.98 %
+# Below are results calculated for whole 10k dataset, i.e. number of equtions / 10k
+#
+# Results for results_file = test_proged15u2.tsv and n_input = 15:
+# Accuracy of n_pred = 1: 7.41 %, accuracy of n_pred = 10: 5.85 %

@@ -7,6 +7,9 @@ For Diofantos paper:
 - Pell eg
 add of det.
 """
+
+import random
+
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -72,8 +75,34 @@ def create_wheel():
             f.write(wh_output + '\n')
     return
 
+# real-bench published:
 # create_wheel()
-# 1/0
+
+ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
+SAMPLE_SIZE = 20
+SAMPLE_SIZE = 60
+PROMPT = 'Find an exact equation that holds for columns of the following data set.\n'
+
+
+# randomized wheel:
+def random_wheel():
+    sample_size = 20
+    mask = [i for i in range(len(wheel(3)))]
+    random.shuffle(mask)
+    print(f'{mask = }')
+    print()
+    print(', '.join(ALPHABET[:len(mask)]))
+    for i in range(3, sample_size):
+        r = random.randint(3, sample_size)
+        # print(f'{r = }')
+        row = wheel(r)
+        # print(f'{row = }')
+        shuffled = [row[m] for m in mask]
+        print(''.join([f'{j}, ' for j in shuffled]))
+    return
+
+# random_wheel()
+
 
 import re
 
@@ -102,7 +131,36 @@ def create_pitagora():
 
 # create_pitagora()
 
-import random
+def random_pitagora():
+    "Randomized to avoid data leakage."
+
+    sample_size = 20
+
+    with open(dir_path + 'pitagora-triplets.csv', 'r') as f:
+        content = f.read()
+        triplets = re.findall(r'(\d{1,3}), (\d{1,3}), (\d{1,3}).*\n', content)
+        # true triplets (o3 unsuccessful):
+        triplets = [(t[0], t[1], t[2]) for t in triplets]
+        # easier, Diofantos successful:
+        # triplets = [(t[0], t[1], int(t[2])**2) for t in triplets]
+
+    mask = [i for i in range(3)]
+    random.shuffle(mask)
+    print(f'{mask = }')
+    print()
+    print(', '.join(ALPHABET[:len(mask)]))
+    for i in range(3, sample_size):
+        rint = random.randint(3, sample_size)
+        # print(f'{r = }')
+        row = triplets[rint]
+        # print(f'{row = }')
+        shuffled = [row[m] for m in mask]
+        print(''.join([f'{j}, ' for j in shuffled]))
+    return
+
+# random_pitagora()
+# 1/0
+
 
 def create_det(n):
     from sympy import randMatrix
@@ -154,9 +212,39 @@ def create_dets(dim, rows):
         with open(dir_path+'real_world_bench_ds3.csv', 'w') as f:
             f.write(det_output + '\n')
 
+    return det_output
+
+# original:
+# create_dets(2, 100)
+
+# shuffled for o3:
+def shuffled_dets(data_string):
+    "Shuffle dets or trs dataset to avoid data leakage."
+
+    dets_str = data_string
+    dets = [row.split(', ') for row in dets_str.split('\n')]
+    print('dets:')
+    for row in dets:
+        print(row)
+
+    print()
+    mask = [i for i in range(len(dets[0]))]
+    random.shuffle(mask)
+    print(f'{mask = }')
+    vars = [dets[0][m] for m in mask]
+    print(f'{vars = }')
+
+    print(f'\n{PROMPT}')
+    print(', '.join(ALPHABET[:len(mask)]))
+    for i in range(SAMPLE_SIZE):
+        randi = random.randint(1, SAMPLE_SIZE)
+        shuffled = [dets[randi][m] for m in mask]
+        print(''.join([f'{j}, ' for j in shuffled]))
+
     return
 
-# create_dets(2, 100)
+# shuffled_dets(create_dets(2, SAMPLE_SIZE))
+# 1/0
 
 
 def create_tr(dim):
@@ -208,14 +296,18 @@ def create_trs(dim, rows):
         with open(dir_path+'real_world_bench_ds4.csv', 'w') as f:
             f.write(det_output + '\n')
 
-    return
+    return det_output
 
+# original:
 # create_trs(3, 100)
+# for o3:
+# shuffled_dets(create_trs(3, SAMPLE_SIZE))
+# 1/0
 
 
 # MoadeeB paper:
 
-random.seed(0)
+# random.seed(0)
 
 
 def create_Euler():
@@ -275,10 +367,13 @@ def create_Euler():
         with open(dir_path+'real_world_bench_ds7.csv', 'w') as f:
             f.write(euler_out + '\n')
 
-    return
+    return euler_out
 
 
 # create_Euler()
+
+# shuffled_dets(create_Euler())
+# 1/0
 
 def Riemann_Roch():
     """Wiki: Riemann-Roch theorem for compact Riemann surfaces
@@ -310,9 +405,12 @@ def Riemann_Roch():
         with open(dir_path+'real_world_bench_ds6.csv', 'w') as f:
             f.write(rr_out + '\n')
 
-    return
+    return rr_out
 
 # Riemann_Roch()
+
+# shuffled_dets(Riemann_Roch())
+# 1/0
 
 def symbolic_computation(ds, numerator='None'):
     """
@@ -420,7 +518,8 @@ def symbolic_computation(ds, numerator='None'):
 
     return symcomp_out
 
-# symbolic_computation(0)
+symbolic_computation(0)
+1/0
 # symbolic_computation(1)
 # symbolic_computation(3)
 # symbolic_computation((1,1))

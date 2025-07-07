@@ -179,6 +179,39 @@ def construct_grammar_universal_oeis (p_sum=[0.2, 0.2, 0.6], p_mul = [0.1, 0.1, 
     grammar += construct_production(left="C", items=[f"'{i}'" for i in range(-10, 10)], probs=[1/20]*20)
     return grammar
 
+def construct_grammar_linear_oeis (p_recurs=[0.3, 0.7], p_hascoef=[1/2, 1/2], p_coef_nv=[1/2, 1/2], p_leaf = [1/3, 1/3, 1/3], max_order=20):
+    """
+    Grammar for OEIS sequences imitating dascoli's generator.
+    Idea: regulate recursion (depth of the expression) by simpler split on terminals/leafs and operators (nodes).
+
+    Variables: a_n[-1], a_n[-2], ..., a_n[-max_order], distributed by rule of thumb imitating the gamma(shape=2, scale=2) distribution.
+    Operators: + only (linear)
+    Constants: -10, -9, ..., 9, 10.
+    """
+
+    grammar = construct_production(left="S", items=["S '+' P", "P"], probs=p_recurs)  # operator vs Leaf (const/n/var)
+    grammar += construct_production(left="P", items=["M", "L"], probs=p_hascoef)  # operator vs Leaf (const/n/var)
+    grammar += construct_production(left="M", items=["C '*' 'n'", "C '*' V"], probs=p_coef_nv)  # operator vs Leaf (const/n/var)
+    grammar += construct_production(left="L", items=["C", "'n'",  "V"], probs=p_leaf)
+    grammar += construct_production(left="C", items=[f"'{i}'" for i in range(-10, 10+1)], probs=[1/(20+1)]*(20+1))
+
+    # if max_order > 20:
+    grammar += construct_production(left="V", items=[f"'a_n[-{i}]'" for i in range(1, max_order+1)], probs=[1/max_order]*max_order)
+    # else:
+    #     orders = range(1, max_order + 1)
+    #     rounding = 3
+    #     probs_gamma = [round(i, rounding) for i in stats.gamma.pdf(orders, a=2.5, scale=2)]
+    #     # print(probs_gamma)
+    #     non_zeros = [i for i in probs_gamma if i>0]
+    #     # print(non_zeros)
+    #     # 1/0
+    #     surplus = 1 - sum(non_zeros)
+    #     idx = non_zeros.index(max(non_zeros))
+    #     non_zeros = non_zeros[:idx] + [round(non_zeros[idx]+surplus, rounding)] + non_zeros[idx+1:]
+    #
+    #     p_vars = [p for p in non_zeros]
+    #     grammar += construct_production(left="V", items=[f"'a_n[-{i}]'" for i in orders[:len(p_vars)]], probs=p_vars)
+    return grammar
 
 def unit_to_string (unit, unit_symbols=["m", "s", "kg", "T", "V"]):
     return "".join([unit_symbols[i]+str(unit[i]) for i in range(len(unit))])
@@ -336,6 +369,7 @@ def construct_grammar_universal_dim (variables=["'U'", "'d'", "'k'"],
 GRAMMAR_LIBRARY = {
     "universal": construct_grammar_universal,
     "universal_oeis": construct_grammar_universal_oeis,
+    "linear_oeis": construct_grammar_linear_oeis,
     "universal-dim": construct_grammar_universal_dim,
     "rational": construct_grammar_rational,
     "simplerational": construct_grammar_simplerational,
@@ -372,9 +406,10 @@ if __name__ == "__main__":
     # grammar = grammar_from_template("universal_oeis", {"variables":["'phi'", "'theta'", "'r'"], "p_vars":[0.2,0.4,0.4],
                                                   # "functions" : [], "p_functs" : [0.1], })
     grammar = grammar_from_template("universal_oeis", {})
+    grammar = grammar_from_template("linear_oeis", {})
     print(grammar)
     print(grammar.generate_one())
-    print('\n'*5)
-    for i in range(150):
-        print(" ".join(grammar.generate_one()[0]))
+    # print('\n'*5)
+    # for i in range(150):
+    #     print(" ".join(grammar.generate_one()[0]))
 
