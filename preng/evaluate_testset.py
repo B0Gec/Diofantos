@@ -70,6 +70,11 @@ def parse_response(row: tuple, result_vs_gt: str, allow_no_eq=False) -> tuple[li
             predicted_eq = re.findall(r'^Certainly, the Python code is the following: (lambda a_n:[ absignqrt()/*_\[\]\d+-]+)$', response)
         # print(predicted_eq)
 
+        # hook = False
+        # if row == ('Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,1,2,1,1,4,1,1,4,1,1,2,1,1,2,1,1,4,1,1,4,1,1,2,1', 'another Python code is the following: lambda a_n: a_n[-5]'):
+        #     print(f'predicted_eq = {predicted_eq}')
+        #     # 1/0
+
         if len(predicted_eq) == 0:
             # print('had to soften the regex to: <lambda a_n: karkoli >')
             if not is_tsv:
@@ -77,10 +82,25 @@ def parse_response(row: tuple, result_vs_gt: str, allow_no_eq=False) -> tuple[li
             else:
                 predicted_eq = re.findall(r'Certainly, the Python code is the following: (lambda a_n: .+)', response)
         if len(predicted_eq) == 0:
-            response = response.strip('[\/RESP]\n')
+            ################ totally wrong! ### response = response.strip('[\/RESP]\n')
+            # response = 'lambda a_n: a_n[-2][/RESP].\n'
+            # print(f'response = {response}')
+            response = response.strip('[\n. ')
+            # print(f'response = {response}')
+            # response = response[:-7] if response[-7:] == '[/RESP]' else response
+            # print(f'response = {response}')
             predicted_eq = re.findall( r'lambda a_n:[ absignqrt()/*_\[\]\d+-]+', response)
+            print(f'predicted_eq = {predicted_eq}')
+            # 1/0
+
         if len(predicted_eq) == 0:
             predicted_eq = re.findall(r'(lambda a_n: .+)', response)
+        if len(predicted_eq) == 0 and response in ('nan', 'nan wasted', 'nan on the edge'):
+            predicted_eq = 'dummy eq'
+
+        # if row == ('Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,1,2,1,1,4,1,1,4,1,1,2,1,1,2,1,1,4,1,1,4,1,1,2,1', 'another Python code is the following: lambda a_n: a_n[-5]'):
+        #     print(f'predicted_eq = {predicted_eq}')
+        #     1/0
 
         if not allow_no_eq:
             predicted_eq = predicted_eq[0][len('lambda a_n: '):]
@@ -116,7 +136,7 @@ def dasco_to_seq_id(line_num: int, dasco_content: list) -> str:
     return seq_id
 
 
-def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
+def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv', is_lin_dasco=False):
     """Evaluate the test results against the ground truth.
 
     Input:
@@ -135,7 +155,7 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
     if len(test_results) != len(test_set):
         raise IndexError('Test results and test set do not have the same number of rows!!')
 
-    if results_id == 'linrec and dasco':
+    if is_lin_dasco:
         dasco_readlines, lin_dasco_ids = load_lin_dasco()
         print(f'{len(dasco_readlines) = }, {len(lin_dasco_ids) = }')
 
@@ -145,7 +165,7 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
     for test_res_row, test_set_row in zip(test_results, test_set):
 
         i_row += 1
-        if results_id == 'linrec and dasco':
+        if is_lin_dasco:
             seq_id = dasco_to_seq_id(i_row-1, dasco_readlines)
             print(f'{seq_id = }')
             if seq_id not in lin_dasco_ids:
@@ -161,16 +181,25 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
         if i_row == 248 and False:
             # test_res_row = ('Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,2,4,6,9,12,17,22,29,36,45,54,67,80,97,114,135,156,183,210,243,276,315,354,403', '  Certainly, the Python code is the following: lambda a_n: relu( n * abs( ( 4 ) + -1 // -6 ) ) - a_n[-1] // n * 1 // -10'
             test_res_row = (test_res_row[0], '  Certainly, the Python code is the following: lambda a_n: a_n[-1] + a_n[-4]')
-        if results_id in ('test_proged25u2.tsv', 'linrec and dasco'):
+        if results_id in ('test_proged25u2.tsv'):
             if i_row == 9946:
                 test_res_row = (test_res_row[0], '  Certainly, the Python code is the following: lambda a_n: n * ( 5 + -6 - n - -8 - -8 + n + 0 - 0 - 0 - 0 - 0 - 0 - 0 - 0 + a_n[-1] ')
             elif i_row in (8793, 9157, 9800):
                 test_res_row = (test_res_row[0], '  Certainly, the Python code is the following: lambda a_n: [control_235][control_432]')
+        elif results_id in 'test_proged25u2-50k-20.tsv':
+            if i_row in (343, 706, 1592, 1605, 1611, 1632, 1649, 1906):
+                test_res_row = (test_res_row[0], 'nan wasted')
+            elif i_row in (1811, 1824):
+                test_res_row = (test_res_row[0], 'nan on the edge')
+
+        elif results_id in 'test_proged25u2-50k-1.tsv':
+            if i_row in (1569, 2615, ):
+                test_res_row = (test_res_row[0], 'nan on the edge')
 
         # print()
         # Parse the test results
-        input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results', allow_no_eq=False)
-        # input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results', allow_no_eq=True)
+        # input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results', allow_no_eq=False)
+        input_sequence, predicted_eq = parse_response(test_res_row, result_vs_gt='results', allow_no_eq=True)
         input_sequence, ten_next_terms = parse_response(test_set_row, result_vs_gt='test set ground truth')
         # print(f'{input_sequence = }, {predicted_eq = }, {ten_next_terms = }')
         # predicted_eq = 'lambda a_n: dummy eq'
@@ -220,7 +249,7 @@ def evaluate_results(test_results, test_set, results_id='test_proged25u2.tsv'):
 
     acc = count_acc1 / len(test_results), count_acc10 / len(test_results)
 
-    if results_id == 'linrec and dasco':
+    if is_lin_dasco:
         print(f'{len(lin_dasco_ids) = }')
         print(f'n_pred = 1: {count_acc1} correct equations, n_pred = 10: {count_acc10} correct equations.\n'
               f'out of {len(lin_dasco_ids)} tests passed.')
@@ -243,10 +272,18 @@ if __name__ == '__main__':
     test_results_file = 'fake_test-results.txt'
     test_results_file = 'test_proged25u2.tsv'
     test_results_file = 'test_proged15u2.tsv'
-    # test_results_file = 'test_proged25u2.tsv'
+    test_results_file = 'test_proged25u2-50k-20.tsv'
+    test_results_file = 'test_proged15u2-50k-20.tsv'
+    # test_results_file = 'test_proged25u2-50k-1.tsv'
+    # test_results_file = 'test_proged15u2-50k-1.tsv'
+    # test_results_file = 'test_proged25u2-ord120.tsv'
+    # test_results_file = 'test_proged15u2-ord120.tsv'
 
     testset_file = 'test_proged25u2.txt'
     testset_file = 'test_proged15u2.txt'
+
+    # IS_LINREC_AND_DASCO = False
+    IS_LINREC_AND_DASCO = True
 
     data_dir = 'data/'
 
@@ -259,7 +296,11 @@ if __name__ == '__main__':
     # we can ignore second column.
     print(test_results.shape)
     columns = test_results.columns
-    test_results = [(test_results[columns[0]][task_id], test_results[columns[2]][task_id]) for task_id in range(test_results.shape[0])]
+    prob = test_results[columns[2]][0]
+    # print(f'{prob = }')
+    # print(f'{str(prob) = }')
+    # 1/0
+    test_results = [(test_results[columns[0]][task_id], str(test_results[columns[2]][task_id])) for task_id in range(test_results.shape[0])]
     print(test_results[:4])
     # 1/0
 
@@ -274,7 +315,7 @@ if __name__ == '__main__':
     print(test_set_row)
     # 1/0
 
-    print(parse_response(test_row, 'results'))
+    print(parse_response(test_row, 'results', allow_no_eq=True))
     # print('\n'*10)
     print(parse_response(test_set_row, 'test set ground truth'))
     # 1/0
@@ -298,7 +339,7 @@ if __name__ == '__main__':
     # evaluate_results(test_results[k:SCALE+k], test_set[k:SCALE+k])
     # evaluate_results(test_results[9945:9947], test_set[9945:9947])
 
-    evaluate_results(test_results[k:SCALE+k], test_set[k:SCALE+k], results_id='linrec and dasco')
+    evaluate_results(test_results[k:SCALE+k], test_set[k:SCALE+k], results_id=test_results_file, is_lin_dasco=IS_LINREC_AND_DASCO)
 
 # test_proged25u2.tsv:
 # n_input = 25: Accuracy of n_pred = 1: 11.30 %, accuracy of n_pred = 10: 7.19 %
