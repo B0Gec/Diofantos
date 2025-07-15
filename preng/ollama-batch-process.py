@@ -81,7 +81,7 @@ async def worker(host, gpu_index, model, task_queue, output_dir):
         await chat(system_msg, message, task_id, host, gpu_index, model, output_dir)
         task_queue.task_done()
 
-async def main(config_path, prompts_path, output_dir):
+async def main(config_path, prompts_path, output_dir, index_skip):
     # Get configuration  
     config = toml.load(config_path)
     model = config.get("model", "fakellama3.2force-error")
@@ -98,7 +98,7 @@ async def main(config_path, prompts_path, output_dir):
     task_queue = asyncio.Queue()
     for n, message in enumerate(prompts):
         # print(n)
-        task_queue.put_nowait([system_msg, message, n])
+        task_queue.put_nowait([system_msg, message, index_skip + n])
 
     # Create a list of worker tasks, one for each Ollama instance 
     tasks = []
@@ -113,11 +113,13 @@ if __name__ == "__main__":
     parser.add_argument("--config", type=str, default="config.toml", help="Path to the configuration TOML file")
     parser.add_argument("--prompts", type=str, required=True, help="Path to the JSONL file with prompts")
     parser.add_argument("--output_dir", type=str, default="responses", help="Directory to save the response JSON files")
+    # If doing cores in batches of 30 seqs, second batch will start with task_id = 00000 instead of 00030:
+    parser.add_argument("--index_skip", type=int, default=0, help="keep task_id consistent with data set")
 
     args = parser.parse_args()
 
     try:
-        asyncio.run(main(args.config, args.prompts, args.output_dir))
+        asyncio.run(main(args.config, args.prompts, args.output_dir, args.index_skip))
         log_message("All prompts processed. Exiting...")
     except KeyboardInterrupt:
         log_message("Process interrupted by user. Exiting...")
