@@ -37,6 +37,14 @@ def save_response(prompt, task_id, response_text, output_dir):
         json_file.flush()
 
     #log_message(f"Response saved to {file_path}")
+    
+# The recommended parameters for precision and automation
+OLLAMA_OPTIONS = {
+    "temperature": 0.0,
+    "top_p": 0.1,
+    # "stop": ["```"], # Stop generation right after the code block
+    # "num_predict": 512,
+}
 
 async def chat(system_msg, message, task_id, host, gpu_index, model, output_dir):
     try:
@@ -46,7 +54,9 @@ async def chat(system_msg, message, task_id, host, gpu_index, model, output_dir)
         # Make the API request using the specified host and model
         response = await AsyncClient(host=f"http://{host}").chat(
             model=model,
-            messages=[system_msg, message]
+            messages=[system_msg, message],
+            options=OLLAMA_OPTIONS,
+            stream=False
         )
 
         # Stop timing

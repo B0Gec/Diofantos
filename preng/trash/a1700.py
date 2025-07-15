@@ -87,3 +87,13 @@ def sequence(n):
 # Test the function
 for i in range(1, 21):
     print(f"a_{i} = {sequence(i)}")
+
+import toml
+import json
+
+config = toml.load("../data/test_config.toml")
+# model = config.get("model", "fakellama3.2force-error")
+sysmess = config.get("system_message")
+print(sysmess)
+# gpus = config["ollama_instances"]
+# system_msg = json.loads(f'{{"role": "system", "content": {json.dumps(config.get("system_message"))}}}')
