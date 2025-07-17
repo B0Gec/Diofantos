@@ -107,15 +107,42 @@ if __name__ == '__main__':
     # print(input_pair['response'])
     response = input_pair['response']
 
+    allowed_builtins = {"__builtins__": {"print": print, "range": range}}
     test_code = decode(response, seq_len=135)
     # print('-- test_code')
     print(test_code, '\n'*5)
     print('-- decoding response finished')
-    exec(test_code)
+    # exec(test_code, allowed_builtins)
     print('101')
 
     ground_truth = pd.read_csv('../cores_test.csv')
     gt_seq = [int(i) for i in ground_truth[ground_truth.columns[task_id]]]
     print(gt_seq)
+
+    print('compile:')
+    numbers = [1,2,3]
+    string_input = """
+def sum_of_even_squares(numbers):
+    return sum(number**2 for number in numbers if number % 2 == 0)
+
+print(sum_of_even_squares(numbers))
+    """
+
+    compiled_code = compile(string_input, "<string>", "exec")
+    # a = eval(compiled_code)
+    # print(a)
+
+    # numbers = [2, 3, 7, 4, 8]
+    # exec(compiled_code)
+    #
+    # numbers = [5, 3, 9, 6, 1]
+    # exec(compiled_code)
+    #
+
+    a = None
+    # exec("a = 1+2\nprint(a)", allowed_builtins, {})
+    exec("a = 1+2\nprint(a)", allowed_builtins, {'a': a})
+    # exec("a = 1+2")
+    print(f'{a = }')
 
 
