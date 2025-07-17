@@ -43,10 +43,11 @@ def decode(response, seq_len=35):
 
     # check correct:
     test_code = f'\nprint([{function_name}(n) for n in range({seq_len})])'
+    # test_code = f'\nseq_pred = [{function_name}(n) for n in range({seq_len})]\nprint(seq_pred)'
     test_code = function + test_code
     # exec(test_code)
 
-    return test_code
+    return test_code, function_name
     # print(f'{test_code = }')
     # exec(test_code)
     # exec('a = 2\nb = a + 300\nprint(b)\nprint(202)')
@@ -108,11 +109,27 @@ if __name__ == '__main__':
     response = input_pair['response']
 
     allowed_builtins = {"__builtins__": {"print": print, "range": range}}
-    test_code = decode(response, seq_len=135)
+    test_code, function_name = decode(response, seq_len=135)
+    # test_code += '\nprint(range.__doc__)'  # forbidden test
+
+    # # Safety first:
+    if '__' in test_code:
+        raise PermissionError('MALICIOUS code (includes "__") is potentially present in the proposed code!!!\n\n'
+                              '     Proposed code:\n' + test_code)
+
     # print('-- test_code')
     print(test_code, '\n'*5)
     print('-- decoding response finished')
+    # store = locals().copy()
+    # store = {'calculate_sequence': lambda x: x}
+    store = {}
+    # exec(test_code, allowed_builtins, {})
     # exec(test_code, allowed_builtins)
+    # exec(test_code, allowed_builtins, None)
+    # exec(test_code, allowed_builtins )
+    # exec(test_code, allowed_builtins, store)
+    # exec(test_code, allowed_builtins, locals())
+    # print(f'stored seq:\n{store["seq_pred"] = }')
     print('101')
 
     ground_truth = pd.read_csv('../cores_test.csv')
@@ -139,10 +156,12 @@ print(sum_of_even_squares(numbers))
     # exec(compiled_code)
     #
 
-    a = None
-    # exec("a = 1+2\nprint(a)", allowed_builtins, {})
-    exec("a = 1+2\nprint(a)", allowed_builtins, {'a': a})
-    # exec("a = 1+2")
-    print(f'{a = }')
-
+    # a = 2
+    # # exec("a = 1+2\nprint(a)", allowed_builtins, {})
+    # print(f'before: {a = }')
+    # loc = {}
+    # exec("a = 3\nprint(a)", allowed_builtins, loc)
+    # # exec("a = 1+2")
+    # print(f'{loc = }')
+    #
 
