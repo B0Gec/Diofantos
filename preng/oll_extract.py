@@ -8,6 +8,7 @@ up - predict
 local - check it
 """
 
+import math
 import re
 import os
 import argparse
@@ -15,9 +16,10 @@ import json
 
 import pandas as pd
 
+from exact_ed import unnan
+from eq_to_py import last_a
 
-
-def decode(response, seq_len=36):
+def decode(response, question=None):
     """decode python function from the response"""
     # print(response)
 
@@ -36,6 +38,10 @@ def decode(response, seq_len=36):
     if not pycode:
         print(f'Response:\n{response})')
         print("\n--- !! NO Python code !! --- ")
+        print("\nTrying to find any equation and convert it into python function ... \n")
+        pycode = [last_a(response, question)]
+        print(pycode[0])
+        1/0
         return None
     # print(f'{pycode = }')
     # print(f'{pycode[-1] = }')
@@ -58,10 +64,15 @@ if __name__ == '__main__':
     batch = 'obatch3.105/'
     batch = 'obatch3.110/'
     batch = 'obatch_qcor/'
+    cores = batch == 'obatch_qcor/'
     N_INPUT = 25
+    N_INPUT = 2
+    N_INPUT = 3
 
     # filename = '00014-5348.json'
     TASK_ID = 0
+    TASK_ID = 17
+    TASK_ID = 21
     # TASK_ID = 108  # success
     # TASK_ID = 107 # fail
     # TASK_ID = 106 # success
@@ -96,9 +107,10 @@ if __name__ == '__main__':
 
     input_pair = json.loads(input_file)
     # print(input_pair['response'])
+    question = input_pair['prompt']
     response = input_pair['response']
 
-    decoded = decode(response, seq_len=37)
+    decoded = decode(response, question=question)
     if decoded is None:
         raise ValueError('NO Python code found !!')
     else:
@@ -115,12 +127,14 @@ if __name__ == '__main__':
     print(test_code, '\n'*5)
     print('-- decoding response finished')
 
+
     #####################
     # 2. Get ground truth to check if predicted correctly:
 
     # Cores:
     ground_truth_csv = pd.read_csv('../cores_test.csv')
-    ground_truth = [int(i) for i in ground_truth_csv[ground_truth_csv.columns[task_id]]]
+    # ground_truth = [int(i) for i in ground_truth_csv[ground_truth_csv.columns[task_id]]]
+    ground_truth = [int(i) for i in unnan(ground_truth_csv[ground_truth_csv.columns[task_id]])]
 
     # # Dasco:
     # gt_file_lines = open('../julia/urb-and-dasco/OEIS_easy.txt', 'r').read().splitlines()
@@ -133,19 +147,63 @@ if __name__ == '__main__':
 
     # check correct:
     # test_code = f'\n{function_name} = lambda x: x\ndel {function_name}\nprint({function_name})\n' + test_code
-    test_code += f'\nprint({function_name})'
+    test_code += f'\nprint(\'function_name = {function_name}\')'
     # print(test_code)
     # 1/0
-    test_code += f'\nseq_pred = [{function_name}(n) for n in range({N_INPUT + 13})]'
+    # start = 0
+    # def recur(n):
+    #     if n == 1:
+    #         return 0
+    #     else:
+    #         return recur(n-1) + 2
+    #
+
+    start_try = f"""\ntry:
+        {function_name}(0)
+        start = 0
+except RecursionError as e:
+        print(e)
+        {function_name}(1)
+        start = 1"""
+
+    test_code += start_try
+    test_code += f'\nprint(f\'{{start = }}\')'
+    prediction_code = f'\nseq_pred = [{function_name}(n) for n in range(start, start + {N_INPUT + 10})]'
+    if cores:
+        prediction_code = f'\nseq_pred = [{function_name}(n) for n in range(start, start + len(ground_truth))]'
+    test_code += prediction_code
+    test_code += f'\nseq_pred = seq_pred[:len(ground_truth)]'  # not necessary, just in case
     test_code += f'\nprint(f\'{{seq_pred = }}\')'
+    test_code += f'\nprint(f\'{{len(seq_pred) = }}\')'
+    test_code += f'\nif len(ground_truth) < len(seq_pred):\n    raise IndexError(\'!! Bug in dasco or my code - Not enough ground truth or predicted terms !!!\')'
     test_code += f'\nprint(f\'is_Dasco {{seq_pred == ground_truth[:len(seq_pred)]}}\')'
+    # test_code += f'\nprint(f\'is_Dasco {{seq_pred == ground_truth[:min(len(seq_pred), len(ground_truth))]}}\')'
     seq_pred = None
 
     #####################
-    allowed_builtins = {"__builtins__": {"print": print, "range": range, 'sum': sum, 'len': len,
+    allowed_builtins = {"__builtins__": {"print": print, "range": range, 'sum': sum, 'len': len, 'min': min,
+                                         'RecursionError': RecursionError,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
+    # print(test_code)
+    print(f'\n{cores = }')
+    print("\n --- <exe> --- Below are prints from the executed code: --- <exe> ---\n")
     # exec(test_code, allowed_builtins)
-    print(test_code)
+
+    # cores: 26 + 8 = 34 vsaj
+    # till task 18.out
+    # first question: task_ids: 9, 14,
+    # correct also: 9, 14, 30, 34, 38,
+    # 377065_9 q
+    # 377065_14 q
+    # 377065_30 qk
+    # 377065_34 q
+    # 377065_38 q
+    # 377065_47 q tru
+    # 377065_51 q tru
+    # 377065_95 q tru
+
+
+
 
