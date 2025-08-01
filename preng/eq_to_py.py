@@ -15,11 +15,13 @@ def a(n):
 import re
 
 test_example = "$$\\box{ a(n) = a(n-1) + (n-1) \cdot  a(n-2) $$"
+test_example_task9 = """Found sequence A002605: a(n) = 2*(a(n-1) + a(n-2)), with a(0)=0, a(1)=1. B"""
 
 def last_a(latex_equation: str, question: str):
 
-    inits = re.findall(r'sequence: ([\d, ]+)', question)[0].replace(' ', '').split(',')
-    inits = [int(i) for i in inits]
+    # import question_inits from oll_extract
+    #### inits = re.findall(r'sequence: ([\d, ]+)', question)[0].replace(' ', '').split(',')
+    #### inits = [int(i) for i in inits]
     # print(inits)
 
     last_eq = re.findall(r"a\(n\) = [a(n-\d)\\]+", latex_equation)
