@@ -25,8 +25,13 @@ def _pick_recursive_function(src: str) -> Optional[str]:
     Return the name of the top-level function that (a) is recursive and
     (b) returns something numeric.  Tie-break: the latest definition.
     """
-    print(src)
-    tree = ast.parse(src)
+    # print(src)
+
+    try:
+        tree = ast.parse(src)
+    except SyntaxError as e:
+        # print(e)
+        return None
     best: Tuple[int, int, str] | None = None          # (score, idx, name)
 
     for idx, node in enumerate(tree.body):
@@ -56,7 +61,7 @@ def _pick_recursive_function(src: str) -> Optional[str]:
         if best is None or (score, idx) > best[:2]:
             best = (score, idx, name)
 
-    print(f'{best = }')
+    # print(f'{best = }')
     # 1/0
     return None if best is None or best[0] == 0 else (best[0], best[2])
 
@@ -128,7 +133,7 @@ def two_options(block: str):
     return
 
 
-def _parse_latex_recurrence(block: str) -> Optional[List[Tuple[str, List[int], str]]]:
+def _parse_latex_recurrence(block: str, default_name: str = 'latex_seq') -> Optional[List[Tuple[str, List[int], str]]]:
     """
     From something like
       a(n) = a(n-3) + a(n-5), \\text{ with initial values } a(0)=1, a(1)=0, ...
@@ -138,7 +143,7 @@ def _parse_latex_recurrence(block: str) -> Optional[List[Tuple[str, List[int], s
     # print(block)
     # m = _LATEX_RE.search(block)
     ms = _LATEX_RE.findall(block)
-    print(ms)
+    # print(ms)
     # 1/0
     # if not ms:
     #     return None
@@ -148,13 +153,13 @@ def _parse_latex_recurrence(block: str) -> Optional[List[Tuple[str, List[int], s
         # rhs = m.group("rhs").strip()
         var = m[0]
         rhs = m[1].strip()
-        print(f'var, rhs: {var, rhs}')
+        # print(f'var, rhs: {var, rhs}')
 
         # ---- RHS: turn 'a(n-3) + a(n-5)' ➜ 'seq(n-3) + seq(n-5)'
         # rhs = 'a(n-1) + (n-1) \cdot a(n-2)'
         rhs_py = re.sub(
             rf"{var}\s*\(\s*n\s*-\s*(\d+)\s*\)",
-            r"seq(n-\1)",
+            rf"{default_name}(n-\1)",
             rhs.replace("^", "**"),  # handle powers
         )
         rhs_py = rhs_py.replace("\cdot", "*")  # handle powers
@@ -180,8 +185,8 @@ def _make_function_source(init: List[int], rhs_expr: str, name: str = "seq") -> 
     """
     indent = " " * 4
     tpl = [
-        f"from functools import lru_cache",
-        "",
+        # f"from functools import lru_cache",
+        # "",
         f"@lru_cache(maxsize=None)",
         f"def {name}(n:int) -> int:",
         f"{indent}init = {init}",
@@ -215,6 +220,38 @@ _CODE_BLOCK_RE = re.compile(
 # 1/0
 # #
 
+
+def _find_best_block(code_blocks: str):
+    """Find best recursion function from multiple code blocks."""
+
+    best_block: Tuple[int, int, str, str] | None = None          # (score, idx, source, name)
+
+    for idx, blk in enumerate(code_blocks):
+        # print(f'blk:\n{blk}')
+        dedented = textwrap.dedent(blk)
+        picked_fn = _pick_recursive_function(dedented)
+        if picked_fn is not None:
+            score, fn = picked_fn
+
+            # print(f'fn: {fn}')
+            # print(f' ----- ------ ------ ----- ')
+            # if fn:
+            # Make sure code string is dedented & runnable as-is
+            # print(blk)
+            # print(textwrap.dedent(blk))
+            # print(f' ----- ------ ------ ----- ')
+            source = textwrap.dedent(blk).rstrip() + "\n"
+            # return source, fn
+            #     score = (2 if recursive else 0) + (1 if numeric else 0)
+            if best_block is None or (score, idx) > best_block[:2]:
+                best_block = (score, idx, source, fn)
+
+    # return None if best_block is None or best_block[0] == 0 else (best_block[2], best_block[3])
+    if not (best_block is None or best_block[0] == 0):
+        return (best_block[2], best_block[3])
+    return
+
+
 def decode_sequence_function( response: str, inits: List[int], default_name: str = "latex_seq" ) -> Tuple[str, str]:
     """
     Parameters
@@ -237,40 +274,17 @@ def decode_sequence_function( response: str, inits: List[int], default_name: str
         If no suitable sequence function can be derived.
     """
 
-    print('here I stand')
+    # print('here I stand')
     # ---- 1️⃣  Try to fish out a recursive Python function -----------------
-    print(f'response:\n{response}')
+    # print(f'response:\n{response}')
     code_blocks = _CODE_BLOCK_RE.findall(response)
     # print('code_blocks exist:')
     print(f'{code_blocks = }')
     # 1/0
 
-    best_block: Tuple[int, int, str, str] | None = None          # (score, idx, name)
-
-    for idx, blk in enumerate(code_blocks):
-        # print(f'blk:\n{blk}')
-        dedented = textwrap.dedent(blk)
-        picked_fn = _pick_recursive_function(dedented)
-        if picked_fn is not None:
-            score, fn = picked_fn
-
-        # print(f'fn: {fn}')
-        # print(f' ----- ------ ------ ----- ')
-        # if fn:
-            # Make sure code string is dedented & runnable as-is
-            # print(blk)
-            # print(textwrap.dedent(blk))
-            # print(f' ----- ------ ------ ----- ')
-            source = textwrap.dedent(blk).rstrip() + "\n"
-            # return source, fn
-#     score = (2 if recursive else 0) + (1 if numeric else 0)
-            if best_block is None or (score, idx) > best_block[:2]:
-                best_block = (score, idx, source, fn)
-
-
-    # return None if best_block is None or best_block[0] == 0 else (best_block[2], best_block[3])
-    if not (best_block is None or best_block[0] == 0):
-        return (best_block[2], best_block[3])
+    best_block = _find_best_block(code_blocks)
+    if best_block is not None:
+        return best_block
 
 
     print('Seems no Python code was found!')
@@ -281,30 +295,44 @@ def decode_sequence_function( response: str, inits: List[int], default_name: str
     # convert all equations to recursive Python functions and concatenate them into python block code.
     # Then run _pick_function on this block to pick function that makes the most sense.
 
-    latex_matches = _parse_latex_recurrence(response)
-    print(f'{latex_matches = }')
+    latex_matches = _parse_latex_recurrence(response, default_name=default_name)
+    # print(f'{latex_matches = }')
+    # for match in latex_matches:
+    #     print(match)
+    print(f'{len(latex_matches) = }')
     # 1/0
     latex_fn_codes = []
     for i, latex_match in enumerate(latex_matches):
         _, rhs_py = latex_match
-        print(f'{_ = }, {rhs_py = }')
-        print(f'{inits = }')
-        fn_name = f'{default_name}_{i}'
-        src = _make_function_source(inits, rhs_py, fn_name)
-        print(f'src:\n{src}')
-        latex_fn_codes.append((src, fn_name))
+        # print(f'{_ = }, {rhs_py = }')
+        # print(f'{inits = }')
+        # fn_name = f'{default_name}_{i}'
+        # src = _make_function_source(inits, rhs_py, fn_name)
+        src = _make_function_source(inits, rhs_py, default_name)
+        # print(f'src:\n{src}')
+        # latex_fn_codes.append((src, fn_name))
+        latex_fn_codes.append(src)
 
     # 1/0
-    print(f'{latex_fn_codes = }')
-    code_block = '\n'.join([code for code, fn_name in latex_fn_codes])
-    print(f'code_block:\n{code_block}')
-    print(f'\n-- End of: code_block:\n')
-    print()
-    answer = _pick_recursive_function(code_block)  # None | score, fn_name
-    print(f'{answer = }')
-    if answer is not None:
-        return code_block, answer[1]
+    # print(f'{latex_fn_codes = }')
+    # code_blocks = [code for code, fn_name in latex_fn_codes]
+    best_block = _find_best_block(latex_fn_codes)
+    if best_block is not None:
+        return best_block
 
+    # code_block = '\n'.join([code for code, fn_name in latex_fn_codes])
+    print(f'code_blocks from latex:\n')
+    print('\n'.join(code_blocks))
+    # print(f'\n-- End of: code_block:\n')
+    print()
+    # answer = _pick_recursive_function(code_block)  # None | score, fn_name
+    # # print(f'{answer = }')
+    # if answer is not None:
+    #     return code_block, answer[1]
+
+    print('Ending part of response, since no eq/fn found:')
+    print('Response (last 10 rows):')
+    print('\n'.join(response.split('\n')[-10:]))
 
     print('Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.')
     # ---- ❌  Nothing worked -------------------------------------------------

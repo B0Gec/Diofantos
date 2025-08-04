@@ -89,6 +89,7 @@ if __name__ == '__main__':
     batch = 'obatch3.110/'
     batch = 'obatch_qcor/'
     batch = 'obat-dasco25-10k/'
+    # batch = 'obat-dasco25-10k_skip4097/'
     cores = batch == 'obatch_qcor/'
     N_INPUT = 25
     # N_INPUT = 2
@@ -96,17 +97,23 @@ if __name__ == '__main__':
 
     # filename = '00014-5348.json'
     TASK_ID = 0
-    # TASK_ID = 17
-    # TASK_ID = 21
-    # TASK_ID = 108  # success
-    # TASK_ID = 109  # success
-    # TASK_ID = 110  # success
-    # TASK_ID = 107 # fail
-    # TASK_ID = 106 # success
-    # TASK_ID = 105 # no
+    TASK_ID = 17
+    TASK_ID = 21
+    TASK_ID = 108  # success
+    TASK_ID = 109  # success
+    TASK_ID = 110  # success
+    TASK_ID = 107 # fail
+    TASK_ID = 106 # success
+    TASK_ID = 105 # no
     # TASK_ID = 3
     # TASK_ID = 13
-    # TASK_ID = 21
+    TASK_ID = 21
+    TASK_ID = 1
+    TASK_ID = 9
+
+    # # skip4097
+    # TASK_ID = 4097
+    # TASK_ID = 4099
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
@@ -178,7 +185,7 @@ if __name__ == '__main__':
         # # Dasco:
         gt_file_lines = open('../julia/urb-and-dasco/OEIS_easy.txt', 'r').read().splitlines()
         gt_line = gt_file_lines[task_id]
-        # print(f'Ground truth: {gt_line}')
+        print(f'Ground truth: {gt_line}')
         # output_str += f'Ground truth: {gt_line}'
 
         ground_truth = [int(i) for i in gt_line[9:].split(',')[:-1]]
@@ -225,9 +232,11 @@ except RecursionError as e:
     seq_pred = None
 
     #####################
+    from functools import lru_cache
     allowed_builtins = {"__builtins__": {"print": print, "range": range, 'sum': sum, 'len': len, 'min': min,
                                          "str": str, "int": int, "enumerate": enumerate,
                                          'RecursionError': RecursionError,
+                                         'lru_cache': lru_cache,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
@@ -241,6 +250,12 @@ except RecursionError as e:
     # first question: task_ids: 9, 14,
     # correct also: 9, 14, 30, 34, 38,
     # 377065_9 q # 377065_14 q # 377065_30 qk # 377065_34 q # 377065_38 q # 377065_47 q tru # 377065_51 q tru # 377065_95 q tru
+
+    # dasco:
+    # 44/148
+    # 51/195
+    # 64/243
+    # 81/338
 
 
 
