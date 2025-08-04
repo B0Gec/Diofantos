@@ -19,6 +19,7 @@ import pandas as pd
 from exact_ed import unnan
 # from eq_to_py import last_a
 from extract_function_name import extract_function_name
+from parse_response import decode_sequence_function
 
 def question_inits(question: str):
     """Extract initial 25 integers from the question."""
@@ -95,17 +96,17 @@ if __name__ == '__main__':
 
     # filename = '00014-5348.json'
     TASK_ID = 0
-    TASK_ID = 17
-    TASK_ID = 21
-    TASK_ID = 108  # success
-    TASK_ID = 109  # success
+    # TASK_ID = 17
+    # TASK_ID = 21
+    # TASK_ID = 108  # success
+    # TASK_ID = 109  # success
     # TASK_ID = 110  # success
     # TASK_ID = 107 # fail
     # TASK_ID = 106 # success
     # TASK_ID = 105 # no
-    TASK_ID = 3
-    TASK_ID = 13
-    TASK_ID = 21
+    # TASK_ID = 3
+    # TASK_ID = 13
+    # TASK_ID = 21
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
@@ -142,12 +143,14 @@ if __name__ == '__main__':
     print(f'{question = }')
     print(f'{question[-200:] = }')
     inits = question_inits(question)
+    print(f'{inits = }')
 
-    decoded = decode(response, question=question)
-    if decoded is None:
-        raise ValueError('NO Python code found !!')
-    else:
-        test_code, function_name = decoded
+    # decoded = decode(response, question=question)
+    decoded = decode_sequence_function(response, inits=inits)
+    # if decoded is None:
+    #     raise ValueError('NO Python code found !!')
+    test_code, function_name = decoded
+    print(f'{function_name = }')
     output_str += f"{test_code = }.\n{function_name = }.\n"
     # test_code += '\nprint(range.__doc__)'  # forbidden test
 
@@ -156,8 +159,8 @@ if __name__ == '__main__':
         raise PermissionError('MALICIOUS code (includes "__") is potentially present in the proposed code!!!\n\n'
                               '     Proposed code:\n' + test_code)
 
-    # print('-- test_code')
-    print(test_code, '\n'*5)
+    print('-- test_code', '\n'*4,)
+    print(test_code, '\n'*3)
     print('-- decoding response finished')
 
 
