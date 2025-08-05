@@ -51,17 +51,17 @@ if __name__ == '__main__':
     print(response)
     # 1/0
 
-
-    decoded = decode(response, seq_len=36)
-    # decoded = 'bypass', 'bypass'
-    print(decoded)
-    if decoded == 'print(\'no python code!!\')':
-        raise RuntimeError('no python code!!!')
-
-    test_code, function_name = decoded
-    # test_code += '\nprint(range.__doc__)'  # forbidden test
-    print(test_code)
-    print(f'function_name: {function_name}')
+    #
+    # decoded = decode(response, seq_len=36)
+    # # decoded = 'bypass', 'bypass'
+    # print(decoded)
+    # if decoded == 'print(\'no python code!!\')':
+    #     raise RuntimeError('no python code!!!')
+    #
+    # test_code, function_name = decoded
+    # # test_code += '\nprint(range.__doc__)'  # forbidden test
+    # print(test_code)
+    # print(f'function_name: {function_name}')
 
     print('-- decoding response finished')
 
@@ -118,10 +118,68 @@ if __name__ == '__main__':
     #
     #     return helper(1)
 
-    # calculate_sequence = count_divisors
-    calculate_sequence = a
+    import sys
 
-    print([calculate_sequence(n) for n in range(len(gt)+1)])
+    print(sys.getrecursionlimit())
+    sys.setrecursionlimit(12345)
+    # sys.setrecursionlimit(1234567)
+    # sys.setrecursionlimit(123456789)
+    print(sys.getrecursionlimit())
+    # 1/0
+
+
+
+    def find_m(n):
+        # Find m such that S(m-1) <=n < S(m)
+        # S(m) = (m+1)(m+2)/2
+        # We can solve (m^2 + 3m)/2 <=n
+        # m^2 +3m - 2n <=0
+        # m = [-3 + sqrt(9 +8n)]/2
+        low = 0
+        high = 200  # arbitrary high enough number
+        while low < high:
+            mid = (low + high) // 2
+            s = (mid + 1) * (mid + 2) // 2
+            if s <= n:
+                low = mid + 1
+            else:
+                high = mid
+        m = low
+        while (m - 1) * (m) / 2 <= n:
+            m += 1
+        m -= 1
+        # Now m is such that S(m-1) <=n < S(m)
+        return m
+
+
+    def term(m, pos, memo={}):
+        if (m, pos) in memo:
+            return memo[(m, pos)]
+        if pos == 0:
+            return 7 ** m
+        if pos == m:
+            return 1
+        res = term(m - 1, pos - 1, memo) + 7 * term(m - 1, pos, memo)
+        memo[(m, pos)] = res
+        return res
+
+
+    def calculate_sequence(n):
+        if n == 0:
+            return 1
+        m = find_m(n)
+        s_prev = (m) * (m + 1) // 2
+        pos = n - s_prev
+        return term(m, pos)
+
+    # calculate_sequence = count_divisors
+    # calculate_sequence = a
+
+    # print([calculate_sequence(n) for n in range(len(gt)+1)])
+    # print([calculate_sequence(n) for n in range(1, 2)])
+    print(sys.getrecursionlimit())
+    print(calculate_sequence(3))
+    1/0
 
     start_idx = 1
     start_idx = 0

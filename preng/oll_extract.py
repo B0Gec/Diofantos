@@ -81,6 +81,25 @@ def decode(response, question=None):
     return chosen_code, function_name
 
 
+def censore_imports(code):
+    """Remove all import statements from code for safety.
+
+    E.g. "import math\n    math.isqrt(2)" -> "    math.isqrt(2)"
+    """
+
+    # print(code)
+    lines = code.splitlines()
+    # print(lines)
+    non_censored = [line for line in lines if not ('import' in line or 'sys.setrecursionlimit' in line) ]
+    censored = [line for line in lines if line not in non_censored]
+
+    return '\n'.join(non_censored), '\n'.join(censored)
+
+# codeblock = 'import math\n\ndef calculate_sequence(n):\n    if n == 0:\n        return 1\n    root = int(math.isqrt(n))  # Integer square root\n    if root * root == n:\n        return 2\n    else:\n        return 0\n'
+# print(censore_imports(codeblock))
+# 1/0
+
+
 
 if __name__ == '__main__':
     in_dir = 'results/'
@@ -110,6 +129,9 @@ if __name__ == '__main__':
     TASK_ID = 21
     TASK_ID = 1
     TASK_ID = 9
+    TASK_ID = 50
+    TASK_ID = 64
+    TASK_ID = 3342
 
     # # skip4097
     # TASK_ID = 4097
@@ -126,6 +148,7 @@ if __name__ == '__main__':
     # out_id = args.output_id
     # out_eval = f'{batch}_eval{out_id}/'
 
+    print(task_id)
     output_str = f"Evaluation of {in_dir}/{batch}"
     # output_str += f" saved into {out_dir}/{out_eval}:\n"
     filename_prefix = f'{task_id:0>5}'
@@ -136,7 +159,6 @@ if __name__ == '__main__':
     print(filename)
     output_str += f"{task_id = }.\n{filename = }.\n"
     # 1/0
-    print(task_id)
 
     input_file = open(in_dir + batch + filename, 'r').read()
     # print(file)
@@ -157,6 +179,12 @@ if __name__ == '__main__':
     # if decoded is None:
     #     raise ValueError('NO Python code found !!')
     test_code, function_name = decoded
+
+    old_code = test_code
+    test_code, censored = censore_imports(test_code)
+    print('\nTest code was censored for imports' + (' but no changes were needed.' if test_code == old_code else ' and they were actually removed for real!'))
+    print(f'Here are all censored lines:\n{censored}\n')
+
     print(f'{function_name = }')
     output_str += f"{test_code = }.\n{function_name = }.\n"
     # test_code += '\nprint(range.__doc__)'  # forbidden test
@@ -233,17 +261,19 @@ except RecursionError as e:
 
     #####################
     from functools import lru_cache
+    import math
     allowed_builtins = {"__builtins__": {"print": print, "range": range, 'sum': sum, 'len': len, 'min': min,
                                          "str": str, "int": int, "enumerate": enumerate,
                                          'RecursionError': RecursionError,
                                          'lru_cache': lru_cache,
+                                         'math': math,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
     # print(test_code)
     print(f'\n{cores = }')
     print("\n --- <exe> --- Below are prints from the executed code: --- <exe> ---\n")
-    # exec(test_code, allowed_builtins)
+    exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
     # till task 18.out
@@ -251,12 +281,12 @@ except RecursionError as e:
     # correct also: 9, 14, 30, 34, 38,
     # 377065_9 q # 377065_14 q # 377065_30 qk # 377065_34 q # 377065_38 q # 377065_47 q tru # 377065_51 q tru # 377065_95 q tru
 
-    # dasco:
-    # 44/148
-    # 51/195
-    # 64/243
-    # 81/338
+    # obat-dasco25-10k_eval8: 0-200. (200-1400 ollama fail)
+    # 0-200:
+    # 33/100
+    # 54/200
+    # 190/500 (True) 1500-1999 # 301/500 (True or false) 1500-1999
+    # 323/1000 True  2000-2999 # 592/1000 (True or false)  2000-2999
+    #  87/1000 True  3000-3999 # 446/1000 True  3000-3999
 
-
-
-
+    # More in : intermediate-results-0shot.txt
