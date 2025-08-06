@@ -138,6 +138,13 @@ def _parse_latex_recurrence(block: str, default_name: str = 'latex_seq') -> Opti
     From something like
       a(n) = a(n-3) + a(n-5), \\text{ with initial values } a(0)=1, a(1)=0, ...
     return (sequence_variable, init_list, rhs_python_expr)
+    
+    
+    todo:
+    e.g. 1:
+    return latex_seq(n-2) + 3(n - 1) 
+TypeError: 'int' object is not callable
+
     """
 
     # print(block)

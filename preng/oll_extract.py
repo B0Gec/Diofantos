@@ -93,7 +93,13 @@ def censore_imports(code):
     non_censored = [line for line in lines if not ('import' in line or 'sys.setrecursionlimit' in line) ]
     censored = [line for line in lines if line not in non_censored]
 
-    return '\n'.join(non_censored), '\n'.join(censored)
+    replaced_input = [line.replace('input()', '2') for line in non_censored]
+    was_replaced = [line for line in non_censored if 'input()' in line]
+
+
+    # final_code, censored_lines, replacements_verbose =  '\n'.join(replaced_input), '\n'.join(censored), '\n'.join([f'\'{line} -> {replaced}\'' for line, replaced in replacements])
+    final_code, censored_lines, was_replaced =  '\n'.join(replaced_input), '\n'.join(censored), '\n'.join(was_replaced)
+    return final_code, censored_lines, was_replaced
 
 # codeblock = 'import math\n\ndef calculate_sequence(n):\n    if n == 0:\n        return 1\n    root = int(math.isqrt(n))  # Integer square root\n    if root * root == n:\n        return 2\n    else:\n        return 0\n'
 # print(censore_imports(codeblock))
@@ -109,6 +115,7 @@ if __name__ == '__main__':
     batch = 'obatch_qcor/'
     batch = 'obat-dasco25-10k/'
     # batch = 'obat-dasco25-10k_skip4097/'
+    batch = 'obat-dasco25-10k-merged/'
     cores = batch == 'obatch_qcor/'
     N_INPUT = 25
     # N_INPUT = 2
@@ -131,11 +138,14 @@ if __name__ == '__main__':
     TASK_ID = 9
     TASK_ID = 50
     TASK_ID = 64
-    TASK_ID = 3342
-
     # # skip4097
     # TASK_ID = 4097
     # TASK_ID = 4099
+
+    TASK_ID = 3342
+    TASK_ID = 2108
+    TASK_ID = 4046
+
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
@@ -154,7 +164,7 @@ if __name__ == '__main__':
     filename_prefix = f'{task_id:0>5}'
     # filename = '00109-4526.json'
     files = os.listdir(in_dir + batch)
-    print(files)
+    print(f'{files[:15] = }')
     filename = [i for i in files if i[:5] == filename_prefix][0]
     print(filename)
     output_str += f"{task_id = }.\n{filename = }.\n"
@@ -181,9 +191,11 @@ if __name__ == '__main__':
     test_code, function_name = decoded
 
     old_code = test_code
-    test_code, censored = censore_imports(test_code)
-    print('\nTest code was censored for imports' + (' but no changes were needed.' if test_code == old_code else ' and they were actually removed for real!'))
-    print(f'Here are all censored lines:\n{censored}\n')
+    test_code, censored, manipulated = censore_imports(test_code)
+    print('\nTest code was censored for imports and manipulated to avoid user input' +
+          (' but no changes were needed.' if test_code == old_code else ' and the code has actually changed for real!'))
+    print(f'Here are all censored lines:\n{censored}')
+    print(f'And here are all the manipulated lines:\n{manipulated}\n')
 
     print(f'{function_name = }')
     output_str += f"{test_code = }.\n{function_name = }.\n"
@@ -262,11 +274,12 @@ except RecursionError as e:
     #####################
     from functools import lru_cache
     import math
+    from math import floor, ceil
     allowed_builtins = {"__builtins__": {"print": print, "range": range, 'sum': sum, 'len': len, 'min': min,
                                          "str": str, "int": int, "enumerate": enumerate,
                                          'RecursionError': RecursionError,
                                          'lru_cache': lru_cache,
-                                         'math': math,
+                                         'math': math, 'floor': floor, 'ceil': ceil,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
