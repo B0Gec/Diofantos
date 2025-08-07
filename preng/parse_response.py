@@ -26,13 +26,18 @@ def _pick_recursive_function(src: str) -> Optional[str]:
     (b) returns something numeric.  Tie-break: the latest definition.
     """
     # print(src)
+    survived = False
 
+    print(f'{survived = }')
     try:
         tree = ast.parse(src)
+        survived = True
+
     except SyntaxError as e:
         # print(e)
         return None
     best: Tuple[int, int, str] | None = None          # (score, idx, name)
+    print(f'{survived = }')
 
     for idx, node in enumerate(tree.body):
         if not isinstance(node, ast.FunctionDef):
@@ -58,10 +63,11 @@ def _pick_recursive_function(src: str) -> Optional[str]:
 
         V().visit(node)
         score = (2 if recursive else 0) + (1 if numeric else 0)
-        if best is None or (score, idx) > best[:2]:
+        if best is None or (score, idx) >= best[:2]:
             best = (score, idx, name)
+        # print(f'{best = }')
 
-    # print(f'{best = }')
+    print(f'{best = }')
     # 1/0
     return None if best is None or best[0] == 0 else (best[0], best[2])
 
@@ -113,7 +119,7 @@ def _pick_recursive_function(src: str) -> Optional[str]:
 _LATEX_RE = re.compile(
     r"""
      (?P<lhs>[a-zA-Z])\s*\(n\)\s*=
-     (?P<rhs>[^,;.\n]+)
+     (?P<rhs>[^,;.\n=]+)
     """,
     # re.VERBOSE | re.DOTALL,
     re.VERBOSE,
@@ -145,7 +151,15 @@ def _parse_latex_recurrence(block: str, default_name: str = 'latex_seq') -> Opti
     return latex_seq(n-2) + 3(n - 1) 
 TypeError: 'int' object is not callable
 
+2^{n-2} -> 2**(n-2) instead of 2^{n-2}
     """
+
+    # 1. Replace the \boxed{ block to avoid mismatching }.
+    #
+
+    print(f'before {block = }')
+    block = re.sub(r'\$\$[^{}]*\\boxed{(.+)}([^{}]*)\$\$', r'\1 \2', block, re.DOTALL )
+    print(f'after {block = }')
 
     # print(block)
     # m = _LATEX_RE.search(block)
@@ -160,16 +174,39 @@ TypeError: 'int' object is not callable
         # rhs = m.group("rhs").strip()
         var = m[0]
         rhs = m[1].strip()
-        # print(f'var, rhs: {var, rhs}')
+        print(f'var, rhs: {var, rhs}')
 
         # ---- RHS: turn 'a(n-3) + a(n-5)' ➜ 'seq(n-3) + seq(n-5)'
         # rhs = 'a(n-1) + (n-1) \cdot a(n-2)'
         rhs_py = re.sub(
             rf"{var}\s*\(\s*n\s*-\s*(\d+)\s*\)",
             rf"{default_name}(n-\1)",
-            rhs.replace("^", "**"),  # handle powers
+            # rhs.replace("^", "**"),  # handle powers
+            rhs,
         )
+
+        rhs_py = re.sub(r"\^{([^{}\n=]+)}", r"**(\1)", rhs_py)
+        rhs_py = rhs_py.replace("^", "**")
         rhs_py = rhs_py.replace("\cdot", "*")  # handle powers
+        rhs_py = re.sub(r"\\binom{([^{}\n=]+)}{([^{}\n=]+)}", r"math.comb(\1, \2)", rhs_py)
+        rhs_py = re.sub(r"\\frac{([^{}\n=]+)}{([^{}\n=]+)}", r"fractions.Fraction(\1, \2)", rhs_py)
+        rhs_py = rhs_py.replace('[', '(').replace(']', ')')
+
+        # ()() -> ()*(), a()b -> a*()*b
+        rhs_py = re.sub(r'\)( *)\(', r')\1*(', rhs_py)
+        rhs_py = re.sub(r'\)([a-zA-Z0-9])', r')*\1', rhs_py)  # )b -> )*b
+        # a( -> a*(
+        # rhs_py = re.sub(r'^n\(', r'^n*(', rhs_py)
+        # rhs_py = re.sub(r'(^| )([0-9]+)\(', r'\1\2*(', rhs_py)          # Taking care of:
+        rhs_py = re.sub(r'([0-9])( *)\(', r'\1\2*(', rhs_py)  # 3(
+        rhs_py = re.sub(r'(^| )n( *)\(', r'\1n*\2(', rhs_py)  # 'n(' or ' n(
+        rhs_py = re.sub(r'([0-9])( *)n', r'\1\2*n', rhs_py)   # 4 n
+        rhs_py = re.sub(r'n( *)([0-9])', r'n*\1\2', rhs_py)   # n 5
+        rhs_py = re.sub(r'[^a-zA-Z_]n( *)\(', r'\1n*(', rhs_py)  #  n (
+
+        # if "/" in rhs_py:
+        #     print(f'{rhs_py = }')
+        #     raise NotImplementedError("division, i.e. \'/\' is inside of latex equation, not implemented yet!")
 
         # # ---- Initial values
         # init_matches = _INIT_RE.findall(block)
@@ -234,11 +271,14 @@ def _find_best_block(code_blocks: str):
     best_block: Tuple[int, int, str, str] | None = None          # (score, idx, source, name)
 
     for idx, blk in enumerate(code_blocks):
-        # print(f'blk:\n{blk}')
+        print()
+        print(f'blk:\n{blk}')
         dedented = textwrap.dedent(blk)
         picked_fn = _pick_recursive_function(dedented)
+        print(f'{picked_fn = }')
         if picked_fn is not None:
             score, fn = picked_fn
+            print(f'{score = }')
 
             # print(f'fn: {fn}')
             # print(f' ----- ------ ------ ----- ')
@@ -250,11 +290,13 @@ def _find_best_block(code_blocks: str):
             source = textwrap.dedent(blk).rstrip() + "\n"
             # return source, fn
             #     score = (2 if recursive else 0) + (1 if numeric else 0)
-            if best_block is None or (score, idx) > best_block[:2]:
+            if best_block is None or (score, idx) >= best_block[:2]:
                 best_block = (score, idx, source, fn)
+        # print(f'{best_block = }' if best_block is None else f'best_block:\n{best_block[:2] = }\n{best_block[2]}')
 
     # return None if best_block is None or best_block[0] == 0 else (best_block[2], best_block[3])
     if not (best_block is None or best_block[0] == 0):
+        # print('returning:', best_block[2], best_block[3])
         return (best_block[2], best_block[3])
     return
 
@@ -303,7 +345,7 @@ def decode_sequence_function( response: str, inits: List[int], default_name: str
     # Then run _pick_function on this block to pick function that makes the most sense.
 
     latex_matches = _parse_latex_recurrence(response, default_name=default_name)
-    # print(f'{latex_matches = }')
+    print(f'{latex_matches[-2:] = }')
     # for match in latex_matches:
     #     print(match)
     print(f'{len(latex_matches) = }')
@@ -400,3 +442,34 @@ def sequence(n):
 #     ns2 = {}
 #     print("Python demo :", [ns2[name2](i) for i in range(15)])
 #     re.compile()
+
+    print('\n'*3)
+    rhs_py = 'a(n) = a(n-1) + a(n-2) + n^{((n-2)n)/2}'
+    print(f'{rhs_py = }')
+
+    rhs_py = re.sub(r"\^{([^{}]+)}", r"**(\1)", rhs_py)
+    rhs_py = rhs_py.replace("^", "**")
+    rhs_py = rhs_py.replace("\cdot", "*")  # handle powers
+    print(f'{rhs_py = }')
+    
+    why_not = """
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    init = [1, 1, 2, 1, 5, 5, 1, 9, 21, 14, 1, 14, 56, 84, 42, 1, 20, 120, 300, 330, 132, 1, 27, 225, 825]
+    if n < len(init):
+        return init[n]
+    return math.comb(n, 4) + math.comb(n-1, 2)}
+    """
+    fn =  _pick_recursive_function(why_not)
+    print(f'{fn = }')
+
+    to_change = ')a + )232 - dst9dt(stnd)tn - 3'
+    print(to_change)
+    print(re.sub(r'\)(\w)', r')*\1', ')a + )232 - dst9dt(stnd)tn - 3'))
+    print(re.sub(r'^n\(', r'n*(', 'n(n-2) + 3(n-2) ** 2 - 5(n-2)n'))
+    print(re.sub(r'^(\d+)\(', r'\1*(', '5(n-2) + 3(n-2) ** 2 - 5(n-2)n'))
+    print(re.sub(r'^(\d+)\(', r'\1*(', '125(n-2) + 3(n-2) ** 2 - 5(n-2)n'))
+    print(re.sub(r'(^| )(\d+)\(', r'\1\2*(', '125(n-2) + 53(n-2) ** 2 - 5(n-2)n'))
+    print(re.sub(r'([^a-zA-Z_])n\(', r'\1n*(', '*n(n-2) + n(n-2) ** 2 - 5(n-2)n'))
+
+

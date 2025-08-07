@@ -6,6 +6,28 @@ Plan:
 local - responses
 up - predict
 local - check it
+
+    Todos latex:
+
+    Todo now:
+
+
+    Todo (later):
+     * recursive equation preferred over closed formula in TASK_ID = 4026
+     * post: elipsis "..." v [1, 2, ...] - glej 04443 solution: # test_code = test_code.replace('...', '3')
+     * post: __main__
+     * postponed: sys setrecursionlimit
+     * done(?): input
+     * / ... i.e. division with /. I think, since int(seq(n)) is executed, it will round into int, even if / inside.
+     *  \boxed{ a(n) = a(n-2) + 2^{n-1} } results in return a(n-2) + 2**(n-1)}
+
+    Done:
+    * ^{n-1} -> **(n-1)
+    * \binom -> math.comb
+    * \frac{}{} -> fractions.Fraction
+    * n(n-1)(n-2) -> n*(n-1)*(n-2)
+
+
 """
 
 import math
@@ -85,6 +107,10 @@ def censore_imports(code):
     """Remove all import statements from code for safety.
 
     E.g. "import math\n    math.isqrt(2)" -> "    math.isqrt(2)"
+
+    Todo (later):
+    # * 04443 solution: # test_code = test_code.replace('...', '3')
+    # * __main__
     """
 
     # print(code)
@@ -93,7 +119,7 @@ def censore_imports(code):
     non_censored = [line for line in lines if not ('import' in line or 'sys.setrecursionlimit' in line) ]
     censored = [line for line in lines if line not in non_censored]
 
-    replaced_input = [line.replace('input()', '2') for line in non_censored]
+    replaced_input = [line.replace('input()', '\'2\'') for line in non_censored]
     was_replaced = [line for line in non_censored if 'input()' in line]
 
 
@@ -144,7 +170,17 @@ if __name__ == '__main__':
 
     TASK_ID = 3342
     TASK_ID = 2108
-    TASK_ID = 4046
+    # TASK_ID = 4046
+    TASK_ID = 4443
+    TASK_ID = 4580
+    TASK_ID = 4982
+    TASK_ID = 4026
+    TASK_ID = 4146
+    TASK_ID = 4374
+    TASK_ID = 4996
+    TASK_ID = 4993
+    TASK_ID = 4992
+    TASK_ID = 4991
 
 
     parser = argparse.ArgumentParser()
@@ -192,6 +228,7 @@ if __name__ == '__main__':
 
     old_code = test_code
     test_code, censored, manipulated = censore_imports(test_code)
+    # 04443 solution: # test_code = test_code.replace('...', '3')
     print('\nTest code was censored for imports and manipulated to avoid user input' +
           (' but no changes were needed.' if test_code == old_code else ' and the code has actually changed for real!'))
     print(f'Here are all censored lines:\n{censored}')
@@ -259,9 +296,9 @@ except RecursionError as e:
 
     test_code += start_try
     test_code += f'\nprint(f\'{{start = }}\')'
-    prediction_code = f'\nseq_pred = [{function_name}(n) for n in range(start, start + {N_INPUT + 10})]'
+    prediction_code = f'\nseq_pred = [int({function_name}(n)) for n in range(start, start + {N_INPUT + 10})]'  # int is for fractions.Fraction
     if cores:
-        prediction_code = f'\nseq_pred = [{function_name}(n) for n in range(start, start + len(ground_truth))]'
+        prediction_code = f'\nseq_pred = [int({function_name}(n)) for n in range(start, start + len(ground_truth))]'
     test_code += prediction_code
     test_code += f'\nseq_pred = seq_pred[:len(ground_truth)]'  # not necessary, just in case
     test_code += f'\nprint(f\'{{    seq_pred = }}\')'
@@ -273,31 +310,25 @@ except RecursionError as e:
 
     #####################
     from functools import lru_cache
-    import math
+    import math, fractions
     from math import floor, ceil
     allowed_builtins = {"__builtins__": {"print": print, "range": range, 'sum': sum, 'len': len, 'min': min,
                                          "str": str, "int": int, "enumerate": enumerate,
                                          'RecursionError': RecursionError,
                                          'lru_cache': lru_cache,
-                                         'math': math, 'floor': floor, 'ceil': ceil,
+                                         'math': math, 'floor': floor, 'ceil': ceil, 'fractions': fractions,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
     # print(test_code)
     print(f'\n{cores = }')
     print("\n --- <exe> --- Below are prints from the executed code: --- <exe> ---\n")
-    exec(test_code, allowed_builtins)
+    # exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
-    # till task 18.out
-    # first question: task_ids: 9, 14,
-    # correct also: 9, 14, 30, 34, 38,
-    # 377065_9 q # 377065_14 q # 377065_30 qk # 377065_34 q # 377065_38 q # 377065_47 q tru # 377065_51 q tru # 377065_95 q tru
 
     # obat-dasco25-10k_eval8: 0-200. (200-1400 ollama fail)
-    # 0-200:
-    # 33/100
-    # 54/200
+    # 33/100 # 54/200
     # 190/500 (True) 1500-1999 # 301/500 (True or false) 1500-1999
     # 323/1000 True  2000-2999 # 592/1000 (True or false)  2000-2999
     #  87/1000 True  3000-3999 # 446/1000 True  3000-3999
