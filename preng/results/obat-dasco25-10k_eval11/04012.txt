@@ -1,0 +1,38 @@
+(True, True)
+(True, False)
+(True, False)
+4012
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '03454-3880.json', '00133-5812.json', '02313-4846.json', '03543-9582.json', '04235-7168.json', '02282-2523.json', '05022-7544.json', '03202-8455.json', '03043-5215.json', '04509-4859.json', '00233-1025.json', '03480-9310.json']
+04012-6250.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 66, 67, 68, 69, 70, 71, 80, 83, 84, 85, 86, 87, 88, 90, 92, 93, 94, 95, 96, 98, 99, 101, 102, 103, 104'
+question[-200:] = 'ld you give me a recursive equation in a form of a Python code for the following number sequence: 66, 67, 68, 69, 70, 71, 80, 83, 84, 85, 86, 87, 88, 90, 92, 93, 94, 95, 96, 98, 99, 101, 102, 103, 104'
+inits = [66, 67, 68, 69, 70, 71, 80, 83, 84, 85, 86, 87, 88, 90, 92, 93, 94, 95, 96, 98, 99, 101, 102, 103, 104]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = []
+len(latex_matches) = 0
+code_blocks from latex:
+
+
+
+Ending part of response, since no eq/fn found:
+Response (last 10 rows):
+
+Alternatively, maybe the sequence is numbers that are not part of the previous terms plus some pattern. For example, after 71, the next term is 80. Let's see what 71 + 9 is 80. Then 80 +3 is 83. Then 83 +1 is 84. Then 84 +1 is 85. Then 85 +1 is 86. Then 86 +1 is 87. Then 87 +1 is 88. Then 88 +2 is 90. Then 90 +2 is 92. Then 92 +1 is 93. Then 93 +1 is 94. Then 94 +1 is 95. Then 95 +1 is 96. Then 96 +2 is 98. Then 98 +1 is 99. Then 99 +2 is 101. Then 101 +1 is 102. Then 102 +1 is 103. Then 103 +1 is 104. 
+
+The differences seem to be adding 1 most of the time, but sometimes adding 2 or 3 or 9. Maybe there's a pattern in the skipped numbers. For example, the skipped numbers are 72-79, 89, 91, 97, 100. Let's check what these numbers have in common. 
+
+Looking at 72-79: all have a 7 in the tens place. 89 has an 8 in the tens place. 91 has a 9 in the tens place. 97 has a 9 in the tens place. 100 has a 1 in the hundreds place. Hmm. Not obvious.
+
+Wait, maybe the numbers that are not in the sequence are those that have a digit sum divisible by 7? Let's check:
+
+72: 7+2=9 → not divisible by 7. 73: 7+3=10. 74: 7+4=11. 75: 7+5=12. 76: 7+6=13. 77: 7+7=14 → divisible by 7. 78: 7+8=15. 79: 7+9=16. So 77 would be skipped. But 77 is not in the sequence. However, the sequence includes 70 (which has digit sum 7+0=7, divisible by 7). So that's not it
+Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 246, in <module>
+    decoded = decode_sequence_function(response, inits=inits)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ceph/grid/home/bgec/oeis/preng/parse_response.py", line 411, in decode_sequence_function
+    raise ValueError("Could not locate a recursive sequence in the response.")
+ValueError: Could not locate a recursive sequence in the response.

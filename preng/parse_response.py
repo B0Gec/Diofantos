@@ -28,7 +28,7 @@ def _pick_recursive_function(src: str) -> Optional[str]:
     # print(src)
     survived = False
 
-    print(f'{survived = }')
+    # print(f'{survived = }')
     try:
         tree = ast.parse(src)
         survived = True
@@ -37,7 +37,7 @@ def _pick_recursive_function(src: str) -> Optional[str]:
         # print(e)
         return None
     best: Tuple[int, int, str] | None = None          # (score, idx, name)
-    print(f'{survived = }')
+    # print(f'{survived = }')
 
     for idx, node in enumerate(tree.body):
         if not isinstance(node, ast.FunctionDef):
@@ -67,7 +67,7 @@ def _pick_recursive_function(src: str) -> Optional[str]:
             best = (score, idx, name)
         # print(f'{best = }')
 
-    print(f'{best = }')
+    # print(f'{best = }')
     # 1/0
     return None if best is None or best[0] == 0 else (best[0], best[2])
 
@@ -157,14 +157,14 @@ TypeError: 'int' object is not callable
     # 1. Replace the \boxed{ block to avoid mismatching }.
     #
 
-    print(f'before {block = }')
+    # print(f'before {block = }')
     block = re.sub(r'\$\$[^{}]*\\boxed{(.+)}([^{}]*)\$\$', r'\1 \2', block, re.DOTALL )
-    print(f'after {block = }')
+    # print(f'after {block = }')
 
     # print(block)
     # m = _LATEX_RE.search(block)
     ms = _LATEX_RE.findall(block)
-    print(ms)
+    # print(ms)
     # 1/0
     # if not ms:
     #     return None
@@ -174,7 +174,7 @@ TypeError: 'int' object is not callable
         # rhs = m.group("rhs").strip()
         var = m[0]
         rhs = m[1].strip()
-        print(f'var, rhs: {var, rhs}')
+        # print(f'var, rhs: {var, rhs}')
 
         # ---- RHS: turn 'a(n-3) + a(n-5)' ➜ 'seq(n-3) + seq(n-5)'
         # rhs = 'a(n-1) + (n-1) \cdot a(n-2)'
@@ -294,14 +294,14 @@ def _find_best_block(code_blocks: str):
     best_block: Tuple[int, int, str, str] | None = None          # (score, idx, source, name)
 
     for idx, blk in enumerate(code_blocks):
-        print()
-        print(f'blk:\n{blk}')
+        # print()
+        # print(f'blk:\n{blk}')
         dedented = textwrap.dedent(blk)
         picked_fn = _pick_recursive_function(dedented)
-        print(f'{picked_fn = }')
+        # print(f'{picked_fn = }')
         if picked_fn is not None:
             score, fn = picked_fn
-            print(f'{score = }')
+            # print(f'{score = }')
 
             # print(f'fn: {fn}')
             # print(f' ----- ------ ------ ----- ')

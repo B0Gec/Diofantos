@@ -202,6 +202,7 @@ if __name__ == '__main__':
     TASK_ID = 4046
     TASK_ID = 4047
     TASK_ID = 11
+    TASK_ID = 110
 
 
     parser = argparse.ArgumentParser()
@@ -343,15 +344,26 @@ except RecursionError as e:
                                          } }
     # print(test_code)
     print(f'\n{cores = }')
+    print(f'{task_id = }')
     print("\n --- <exe> --- Below are prints from the executed code: --- <exe> ---\n")
+    case02140 = """ latex_matches[-2:] = [('a', 'latex_seq(n - 10) \\qulatex_seqd \\text{for } n \\geq 10'), """
+
+    print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     # exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
 
     # obat-dasco25-10k_eval8: 0-200. (200-1400 ollama fail)
     # 33/100 # 54/200
-    # 190/500 (True) 1500-1999 # 301/500 (True or false) 1500-1999
-    # 323/1000 True  2000-2999 # 592/1000 (True or false)  2000-2999
-    #  87/1000 True  3000-3999 # 446/1000 True  3000-3999
+    # 190/500 (True) 1500-1999
+    # 323/1000 True  2000-2999
+    #  87/1000 True  3000-3999
+    # 109/1000 True  4000-4999
+
+    # v2:
+    # 36/100 58/200
+    # 213/500   1k  # 321/1000  2k
+    # 106/1000  3k  # 123/1000  4k
+
 
     # More in : intermediate-results-0shot.txt
