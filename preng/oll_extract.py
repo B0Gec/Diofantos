@@ -13,6 +13,12 @@ local - check it
 
 
     Todo (later):
+     * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i
+            problematic would still be to convert to sum([ for i in range(1, n)]).
+     * maybe have "final answer" the biggest score.
+     * equations contained undefined variables, e.g. a(n) = x*a(n-1) + y*a(n-2) ... parser will pick those, instead of discarding them.
+            but on the flip side, confident answer should contain the last equation to be correct.
+                - can go wrong in case: a(n) = x*a(n-1) + y*a(n-2) \n last answer: a(n) = n(n-2)/2
      * recursive equation preferred over closed formula in TASK_ID = 4026
      * post: elipsis "..." v [1, 2, ...] - glej 04443 solution: # test_code = test_code.replace('...', '3')
      * post: __main__
@@ -20,12 +26,17 @@ local - check it
      * done(?): input
      * / ... i.e. division with /. I think, since int(seq(n)) is executed, it will round into int, even if / inside.
      *  \boxed{ a(n) = a(n-2) + 2^{n-1} } results in return a(n-2) + 2**(n-1)}
+     * 'a(n-1) + a(n-2) + 2 \\left\\lfloor \\frac{n+1}{2} \\right\\rfloor')
+     * \left\lceil
+
+    TASK_ID = 4019
 
     Done:
     * ^{n-1} -> **(n-1)
     * \binom -> math.comb
     * \frac{}{} -> fractions.Fraction
     * n(n-1)(n-2) -> n*(n-1)*(n-2)
+    * term(n) = term(n-7)  -> m(n) = terlatex_seq(n-7)  ... 4014
 
 
 """
@@ -181,6 +192,16 @@ if __name__ == '__main__':
     TASK_ID = 4993
     TASK_ID = 4992
     TASK_ID = 4991
+    TASK_ID = 4003
+    TASK_ID = 4014
+    TASK_ID = 4018
+    TASK_ID = 4019
+    TASK_ID = 4020
+    TASK_ID = 4025
+    TASK_ID = 4039
+    TASK_ID = 4046
+    TASK_ID = 4047
+    TASK_ID = 11
 
 
     parser = argparse.ArgumentParser()

@@ -118,8 +118,8 @@ def _pick_recursive_function(src: str) -> Optional[str]:
 
 _LATEX_RE = re.compile(
     r"""
-     (?P<lhs>[a-zA-Z])\s*\(n\)\s*=
-     (?P<rhs>[^,;.\n=]+)
+     (?P<lhs>[a-zA-Z_]+)\s*(?:\(n\)|_n|_\{n\})\s*=
+     (?P<rhs>[^,;.?\n=$]+.+)
     """,
     # re.VERBOSE | re.DOTALL,
     re.VERBOSE,
@@ -164,7 +164,7 @@ TypeError: 'int' object is not callable
     # print(block)
     # m = _LATEX_RE.search(block)
     ms = _LATEX_RE.findall(block)
-    # print(ms)
+    print(ms)
     # 1/0
     # if not ms:
     #     return None
@@ -179,28 +179,51 @@ TypeError: 'int' object is not callable
         # ---- RHS: turn 'a(n-3) + a(n-5)' ➜ 'seq(n-3) + seq(n-5)'
         # rhs = 'a(n-1) + (n-1) \cdot a(n-2)'
         rhs_py = re.sub(
-            rf"{var}\s*\(\s*n\s*-\s*(\d+)\s*\)",
-            rf"{default_name}(n-\1)",
+            # rf"{var}\s*\(\s*n\s*-\s*(\d+)\s*\)",
+            rf"{var}",
+            rf"{default_name}",
             # rhs.replace("^", "**"),  # handle powers
             rhs,
         )
+
+        # rhs_py = '2a_{n-1} - 2a_{n-2} + 4a_{n-3} - 7a_{n-4} + 14a_{n-5} - 21a_{n-6}'
+        rhs_py = re.sub(rf"({default_name})_\{{([^{{}}]+)\}}", r"\1(\2)", rhs_py)
+        # print(rhs_py)
+        # 1/0
 
         rhs_py = re.sub(r"\^{([^{}\n=]+)}", r"**(\1)", rhs_py)
         rhs_py = rhs_py.replace("^", "**")
         rhs_py = rhs_py.replace("\cdot", "*")  # handle powers
         rhs_py = re.sub(r"\\binom{([^{}\n=]+)}{([^{}\n=]+)}", r"math.comb(\1, \2)", rhs_py)
         rhs_py = re.sub(r"\\frac{([^{}\n=]+)}{([^{}\n=]+)}", r"fractions.Fraction(\1, \2)", rhs_py)
+        # rhs_py = re.sub(r'(^|[^\.])floor', r'\1math.floor(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+        # rhs_py = 'math.floor(n/2) + latex_seq(n-1)'
+        rhs_py = re.sub(r'(^|[^.])(floor|ceil)', r'\1math.\2', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+
+        rhs_py = re.sub(r'\\left\\lfloor', r'math.floor(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+        rhs_py = re.sub(r'\\right\\rfloor', r')', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+        rhs_py = re.sub(r'\\left\\lceil', r'math.ceil(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+        rhs_py = re.sub(r'\\right\\rceil', r')', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
         rhs_py = rhs_py.replace('[', '(').replace(']', ')')
 
         # ()() -> ()*(), a()b -> a*()*b
         rhs_py = re.sub(r'\)( *)\(', r')\1*(', rhs_py)
-        rhs_py = re.sub(r'\)([a-zA-Z0-9])', r')*\1', rhs_py)  # )b -> )*b
+        rhs_py = re.sub(r'\)( *)([a-zA-Z0-9])', r')\1*\2', rhs_py)  # )b -> )*b
         # a( -> a*(
         # rhs_py = re.sub(r'^n\(', r'^n*(', rhs_py)
         # rhs_py = re.sub(r'(^| )([0-9]+)\(', r'\1\2*(', rhs_py)          # Taking care of:
         rhs_py = re.sub(r'([0-9])( *)\(', r'\1\2*(', rhs_py)  # 3(
         rhs_py = re.sub(r'(^| )n( *)\(', r'\1n*\2(', rhs_py)  # 'n(' or ' n(
-        rhs_py = re.sub(r'([0-9])( *)n', r'\1\2*n', rhs_py)   # 4 n
+        rhs_py = re.sub(r'([0-9])( *)n', r'\1*\2n', rhs_py)   # 4 n
+
+
+        rhs_py = re.sub(r'([0-9])( *)([a-zA-Z])', r'\1*\2\3', rhs_py)   # 4 math.ceil(
+        # print(f'rhs_py: {rhs_py}')
+
+        # if '2 math.floor' in rhs_py:
+        #     print(f'rhs_py = {rhs_py}')
+        #     raise NotImplementedError('here it is!!!')
+
         rhs_py = re.sub(r'n( *)([0-9])', r'n*\1\2', rhs_py)   # n 5
         rhs_py = re.sub(r'[^a-zA-Z_]n( *)\(', r'\1n*(', rhs_py)  #  n (
 
