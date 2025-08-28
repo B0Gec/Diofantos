@@ -11,6 +11,9 @@ local - check it
 
     Todo now:
 
+    log2(var) -> log(var, 2)
+    # 06710 (eval takes more than 1h, empty file)
+    # 05007 -||-
 
     Todo (later):
      * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i

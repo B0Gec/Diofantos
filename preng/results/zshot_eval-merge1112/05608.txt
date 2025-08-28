@@ -1,0 +1,38 @@
+(True, True)
+(True, False)
+(True, False)
+5608
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '08752-4529.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '09253-3950.json', '05837-8164.json', '08982-1065.json', '08607-3423.json', '00133-5812.json', '02313-4846.json', '07599-7151.json']
+05608-1662.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 131, 142, 275, 286, 419, 430, 563, 574, 707, 718, 851, 862, 995, 1006, 1139, 1150, 1283, 1294, 1427, 1438, 1451, 1463, 1475, 1487, 1499'
+question[-200:] = 'on in a form of a Python code for the following number sequence: 131, 142, 275, 286, 419, 430, 563, 574, 707, 718, 851, 862, 995, 1006, 1139, 1150, 1283, 1294, 1427, 1438, 1451, 1463, 1475, 1487, 1499'
+inits = [131, 142, 275, 286, 419, 430, 563, 574, 707, 718, 851, 862, 995, 1006, 1139, 1150, 1283, 1294, 1427, 1438, 1451, 1463, 1475, 1487, 1499]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = [('A', "131 + 144*(n/2) *for even n, and the odd terms are B_m = 142 + 144*(m) *for odd m. Then the sequence would be latex_seq_0, B_1, latex_seq_2, B_3, etc. The difference between latex_seq_0* and B_1* is 142-131=11. Then between B_1* and latex_seq_2* is (131+144) - 142 = 131+144-142= 133. Then between latex_seq_2* and B_3* is (142+144) - (131+144) = 142-131=11. latex_seqnd so on. So the differences alternate between +11* and +133. This explains the first 20* terms. However, after that, the even terms (n=20) *would be 1427 + 144 = 1571, but the given term is 1451. Similarly, the odd term at n=21* would be 1438 + 144 = 1582, but the given term is 1463. So there's a discrepancy here. This suggests that perhaps the user made a mistake in the sequence, or there's a different rule for when n exceeds a certain value."), ('a', 'latex_seq(n-2) + 144* for n ≥ 2, with initilatex_seql conditions latex_seq(0) = 131* latex_seqnd latex_seq(1) = 142.')]
+len(latex_matches) = 2
+code_blocks from latex:
+
+
+
+Ending part of response, since no eq/fn found:
+Response (last 10 rows):
+\boxed{a(n+2) = a(n) + 144 \quad \text{for } n \geq 0}
+$$
+
+with initial conditions:
+
+$$
+\boxed{a(0) = 131, \quad a(1) = 142}
+$$
+
+This recurrence accurately models the first 20 terms and is a standard second-order linear recurrence with constant coefficients. The discrepancy in the later terms may be due to a typo or an intentional change in the sequence not specified in the problem.
+Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 246, in <module>
+    decoded = decode_sequence_function(response, inits=inits)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ceph/grid/home/bgec/oeis/preng/parse_response.py", line 411, in decode_sequence_function
+    raise ValueError("Could not locate a recursive sequence in the response.")
+ValueError: Could not locate a recursive sequence in the response.

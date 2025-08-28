@@ -147,6 +147,7 @@ def _parse_latex_recurrence(block: str, default_name: str = 'latex_seq') -> Opti
     
     
     todo:
+    log2(var) -> log(var, 2)
     e.g. 1:
     return latex_seq(n-2) + 3(n - 1) 
 TypeError: 'int' object is not callable
