@@ -6,70 +6,96 @@ import re
 
 # from evaluate_testset import parse_response
 
+PY_ERRORS = ['KeyError', 'PermissionError', 'RecursionError', 'NameError', 'IndexError', 'ValueError', 'TypeError',]
+AUX_ERRORS = ['empty file']
+
 def extract_eval(file_content: str):
     """Extract the eval results from the file content. """
 
-    is_dasco = 0
+    is_dasco = None
     seq_id = 'unknown (proabaly error)'
-    # print(f'file_content = {file_content}' + '\n'*4)
+    errors = dict()
     regex = re.findall(r'is_Dasco (\w{4,5})', file_content)
     if regex:
         is_dasco = 1 if regex[0] == 'True' else 0
         seq_id = re.findall(r'Ground truth: (A\d{6})', file_content)[0]
-    # else:
-    #     error = re.findall(r'is_Dasco: (\w{4,5})', file_content)
+    else:
+        for error in PY_ERRORS:
+            error_found = re.findall(rf'{error}: .+', file_content)
+            if error_found:
+                errors[error] = error_found[0]
+        if len(file_content) < 100:
+            print(file_content)
+            errors['empty file'] = f'{file_content = }'
 
-    # print(is_dasco, 0 + is_dasco)
-    # print(type(is_dasco))
-    return is_dasco, seq_id
-    # eq_regex = re.findall( r'lambda a_n: [ absignqrt()/*_\[\]\d+-]+', file_content)
-    # eq = eq_regex[0] if eq_regex else None
-    #
-    # # print(regex)
-    # # print(f'seq_id = {seq_id}')
-    # # print(f'{eq_regex = }')
-    # # print(f'{eq = }')
-    # is_manual_check = {'True': True, 'False': False, 'no match found': 'Fail'}.get(regex[0])
-    # # print(f'{is_manual_check = }')
-    #
-    # # _seq, eq = parse_response(file_content)
+    return is_dasco, seq_id, errors
 
 
-    # return is_dasco, seq_id, eq
+def extract_dfmb(file_content: str):
+    """Extract the eval results from the Diofantos and MuadeeB results files."""
+    is_dasco = 0
+    regex = re.findall(r'(\w{4,5})  -  checked against', file_content)
+    if regex:
+        is_dasco = 1 if regex[0] == 'True' else 0
+    return is_dasco
 
-#
-# # list all files in experiment_id directory
-# # for file in os.listdir(out_dir):
-# # count_manual += is_manual(file)
-#
 
 if __name__ == '__main__':
     EXPERIMENT_ID = 'zshot_eval-merge1112'
+
+    df_dir = '../results/good/re2-transfoeis_acc2'
+    mb_dir = '../results/goodmb/re2-mbtmN25'
 
     results_dir = f'results/{EXPERIMENT_ID}/'
     print(f'{results_dir=}')
 
 
     SCALE = 30000
-    files =  sorted(os.listdir(results_dir))[:SCALE]
+    # SCALE = 100
+    files = sorted(os.listdir(results_dir))[:SCALE]
+    df_files = sorted(os.listdir(df_dir))[:SCALE]
+    mb_files = sorted(os.listdir(mb_dir))[:SCALE]
 
     total = len(files)
     print(f'{len(files) = }')
 
     # 1/0
     # buggy = []
-    store = dict()
+    store, df_store, mb_store = dict(), dict(), dict()
+    errors_store = dict()
+    errors_count = {error: 0 for error in PY_ERRORS + AUX_ERRORS}
+    dasco_re_count = 0
     count = 0
     for filename in files:
         with open(os.path.join(results_dir, filename), 'r') as f:
             # print(f'{filename=}')
             # is_manual_check, seq_id, eq = extract_eval(f.read())
-            is_dasco, seq_id = extract_eval(f.read())
-            store[filename[:5]] = is_dasco
+            is_dasco, seq_id, errors = extract_eval(f.read())
+            dasco_re = is_dasco is not None
+            is_dasco_num = 0 if is_dasco is None else is_dasco
+            store[filename[:5]] = is_dasco_num
+            errors_store[filename[:5]] = errors
+            for error in errors:
+                if errors[error]:  # not needed anymore
+                    errors_count[error] += 1
+
+            dasco_re_count += dasco_re
+            # sanity check:
+            print(f'{is_dasco}, {errors}, {seq_id}, {filename}')
+            print(f'{dasco_re + sum([1 for error in errors if errors[error]]) = }')
+            assert dasco_re + sum([1 for error in errors if errors[error]]) == 1
             # seq = csv[seq_id]
             # equiv = check_equiv(eq, seq)
-            count += is_dasco
+            count += is_dasco_num
             # print(count)
+
+
+    for filename in df_files:  # df
+        with open(os.path.join(df_dir, filename), 'r') as f:
+            df_store[filename[:5]] = extract_dfmb(f.read())
+    for filename in mb_files:  # fb
+        with open(os.path.join(mb_dir, filename), 'r') as f:
+            mb_store[filename[:5]] = extract_dfmb(f.read())
 
     acc = count / total
     print(f'\nAccuracy so far from {total} files: \n{acc*100:.2f}%')
@@ -152,20 +178,100 @@ if __name__ == '__main__':
     # 104/1000  3k  # 121/1000  4k
     # 22/300    5k
     
-    # New eval12 (same code as 11):
-"""  36/100    58/200               (missing 655)
-     213/500   1k  # 321/1000  2k (missing 386, final)
-    106/1000   3k  # 123/1000  4k (both final)
-    168/1000   5k  # 365/1000  6k (missing 126, final)
-    319/1000   7k  # 81/1000  8k    (missing 550 in total)
-    105/1000   9k  (final)
-    """
+        # New eval12 (same code as 11):
+    """  36/100    58/200               (missing 655)
+         213/500   1k  # 321/1000  2k (missing 386, final)
+        106/1000   3k  # 123/1000  4k (both final)
+        168/1000   5k  # 365/1000  6k (missing 126, final)
+        319/1000   7k  # 81/1000   8k    (missing 550 in total)
+        105/1000   9k  (final)
+        """
 
 
 
-# Missing bins:
-# miss_sums = {'miss 0k': 655, 'miss 1k': 386, 'miss 2k': 0, 'miss 3k': 0, 'miss 4k': 0, 'miss 5k': 126, 'miss 6k': 0, 'miss 7k': 225, 'miss 8k': 326, 'miss 9k': 0}
-# Mising groups: start - end
-# {'miss 0k': ['00252', '00276', '00370'], 'miss 1k': ['01385'], 'miss 2k': [], 'miss 3k': [], 'miss 4k': [], 'miss 5k': ['05384', '05509'], 'miss 6k': [], 'miss 7k': ['07663'], 'miss 8k': ['08325'], 'miss 9k': []}
-# i.e.
-# '00252 - '00276', 00370 - '01385', '05384' - '05509', '07663' - '08325'
+    # Missing bins:
+    # miss_sums = {'miss 0k': 655, 'miss 1k': 386, 'miss 2k': 0, 'miss 3k': 0, 'miss 4k': 0, 'miss 5k': 126, 'miss 6k': 0, 'miss 7k': 225, 'miss 8k': 326, 'miss 9k': 0}
+    # Mising groups: start - end
+    # {'miss 0k': ['00252', '00276', '00370'], 'miss 1k': ['01385'], 'miss 2k': [], 'miss 3k': [], 'miss 4k': [], 'miss 5k': ['05384', '05509'], 'miss 6k': [], 'miss 7k': ['07663'], 'miss 8k': ['08325'], 'miss 9k': []}
+    # i.e.
+    # '00252 - '00276', 00370 - '01385', '05384' - '05509', '07663' - '08325'
+
+    # proposed bins: 0-200, 1400-2000, 5000-5300, 5600-6000, 7000-7800, 8400-9000.
+    # more refined bins: 0-250, 1400-2000, 5000-5350, 5550-6000, 7000-7800, 8350-9000.
+
+    bins_def = [(0, 200), (1400, 2000),
+                (5000, 5300), (5600, 6000),
+                (7000, 7800), (8400, 9000)]
+
+    filler = [
+                (2000,  3000),
+                (3000,  4000),
+                (4000,  5000),
+                (6000,  7000),
+                (9000, 10000),
+        ]
+    bins_def = sorted(bins_def+filler)
+    print(bins_def)
+    print(len(bins_def))
+
+    # (2000,  3000)
+    # (5000,  6000)
+    # (6000,  7000)
+    # (7000,  8000)
+    # (8000,  9000)
+    # (9000, 10000)
+    #
+    bins_sizes = [b-a for a,b in bins_def]
+
+    acks = [(a, b, [ v for k, v in store.items() if f'{a:0>5}' <= k < f'{b:0>5}']) for a,b in bins_def]
+    # print(acks)
+    print()
+    print(f'\ntotal binned acc: {sum([sum(bin) for a, b, bin in acks])/sum([len(bin) for a, b, bin in acks])*100:0.2f}%')
+    for a, b, bin in acks:
+        print(f'{sum(bin): >4}/{len(bin): <4}      = {sum(bin)/len(bin)*100:0.2f}%     {str(a)[0]}k  ({a: >4}-{b})')
+
+    # print(df_store)
+    # print(mb_store)
+
+    # print(f'{sum(df_store.values()) = }')
+    # print(f'{sum(mb_store.values()) = }')
+
+    df_acks = [(a, b, [ v for k, v in df_store.items() if f'{a:0>5}' <= k < f'{b:0>5}']) for a,b in bins_def]
+    # print(acks)
+    print()
+    print('df:')
+    for n, abin in enumerate(df_acks):
+        a, b, bin = abin
+        print(f'{sum(bin): >4}/{bins_sizes[n]: <4}     = {sum(bin)/bins_sizes[n]*100:0.2f}%     {str(a)[0]}k  ({a: >4}-{b})')
+
+    mb_acks = [(a, b, [ v for k, v in mb_store.items() if f'{a:0>5}' <= k < f'{b:0>5}']) for a,b in bins_def]
+    # print(acks)
+    print('mb:')
+    for a, b, bin in mb_acks:
+        print(f'{sum(bin): >4}/{len(bin): <4}     = {sum(bin)/len(bin)*100:0.2f}%     {str(a)[0]}k  ({a: >4}-{b})')
+
+    print(f'total binned df acc: {sum([sum(bin) for a, b, bin in df_acks])/sum([bins_sizes[n] for n in range(len(df_acks))])*100:0.2f}%')
+    print(f'total binned mb acc: {sum([sum(bin) for a, b, bin in mb_acks])/sum([len(bin) for a, b, bin in mb_acks])*100:0.2f}%')
+
+
+
+    # 3. Fails analisys:
+    print(f'\n{len(files) = }')
+    print(f'is_Dasco occurs: {dasco_re_count}, Errors: {sum([amount for error, amount in errors_count.items()]) }')
+    print(f'total: {dasco_re_count + sum([amount for error, amount in errors_count.items()]) }')
+
+
+    # # empty file content (evals not finished in 1h (look TODO))
+    # emptys = [(k, es['empty file']) for k, es in errors_store.items() if 'empty file' in es]
+    # nonempty_empties = [(k, c) for k, c in emptys if c]
+    # print(nonempty_empties)  # (05007, ''), (06710, '')
+
+    has_errors_store = {task: es for task, es in errors_store.items() if es}
+    print(f'{len(has_errors_store) = }')
+    print(f'{has_errors_store = }')
+    # errors_count = [(k, es['empty file']) for ern, msg in errors_store.items() if 'empty file' in es]
+    # print(errors_store.items() if es)
+    # print(f'{errors_count = }')
+# errors_count = {'KeyError': 1, 'PermissionError': 7, 'RecursionError': 14, 'NameError': 543, 'IndexError': 655, 'ValueError': 4092, 'TypeError': 283, 'empty file': 2}
+
+
