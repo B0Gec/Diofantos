@@ -29,6 +29,8 @@ def _pick_recursive_function(src: str) -> Optional[str]:
     survived = False
 
     # print(f'{survived = }')
+    if '...' in src:
+        return None
     try:
         tree = ast.parse(src)
         survived = True
@@ -165,6 +167,9 @@ TypeError: 'int' object is not callable
     # print(block)
     # m = _LATEX_RE.search(block)
     ms = _LATEX_RE.findall(block)
+    print(f'{len(ms)}')
+    for m in ms:
+        print(m)
     # print(ms)
     # 1/0
     # if not ms:
@@ -228,6 +233,11 @@ TypeError: 'int' object is not callable
         rhs_py = re.sub(r'n( *)([0-9])', r'n*\1\2', rhs_py)   # n 5
         rhs_py = re.sub(r'[^a-zA-Z_]n( *)\(', r'\1n*(', rhs_py)  #  n (
 
+        rhs_py = rhs_py.strip(',. ')  # this removes also ...  at the end
+        # rhs_py = rhs_py.strip(', ')  # alternatively? I thing better not.
+
+        rhs_py = '1-' if 'something' in rhs_py else rhs_py
+
         # if "/" in rhs_py:
         #     print(f'{rhs_py = }')
         #     raise NotImplementedError("division, i.e. \'/\' is inside of latex equation, not implemented yet!")
@@ -257,6 +267,7 @@ def _make_function_source(init: List[int], rhs_expr: str, name: str = "seq") -> 
         # "",
         f"@lru_cache(maxsize=None)",
         f"def {name}(n:int) -> int:",
+        f"{indent}n = round(n)",
         f"{indent}init = {init}",
         f"{indent}if n < len(init):",
         f"{indent*2}return init[n]",
@@ -297,6 +308,7 @@ def _find_best_block(code_blocks: str):
     for idx, blk in enumerate(code_blocks):
         # print()
         # print(f'blk:\n{blk}')
+        blk = re.sub(r'#.*', '', blk)
         dedented = textwrap.dedent(blk)
         picked_fn = _pick_recursive_function(dedented)
         # print(f'{picked_fn = }')
@@ -370,8 +382,8 @@ def decode_sequence_function( response: str, inits: List[int], default_name: str
 
     latex_matches = _parse_latex_recurrence(response, default_name=default_name)
     print(f'{latex_matches[-2:] = }')
-    # for match in latex_matches:
-    #     print(match)
+    for match in latex_matches:
+        print(match)
     print(f'{len(latex_matches) = }')
     # 1/0
     latex_fn_codes = []

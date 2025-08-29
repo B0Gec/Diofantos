@@ -10,10 +10,16 @@ local - check it
     Todos latex:
 
     Todo now:
+    
+    Important:
+    * task_id = 107  ... return latex_seq_n
 
     log2(var) -> log(var, 2)
-    # 06710 (eval takes more than 1h, empty file)
-    # 05007 -||-
+    Recursion Error in latex_seq(n) : return latex_seq(n+1)  # "recursive in wrong direction"
+        \_> examples: 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
+
+    * 5006: function preferenec / scoring  (calculate_sequence is in code before the last function, but that one is used instead)
+
 
     Todo (later):
      * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i
@@ -24,7 +30,9 @@ local - check it
                 - can go wrong in case: a(n) = x*a(n-1) + y*a(n-2) \n last answer: a(n) = n(n-2)/2
      * recursive equation preferred over closed formula in TASK_ID = 4026
      * post: elipsis "..." v [1, 2, ...] - glej 04443 solution: # test_code = test_code.replace('...', '3')
-     * post: __main__
+                                                      solution2: if '...' in code: value(code) = -1
+                    - _pick_function: if '...' in code_block/src: return None
+     * post: __main__ : 3274, 4407, 04435, 04915, 06939, 08820, 9679 (all with PermissionError)
      * postponed: sys setrecursionlimit
      * done(?): input
      * / ... i.e. division with /. I think, since int(seq(n)) is executed, it will round into int, even if / inside.
@@ -35,6 +43,13 @@ local - check it
     TASK_ID = 4019
 
     Done:
+     * something   # 09212, 3123  # Solution (only for latex): if rhs contains 'something' change whole rhs to an
+            invalid expression, i.e. '1-'. Then it will not be chosen.
+    * a(n) = a(n-2) + 2^{n-1}, => returned tuple ... Solution: strip(',.')  # maybe better to not prefer eqs that end on ',' via scoring.
+        since all such solutions so far returned false
+    * latex_seq: if n < len(init): return init[n] else: return latex_seq((n-1)/2)  ... will result in init[(n-1)/2] i.e. init[0.5]
+        easy solution: def latex_seq(n): n = round(n)
+    * empty file (look main_failed_codes)
     * ^{n-1} -> **(n-1)
     * \binom -> math.comb
     * \frac{}{} -> fractions.Fraction
@@ -206,7 +221,66 @@ if __name__ == '__main__':
     TASK_ID = 4047
     TASK_ID = 11
     TASK_ID = 110
+    TASK_ID = 107
 
+    # typeError:
+    # implement solution for elipsis ... !!!
+    TASK_ID = 24
+    # TASK_ID = 33
+    # TASK_ID = 51
+    # TASK_ID = 60
+    # TASK_ID = 75
+    # TASK_ID = 103
+
+    TASK_ID = 333  # a(n) = a(n-1), ... tuple # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'
+
+    # TASK_ID = 6175 # 2**latex_seq  # TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'
+    # TASK_ID = 5006 # TypeError: find_next_prime() missing 1 required positional argument: 'prev'
+    
+    # TASK_ID = 9680  # * something TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+    # TASK_ID = 9212  # * something TypeError: unsupported operand type(s) for +: 'int' and 'tuple'
+
+    TASK_ID = 24   # ypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 103  # TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 153  # TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 1443  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 1611  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 1639  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 1651  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 2046  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 2250  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 2517  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 3145  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 3295  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 3355  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 3568  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 3720  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 3787  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 4640  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 5327  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 6927  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 7594  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 7599  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 7651  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 8524  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 8849  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 8864  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 8895  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+
+    # these are resolved:
+    # TASK_ID = 8989  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 9305  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 9330  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 9398  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 9747  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+
+    # TASK_ID = 1578  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+    # TASK_ID = 1584  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+    # TASK_ID = 3123  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+    # TASK_ID = 4512  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+    # TASK_ID = 4598  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+
+        
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
@@ -255,7 +329,7 @@ if __name__ == '__main__':
     test_code, censored, manipulated = censore_imports(test_code)
     # 04443 solution: # test_code = test_code.replace('...', '3')
     print('\nTest code was censored for imports and manipulated to avoid user input' +
-          (' but no changes were needed.' if test_code == old_code else ' and the code has actually changed for real!'))
+          (' but no changes were needed.' if test_code.strip('\n') == old_code.strip('\n') else ' and the code has actually changed for real!'))
     print(f'Here are all censored lines:\n{censored}')
     print(f'And here are all the manipulated lines:\n{manipulated}\n')
 
@@ -322,6 +396,7 @@ except RecursionError as e:
     test_code += start_try
     test_code += f'\nprint(f\'{{start = }}\')'
     prediction_code = f'\nseq_pred = [int({function_name}(n)) for n in range(start, start + {N_INPUT + 10})]'  # int is for fractions.Fraction
+    # prediction_code = f'\nseq_pred = [({function_name}(n)) for n in range(start, start + {N_INPUT + 10})]'  # int is for fractions.Fraction
     if cores:
         prediction_code = f'\nseq_pred = [int({function_name}(n)) for n in range(start, start + len(ground_truth))]'
     test_code += prediction_code
@@ -342,6 +417,7 @@ except RecursionError as e:
                                          'RecursionError': RecursionError,
                                          'lru_cache': lru_cache,
                                          'math': math, 'floor': floor, 'ceil': ceil, 'fractions': fractions,
+                                         'round': round,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
@@ -352,17 +428,14 @@ except RecursionError as e:
     case02140 = """ latex_matches[-2:] = [('a', 'latex_seq(n - 10) \\qulatex_seqd \\text{for } n \\geq 10'), """
 
     print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
+    print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
+    # print(test_code)
     # exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
 
     # obat-dasco25-10k_eval8: 0-200. (200-1400 ollama fail)
     # 33/100 # 54/200
-    # 190/500 (True) 1500-1999
-    # 323/1000 True  2000-2999
-    #  87/1000 True  3000-3999
-    # 109/1000 True  4000-4999
-
     # v2:
     # 36/100 58/200
     # 213/500   1k  # 321/1000  2k

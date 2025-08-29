@@ -201,7 +201,17 @@ if __name__ == '__main__':
 
     bins_def = [(0, 200), (1400, 2000),
                 (5000, 5300), (5600, 6000),
-                (7000, 7800), (8400, 9000)]
+                # (7000, 7800), (8400, 9000)]
+                (7000, 7900), (8400, 9000)]
+    bins_def = [(0, 250), (1400, 2000),
+                (5000, 5350), (5550, 6000),
+                (7000, 7900), (8350, 9000)]
+
+    bins_def = [(0, 252),
+                (277, 370),
+                (1386, 2000),
+                (5000, 5384), (5510, 6000),
+                (7000, 7935), (8326, 9000)]
 
     filler = [
                 (2000,  3000),
@@ -226,7 +236,8 @@ if __name__ == '__main__':
     acks = [(a, b, [ v for k, v in store.items() if f'{a:0>5}' <= k < f'{b:0>5}']) for a,b in bins_def]
     # print(acks)
     print()
-    print(f'\ntotal binned acc: {sum([sum(bin) for a, b, bin in acks])/sum([len(bin) for a, b, bin in acks])*100:0.2f}%')
+    print(f'\ntotal true files: {sum([sum(bin) for a, b, bin in acks])}')
+    print(f'total binned acc: {sum([sum(bin) for a, b, bin in acks])/sum([len(bin) for a, b, bin in acks])*100:0.2f}%')
     for a, b, bin in acks:
         print(f'{sum(bin): >4}/{len(bin): <4}      = {sum(bin)/len(bin)*100:0.2f}%     {str(a)[0]}k  ({a: >4}-{b})')
 
@@ -252,26 +263,100 @@ if __name__ == '__main__':
 
     print(f'total binned df acc: {sum([sum(bin) for a, b, bin in df_acks])/sum([bins_sizes[n] for n in range(len(df_acks))])*100:0.2f}%')
     print(f'total binned mb acc: {sum([sum(bin) for a, b, bin in mb_acks])/sum([len(bin) for a, b, bin in mb_acks])*100:0.2f}%')
+    print(f'\n{len(files) = }')
+    print(f'total tasks in bins: {sum(bins_sizes)}')
 
+    # 1/0
 
 
     # 3. Fails analisys:
     print(f'\n{len(files) = }')
     print(f'is_Dasco occurs: {dasco_re_count}, Errors: {sum([amount for error, amount in errors_count.items()]) }')
     print(f'total: {dasco_re_count + sum([amount for error, amount in errors_count.items()]) }')
+    # 1/0
 
 
-    # # empty file content (evals not finished in 1h (look TODO))
-    # emptys = [(k, es['empty file']) for k, es in errors_store.items() if 'empty file' in es]
-    # nonempty_empties = [(k, c) for k, c in emptys if c]
-    # print(nonempty_empties)  # (05007, ''), (06710, '')
+    print(f'{errors_count = }')
 
     has_errors_store = {task: es for task, es in errors_store.items() if es}
     print(f'{len(has_errors_store) = }')
     print(f'{has_errors_store = }')
-    # errors_count = [(k, es['empty file']) for ern, msg in errors_store.items() if 'empty file' in es]
-    # print(errors_store.items() if es)
-    # print(f'{errors_count = }')
+
+    errors_store_byerror = {ern: [(task, err[ern]) for task, err in has_errors_store.items() if ern in err] for ern in PY_ERRORS + AUX_ERRORS }
+    print(errors_store_byerror)
+    print(errors_store_byerror['TypeError'])
+    # 1/0
+
+
+    # # empty file content (evals not finished in 1h (look TODO))
+    emptys = [{t: es['empty file']} for t, es in has_errors_store.items() if 'empty file' in es]
+    print(emptys)
+    # print(nonempty_empties)  # (05007, ''), (06710, '')
+
+
+    erns = ['KeyError', 'PermissionError', 'RecursionError']
+    for ern in erns:
+    # for ern in errors_count:
+        print()
+        for task, err in [(task_, errd) for task_, errd in has_errors_store.items() if ern in errd]:
+            print(f'{task}: {err}')
+
+    some_errors = [ [f'{task}: {err}' for task, err in [(task_, errd) for task_, errd in has_errors_store.items() if ern in errd]] for ern in erns ]
+    print(some_errors)
+    # for some in some_errors:
+    #     print(some)
+    compressed_some_errors = { ern: [task for task, errd in has_errors_store.items() if ern in errd] for ern in erns}
+    print(compressed_some_errors)
+
+
+    # # TypeError:
+    print()
+    # for task, err in errors_store_byerror['TypeError']:
+    #     print(f'{task}: {err}')
+
+
+    TYPEERRORS = ['TypeError: list indices must be integers or slices, not float',
+                  "TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'",
+                  "TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'",
+                  "TypeError: unsupported operand type(s) for +: 'int' and 'tuple'",
+                  "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'",
+                  "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'",
+                  "TypeError: unsupported operand type(s) for *: 'functools._lru_cache_wrapper' and 'int'",
+                  "TypeError: unsupported operand type(s) for -: 'int' and 'functools._lru_cache_wrapper'",
+                  "TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'",
+                  "TypeError: find_next_prime() missing 1 required positional argument: 'prev'",
+                  "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'", ]
+    for type_suberror in TYPEERRORS:
+        for task, err in errors_store_byerror['TypeError']:
+            if err == type_suberror:
+                print(f'{task}: {err}')
+        if err not in TYPEERRORS:
+            print(f'{task}: {err}')
+
+
+    print(f'{errors_count = }')
+
+
 # errors_count = {'KeyError': 1, 'PermissionError': 7, 'RecursionError': 14, 'NameError': 543, 'IndexError': 655, 'ValueError': 4092, 'TypeError': 283, 'empty file': 2}
+#                   false           2 true of 7
+# KeyError 05553: bad function - true negative.
+# permission: 03274: main)
 
+# look main_failed_codes for solutions and manual check
 
+# RecursionError:
+# 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
+# 03342, 05923, 06104, 06130, 06185, 06494, 07859,   analized, all false
+
+# TypeError:
+# 33: false,
+# 1717 02592: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'
+#       -  (-1)**(1/2) or similar will produce complex number. ( sqrt(-1) = i )
+#
+# 5006: using some other function after calculate_sequence.
+# 7528, 6137, 3203, 6175:  # 2**latex_seq  # TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'
+#    - no new insight, bad prediction.
+
+# 333, 2402, 5252  a(n) = a(n-2), -> this is tuple.  # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'
+
+# 4622, 5382, 9675, 9680,  : unrelated
