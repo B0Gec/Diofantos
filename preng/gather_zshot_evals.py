@@ -211,13 +211,15 @@ if __name__ == '__main__':
                 (277, 370),
                 (1386, 2000),
                 (5000, 5384), (5510, 6000),
-                (7000, 7935), (8326, 9000)]
+                ]
 
     filler = [
                 (2000,  3000),
                 (3000,  4000),
                 (4000,  5000),
                 (6000,  7000),
+                (7000,  8000),
+                (8000,  9000),
                 (9000, 10000),
         ]
     bins_def = sorted(bins_def+filler)
@@ -285,60 +287,122 @@ if __name__ == '__main__':
     errors_store_byerror = {ern: [(task, err[ern]) for task, err in has_errors_store.items() if ern in err] for ern in PY_ERRORS + AUX_ERRORS }
     print(errors_store_byerror)
     print(errors_store_byerror['TypeError'])
+    print(errors_store_byerror['IndexError'])
     # 1/0
 
-
+    # 3.1 Empty files
     # # empty file content (evals not finished in 1h (look TODO))
     emptys = [{t: es['empty file']} for t, es in has_errors_store.items() if 'empty file' in es]
     print(emptys)
     # print(nonempty_empties)  # (05007, ''), (06710, '')
 
 
-    erns = ['KeyError', 'PermissionError', 'RecursionError']
-    for ern in erns:
-    # for ern in errors_count:
-        print()
-        for task, err in [(task_, errd) for task_, errd in has_errors_store.items() if ern in errd]:
-            print(f'{task}: {err}')
+    # 3.2 some errors
+    # erns = ['KeyError', 'PermissionError', 'RecursionError']
+    # for ern in erns:
+    # # for ern in errors_count:
+    #     print()
+    #     for task, err in [(task_, errd) for task_, errd in has_errors_store.items() if ern in errd]:
+    #         print(f'{task}: {err}')
+    #
+    # some_errors = [ [f'{task}: {err}' for task, err in [(task_, errd) for task_, errd in has_errors_store.items() if ern in errd]] for ern in erns ]
+    # print(some_errors)
+    # # for some in some_errors:
+    # #     print(some)
+    # compressed_some_errors = { ern: [task for task, errd in has_errors_store.items() if ern in errd] for ern in erns}
+    # print(compressed_some_errors)
+    # 1/0
 
-    some_errors = [ [f'{task}: {err}' for task, err in [(task_, errd) for task_, errd in has_errors_store.items() if ern in errd]] for ern in erns ]
-    print(some_errors)
-    # for some in some_errors:
-    #     print(some)
-    compressed_some_errors = { ern: [task for task, errd in has_errors_store.items() if ern in errd] for ern in erns}
-    print(compressed_some_errors)
+    # '00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679']
 
-
-    # # TypeError:
-    print()
+    # 3.3 TypeError:
+    # print()
     # for task, err in errors_store_byerror['TypeError']:
     #     print(f'{task}: {err}')
 
+    # # Type errors:
+    # TYPEERRORS = ['TypeError: list indices must be integers or slices, not float',
+    #               "TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'",
+    #               "TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'",
+    #               "TypeError: unsupported operand type(s) for +: 'int' and 'tuple'",
+    #               "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'",
+    #               "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'",
+    #               "TypeError: unsupported operand type(s) for *: 'functools._lru_cache_wrapper' and 'int'",
+    #               "TypeError: unsupported operand type(s) for -: 'int' and 'functools._lru_cache_wrapper'",
+    #               "TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'",
+    #               "TypeError: find_next_prime() missing 1 required positional argument: 'prev'",
+    #               "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'", ]
+    # specific = 10000
+    # for type_suberror in TYPEERRORS[:specific]:
+    #     for task, err in errors_store_byerror['TypeError']:
+    #         if err == type_suberror:
+    #             print(f'{task}: {err}')
+    #     if err not in TYPEERRORS:
+    #         print(f'{task}: {err}')
 
-    TYPEERRORS = ['TypeError: list indices must be integers or slices, not float',
-                  "TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'",
-                  "TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'",
-                  "TypeError: unsupported operand type(s) for +: 'int' and 'tuple'",
-                  "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'",
-                  "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'",
-                  "TypeError: unsupported operand type(s) for *: 'functools._lru_cache_wrapper' and 'int'",
-                  "TypeError: unsupported operand type(s) for -: 'int' and 'functools._lru_cache_wrapper'",
-                  "TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'",
-                  "TypeError: find_next_prime() missing 1 required positional argument: 'prev'",
-                  "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'", ]
-    for type_suberror in TYPEERRORS:
-        for task, err in errors_store_byerror['TypeError']:
-            if err == type_suberror:
-                print(f'{task}: {err}')
-        if err not in TYPEERRORS:
+
+    # # 3.4 Index Error:
+    # for task, err in errors_store_byerror['IndexError']:
+    #     print(f'{task}: {err}')
+    # INDEX_ERRORS = ['IndexError: list assignment index out of range',
+    #               'IndexError: list index out of range',
+    #                 ]
+    #
+    # specific = 1000000
+    # subcount = dict()
+    #
+    # print(len(errors_store_byerror['IndexError']))
+    # # 1/0
+    #
+    #
+    # for type_suberror in INDEX_ERRORS[:specific]:
+    #     for task, err in errors_store_byerror['IndexError']:
+    #         # print(subcount)
+    #         if err == type_suberror:
+    #             subcount[err] = subcount.get(err, 0) + 1
+    #             print(f'{task}: {err}')
+    #         if err not in INDEX_ERRORS:
+    #             subcount[err] = subcount.get(err, 0) + 1
+    #             print(f'{task}: {err}')
+    # print(subcount)
+    # # 2 special errors: false
+
+
+    # 3.5 ValueError:
+    subcount = dict()
+    print(len(errors_store_byerror['ValueError']))
+    # for type_suberror in INDEX_ERRORS[:specific]:
+    for task, err in errors_store_byerror['ValueError']:
+        subcount[err] = subcount.get(err, 0) + 1
+    print(subcount)
+    # 1/0
+
+
+    # 3.6 NameError:
+    subcount = dict()
+    print(len(errors_store_byerror['NameError']))
+    # for type_suberror in INDEX_ERRORS[:specific]:
+    for task, err in errors_store_byerror['NameError']:
+        subcount[err] = subcount.get(err, 0) + 1
+    print(subcount)
+    for err in sorted(subcount.keys(), key=lambda x: -subcount[x]):
+        for task in [task_ for task_, err_ in errors_store_byerror['NameError'] if err_ == err]:
             print(f'{task}: {err}')
+
+    print(sorted(subcount.values()))
+    1/0
 
 
     print(f'{errors_count = }')
 
 
 # errors_count = {'KeyError': 1, 'PermissionError': 7, 'RecursionError': 14, 'NameError': 543, 'IndexError': 655, 'ValueError': 4092, 'TypeError': 283, 'empty file': 2}
-#                   false           2 true of 7
+#                   false           2 true of 7                                                                                                             2x false
+# errors_count (8833 files) = {'KeyError': 1, 'PermissionError': 9, 'RecursionError': 17, 'NameError': 600, 'IndexError': 152, 'ValueError': 4495, 'TypeError': 295, 'empty file': 3}
+#                              false           4 true of 9                                                   missing files       eq not found          c1*a(n-2)          2/3? x false
+# {'KeyError': ['05553'], 'PermissionError': ['00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679'], 'RecursionError': ['00107', '02070', '02373', '03342', '03729', '04931', '05184', '05923', '06104', '06130', '06185', '06494', '07859', '07928', '08003', '08415', '09505']}
+
+
 # KeyError 05553: bad function - true negative.
 # permission: 03274: main)
 
@@ -352,11 +416,11 @@ if __name__ == '__main__':
 # 33: false,
 # 1717 02592: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'
 #       -  (-1)**(1/2) or similar will produce complex number. ( sqrt(-1) = i )
-#
 # 5006: using some other function after calculate_sequence.
 # 7528, 6137, 3203, 6175:  # 2**latex_seq  # TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'
 #    - no new insight, bad prediction.
-
 # 333, 2402, 5252  a(n) = a(n-2), -> this is tuple.  # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'
-
 # 4622, 5382, 9675, 9680,  : unrelated
+
+# IndexError:
+# mainly missing files, other halucinations. (this error is very clean-cut)

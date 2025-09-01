@@ -22,6 +22,8 @@ local - check it
 
 
     Todo (later):
+     * latex case? (9128): a(n) = begin{cases} ...
+     * helper functions defined in previous blocks ... NameError (e.g. 9206)
      * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i
             problematic would still be to convert to sum([ for i in range(1, n)]).
      * maybe have "final answer" the biggest score.
@@ -39,6 +41,7 @@ local - check it
      *  \boxed{ a(n) = a(n-2) + 2^{n-1} } results in return a(n-2) + 2**(n-1)}
      * 'a(n-1) + a(n-2) + 2 \\left\\lfloor \\frac{n+1}{2} \\right\\rfloor')
      * \left\lceil
+     * f(floor(n/3))?  -> laxex_seq(latex_seqloor(n/3))
 
     TASK_ID = 4019
 
@@ -240,47 +243,60 @@ if __name__ == '__main__':
     # TASK_ID = 9680  # * something TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
     # TASK_ID = 9212  # * something TypeError: unsupported operand type(s) for +: 'int' and 'tuple'
 
-    TASK_ID = 24   # ypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 103  # TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 153  # TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 1443  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 1611  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 1639  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 1651  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 2046  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 2250  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 2517  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 3145  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 3295  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 3355  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 3568  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 3720  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 3787  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 4640  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 5327  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 6927  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 7594  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 7599  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 7651  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 8524  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 8849  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 8864  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    TASK_ID = 8895  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # {'KeyError': ['05553'],
+    #  'PermissionError': ['00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679'],
+    #  'RecursionError': ['00107', '02070', '02373', '03342', '03729', '04931', '05184', '05923', '06104', '06130',
+    #                     '06185', '06494', '07859', '07928', '08003', '08415', '09505']}
 
-    # these are resolved:
-    # TASK_ID = 8989  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # TASK_ID = 9305  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # TASK_ID = 9330  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # TASK_ID = 9398  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # TASK_ID = 9747  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # some type errors:
+    TASK_ID = 24   # 103 similar. TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    TASK_ID = 153  # Usually this problematic TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 8849  #  TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 8864  #  \boxed{a(n) = 2 \sum_{k=0}^{4} c_k \omega^{kn}}  # TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # TASK_ID = 9971 # Usually like this "latex_seq(n/2)" TypeError: list indices must be integers or slices, not float
 
-    # TASK_ID = 1578  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
-    # TASK_ID = 1584  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
-    # TASK_ID = 3123  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
-    # TASK_ID = 4512  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
-    # TASK_ID = 4598  #  TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'
+    # #  'PermissionError': ['00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679'],
+    # TASK_ID = 214
+    # TASK_ID = 313
 
-        
+    TASK_ID = 212   # seems halucin
+    TASK_ID = 8491  # seems halucin
+
+
+    TASK_ID = 5509  # 370-389  in 5384 - 5509: missing file #   IndexError: list index out of range
+    # TASK_ID = 3419  #   IndexError: list index out of range
+    # TASK_ID = 3844  # halucin
+    # TASK_ID = 8325  # missing file #   IndexError: list index out of range
+    # TASK_ID = 9541  #  halucin #  IndexError: list index out of range"""
+
+    TASK_ID = 5171  #  #  NameError: name 'δ' is not defined
+    TASK_ID = 5261  #  #  NameError: name 'mod5' is not defined
+    TASK_ID = 5281  #  #  NameError: name 'M' is not defined
+    TASK_ID = 5312  #  #  NameError: name 'δ_n' is not defined
+    TASK_ID = 5324  #  #  NameError: name 'number_of_skipped_numbers_up_to_n' is not defined
+    TASK_ID = 5704  #  #  NameError: name 's' is not defined
+    TASK_ID = 5938  #  #  NameError: name 'mod9' is not defined
+    TASK_ID = 6063  #  #  NameError: name 'block_number' is not defined
+    TASK_ID = 7378  #  #  NameError: name 'phi' is not defined
+    TASK_ID = 7540  #  #  NameError: name 'A025480' is not defined
+
+    TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
+    TASK_ID = 7750  #  #  NameError: name 'no' is not defined. Did you mean: 'n'?
+    TASK_ID = 7821  #  #  NameError: name 'an' is not defined. Did you mean: 'n'?
+    TASK_ID = 7828  #  #  NameError: name 'previous_group_stlatex_seqrt' is not defined
+    TASK_ID = 7965  #  #  NameError: name 'g' is not defined
+    TASK_ID = 8073  #  #  NameError: name 'b_n' is not defined
+    TASK_ID = 8261  #  #  NameError: name 'which' is not defined
+    TASK_ID = 8671  #  #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
+    TASK_ID = 8860  #  #  NameError: name 'G' is not defined
+    # TASK_ID = 8909  # f(floor(n/3)) #  NameError: name 'latex_seqloor' is not defined. Did you mean: 'latex_seq'?"""
+
+    # TASK_ID = 9090  # halucin (abstract words instead of function)  NameError: name 'increment' is not defined
+    # TASK_ID = 9128  # Zanimivo, latex case? "  NameError: name 'previous_block_length' is not defined
+    # TASK_ID = 9206  # helper function defined in a earlier block #  NameError: name 'find_next' is not defined
+    # TASK_ID = 9265  #  *otherwise  #  NameError: name 'gcd' is not defined
+    # TASK_ID = 9908  #  false, referring to undefined code.  NameError: name 'Sum_prev' is not defined"""
+
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
@@ -417,7 +433,7 @@ except RecursionError as e:
                                          'RecursionError': RecursionError,
                                          'lru_cache': lru_cache,
                                          'math': math, 'floor': floor, 'ceil': ceil, 'fractions': fractions,
-                                         'round': round,
+                                         'round': round, 'gcd': math.gcd, 'abs': abs,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }

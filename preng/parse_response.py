@@ -181,6 +181,7 @@ TypeError: 'int' object is not callable
         var = m[0]
         rhs = m[1].strip()
         # print(f'var, rhs: {var, rhs}')
+        rhs_old = rhs
 
         # ---- RHS: turn 'a(n-3) + a(n-5)' ➜ 'seq(n-3) + seq(n-5)'
         # rhs = 'a(n-1) + (n-1) \cdot a(n-2)'
@@ -236,7 +237,12 @@ TypeError: 'int' object is not callable
         rhs_py = rhs_py.strip(',. ')  # this removes also ...  at the end
         # rhs_py = rhs_py.strip(', ')  # alternatively? I thing better not.
 
-        rhs_py = '1-' if 'something' in rhs_py else rhs_py
+        rhs_py = '1-' if 'something' in rhs_py or 'otherwise' in rhs_py else rhs_py
+
+        # if 'latex_seqloor' in rhs_py:
+        #     print(rhs_py)
+        #     print(rhs_old)
+        #     # 1/0
 
         # if "/" in rhs_py:
         #     print(f'{rhs_py = }')
