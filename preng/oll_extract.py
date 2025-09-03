@@ -15,6 +15,7 @@ local - check it
     * task_id = 107  ... return latex_seq_n
 
     log2(var) -> log(var, 2)
+        ... mod2, mod9, mod6 , sqrt similarly
     remove spacing in latex (\quad) (ali pa je to morda namig, da je to prevec abstraktni zapis enacbe?) 5324
     Recursion Error in latex_seq(n) : return latex_seq(n+1)  # "recursive in wrong direction"
         \_> examples: 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
@@ -24,11 +25,11 @@ local - check it
 
     Todo (later):
      * ban certain words, just like "something" in latex expressions, e.g. "which", "increment", ...
-     * latex case? (9128): a(n) = begin{cases} ...
+     * parse latex case, e.g. 1504 (clear false negative!),  (9128): a(n) = begin{cases} ...
      * helper functions defined in previous blocks ... NameError (e.g. 9206)
      * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i
             problematic would still be to convert to sum([ for i in range(1, n)]).
-     * maybe have "final answer" the biggest score.
+     * maybe have "final answer" the biggest score. (+1 ... veckrat pomislil na ta issue)
      * equations contained undefined variables, e.g. a(n) = x*a(n-1) + y*a(n-2) ... parser will pick those, instead of discarding them.
             but on the flip side, confident answer should contain the last equation to be correct.
                 - can go wrong in case: a(n) = x*a(n-1) + y*a(n-2) \n last answer: a(n) = n(n-2)/2
@@ -48,6 +49,8 @@ local - check it
     TASK_ID = 4019
 
     Done:
+     * removed everything after \quad.  WARNING: important solutions seem to be in form of latex cases in arrays, where
+            \quad is often present.
      * something   # 09212, 3123  # Solution (only for latex): if rhs contains 'something' change whole rhs to an
             invalid expression, i.e. '1-'. Then it will not be chosen.
     * a(n) = a(n-2) + 2^{n-1}, => returned tuple ... Solution: strip(',.')  # maybe better to not prefer eqs that end on ',' via scoring.
@@ -267,16 +270,17 @@ if __name__ == '__main__':
 
 
     TASK_ID = 5509  # 370-389  in 5384 - 5509: missing file #   IndexError: list index out of range
+
     # TASK_ID = 3419  #   IndexError: list index out of range
     # TASK_ID = 3844  # halucin
     # TASK_ID = 8325  # missing file #   IndexError: list index out of range
     # TASK_ID = 9541  #  halucin #  IndexError: list index out of range"""
 
-    TASK_ID = 5171  #  #  NameError: name 'δ' is not defined
-    TASK_ID = 5261  #  #  NameError: name 'mod5' is not defined
-    TASK_ID = 5281  #  #  NameError: name 'M' is not defined
-    TASK_ID = 5312  #  #  NameError: name 'δ_n' is not defined
-    TASK_ID = 5324  #  #  NameError: name 'number_of_skipped_numbers_up_to_n' is not defined
+    # TASK_ID = 5171  # n_pred = 3 #  NameError: name 'δ' is not defined
+    # TASK_ID = 5261  #  #  NameError: name 'mod5' is not defined
+    # TASK_ID = 5281  # false #  NameError: name 'M' is not defined
+    # TASK_ID = 5312  # false, def in words, almost true (n_pred = 5) #  NameError: name 'δ_n' is not defined
+    # TASK_ID = 5324  #  #  NameError: name 'number_of_skipped_numbers_up_to_n' is not defined
     # TASK_ID = 5704  # false #  NameError: name 's' is not defined
     # TASK_ID = 5938  #  #  NameError: name 'mod9' is not defined
     # TASK_ID = 6063  #  #  NameError: name 'block_number' is not defined
@@ -302,6 +306,25 @@ if __name__ == '__main__':
     # TASK_ID = 9206  # helper function defined in a earlier block #  NameError: name 'find_next' is not defined
     # TASK_ID = 9265  #  *otherwise  #  NameError: name 'gcd' is not defined
     # TASK_ID = 9908  #  false, referring to undefined code.  NameError: name 'Sum_prev' is not defined"""
+
+    TASK_ID = 14  # not final answer #  NameError: name 'log2' is not defined
+    TASK_ID = 1923  # not final #  NameError: name 'log2' is not defined
+    TASK_ID = 2992  # ? very complex eq. #  NameError: name 'log2' is not defined
+    TASK_ID = 3868  # false #  NameError: name 'log2' is not defined
+    # TASK_ID = 5309  # self ref #  NameError: name 'log2' is not defined
+    # TASK_ID = 7075  #  #  NameError: name 'log2' is not defined
+    # TASK_ID = 8659  #  #  NameError: name 'log2' is not defined
+    # TASK_ID = 9377  #  #  NameError: name 'log2' is not defined"""
+
+    TASK_ID =   78  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 2097  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 3444  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 3486  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 4259  # false  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 8874  # false  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 9759  # complext, maybe check later  #  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    TASK_ID = 9899  # True, if manualy convert latex cases into formula   NameError: name 'sqrt' is not defined. Did you mean: 'start'?"""
+
 
 
     parser = argparse.ArgumentParser()
@@ -452,7 +475,7 @@ except RecursionError as e:
     print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
     # print(test_code)
-    # exec(test_code, allowed_builtins)
+    exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
 

@@ -180,37 +180,40 @@ TypeError: 'int' object is not callable
         # rhs = m.group("rhs").strip()
         var = m[0]
         rhs = m[1].strip()
-        # print(f'var, rhs: {var, rhs}')
+        print(f'var, rhs: {var, rhs}')
         rhs_old = rhs
 
         # ---- RHS: turn 'a(n-3) + a(n-5)' ➜ 'seq(n-3) + seq(n-5)'
         # rhs = 'a(n-1) + (n-1) \cdot a(n-2)'
-        rhs_py = re.sub(
-            # rf"{var}\s*\(\s*n\s*-\s*(\d+)\s*\)",
-            rf"{var}",
-            rf"{default_name}",
-            # rhs.replace("^", "**"),  # handle powers
-            rhs,
-        )
+        rhs_py = rhs
+        # rhs_py = re.sub( rf"{var}", rf"{default_name}", rhs_py)
 
         # rhs_py = '2a_{n-1} - 2a_{n-2} + 4a_{n-3} - 7a_{n-4} + 14a_{n-5} - 21a_{n-6}'
-        rhs_py = re.sub(rf"({default_name})_\{{([^{{}}]+)\}}", r"\1(\2)", rhs_py)
+        # rhs_py = re.sub(rf"({default_name})_\{{([^{{}}]+)\}}", r"\1(\2)", rhs_py)
+        rhs_py = re.sub(rf"({var})_\{{([^{{}}]+)\}}", rf"{default_name}(\2)", rhs_py)
+        # rhs_py = re.sub( rf"{var}(\([^()]\))", rf"{default_name}\1", rhs_py)
+        rhs_py = re.sub( rf"{var}\(", rf"{default_name}(", rhs_py)
         # print(rhs_py)
         # 1/0
 
         rhs_py = re.sub(r"\^{([^{}\n=]+)}", r"**(\1)", rhs_py)
         rhs_py = rhs_py.replace("^", "**")
         rhs_py = rhs_py.replace("\cdot", "*")  # handle powers
-        rhs_py = re.sub(r"\\binom{([^{}\n=]+)}{([^{}\n=]+)}", r"math.comb(\1, \2)", rhs_py)
-        rhs_py = re.sub(r"\\frac{([^{}\n=]+)}{([^{}\n=]+)}", r"fractions.Fraction(\1, \2)", rhs_py)
-        # rhs_py = re.sub(r'(^|[^\.])floor', r'\1math.floor(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
-        # rhs_py = 'math.floor(n/2) + latex_seq(n-1)'
-        rhs_py = re.sub(r'(^|[^.])(floor|ceil)', r'\1math.\2', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+        for i in range (5):  # do a few iterations (less professional)
+            rhs_py = re.sub(r"\\binom{([^{}\n=]+)}{([^{}\n=]+)}", r"math.comb(\1, \2)", rhs_py)
+            rhs_py = re.sub(r"\\frac{([^{}\n=]+)}{([^{}\n=]+)}", r"(\1)/(\2)", rhs_py)
+            rhs_py = re.sub(r"\\sqrt{([^{}\n=]+)}", r"(\1)**(1/2)", rhs_py)
+            # rhs_py = re.sub(r'(^|[^\.])floor', r'\1math.floor(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+            # rhs_py = 'math.floor(n/2) + latex_seq(n-1)'
 
-        rhs_py = re.sub(r'\\left\\lfloor', r'math.floor(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
-        rhs_py = re.sub(r'\\right\\rfloor', r')', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
-        rhs_py = re.sub(r'\\left\\lceil', r'math.ceil(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
-        rhs_py = re.sub(r'\\right\\rceil', r')', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+            rhs_py = re.sub(r'\\left\\lfloor', r'math.floor(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+            rhs_py = re.sub(r'\\right\\rfloor', r')', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+            rhs_py = re.sub(r'\\left\\lceil', r'math.ceil(', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+            rhs_py = re.sub(r'\\right\\rceil', r')', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+            rhs_py = re.sub(r'(^|[^.])(floor|ceil)', r'\1math.\2', rhs_py)  #  \\left\\lfloor   \\right\\lfloor
+
+        rhs_py = re.sub(r"log_(\d+) ([^ \n.]+)", r"log(\2, \1)", rhs_py)
+
         rhs_py = rhs_py.replace('[', '(').replace(']', ')')
 
         # ()() -> ()*(), a()b -> a*()*b
@@ -238,6 +241,7 @@ TypeError: 'int' object is not callable
         # rhs_py = rhs_py.strip(', ')  # alternatively? I thing better not.
 
         rhs_py = '1-' if 'something' in rhs_py or 'otherwise' in rhs_py else rhs_py
+        rhs_py = re.sub(r'\\quad.+', r'', rhs_py)   # remove all after \quad
 
         # if 'latex_seqloor' in rhs_py:
         #     print(rhs_py)
