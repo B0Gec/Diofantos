@@ -15,6 +15,7 @@ local - check it
     * task_id = 107  ... return latex_seq_n
 
     log2(var) -> log(var, 2)
+    remove spacing in latex (\quad) (ali pa je to morda namig, da je to prevec abstraktni zapis enacbe?) 5324
     Recursion Error in latex_seq(n) : return latex_seq(n+1)  # "recursive in wrong direction"
         \_> examples: 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
 
@@ -22,6 +23,7 @@ local - check it
 
 
     Todo (later):
+     * ban certain words, just like "something" in latex expressions, e.g. "which", "increment", ...
      * latex case? (9128): a(n) = begin{cases} ...
      * helper functions defined in previous blocks ... NameError (e.g. 9206)
      * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i
@@ -41,7 +43,7 @@ local - check it
      *  \boxed{ a(n) = a(n-2) + 2^{n-1} } results in return a(n-2) + 2**(n-1)}
      * 'a(n-1) + a(n-2) + 2 \\left\\lfloor \\frac{n+1}{2} \\right\\rfloor')
      * \left\lceil
-     * f(floor(n/3))?  -> laxex_seq(latex_seqloor(n/3))
+     * f(floor(n/3))?  -> laxex_seq(latex_seqloor(n/3)) 8909, 5324
 
     TASK_ID = 4019
 
@@ -58,6 +60,7 @@ local - check it
     * \frac{}{} -> fractions.Fraction
     * n(n-1)(n-2) -> n*(n-1)*(n-2)
     * term(n) = term(n-7)  -> m(n) = terlatex_seq(n-7)  ... 4014
+    * We support from the start: a_n = a_{n-1} + a_{n-2}  -> a(n) = a(n-1) + a(n-2)
 
 
 """
@@ -274,21 +277,24 @@ if __name__ == '__main__':
     TASK_ID = 5281  #  #  NameError: name 'M' is not defined
     TASK_ID = 5312  #  #  NameError: name 'δ_n' is not defined
     TASK_ID = 5324  #  #  NameError: name 'number_of_skipped_numbers_up_to_n' is not defined
-    TASK_ID = 5704  #  #  NameError: name 's' is not defined
-    TASK_ID = 5938  #  #  NameError: name 'mod9' is not defined
-    TASK_ID = 6063  #  #  NameError: name 'block_number' is not defined
-    TASK_ID = 7378  #  #  NameError: name 'phi' is not defined
-    TASK_ID = 7540  #  #  NameError: name 'A025480' is not defined
+    # TASK_ID = 5704  # false #  NameError: name 's' is not defined
+    # TASK_ID = 5938  #  #  NameError: name 'mod9' is not defined
+    # TASK_ID = 6063  #  #  NameError: name 'block_number' is not defined
+    # TASK_ID = 7378  #  #  NameError: name 'phi' is not defined
+    # TASK_ID = 7540  #  #  NameError: name 'A025480' is not defined
 
-    TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
-    TASK_ID = 7750  #  #  NameError: name 'no' is not defined. Did you mean: 'n'?
-    TASK_ID = 7821  #  #  NameError: name 'an' is not defined. Did you mean: 'n'?
-    TASK_ID = 7828  #  #  NameError: name 'previous_group_stlatex_seqrt' is not defined
-    TASK_ID = 7965  #  #  NameError: name 'g' is not defined
-    TASK_ID = 8073  #  #  NameError: name 'b_n' is not defined
-    TASK_ID = 8261  #  #  NameError: name 'which' is not defined
-    TASK_ID = 8671  #  #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
-    TASK_ID = 8860  #  #  NameError: name 'G' is not defined
+    # TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
+    # TASK_ID = 7750  #  #  NameError: name 'no' is not defined. Did you mean: 'n'?
+
+    # TASK_ID = 7821  # True (updated code) #  NameError: name 'an' is not defined. Did you mean: 'n'?
+
+    # false below:
+    # TASK_ID = 7828  #  #  NameError: name 'previous_group_stlatex_seqrt' is not defined
+    # TASK_ID = 7965  #  #  NameError: name 'g' is not defined
+    # TASK_ID = 8073  #  #  NameError: name 'b_n' is not defined
+    # TASK_ID = 8261  #  #  NameError: name 'which' is not defined
+    # TASK_ID = 8671  # false #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
+    # TASK_ID = 8860  # false #  NameError: name 'G' is not defined
     # TASK_ID = 8909  # f(floor(n/3)) #  NameError: name 'latex_seqloor' is not defined. Did you mean: 'latex_seq'?"""
 
     # TASK_ID = 9090  # halucin (abstract words instead of function)  NameError: name 'increment' is not defined
