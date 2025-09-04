@@ -356,6 +356,26 @@ if __name__ == '__main__':
     # TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
     # TASK_ID = 8671  #  #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
 
+    # TASK_ID = 5010  # mb \ zs
+
+    TASK_ID = 5024
+    TASK_ID = 5177
+    TASK_ID = 5229
+    TASK_ID = 5266
+    TASK_ID = 5283
+    TASK_ID = 5324
+    # TASK_ID = 5338  # mb \ zs
+
+
+
+
+
+
+
+
+
+
+
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)

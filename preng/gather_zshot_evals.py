@@ -104,6 +104,8 @@ if __name__ == '__main__':
     print(store)
     print(len(store.keys()))
 
+    # 1/0
+
     # 2. Bins of accuracy
     ac100 = [k for k,v in store.items() if k < '00100']
     print(ac100)
@@ -272,33 +274,35 @@ if __name__ == '__main__':
     print(f'\n{len(files) = }')
     print(f'total tasks in bins: {sum(bins_sizes)}')
 
-    1/0
+    # 1/0
 
 
     # 3. Fails analisys:
-    print(f'\n{len(files) = }')
-    print(f'is_Dasco occurs: {dasco_re_count}, Errors: {sum([amount for error, amount in errors_count.items()]) }')
-    print(f'total: {dasco_re_count + sum([amount for error, amount in errors_count.items()]) }')
-    # 1/0
+    doFail_analisys = False
+    if doFail_analisys:
+        print(f'\n{len(files) = }')
+        print(f'is_Dasco occurs: {dasco_re_count}, Errors: {sum([amount for error, amount in errors_count.items()]) }')
+        print(f'total: {dasco_re_count + sum([amount for error, amount in errors_count.items()]) }')
+        # 1/0
 
 
-    print(f'{errors_count = }')
+        print(f'{errors_count = }')
 
-    has_errors_store = {task: es for task, es in errors_store.items() if es}
-    print(f'{len(has_errors_store) = }')
-    print(f'{has_errors_store = }')
+        has_errors_store = {task: es for task, es in errors_store.items() if es}
+        print(f'{len(has_errors_store) = }')
+        print(f'{has_errors_store = }')
 
-    errors_store_byerror = {ern: [(task, err[ern]) for task, err in has_errors_store.items() if ern in err] for ern in PY_ERRORS + AUX_ERRORS }
-    print(errors_store_byerror)
-    print(errors_store_byerror['TypeError'])
-    print(errors_store_byerror['IndexError'])
-    # 1/0
+        errors_store_byerror = {ern: [(task, err[ern]) for task, err in has_errors_store.items() if ern in err] for ern in PY_ERRORS + AUX_ERRORS }
+        print(errors_store_byerror)
+        print(errors_store_byerror['TypeError'])
+        print(errors_store_byerror['IndexError'])
+        # 1/0
 
-    # 3.1 Empty files
-    # # empty file content (evals not finished in 1h (look TODO))
-    emptys = [{t: es['empty file']} for t, es in has_errors_store.items() if 'empty file' in es]
-    print(emptys)
-    # print(nonempty_empties)  # (05007, ''), (06710, '')
+        # 3.1 Empty files
+        # # empty file content (evals not finished in 1h (look TODO))
+        emptys = [{t: es['empty file']} for t, es in has_errors_store.items() if 'empty file' in es]
+        print(emptys)
+        # print(nonempty_empties)  # (05007, ''), (06710, '')
 
 
     # 3.2 some errors
@@ -406,31 +410,93 @@ if __name__ == '__main__':
     print(f'{errors_count = }')
 
 
-# errors_count = {'KeyError': 1, 'PermissionError': 7, 'RecursionError': 14, 'NameError': 543, 'IndexError': 655, 'ValueError': 4092, 'TypeError': 283, 'empty file': 2}
-#                   false           2 true of 7                                                                                                             2x false
-# errors_count (8833 files) = {'KeyError': 1, 'PermissionError': 9, 'RecursionError': 17, 'NameError': 600, 'IndexError': 152, 'ValueError': 4495, 'TypeError': 295, 'empty file': 3}
-#                              false           4 true of 9                                                   missing files       eq not found          c1*a(n-2)          2/3? x false
-# {'KeyError': ['05553'], 'PermissionError': ['00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679'], 'RecursionError': ['00107', '02070', '02373', '03342', '03729', '04931', '05184', '05923', '06104', '06130', '06185', '06494', '07859', '07928', '08003', '08415', '09505']}
+
+    # errors_count = {'KeyError': 1, 'PermissionError': 7, 'RecursionError': 14, 'NameError': 543, 'IndexError': 655, 'ValueError': 4092, 'TypeError': 283, 'empty file': 2}
+    #                   false           2 true of 7                                                                                                             2x false
+    # errors_count (8833 files) = {'KeyError': 1, 'PermissionError': 9, 'RecursionError': 17, 'NameError': 600, 'IndexError': 152, 'ValueError': 4495, 'TypeError': 295, 'empty file': 3}
+    #                              false           4 true of 9                                                   missing files       eq not found          c1*a(n-2)          2/3? x false
+    # {'KeyError': ['05553'], 'PermissionError': ['00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679'], 'RecursionError': ['00107', '02070', '02373', '03342', '03729', '04931', '05184', '05923', '06104', '06130', '06185', '06494', '07859', '07928', '08003', '08415', '09505']}
 
 
-# KeyError 05553: bad function - true negative.
-# permission: 03274: main)
+    # KeyError 05553: bad function - true negative.
+    # permission: 03274: main)
 
-# look main_failed_codes for solutions and manual check
+    # look main_failed_codes for solutions and manual check
 
-# RecursionError:
-# 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
-# 03342, 05923, 06104, 06130, 06185, 06494, 07859,   analized, all false
+    # RecursionError:
+    # 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
+    # 03342, 05923, 06104, 06130, 06185, 06494, 07859,   analized, all false
 
-# TypeError:
-# 33: false,
-# 1717 02592: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'
-#       -  (-1)**(1/2) or similar will produce complex number. ( sqrt(-1) = i )
-# 5006: using some other function after calculate_sequence.
-# 7528, 6137, 3203, 6175:  # 2**latex_seq  # TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'
-#    - no new insight, bad prediction.
-# 333, 2402, 5252  a(n) = a(n-2), -> this is tuple.  # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'
-# 4622, 5382, 9675, 9680,  : unrelated
+    # TypeError:
+    # 33: false,
+    # 1717 02592: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'
+    #       -  (-1)**(1/2) or similar will produce complex number. ( sqrt(-1) = i )
+    # 5006: using some other function after calculate_sequence.
+    # 7528, 6137, 3203, 6175:  # 2**latex_seq  # TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'
+    #    - no new insight, bad prediction.
+    # 333, 2402, 5252  a(n) = a(n-2), -> this is tuple.  # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'
+    # 4622, 5382, 9675, 9680,  : unrelated
 
-# IndexError:
-# mainly missing files, other halucinations. (this error is very clean-cut)
+    # IndexError:
+    # mainly missing files, other halucinations. (this error is very clean-cut)
+
+
+    # 4.0  mb vs zshot 1 vs 0.
+    # ========================
+
+    # print(f'{store = }')
+    # print(f'{mb_store = }')
+
+    # print(f'{mb_acks = }')
+    # scope =
+
+    binsizes = [ len(bin[2]) for n, bin in enumerate(mb_acks) ]
+    print(binsizes)
+    zs_real_acks = [f'{sum(bin[2]) / len(bin[2]):.4}' for n, bin in enumerate(acks)]
+    print(zs_real_acks)
+    mb_real_acks = [ f'{sum(bin[2])/len(bin[2]):.4}' for n, bin in enumerate(mb_acks) ]
+    print(mb_real_acks)
+    acc_diffs = [ f'{sum(acks[n][2])/len(acks[n][2]) - sum(bin[2])/len(bin[2]):.4}' for n, bin in enumerate(mb_acks) ]
+    print(acc_diffs)
+
+    nbin = 6
+    a, b = mb_acks[nbin][0], mb_acks[nbin][1]
+    print(f'a: {a}, b: {b}')
+
+    # print(mb_acks[nbin])
+    print(f'{len(mb_acks[nbin][2]) = }')
+    print(f'{sum(acks[nbin][2]) = }')
+    print(f'{sum(mb_acks[nbin][2]) = }')
+    # print(store)
+    zs_bin = {k: v for k, v in store.items() if f'{a:0>5}' <= k < f'{b:0>5}'}
+    mb_bin = {k: v for k, v in mb_store.items() if f'{a:0>5}' <= k < f'{b:0>5}'}
+    print(f'bin len: {b-a}')
+    print(f'zs bin sum: {sum(zs_bin.values())}')
+    print(f'mb bin sum: {sum(mb_bin.values())}')
+    succs_zs = [task for task, succ in zs_bin.items() if succ]
+    succs_mb = [task for task, succ in mb_bin.items() if succ]
+    doable_fails = [task for task in succs_mb if task not in succs_zs ]
+    print(doable_fails)
+    # print(succs_zs[:10])
+    # print(succs_mb[:10])
+
+    # print(f'not zs but in mb: {len([task for task, succ in zs_bin.items() if not succ and ])}')
+    # ['05010', '05024', '05073', '05091', '05092', '05097', '05122', '05148', '05149', '05150', '05173', '05174',
+    #  '05175', '05177', '05184', '05185', '05213', '05214', '05215', '05216', '05219', '05221', '05226', '05227',
+    #  '05228', '05229', '05230', '05231', '05256', '05257', '05258', '05259', '05260', '05261', '05263', '05264',
+    #  '05265', '05266', '05268', '05269', '05270', '05271', '05272', '05273', '05274', '05275', '05276', '05280',
+    #  '05281', '05283', '05284', '05285', '05286', '05315', '05316', '05317', '05318', '05320', '05321', '05322',
+    #  '05323', '05324', '05325', '05327', '05328', '05329', '05330', '05331', '05332', '05333', '05334', '05335',
+    #  '05337', '05338', '05339', '05340', '05341', '05357', '05358', '05359']
+
+    1/0
+    print(zs_bin)
+    # mb_acks = [(a, b, [ v for k, v in store.items() if f'{a:0>5}' <= k < f'{b:0>5}']) for a,b in bins_def]
+    # print(acks)
+
+    1/0
+    print(f' zs successes: {[i for i, succ in enumerate(acks[nbin][2]) if succ]}' )
+    print(f' mb successes: {[i for i, succ in enumerate(mb_acks[nbin][2]) if succ]}' )
+    print(f' zs successes: {[i for i, succ in enumerate(acks[nbin][2]) if succ]}' )
+    # print([i for i, succ in enumerate(mb_acks[nbin][2]) if succ] )
+
