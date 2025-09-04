@@ -211,7 +211,8 @@ if __name__ == '__main__':
                 # (277, 370),
                 # (370, 576),
                 # (576, 699),
-                (277, 699),
+                # (277, 699),
+                (277, 885),
                 (1386, 2000),
                 (5000, 5384), (5510, 6000),
                 ]
@@ -271,7 +272,7 @@ if __name__ == '__main__':
     print(f'\n{len(files) = }')
     print(f'total tasks in bins: {sum(bins_sizes)}')
 
-    # 1/0
+    1/0
 
 
     # 3. Fails analisys:
@@ -372,28 +373,34 @@ if __name__ == '__main__':
 
 
     # 3.5 ValueError:
-    subcount = dict()
-    print(len(errors_store_byerror['ValueError']))
-    # for type_suberror in INDEX_ERRORS[:specific]:
-    for task, err in errors_store_byerror['ValueError']:
-        subcount[err] = subcount.get(err, 0) + 1
-    print(subcount)
-    # 1/0
+    doValueError = True
+    doValueError = False
+    if doValueError:
+        subcount = dict()
+        print(len(errors_store_byerror['ValueError']))
+        # for type_suberror in INDEX_ERRORS[:specific]:
+        for task, err in errors_store_byerror['ValueError']:
+            subcount[err] = subcount.get(err, 0) + 1
+        print(subcount)
+        # 1/0
 
 
     # 3.6 NameError:
-    subcount = dict()
-    print(len(errors_store_byerror['NameError']))
-    # for type_suberror in INDEX_ERRORS[:specific]:
-    for task, err in errors_store_byerror['NameError']:
-        subcount[err] = subcount.get(err, 0) + 1
-    print(subcount)
-    for err in sorted(subcount.keys(), key=lambda x: -subcount[x]):
-        for task in [task_ for task_, err_ in errors_store_byerror['NameError'] if err_ == err]:
-            print(f'{task}: {err}')
+    doNameError = True
+    doNameError = False
+    if doNameError:
+        subcount = dict()
+        print(len(errors_store_byerror['NameError']))
+        # for type_suberror in INDEX_ERRORS[:specific]:
+        for task, err in errors_store_byerror['NameError']:
+            subcount[err] = subcount.get(err, 0) + 1
+        print(subcount)
+        for err in sorted(subcount.keys(), key=lambda x: -subcount[x]):
+            for task in [task_ for task_, err_ in errors_store_byerror['NameError'] if err_ == err]:
+                print(f'{task}: {err}')
 
-    print(sorted(subcount.values()))
-    1/0
+        print(sorted(subcount.values()))
+    # 1/0
 
 
     print(f'{errors_count = }')

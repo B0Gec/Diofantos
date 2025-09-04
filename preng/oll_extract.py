@@ -26,7 +26,7 @@ local - check it
     Todo (later):
      * ban certain words, just like "something" in latex expressions, e.g. "which", "increment", ...
      * parse latex case, e.g. 1504 (clear false negative!),  (9128): a(n) = begin{cases} ...
-     * helper functions defined in previous blocks ... NameError (e.g. 9206)
+     * helper functions defined in previous blocks ... NameError (e.g. 9206, false negative: 706
      * a(n) = sum_{i=1}^{n} i ... currently -> (regex) sum_{i
             problematic would still be to convert to sum([ for i in range(1, n)]).
      * maybe have "final answer" the biggest score. (+1 ... veckrat pomislil na ta issue)
@@ -75,6 +75,7 @@ import argparse
 import json
 
 import pandas as pd
+import sympy
 
 from exact_ed import unnan
 # from eq_to_py import last_a
@@ -326,6 +327,35 @@ if __name__ == '__main__':
     TASK_ID = 9899  # True, if manualy convert latex cases into formula   NameError: name 'sqrt' is not defined. Did you mean: 'start'?"""
 
 
+    # TASK_ID = 5544  #   # NameError: name 'ValueError' is not defined
+    # TASK_ID = 8824  #   # NameError: name 'ValueError' is not defined"""
+
+    TASK_ID = 6030  # false, abstract or not explicit  # NameError: name 'a_n' is not defined
+    # TASK_ID = 6257  #   # NameError: name 'a_n' is not defined
+    # TASK_ID = 6572  # false  # NameError: name 'a_n' is not defined"""
+    
+    # TASK_ID = 5215  #  true for all divmod # NameError: name 'divmod' is not defined
+    # TASK_ID = 6974  # true   # NameError: name 'divmod' is not defined
+    # TASK_ID = 8343  #  true  # NameError: name 'divmod' is not defined
+    TASK_ID = 385  # ?  # NameError: name 'is_prime' is not defined
+    TASK_ID = 706  #  True: helper function!  # NameError: name 'is_prime' is not defined
+    # TASK_ID = 462  # false/noerror with new  # NameError: name 'an' is not defined. Did you mean: 'n'?
+    # TASK_ID = 7821  # true (also with new code)!   # NameError: name 'an' is not defined. Did you mean: 'n'?
+    # TASK_ID = 557  # false both  # NameError: name 'mod10' is not defined
+    # TASK_ID = 704  #   # NameError: name 'mod10' is not defined"""
+
+    # TASK_ID = 3204 # these are all false unfortunately #   NameError: name 'set' is not defined
+    # TASK_ID = 8709 # false #   NameError: name 'set' is not defined
+    # TASK_ID = 4773 #  #   NameError: name 'odd' is not defined
+    # TASK_ID = 9176 #  #   NameError: name 'odd' is not defined
+    # TASK_ID = 5683 #  #   NameError: name 'prime' is not defined. Did you mean: 'print'?
+    # TASK_ID = 6996 #  #   NameError: name 'prime' is not defined. Did you mean: 'print'?
+
+    TASK_ID = 4253  # old code # NameError: round
+
+    # TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
+    # TASK_ID = 8671  #  #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
+
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_id", type=int, default=TASK_ID)
@@ -462,7 +492,8 @@ except RecursionError as e:
                                          'RecursionError': RecursionError,
                                          'lru_cache': lru_cache,
                                          'math': math, 'floor': floor, 'ceil': ceil, 'fractions': fractions,
-                                         'round': round, 'gcd': math.gcd, 'abs': abs,
+                                         'round': round, 'gcd': math.gcd, 'abs': abs, 'divmod': divmod,
+                                         'is_prime': sympy.isprime, 'set': set, 'sorted': sorted, 'list': list,
                                          # function_name: lambda x: x, 'ground_truth': ground_truth, # seq_pred: None
                                          'ground_truth': ground_truth, # seq_pred: None
                                          } }
