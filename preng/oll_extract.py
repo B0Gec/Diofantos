@@ -366,6 +366,7 @@ if __name__ == '__main__':
     TASK_ID = 5324
     # TASK_ID = 5338  # mb \ zs
 
+    TASK_ID = 259
 
 
 
@@ -526,7 +527,7 @@ except RecursionError as e:
     print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
     # print(test_code)
-    # exec(test_code, allowed_builtins)
+    exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
 
