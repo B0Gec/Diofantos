@@ -63,6 +63,7 @@ if __name__ == '__main__':
     # buggy = []
     store, df_store, mb_store = dict(), dict(), dict()
     errors_store = dict()
+    no_error_fails = []
     errors_count = {error: 0 for error in PY_ERRORS + AUX_ERRORS}
     dasco_re_count = 0
     count = 0
@@ -73,6 +74,8 @@ if __name__ == '__main__':
             is_dasco, seq_id, errors = extract_eval(f.read())
             dasco_re = is_dasco is not None
             is_dasco_num = 0 if is_dasco is None else is_dasco
+            if dasco_re and not is_dasco_num:
+                no_error_fails.append(filename[:5])
             store[filename[:5]] = is_dasco_num
             errors_store[filename[:5]] = errors
             for error in errors:
@@ -210,13 +213,20 @@ if __name__ == '__main__':
                 (7000, 7900), (8350, 9000)]
 
     bins_def = [(0, 252),
-                # (277, 370),
-                # (370, 576),
+                (252, 270),
+                (277, 370),
+                # (370, 885),
+                (370, 885),
+                (885, 948),
                 # (576, 699),
                 # (277, 699),
-                (277, 885),
+                # (277, 885),
+                # (277, 885),
                 (1386, 2000),
-                (5000, 5384), (5510, 6000),
+                (5000, 5384),
+                (5384, 5510),
+                (5510, 6000),
+                # (5000, 6000),
                 ]
 
     filler = [
@@ -279,6 +289,7 @@ if __name__ == '__main__':
 
     # 3. Fails analisys:
     doFail_analisys = False
+    # doFail_analisys = True
     if doFail_analisys:
         print(f'\n{len(files) = }')
         print(f'is_Dasco occurs: {dasco_re_count}, Errors: {sum([amount for error, amount in errors_count.items()]) }')
@@ -439,6 +450,26 @@ if __name__ == '__main__':
 
     # IndexError:
     # mainly missing files, other halucinations. (this error is very clean-cut)
+
+
+    # 3.7? Local errors
+    a,b = 5384, 5493
+    tasks = list(range(a, b))
+    print(f'{a}, {b}, {b-a}')
+    # print(errors_store.items())
+    # print({'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}.items())
+    # {'True': }
+    store.items()
+    print(f'Success: {sum(succ for task, succ in store.items() if task in tasks)}')
+    # print(store)
+    1/0
+
+    local_err_count = {err: len([task for task, err_dict in errors_store.items() if task in tasks and err in err_dict.keys()]) for err in errors_count.keys()}
+    print(local_err_count)
+    print(sum(local_err_count.values()))
+
+    1/0
+    # {}
 
 
     # 4.0  mb vs zshot 1 vs 0.
