@@ -1,5 +1,7 @@
 """Generate batches for 0-shot experiments."""
 
+TASK_DEF = 'ED'
+TASK_DEF = 'ID lookup'
 # IS_DASCOLI = False
 IS_DASCOLI = True
 # DASCO_NINPUT = 15
@@ -25,7 +27,9 @@ dascoli = open('../julia/urb-and-dasco/OEIS_easy.txt', 'r').readlines()
 
 ### Second (sophisticated) method:
 
-template = open('trash/template_markdown.txt', 'r').read()
+template_file = 'trash/template_markdown.txt'
+template_file = 'trash/template_id-to-eq.txt'
+template = open(template_file, 'r').read()
 # print(template)
 # print(' --- end --- ')
 
@@ -37,10 +41,11 @@ template = open('trash/template_markdown.txt', 'r').read()
 if IS_DASCOLI:
     qs = dascoli
 
-for q in qs[:5]:
-    print(q)
+for q in qs[:]:
+    # print(q)
     # 1/0
     if IS_DASCOLI:
+        seq_id = q[:7]
         seq = q[7:].strip(' ,\n')
         seqlist = seq.split(',')[:DASCO_NINPUT]
         # print(seqlist)
@@ -50,13 +55,15 @@ for q in qs[:5]:
         seq = q.split(': ')[1][:-len(' [/INST] \n')].replace(',', ', ')
     # content = q[len('[INST] '):-len(' [/INST] \n')].split()
     # print(seq)
+    if TASK_DEF == 'ID lookup':
+        seq = seq_id
     content = template.replace('**[Paste your integer sequence here]**', seq)
     content = content.replace('\n', '\\n')
 
     # print(content)
     prompt = f'{{"role": "user", "content": "{content}" }}'
     print(prompt)
-    1/0
+    # 1/0
 
 
 ## whole prompt with examples (105-110): success rate: 2/3  (one was MB hard)
