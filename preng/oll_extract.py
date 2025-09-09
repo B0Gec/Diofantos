@@ -180,11 +180,15 @@ if __name__ == '__main__':
     batch = 'obatch_qcor/'
     batch = 'obat-dasco25-10k/'
     # batch = 'obat-dasco25-10k_skip4097/'
+
     batch = 'obat-dasco25-10k-merged/'
+    batch = 'lookup/'
     cores = batch == 'obatch_qcor/'
+    is_lookup = batch == 'lookup/'
     N_INPUT = 25
     # N_INPUT = 2
     # N_INPUT = 3
+    print(f'{is_lookup = }')
 
     # filename = '00014-5348.json'
     TASK_ID = 0
@@ -367,12 +371,13 @@ if __name__ == '__main__':
     # TASK_ID = 5338  # mb \ zs
 
     TASK_ID = 259
+    TASK_ID = 19
+    TASK_ID = 18
 
-
-
-
-
-
+    # [('00004', 'RecursionError: maximum recursion depth exceeded'),
+    #  ('00007', 'RecursionError: maximum recursion depth exceeded'),
+    #  ('00011', 'RecursionError: maximum recursion depth exceeded'),
+    #  ('00017', 'RecursionError: maximum recursion depth exceeded'), (
 
 
 
@@ -392,6 +397,7 @@ if __name__ == '__main__':
     print(task_id)
     output_str = f"Evaluation of {in_dir}/{batch}"
     # output_str += f" saved into {out_dir}/{out_eval}:\n"
+    print(output_str)
     filename_prefix = f'{task_id:0>5}'
     # filename = '00109-4526.json'
     files = os.listdir(in_dir + batch)
@@ -412,8 +418,12 @@ if __name__ == '__main__':
 
     print(f'{question = }')
     print(f'{question[-200:] = }')
-    inits = question_inits(question)
-    print(f'{inits = }')
+    if not is_lookup:
+        inits = question_inits(question)
+        print(f'{inits = }')
+    else:
+        inits = []
+
 
     # decoded = decode(response, question=question)
     decoded = decode_sequence_function(response, inits=inits)
@@ -477,6 +487,8 @@ if __name__ == '__main__':
     #     else:
     #         return recur(n-1) + 2
     #
+    if is_lookup:
+        inits = ground_truth
 
     # Cut llm some slack:
     start_try = f"""\ntry:
@@ -527,7 +539,7 @@ except RecursionError as e:
     print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
     # print(test_code)
-    exec(test_code, allowed_builtins)
+    # exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
 

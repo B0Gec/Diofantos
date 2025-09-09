@@ -1,14 +1,18 @@
 """Generate batches for 0-shot experiments."""
 
+import pandas as pd
+
 TASK_DEF = 'ED'
 TASK_DEF = 'ID lookup'
-# IS_DASCOLI = False
-IS_DASCOLI = True
+IS_DASCOLI = False
+# IS_DASCOLI = True
 # DASCO_NINPUT = 15
 DASCO_NINPUT = 25
 
 ### First method:
 qs = open('data/test_cores25.txt', 'r').readlines()
+if TASK_DEF == 'ID lookup':
+    qs = list(pd.read_csv('../cores_test.csv').columns)
 # print(qs[:3])
 
 dascoli = open('../julia/urb-and-dasco/OEIS_easy.txt', 'r').readlines()
@@ -28,7 +32,8 @@ dascoli = open('../julia/urb-and-dasco/OEIS_easy.txt', 'r').readlines()
 ### Second (sophisticated) method:
 
 template_file = 'trash/template_markdown.txt'
-template_file = 'trash/template_id-to-eq.txt'
+if TASK_DEF == 'ID lookup':
+    template_file = 'trash/template_id-to-eq.txt'
 template = open(template_file, 'r').read()
 # print(template)
 # print(' --- end --- ')
@@ -52,7 +57,10 @@ for q in qs[:]:
         seq = ', '.join(seqlist)
         # print(seq)
     else:
-        seq = q.split(': ')[1][:-len(' [/INST] \n')].replace(',', ', ')
+        if TASK_DEF != 'ID lookup':
+            seq = q.split(': ')[1][:-len(' [/INST] \n')].replace(',', ', ')
+        else:
+            seq_id = q
     # content = q[len('[INST] '):-len(' [/INST] \n')].split()
     # print(seq)
     if TASK_DEF == 'ID lookup':

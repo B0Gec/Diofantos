@@ -42,6 +42,9 @@ def extract_dfmb(file_content: str):
 
 if __name__ == '__main__':
     EXPERIMENT_ID = 'zshot_eval-merge1112'
+    EXPERIMENT_ID = 'lookup-eval'
+
+    is_lookup = EXPERIMENT_ID == 'lookup-eval'
 
     df_dir = '../results/good/re2-transfoeis_acc2'
     mb_dir = '../results/goodmb/re2-mbtmN25'
@@ -221,6 +224,7 @@ if __name__ == '__main__':
                 # (370, 885),
                 (370, 885),
                 (885, 948),
+                (948, 1386),
                 # (576, 699),
                 # (277, 699),
                 # (277, 885),
@@ -242,17 +246,26 @@ if __name__ == '__main__':
                 (8000,  9000),
                 (9000, 10000),
         ]
+    full = sorted(filler + [(0, 1000), (1000, 2000), (5000, 6000)])
+    print(f'{full = }')
+    # 1/0
 
     simplify = False
     simplify = True
     if simplify:
-        bins_def = [(0, 948),
-                    (1386, 2000),
+        bins_def = [(0, 1000),
+                    (1000, 2000),
                     ]
         filler.append((5000, 6000))
+    if is_lookup:
+        bins_def = [(0, 20), ]
+        # bins_def = full[:5]
+        filler = []
+
     bins_def = sorted(bins_def+filler)
-    print(bins_def)
+    print(f'{bins_def = }')
     print(len(bins_def))
+    # 1/0
 
     # (2000,  3000)
     # (5000,  6000)
@@ -264,8 +277,9 @@ if __name__ == '__main__':
     bins_sizes = [b-a for a,b in bins_def]
 
     acks = [(a, b, [ v for k, v in store.items() if f'{a:0>5}' <= k < f'{b:0>5}']) for a,b in bins_def]
-    # print(acks)
+    print(acks)
     print()
+    # 1/0
     print(f'\ntotal true files: {sum([sum(bin) for a, b, bin in acks])}')
     print(f'total binned acc: {sum([sum(bin) for a, b, bin in acks])/sum([len(bin) for a, b, bin in acks])*100:0.2f}%')
     for a, b, bin in acks:
@@ -319,7 +333,9 @@ if __name__ == '__main__':
         print(errors_store_byerror)
         print(errors_store_byerror['TypeError'])
         print(errors_store_byerror['IndexError'])
-        # 1/0
+        print(errors_store_byerror['RecursionError'])
+        print([p[0] for p in errors_store_byerror['RecursionError']])
+        1/0
 
         # 3.1 Empty files
         # # empty file content (evals not finished in 1h (look TODO))
@@ -431,6 +447,7 @@ if __name__ == '__main__':
 
 
     print(f'{errors_count = }')
+    # 1/0
 
 
 
@@ -466,19 +483,36 @@ if __name__ == '__main__':
 
     # 3.7? Local errors
     a,b = 5384, 5493
-    tasks = list(range(a, b))
-    print(f'{a}, {b}, {b-a}')
+    a,b = 0, 10000
+    print()
+    tasks = [f'{i:0>5}' for i in range(a, b)]
+    # print(tasks)
+    # 1/0
+    print(f'{a = }, {b = }, {b-a = }')
     # print(errors_store.items())
     # print({'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}.items())
     # {'True': }
     store.items()
-    print(f'Success: {sum(succ for task, succ in store.items() if task in tasks)}')
+    successes = [succ for task, succ in store.items() if task in tasks]
+    # print(f'Success: {successes = }')
+    print(f'Success: {sum(successes) = }')
     # print(store)
-    1/0
+    # Success: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0]  # lookup succ
+    # Success: [0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1]
+
+    print(f'{no_error_fails[:20] = }')
+    loc_pure_fails = [i for i in no_error_fails if i in tasks]
+    # print(loc_pure_fails)
+    print(len(loc_pure_fails))
+    print(f'{len(loc_pure_fails) + sum(successes) = }')
+
+    # 1/0
 
     local_err_count = {err: len([task for task, err_dict in errors_store.items() if task in tasks and err in err_dict.keys()]) for err in errors_count.keys()}
     print(local_err_count)
     print(sum(local_err_count.values()))
+
+    # print(errors_store)
 
     1/0
     # {}
