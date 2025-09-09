@@ -18,7 +18,8 @@ def extract_eval(file_content: str):
     regex = re.findall(r'is_Dasco (\w{4,5})', file_content)
     if regex:
         is_dasco = 1 if regex[0] == 'True' else 0
-        seq_id = re.findall(r'Ground truth: (A\d{6})', file_content)[0]
+        seq_id_re = re.findall(r'Ground truth: (A\d{6})', file_content)
+        seq_id = seq_id_re[0] if seq_id_re else None
     else:
         for error in PY_ERRORS:
             error_found = re.findall(rf'{error}: .+', file_content)
@@ -42,9 +43,10 @@ def extract_dfmb(file_content: str):
 
 if __name__ == '__main__':
     EXPERIMENT_ID = 'zshot_eval-merge1112'
-    EXPERIMENT_ID = 'lookup-eval'
+    # EXPERIMENT_ID = 'lookup-eval'
+    EXPERIMENT_ID = 'lookup-corev2'
 
-    is_lookup = EXPERIMENT_ID == 'lookup-eval'
+    is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2')
 
     df_dir = '../results/good/re2-transfoeis_acc2'
     mb_dir = '../results/goodmb/re2-mbtmN25'
@@ -72,7 +74,7 @@ if __name__ == '__main__':
     count = 0
     for filename in files:
         with open(os.path.join(results_dir, filename), 'r') as f:
-            # print(f'{filename=}')
+            print(f'{filename=}')
             # is_manual_check, seq_id, eq = extract_eval(f.read())
             is_dasco, seq_id, errors = extract_eval(f.read())
             dasco_re = is_dasco is not None
@@ -315,7 +317,7 @@ if __name__ == '__main__':
 
     # 3. Fails analisys:
     doFail_analisys = False
-    # doFail_analisys = True
+    doFail_analisys = True
     if doFail_analisys:
         print(f'\n{len(files) = }')
         print(f'is_Dasco occurs: {dasco_re_count}, Errors: {sum([amount for error, amount in errors_count.items()]) }')
@@ -334,6 +336,7 @@ if __name__ == '__main__':
         print(errors_store_byerror['TypeError'])
         print(errors_store_byerror['IndexError'])
         print(errors_store_byerror['RecursionError'])
+        print([p[0] for p in errors_store_byerror['empty file']])
         print([p[0] for p in errors_store_byerror['RecursionError']])
         1/0
 

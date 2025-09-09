@@ -183,8 +183,9 @@ if __name__ == '__main__':
 
     batch = 'obat-dasco25-10k-merged/'
     batch = 'lookup/'
-    cores = batch == 'obatch_qcor/'
-    is_lookup = batch == 'lookup/'
+    batch = 'lookup-cores/'
+    cores = batch in ( 'obatch_qcor/', 'lookup-cores/')
+    is_lookup = batch in ('lookup/', 'lookup-cores/')
     N_INPUT = 25
     # N_INPUT = 2
     # N_INPUT = 3
@@ -379,6 +380,13 @@ if __name__ == '__main__':
     #  ('00011', 'RecursionError: maximum recursion depth exceeded'),
     #  ('00017', 'RecursionError: maximum recursion depth exceeded'), (
 
+    # cores-lookup:
+    # ['00024', '00049']
+    # ['00004', '00007', '00011', '00017', '00038', '00040', '00063', '00072', '00074', '00088', '00130', '00131', '00132', '00135', '00139', '00149', '00156', '00162']
+
+    TASK_ID = 24  # True!!
+    TASK_ID = 49
+    TASK_ID =  4
 
 
 
@@ -539,7 +547,7 @@ except RecursionError as e:
     print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
     # print(test_code)
-    # exec(test_code, allowed_builtins)
+    exec(test_code, allowed_builtins)
 
     # cores: 26 + 8 = 34 vsaj
 
