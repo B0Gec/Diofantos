@@ -1,0 +1,60 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+5
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00005-2921.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 0,1,1,0,1,1,2,2,4,5,10,14,26,42,78,132,249,445,842,1561,2988,5671,10981,21209,41472'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 0,1,1,0,1,1,2,2,4,5,10,14,26,42,78,132,249,445,842,1561,2988,5671,10981,21209,41472'
+inits = [0, 1, 1, 0, 1, 1, 2, 2, 4, 5, 10, 14, 26, 42, 78, 132, 249, 445, 842, 1561, 2988, 5671, 10981, 21209, 41472]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = [('a', '2*latex_seq(n-2) + increment_even'), ('a', '2*latex_seq(n-2) + increment_odd')]
+len(latex_matches) = 43
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [0, 1, 1, 0, 1, 1, 2, 2, 4, 5, 10, 14, 26, 42, 78, 132, 249, 445, 842, 1561, 2988, 5671, 10981, 21209, 41472]
+    if n < len(init):
+        return init[n]
+    return 2*latex_seq(n-2) + increment_odd 
+
+
+
+-- decoding response finished
+[cores sequence loaded.]
+ground_truth = [0, 1, 1, 0, 1, 1, 2, 2, 4, 5, 10, 14, 26, 42, 78, 132, 249, 445, 842, 1561, 2988, 5671, 10981, 21209, 41472, 81181, 160176, 316749, 629933, 1256070, 2515169, 5049816, 10172638, 20543579, 41602425]
+len(ground_truth) = 35
+
+cores = True
+task_id = 5
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 02140 for  latex_matches[-2:] = [('a', 'latex_seq(n - 10) \qulatex_seqd \text{for } n \geq 10'),  in eval11 vs eval8 latex_seq(n-10)
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 390, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'increment_odd' is not defined

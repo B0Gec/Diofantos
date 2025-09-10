@@ -77,6 +77,7 @@ import json
 import pandas as pd
 import sympy
 
+# from analize_equiv import true_inits
 from exact_ed import unnan
 # from eq_to_py import last_a
 from extract_function_name import extract_function_name
@@ -184,8 +185,10 @@ if __name__ == '__main__':
     batch = 'obat-dasco25-10k-merged/'
     batch = 'lookup/'
     batch = 'lookup-cores/'
+    batch = 'obatch_qcor/'
     cores = batch in ( 'obatch_qcor/', 'lookup-cores/')
     is_lookup = batch in ('lookup/', 'lookup-cores/')
+    IS_QUICK_CORES = True
     N_INPUT = 25
     # N_INPUT = 2
     # N_INPUT = 3
@@ -389,6 +392,74 @@ if __name__ == '__main__':
     TASK_ID =  4
 
 
+    TASK_ID =  9  # first true
+    TASK_ID =  10  # sec true
+    TASK_ID =  11 # True
+    TASK_ID =  12 # false
+    TASK_ID =  14 # true
+    TASK_ID =  15  # false
+    TASK_ID =  19  # true
+    TASK_ID =  20  # false
+    TASK_ID =  21 # true
+    TASK_ID =  22  # false
+    TASK_ID =  23 # false
+    TASK_ID =  24 # true
+    # TASK_ID =  25 # false TASK_ID =  26 # false TASK_ID =  27 # false TASK_ID =  63 # false TASK_ID =  76 # false TASK_ID =  84 # false TASK_ID =  85 # false TASK_ID =  90 # false TASK_ID =  117 # false TASK_ID =  127 # false TASK_ID =  132 # false TASK_ID =  134 # false TASK_ID =  144 # false
+    
+    
+    #empty: ['00012' false, '00020' fal, '00024' true, '00025' f, '00027' f]
+# Recursion error: ['00003' false, '00005' fal, '00007' f, '00017' f, '00022' f,    |     '00063', '00076', '00084', '00085', '00090', '00117', '00127', '00132', '00134', '00144'] # all false (checked)
+    # 50 valueError
+    # Success: successes_true = ['00009' ja, '00010', '00011', '00014', '00019', '00021', '00030', '00032', '00039', '00088']
+    # other true: 24,
+    # really (id-eq): 9, 10, 11 (algo for primes), 14, 19, 21, 24, 30, 32, 39, 88.
+    # not really:
+
+
+    # obat cores (old llm experiments, new eval):
+    #empty: 4, 25, 96
+    TASK_ID = 35 # , 97: potentially true.
+
+    # trues = ['00002', '00009', '00010', '00011', '00012', '00014', '00017', '00019', '00021', '00024', '00029',
+        #       ?,        true,     t    t[hard] algo,  ?,      t,      t,      t           t,    t,        t,
+   # '00030', '00032', '00034', '00035', '00038', '00039', '00041', '00042', '00044', '00046', '00047',
+   #    t,      t,          t,    t,        t,      t,      t,          t,      t,      t,      t,
+   # '00048', '00050', '00051', '00052', '00056', '00057', '00069', '00070', '00072', '00075', '00077',
+    #     t,     t,      t,         t,     t,       t,      algo t?,    t,      t,      t,      t (to check properly),
+   # '00081', '00087', '00088', '00090', '00094', '00095', '00097', '00098', '00102', '00106', '00108',
+   #     t,     t,      t,       algo ?,    t   ,  t,        ? ,     seems t,   ? hard,  t,         t,
+   # '00111', '00112', '00114', '00123', '00130', '00133', '00136', '00159']
+   #     t,     t,      t,          t,      t,          ?      t,       ?
+
+    # empty: ['00004', '00025', '00096']
+    # 00022: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # 00031: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # 00054: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+    # 00093: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
+    # 00129: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+    # 00151: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+
+    TASK_ID = 7
+    # 00007: NameError: name 'a' is not defined. Did you mean: 'a0'?
+    # 00053: NameError: name 'a' is not defined. Did you mean: 'a0'?
+    # 00028: NameError: name 'p' is not defined
+    # 00040: NameError: name 'p' is not defined
+    # 00045: NameError: name 'k' is not defined
+    # 00137: NameError: name 'k' is not defined
+    # 00005: NameError: name 'increment_odd' is not defined
+    # 00008: NameError: name 'w' is not defined
+    # 00058: NameError: name 'set' is not defined
+    # 00062: NameError: name 'c1' is not defined
+    # 00068: NameError: name 'd' is not defined
+    # 00113: NameError: name 'x' is not defined
+    # 00119: NameError: name 'gcd' is not defined
+    # 00135: NameError: name 'max' is not defined
+    # 00152: NameError: name 'c_1' is not defined
+
+
+
+
+
 
 
     parser = argparse.ArgumentParser()
@@ -469,6 +540,8 @@ if __name__ == '__main__':
         ground_truth_csv = pd.read_csv('../cores_test.csv')
         # ground_truth = [int(i) for i in ground_truth_csv[ground_truth_csv.columns[task_id]]]
         ground_truth = [int(i) for i in unnan(ground_truth_csv[ground_truth_csv.columns[task_id]])]
+        if IS_QUICK_CORES:
+            ground_truth = ground_truth[:35]
         print('[cores sequence loaded.]')
 
     else:
@@ -547,7 +620,8 @@ except RecursionError as e:
     print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
     # print(test_code)
-    exec(test_code, allowed_builtins)
+    # exec(test_code, allowed_builtins)
+
 
     # cores: 26 + 8 = 34 vsaj
 

@@ -1,0 +1,73 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+90
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00090-8690.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 4,6,9,10,14,15,21,22,25,26,33,34,35,38,39,46,49,51,55,57,58,62,65,69,74'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 4,6,9,10,14,15,21,22,25,26,33,34,35,38,39,46,49,51,55,57,58,62,65,69,74'
+inits = [4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34, 35, 38, 39, 46, 49, 51, 55, 57, 58, 62, 65, 69, 74]
+code_blocks = ['def is_prime(n):\n    if n < 2:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    return True\n\ndef is_semi_prime(n):\n    if n < 4:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return is_prime(i) and is_prime(n // i)\n    return is_prime(n // 2) and n == 2 * (n // 2)\n\ndef semiprime(n):\n    if n == 1:\n        return 4\n    prev = semiprime(n - 1)\n    next_num = prev + 1\n    while True:\n        if is_semi_prime(next_num):\n            return next_num\n        next_num += 1\n', 'for i in range(1, 26):\n    print(f"semiprime({i}) = {semiprime(i)}")\n']
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'semiprime'
+-- test_code 
+
+
+
+
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def is_semi_prime(n):
+    if n < 4:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return is_prime(i) and is_prime(n // i)
+    return is_prime(n // 2) and n == 2 * (n // 2)
+
+def semiprime(n):
+    if n == 1:
+        return 4
+    prev = semiprime(n - 1)
+    next_num = prev + 1
+    while True:
+        if is_semi_prime(next_num):
+            return next_num
+        next_num += 1 
+
+
+
+-- decoding response finished
+[cores sequence loaded.]
+ground_truth = [4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34, 35, 38, 39, 46, 49, 51, 55, 57, 58, 62, 65, 69, 74, 77, 82, 85, 86, 87, 91, 93, 94, 95, 106]
+len(ground_truth) = 35
+
+cores = True
+task_id = 90
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 02140 for  latex_matches[-2:] = [('a', 'latex_seq(n - 10) \qulatex_seqd \text{for } n \geq 10'),  in eval11 vs eval8 latex_seq(n-10)
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = semiprime
+maximum recursion depth exceeded
+start = 1
+    seq_pred = [4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34, 35, 38, 39, 46, 49, 51, 55, 57, 58, 62, 65, 69, 74, 77, 82, 85, 86, 87, 91, 93, 94, 95, 106]
+len(seq_pred) = 35
+
+is_Dasco True
+

@@ -1,0 +1,60 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+119
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00119-3830.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,1,2,6,12,60,60,420,840,2520,2520,27720,27720,360360,360360,360360,720720,12252240,12252240,232792560,232792560,232792560,232792560,5354228880,5354228880'
+question[-200:] = 'ython code for the following number sequence: 1,1,2,6,12,60,60,420,840,2520,2520,27720,27720,360360,360360,360360,720720,12252240,12252240,232792560,232792560,232792560,232792560,5354228880,5354228880'
+inits = [1, 1, 2, 6, 12, 60, 60, 420, 840, 2520, 2520, 27720, 27720, 360360, 360360, 360360, 720720, 12252240, 12252240, 232792560, 232792560, 232792560, 232792560, 5354228880, 5354228880]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = [('a', '\\frlatex_seqc{latex_seq(n-1) * n}{\\gcd(latex_seq(n-1), n)}'), ('a', '\\frlatex_seqc{latex_seq(n-1) * n}{\\gcd(latex_seq(n-1), n)} \\qulatex_seqd \\text{with} \\qulatex_seqd latex_seq(0) = 1')]
+len(latex_matches) = 13
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 1, 2, 6, 12, 60, 60, 420, 840, 2520, 2520, 27720, 27720, 360360, 360360, 360360, 720720, 12252240, 12252240, 232792560, 232792560, 232792560, 232792560, 5354228880, 5354228880]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) * n / gcd(latex_seq(n-1), n) 
+
+
+
+-- decoding response finished
+[cores sequence loaded.]
+ground_truth = [1, 1, 2, 6, 12, 60, 60, 420, 840, 2520, 2520, 27720, 27720, 360360, 360360, 360360, 720720, 12252240, 12252240, 232792560, 232792560, 232792560, 232792560, 5354228880, 5354228880, 26771144400, 26771144400, 80313433200, 80313433200, 2329089562800, 2329089562800, 72201776446800, 144403552893600, 144403552893600, 144403552893600]
+len(ground_truth) = 35
+
+cores = True
+task_id = 119
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 02140 for  latex_matches[-2:] = [('a', 'latex_seq(n - 10) \qulatex_seqd \text{for } n \geq 10'),  in eval11 vs eval8 latex_seq(n-10)
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 390, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'gcd' is not defined

@@ -1,0 +1,50 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+66
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00066-6637.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3'
+inits = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6, 4, 3]
+code_blocks = ['def pi_sequence(n):\n    sequence = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6, 4, 3]\n    if n <= len(sequence):\n        return sequence[n - 1]\n    else:\n        return "Sequence not extended beyond 25 terms"\n\n# Example usage:\nfor i in range(1, 26):\n    print(f"Term {i}: {pi_sequence(i)}")\n']
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = []
+len(latex_matches) = 0
+code_blocks from latex:
+
+def pi_sequence(n):
+    sequence = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6, 4, 3]
+    if n <= len(sequence):
+        return sequence[n - 1]
+    else:
+        return "Sequence not extended beyond 25 terms"
+
+# Example usage:
+for i in range(1, 26):
+    print(f"Term {i}: {pi_sequence(i)}")
+
+
+Ending part of response, since no eq/fn found:
+Response (last 10 rows):
+# Example usage:
+for i in range(1, 26):
+    print(f"Term {i}: {pi_sequence(i)}")
+```
+
+### Notes:
+- This function returns the `n`-th digit of π from the hardcoded list.
+- For deeper analysis or longer sequences, advanced algorithms (e.g., BBP) would be required, but they are computationally intensive and not recursive in the traditional sense.
+
+If you have a different pattern in mind, feel free to clarify!
+Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 277, in <module>
+    decoded = decode_sequence_function(response, inits=inits)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ceph/grid/home/bgec/oeis/preng/parse_response.py", line 413, in decode_sequence_function
+    raise ValueError("Could not locate a recursive sequence in the response.")
+ValueError: Could not locate a recursive sequence in the response.

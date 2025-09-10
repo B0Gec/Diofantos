@@ -1,0 +1,40 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+100
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00100-2965.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 0,1,3,8,21,55,144,377,987,2584,6765,17711,46368,121393,317811,832040,2178309,5702887,14930352,39088169,102334155,267914296,701408733,1836311903,4807526976'
+question[-200:] = 'ython code for the following number sequence: 0,1,3,8,21,55,144,377,987,2584,6765,17711,46368,121393,317811,832040,2178309,5702887,14930352,39088169,102334155,267914296,701408733,1836311903,4807526976'
+inits = [0, 1, 3, 8, 21, 55, 144, 377, 987, 2584, 6765, 17711, 46368, 121393, 317811, 832040, 2178309, 5702887, 14930352, 39088169, 102334155, 267914296, 701408733, 1836311903, 4807526976]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = []
+len(latex_matches) = 0
+code_blocks from latex:
+
+
+
+Ending part of response, since no eq/fn found:
+Response (last 10 rows):
+Term 3: 8 (difference from previous: 5)
+Term 4: 21 (difference: 13)
+Term 5: 55 (difference: 34)
+Wait a minute, those differences look familiar. 2, 5, 13, 34... Those are Fibonacci numbers! Let me check. The Fibonacci sequence is 0,1,1,2,3,5,8,13,21, etc. But here the differences are 2 (which is Fib(3)), 5 (Fib(5)), 13 (Fib(7)), 34 (Fib(9)), etc. So each term seems to be the sum of the previous term and a Fibonacci number. But maybe there's a simpler way to express this.
+
+Alternatively, looking at the terms themselves. Let's see if each term relates to the previous two terms. Let's check:
+
+Term 2: 3. If it's term1 + term0, that's 1+0=1, no. Maybe term1 * something? Not sure. Let's check term3: 8. Term2 is 3, term1 is 1. 3*2 +1? 3*2+1=7, no. Term2 + term1*2? 3 + 1*2=5, no. Hmm.
+
+Looking at term4: 21. Previous terms are 8 and 3. 8*2 +3= 19? No. 8*2 +3= 19. Not 21. What if it's term3 * something? Let's see term3 is 8, term4 is 21. 8 * 2.625? Not helpful. Maybe adding more terms. Let's check term5: 55. Previous term is 21
+Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 277, in <module>
+    decoded = decode_sequence_function(response, inits=inits)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ceph/grid/home/bgec/oeis/preng/parse_response.py", line 413, in decode_sequence_function
+    raise ValueError("Could not locate a recursive sequence in the response.")
+ValueError: Could not locate a recursive sequence in the response.

@@ -1,0 +1,40 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+116
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00116-7178.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,1,2,7,56,2212,2595782'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,1,2,7,56,2212,2595782'
+inits = [1, 1, 2, 7, 56, 2212, 2595782]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = [('term', 'latex_seq(n-1) * (latex_seq(n-1) + latex_seq(n-2))?'), ('term', 'latex_seq(n-1) * (latex_seq(n-1) + latex_seq(n-2)) - something.')]
+len(latex_matches) = 24
+code_blocks from latex:
+
+
+
+Ending part of response, since no eq/fn found:
+Response (last 10 rows):
+
+If I look at the pattern, it seems like starting from term(2), each term is the product of the previous term and an increasing integer, but the integers are 2, 3.5, 8, 39.5... 
+
+But these integers don't follow a simple pattern. 
+
+However, if I look at the integers: 2, 3.5, 8, 39.5... 
+
+Notice that 2 = 2, 3.5 = 2 + 1.5, 8 = 3.5 + 4.5, 39.5 = 8 + 31.5... 
+
+The differences between these integers are 1.5, 4.5, 31.5... which are 1.5, 4.5 (which is 1.5*3), 31.5 (
+Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 277, in <module>
+    decoded = decode_sequence_function(response, inits=inits)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ceph/grid/home/bgec/oeis/preng/parse_response.py", line 413, in decode_sequence_function
+    raise ValueError("Could not locate a recursive sequence in the response.")
+ValueError: Could not locate a recursive sequence in the response.

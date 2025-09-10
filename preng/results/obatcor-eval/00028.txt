@@ -1,0 +1,60 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+28
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00028-8027.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,2,4,6,10,14,20,26,36,46,60,74,94,114,140,166,202,238,284,330,390,450,524,598,692'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 1,2,4,6,10,14,20,26,36,46,60,74,94,114,140,166,202,238,284,330,390,450,524,598,692'
+inits = [1, 2, 4, 6, 10, 14, 20, 26, 36, 46, 60, 74, 94, 114, 140, 166, 202, 238, 284, 330, 390, 450, 524, 598, 692]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+latex_matches[-2:] = [('a', "latex_seq(n-1) + latex_seq(math.ceil(n/2)) *with latex_seq(1) = 1, latex_seqnd I've computed up to latex_seq(100) *step by step, latex_seqnd verified some steps, it's likely thlatex_seqt the latex_seqnswer is 195830."), ('a', 'latex_seq(n-1) + latex_seq\\left(\\left\\lmath.ceil \\frlatex_seqc{n}{2} \\right\\rmath.ceil\\right), \\qulatex_seqd \\text{with } latex_seq(1) = 1,')]
+len(latex_matches) = 48
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 2, 4, 6, 10, 14, 20, 26, 36, 46, 60, 74, 94, 114, 140, 166, 202, 238, 284, 330, 390, 450, 524, 598, 692]
+    if n < len(init):
+        return init[n]
+    return p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4) 
+
+
+
+-- decoding response finished
+[cores sequence loaded.]
+ground_truth = [1, 2, 4, 6, 10, 14, 20, 26, 36, 46, 60, 74, 94, 114, 140, 166, 202, 238, 284, 330, 390, 450, 524, 598, 692, 786, 900, 1014, 1154, 1294, 1460, 1626, 1828, 2030, 2268]
+len(ground_truth) = 35
+
+cores = True
+task_id = 28
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 02140 for  latex_matches[-2:] = [('a', 'latex_seq(n - 10) \qulatex_seqd \text{for } n \geq 10'),  in eval11 vs eval8 latex_seq(n-10)
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 390, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'p' is not defined

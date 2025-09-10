@@ -1,0 +1,79 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+13
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00013-7633.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 2,3,5,7,13,17,19,31,61,89,107,127,521,607,1279,2203,2281,3217,4253,4423,9689,9941,11213,19937,21701'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 2,3,5,7,13,17,19,31,61,89,107,127,521,607,1279,2203,2281,3217,4253,4423,9689,9941,11213,19937,21701'
+inits = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701]
+code_blocks = ['import math\n\ndef is_prime(n, i=2):\n    if n < 2:\n        return False\n    if i * i > n:\n        return True\n    if n % i == 0:\n        return False\n    return is_prime(n, i + 1)\n\ndef is_mersenne_prime(p):\n    return is_prime(2**p - 1)\n\ndef find_next_mersenne_exponent(last_exponent):\n    p = last_exponent + 1\n    while True:\n        if is_prime(p) and is_mersenne_prime(p):\n            return p\n        p += 1\n\ndef generate_mersenne_exponents(n, current=None, result=None):\n    if current is None:\n        current = 2\n        result = [2]\n    if len(result) == n:\n        return result\n    next_exponent = find_next_mersenne_exponent(current)\n    return generate_mersenne_exponents(n, next_exponent, result + [next_exponent])\n\n# Example usage: Generate first 5 exponents\nprint(generate_mersenne_exponents(5))\n']
+
+Test code was censored for imports and manipulated to avoid user input and the code has actually changed for real!
+Here are all censored lines:
+import math
+And here are all the manipulated lines:
+
+
+function_name = 'is_prime'
+-- test_code 
+
+
+
+
+
+def is_prime(n, i=2):
+    if n < 2:
+        return False
+    if i * i > n:
+        return True
+    if n % i == 0:
+        return False
+    return is_prime(n, i + 1)
+
+def is_mersenne_prime(p):
+    return is_prime(2**p - 1)
+
+def find_next_mersenne_exponent(last_exponent):
+    p = last_exponent + 1
+    while True:
+        if is_prime(p) and is_mersenne_prime(p):
+            return p
+        p += 1
+
+def generate_mersenne_exponents(n, current=None, result=None):
+    if current is None:
+        current = 2
+        result = [2]
+    if len(result) == n:
+        return result
+    next_exponent = find_next_mersenne_exponent(current)
+    return generate_mersenne_exponents(n, next_exponent, result + [next_exponent])
+
+# Example usage: Generate first 5 exponents
+print(generate_mersenne_exponents(5)) 
+
+
+
+-- decoding response finished
+[cores sequence loaded.]
+ground_truth = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209, 44497, 86243, 110503, 132049, 216091, 756839, 859433, 1257787, 1398269]
+len(ground_truth) = 35
+
+cores = True
+task_id = 13
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 02140 for  latex_matches[-2:] = [('a', 'latex_seq(n - 10) \qulatex_seqd \text{for } n \geq 10'),  in eval11 vs eval8 latex_seq(n-10)
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+[2, 3, 5, 7, 13]
+function_name = is_prime
+start = 2
+    seq_pred = [1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0]
+len(seq_pred) = 35
+
+is_Dasco False
+

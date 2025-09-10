@@ -16,6 +16,7 @@ def extract_eval(file_content: str):
     seq_id = 'unknown (proabaly error)'
     errors = dict()
     regex = re.findall(r'is_Dasco (\w{4,5})', file_content)
+    print(regex)
     if regex:
         is_dasco = 1 if regex[0] == 'True' else 0
         seq_id_re = re.findall(r'Ground truth: (A\d{6})', file_content)
@@ -44,9 +45,11 @@ def extract_dfmb(file_content: str):
 if __name__ == '__main__':
     EXPERIMENT_ID = 'zshot_eval-merge1112'
     # EXPERIMENT_ID = 'lookup-eval'
-    EXPERIMENT_ID = 'lookup-corev2'
+    # EXPERIMENT_ID = 'lookup-corev2'
+    EXPERIMENT_ID = 'lookup-corev3'
+    EXPERIMENT_ID = 'obatcor-eval'
 
-    is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2')
+    is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2', 'lookup-corev3', 'obatcor-eval')
 
     df_dir = '../results/good/re2-transfoeis_acc2'
     mb_dir = '../results/goodmb/re2-mbtmN25'
@@ -77,6 +80,7 @@ if __name__ == '__main__':
             print(f'{filename=}')
             # is_manual_check, seq_id, eq = extract_eval(f.read())
             is_dasco, seq_id, errors = extract_eval(f.read())
+            print(f'{is_dasco = }')
             dasco_re = is_dasco is not None
             is_dasco_num = 0 if is_dasco is None else is_dasco
             if dasco_re and not is_dasco_num:
@@ -260,7 +264,8 @@ if __name__ == '__main__':
                     ]
         filler.append((5000, 6000))
     if is_lookup:
-        bins_def = [(0, 20), ]
+        # bins_def = [(0, 20), ]
+        bins_def = [(0, 164), ]
         # bins_def = full[:5]
         filler = []
 
@@ -338,7 +343,7 @@ if __name__ == '__main__':
         print(errors_store_byerror['RecursionError'])
         print([p[0] for p in errors_store_byerror['empty file']])
         print([p[0] for p in errors_store_byerror['RecursionError']])
-        1/0
+        # 1/0
 
         # 3.1 Empty files
         # # empty file content (evals not finished in 1h (look TODO))
@@ -365,10 +370,11 @@ if __name__ == '__main__':
 
     # '00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679']
 
-    # 3.3 TypeError:
+    # # 3.3 TypeError:
     # print()
     # for task, err in errors_store_byerror['TypeError']:
     #     print(f'{task}: {err}')
+    # 1/0
 
     # # Type errors:
     # TYPEERRORS = ['TypeError: list indices must be integers or slices, not float',
@@ -433,7 +439,7 @@ if __name__ == '__main__':
 
     # 3.6 NameError:
     doNameError = True
-    doNameError = False
+    # doNameError = False
     if doNameError:
         subcount = dict()
         print(len(errors_store_byerror['NameError']))
@@ -446,7 +452,7 @@ if __name__ == '__main__':
                 print(f'{task}: {err}')
 
         print(sorted(subcount.values()))
-    # 1/0
+    1/0
 
 
     print(f'{errors_count = }')
@@ -497,7 +503,8 @@ if __name__ == '__main__':
     # {'True': }
     store.items()
     successes = [succ for task, succ in store.items() if task in tasks]
-    # print(f'Success: {successes = }')
+    successes_true = [task for task, succ in store.items() if task in tasks and succ]
+    print(f'Success: {successes_true = }')
     print(f'Success: {sum(successes) = }')
     # print(store)
     # Success: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0]  # lookup succ
@@ -509,7 +516,7 @@ if __name__ == '__main__':
     print(len(loc_pure_fails))
     print(f'{len(loc_pure_fails) + sum(successes) = }')
 
-    # 1/0
+    1/0
 
     local_err_count = {err: len([task for task, err_dict in errors_store.items() if task in tasks and err in err_dict.keys()]) for err in errors_count.keys()}
     print(local_err_count)

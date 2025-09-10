@@ -1,0 +1,71 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+93
+Evaluation of results//obatch_qcor/
+files[:15] = ['00133-2465.json', '00010-2876.json', '00063-5463.json', '00148-6460.json', '00069-7400.json', '00079-5715.json', '00126-4221.json', '00068-7996.json', '00035-3660.json', '00138-9868.json', '00140-4442.json', '00112-4345.json', '00143-7731.json', '00005-2921.json', '00132-1156.json']
+00093-1143.json
+question = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 0,1,2,4,5,8,9,10,13,16,17,18,20,25,26,29,32,34,36,37,40,41,45,49,50'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 0,1,2,4,5,8,9,10,13,16,17,18,20,25,26,29,32,34,36,37,40,41,45,49,50'
+inits = [0, 1, 2, 4, 5, 8, 9, 10, 13, 16, 17, 18, 20, 25, 26, 29, 32, 34, 36, 37, 40, 41, 45, 49, 50]
+code_blocks = ['def is_sum_of_two_squares(n):\n    """Check if n can be written as sum of two squares."""\n    for i in range(int(n**0.5) + 1):\n        j = n - i**2\n        if j < 0:\n            continue\n        if int(j**0.5)**2 == j:\n            return True\n    return False\n\ndef generate_sequence(limit, current=0, result=None):\n    """Recursively generate all numbers up to `limit` that are sum of two squares."""\n    if result is None:\n        result = []\n    if current > limit:\n        return result\n    if is_sum_of_two_squares(current):\n        result.append(current)\n    return generate_sequence(limit, current + 1, result)\n\n# Example usage: Generate all such numbers up to 50\nprint(generate_sequence(50))\n']
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'generate_sequence'
+-- test_code 
+
+
+
+
+def is_sum_of_two_squares(n):
+    """Check if n can be written as sum of two squares."""
+    for i in range(int(n**0.5) + 1):
+        j = n - i**2
+        if j < 0:
+            continue
+        if int(j**0.5)**2 == j:
+            return True
+    return False
+
+def generate_sequence(limit, current=0, result=None):
+    """Recursively generate all numbers up to `limit` that are sum of two squares."""
+    if result is None:
+        result = []
+    if current > limit:
+        return result
+    if is_sum_of_two_squares(current):
+        result.append(current)
+    return generate_sequence(limit, current + 1, result)
+
+# Example usage: Generate all such numbers up to 50
+print(generate_sequence(50)) 
+
+
+
+-- decoding response finished
+[cores sequence loaded.]
+ground_truth = [0, 1, 2, 4, 5, 8, 9, 10, 13, 16, 17, 18, 20, 25, 26, 29, 32, 34, 36, 37, 40, 41, 45, 49, 50, 52, 53, 58, 61, 64, 65, 68, 72, 73, 74]
+len(ground_truth) = 35
+
+cores = True
+task_id = 93
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 02140 for  latex_matches[-2:] = [('a', 'latex_seq(n - 10) \qulatex_seqd \text{for } n \geq 10'),  in eval11 vs eval8 latex_seq(n-10)
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+[0, 1, 2, 4, 5, 8, 9, 10, 13, 16, 17, 18, 20, 25, 26, 29, 32, 34, 36, 37, 40, 41, 45, 49, 50]
+function_name = generate_sequence
+start = 2
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 390, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 34, in <module>
+  File "<string>", line 34, in <listcomp>
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
