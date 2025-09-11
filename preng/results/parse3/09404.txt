@@ -1,0 +1,50 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+9404
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+09404-5976.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 367, 733, 977, 1709, 1831, 2441, 3539, 4027, 4271, 4637, 4759, 5003, 5857, 6101, 6833, 7321, 7687, 8053, 8297, 8419, 8663, 9029, 9151, 9883, 10859'
+question[-200:] = 'm of a Python code for the following number sequence: 367, 733, 977, 1709, 1831, 2441, 3539, 4027, 4271, 4637, 4759, 5003, 5857, 6101, 6833, 7321, 7687, 8053, 8297, 8419, 8663, 9029, 9151, 9883, 10859'
+inits = [367, 733, 977, 1709, 1831, 2441, 3539, 4027, 4271, 4637, 4759, 5003, 5857, 6101, 6833, 7321, 7687, 8053, 8297, 8419, 8663, 9029, 9151, 9883, 10859]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+3
+('a', " p*a(n-1) + q*a(n-2). Let's try to find p and q.")
+('term', ' term(n-1) + term(n-2) - something? For example, 977 = 733 + 367 - 123. 1709 = 977 + 733 - 1. 1831 = 1709 + 977 - 855. Not helpful.')
+('term', " term(n-1) + k*term(n-2), where k varies. But without knowing k, it's hard to proceed.")
+var, rhs: ('a', "p*a(n-1) + q*a(n-2). Let's try to find p and q.")
+var, rhs: ('term', 'term(n-1) + term(n-2) - something? For example, 977 = 733 + 367 - 123. 1709 = 977 + 733 - 1. 1831 = 1709 + 977 - 855. Not helpful.')
+var, rhs: ('term', "term(n-1) + k*term(n-2), where k varies. But without knowing k, it's hard to proceed.")
+latex_matches[-2:] = [('term', '1-'), ('term', "latex_seq(n-1) + k*latex_seq(n-2), where k varies. But without knowing k, it's hard to proceed")]
+('a', "p*latex_seq(n-1) + q*latex_seq(n-2). Let's try to find p and q")
+('term', '1-')
+('term', "latex_seq(n-1) + k*latex_seq(n-2), where k varies. But without knowing k, it's hard to proceed")
+len(latex_matches) = 3
+code_blocks from latex:
+
+
+
+Ending part of response, since no eq/fn found:
+Response (last 10 rows):
+
+Thus, the next term is:  
+$$
+10859 + (3 \times 122) = 10859 + 366 = 11225
+$$  
+
+**Answer:**  
+$$
+\boxed{11225}
+$$
+Unfortunately, NO LATEX equation as well as no PYTHON CODE was successfully parsed into recursive function/equation.
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 514, in <module>
+    decoded = decode_sequence_function(response, inits=inits)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/ceph/grid/home/bgec/oeis/preng/parse_response.py", line 434, in decode_sequence_function
+    raise ValueError("Could not locate a recursive sequence in the response.")
+ValueError: Could not locate a recursive sequence in the response.

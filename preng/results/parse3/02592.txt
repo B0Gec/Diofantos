@@ -1,0 +1,216 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+2592
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+02592-9952.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 2, 3, 4, 6, 8, 11, 16, 23, 32, 45, 64, 91, 128, 181, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096'
+question[-200:] = 'u give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 2, 3, 4, 6, 8, 11, 16, 23, 32, 45, 64, 91, 128, 181, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096'
+inits = [1, 1, 2, 3, 4, 6, 8, 11, 16, 23, 32, 45, 64, 91, 128, 181, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+52
+('term', ' 2^{n/2}.')
+('term', " term(n-1) + term(n-2). Let's check for n=3: term(2) + term(1) = 2+1=3. Correct. For n=5: term(4) + term(3) =4+3=7. But actual term is 6. No. So that doesn't work.")
+('term', " 2 * term(n-2). Let's check. For n=2: 2*term(0)=2*1=2. Correct. For n=4: 2*term(2)=2*2=4. Correct. For n=6: 2*term(4)=2*4=8. Correct. For n=8: 2*term(6)=2*8=16. Correct. For n=10: 2*term(8)=2*16=32. But term(10) would be part of the sequence. Wait, the given terms up to n=23. For example, term(10) would be 2^5=32. So yes, for even n, term(n) = 2^{n/2}.")
+('term', " term(n-1) + term(n-2). Let's check for n=3: term(2) + term(1) =2+1=3. Correct. For n=5: term(4) + term(3) =4+3=7. But actual term is 6. No. So that doesn't work. Hmm.")
+('term', ' term(n-2) + term(n-3). For n=3: term(1) + term(0) =1+1=2. No, actual is 3. Not matching. For n=5: term(3) + term(2) =3+2=5. Actual is 6. No. Hmm.')
+('term', " term(n-2) + term(n- something). Let's look at term(5)=6. term(3)=3, term(2)=2. 3+2=5. Not 6. term(4)=4. 4+2=6. So term(5)=term(4)+term(2). For n=5, which is odd. Then for n=7: term(6)=8, term( something). 8 + term(?) =11. term(4)=4. 8+4=12. No. term(5)=6. 8+6=14. No. term(3)=3. 8+3=11. Yes! So term(7)=term(6)+term(3). For n=7, which is odd. Then for n=9: term(8)=16. What to add? term(5)=6. 16+6=22. Actual term is 23. Close. Hmm. Maybe term(8) + term( something else). term(7)=11. 16+11=27. No. term(6)=8. 16+8=24. No. Hmm. Not matching.")
+('term', ' term(n-1) + term( (n-1)/2 ). For example, n=3: term(2) + term(1) =2+1=3. Correct. For n=5: term(4) + term(2) =4+2=6. Correct. For n=7: term(6) + term(3) =8+3=11. Correct. For n=9: term(8) + term(4) =16+4=20. But actual term is 23. No. Hmm. Not matching. Wait, term(9) is 23. Maybe term(8) + term( something else). term(8) is 16. 16 + term(5)=16+6=22. Still not 23. Hmm.')
+('term', " term(n-2) * 2. Let's check:")
+('term', " 2 * term(n-2). But for n=3, term(3)=3, which is 2*term(1) +1. Hmm. So perhaps there's a different rule for n=3. But maybe there's a general rule that for odd n ≥1, term(n) = term(n-2) + something. Let's see:")
+('term', " 2*term(n-2). But for n=3, it's 2*term(1) +1. However, if we look at the pattern, after n=3, the odd terms follow term(n) = 2*term(n-2). But why does n=3 have an extra +1? Maybe there's a different way to look at it.")
+('term', " term(n-2) + term(n-1 -k), but I'm not sure. Let's try to find a general formula.")
+('term', ' 2^{n/2}.')
+('term', " 2*term(n-2). But for m=1 (n=3), it's 3=2*1 +1. However, if we consider that for m≥2, term(n) = 2*term(n-2), and for m=1, it's a special case, perhaps there's a general formula.")
+('term', " term(n-2) + term(n-1). Wait, for n=3: term(3)=term(1)+term(2)=1+2=3. Correct. For n=5: term(5)=term(3)+term(4)=3+4=7. But actual term is 6. No. So that doesn't work.")
+('term', ' term(n-2) + term( (n-1)/2 ). For n=3: term(1) + term(1)=1+1=2. No. Actual is 3. Not matching.')
+('term', ' term(n-2) + term(n-2 -k). Not sure.')
+('term', " 2*term(n-2). But why does n=3 not follow this? Let's check if there's a different way to express it.")
+('term', ' 2*term(n-2) when n ≥5, and term(3)=3. But how to express this in a general formula?')
+('term', ' 2^{n/2}.')
+('term', ' 2^{(n-1)/2} + something.')
+('term', " term(n-2) + term(n-2 -k), but I'm not seeing it.")
+('term', ' 2^{n/2}, and for odd n ≥5, term(n) = 2*term(n-2), we can write a recurrence relation.')
+('a', ' 2^{n/2}')
+('a', ' 2*a(n-2) for n ≥5, with a(1)=1, a(3)=3.')
+('a', " a(n-2) + a(n-1) for even n, but this doesn't hold. For example, a(2)=2, a(1)=1, a(3)=3. If we use a(3)=a(1)+a(2)=1+2=3, which works. For a(4)=4, a(3)+a(2)=3+2=5≠4. So no.")
+('a', ' 2^{n/2} as before.')
+('a', " 2^{n/2}, and for odd n ≥3, a(n) = 2*a(n-2). Let's see if this holds:")
+('a', " 2*a(n-2) + (-1)^k, where k is some function of n. Let's see:")
+('a', " 2*a(n-2) + c, where c alternates between -1, +1, -1, +1, ... starting from n=7. Let's check:")
+('a', ' 2^{n/2}')
+('a', " 2*a(n-2) with some exceptions. But since after n=15, the odd terms follow a(n) = 2*a(n-2), perhaps there's a general formula for odd n ≥3 as a(n) = 2^{(n+1)/2} - something, but I'm not sure.")
+('a', ' 2*a(n-2) + c, where c is -1, +1, -1, +1, ... starting from n=7, but this seems inconsistent as seen earlier.')
+('a', " 2*a(n-2). Let's check:")
+('a', ' 2*a(n-2) ±1, alternating. For even n, a(n) = 2*a(n-2).')
+('a', ' 2*a(n-2).')
+('a', " 2*a(n-2) + (-1)^k, where k is some function of n. Specifically, starting from a(7), the pattern alternates between subtracting 1 and adding 1. Let's see:")
+('a', ' 2*a(n-2). But why?')
+('a', " 2*a(n-2) + c, where c alternates between -1 and +1, but starting from a certain point, c becomes 0, it's still complex.")
+('a', " p*a(n-1) + q*a(n-2). Let's try to find p and q.")
+('a', " 2*a(n-1) - a(n-2). Let's check if this holds for subsequent terms.")
+('a', ' 2*a(n-2)')
+('a', ' 2*a(n-2) + c, where c alternates between -1 and +1 starting from n=7.')
+('a', ' 2*a(n-2)')
+('a', ' 2*a(n-2) + (-1)^{(n-3)/2}')
+('a', " 2*a(n-2) + (-1)^k, where k is the number of times we've applied the recurrence for odd terms. For example:")
+('a', ' 2^{n/2}. For example:')
+('a', '2^k.')
+('a', ' 2*a(n-2), then:')
+('a', '2^k.')
+('a', ' 2^{n/2}.')
+('a', '2^k.')
+('a', ' a(n-2) + a(n-1)/2 if n is even, but this is just a guess.')
+var, rhs: ('term', '2^{n/2}.')
+var, rhs: ('term', "term(n-1) + term(n-2). Let's check for n=3: term(2) + term(1) = 2+1=3. Correct. For n=5: term(4) + term(3) =4+3=7. But actual term is 6. No. So that doesn't work.")
+var, rhs: ('term', "2 * term(n-2). Let's check. For n=2: 2*term(0)=2*1=2. Correct. For n=4: 2*term(2)=2*2=4. Correct. For n=6: 2*term(4)=2*4=8. Correct. For n=8: 2*term(6)=2*8=16. Correct. For n=10: 2*term(8)=2*16=32. But term(10) would be part of the sequence. Wait, the given terms up to n=23. For example, term(10) would be 2^5=32. So yes, for even n, term(n) = 2^{n/2}.")
+var, rhs: ('term', "term(n-1) + term(n-2). Let's check for n=3: term(2) + term(1) =2+1=3. Correct. For n=5: term(4) + term(3) =4+3=7. But actual term is 6. No. So that doesn't work. Hmm.")
+var, rhs: ('term', 'term(n-2) + term(n-3). For n=3: term(1) + term(0) =1+1=2. No, actual is 3. Not matching. For n=5: term(3) + term(2) =3+2=5. Actual is 6. No. Hmm.')
+var, rhs: ('term', "term(n-2) + term(n- something). Let's look at term(5)=6. term(3)=3, term(2)=2. 3+2=5. Not 6. term(4)=4. 4+2=6. So term(5)=term(4)+term(2). For n=5, which is odd. Then for n=7: term(6)=8, term( something). 8 + term(?) =11. term(4)=4. 8+4=12. No. term(5)=6. 8+6=14. No. term(3)=3. 8+3=11. Yes! So term(7)=term(6)+term(3). For n=7, which is odd. Then for n=9: term(8)=16. What to add? term(5)=6. 16+6=22. Actual term is 23. Close. Hmm. Maybe term(8) + term( something else). term(7)=11. 16+11=27. No. term(6)=8. 16+8=24. No. Hmm. Not matching.")
+var, rhs: ('term', 'term(n-1) + term( (n-1)/2 ). For example, n=3: term(2) + term(1) =2+1=3. Correct. For n=5: term(4) + term(2) =4+2=6. Correct. For n=7: term(6) + term(3) =8+3=11. Correct. For n=9: term(8) + term(4) =16+4=20. But actual term is 23. No. Hmm. Not matching. Wait, term(9) is 23. Maybe term(8) + term( something else). term(8) is 16. 16 + term(5)=16+6=22. Still not 23. Hmm.')
+var, rhs: ('term', "term(n-2) * 2. Let's check:")
+var, rhs: ('term', "2 * term(n-2). But for n=3, term(3)=3, which is 2*term(1) +1. Hmm. So perhaps there's a different rule for n=3. But maybe there's a general rule that for odd n ≥1, term(n) = term(n-2) + something. Let's see:")
+var, rhs: ('term', "2*term(n-2). But for n=3, it's 2*term(1) +1. However, if we look at the pattern, after n=3, the odd terms follow term(n) = 2*term(n-2). But why does n=3 have an extra +1? Maybe there's a different way to look at it.")
+var, rhs: ('term', "term(n-2) + term(n-1 -k), but I'm not sure. Let's try to find a general formula.")
+var, rhs: ('term', '2^{n/2}.')
+var, rhs: ('term', "2*term(n-2). But for m=1 (n=3), it's 3=2*1 +1. However, if we consider that for m≥2, term(n) = 2*term(n-2), and for m=1, it's a special case, perhaps there's a general formula.")
+var, rhs: ('term', "term(n-2) + term(n-1). Wait, for n=3: term(3)=term(1)+term(2)=1+2=3. Correct. For n=5: term(5)=term(3)+term(4)=3+4=7. But actual term is 6. No. So that doesn't work.")
+var, rhs: ('term', 'term(n-2) + term( (n-1)/2 ). For n=3: term(1) + term(1)=1+1=2. No. Actual is 3. Not matching.')
+var, rhs: ('term', 'term(n-2) + term(n-2 -k). Not sure.')
+var, rhs: ('term', "2*term(n-2). But why does n=3 not follow this? Let's check if there's a different way to express it.")
+var, rhs: ('term', '2*term(n-2) when n ≥5, and term(3)=3. But how to express this in a general formula?')
+var, rhs: ('term', '2^{n/2}.')
+var, rhs: ('term', '2^{(n-1)/2} + something.')
+var, rhs: ('term', "term(n-2) + term(n-2 -k), but I'm not seeing it.")
+var, rhs: ('term', '2^{n/2}, and for odd n ≥5, term(n) = 2*term(n-2), we can write a recurrence relation.')
+var, rhs: ('a', '2^{n/2}')
+var, rhs: ('a', '2*a(n-2) for n ≥5, with a(1)=1, a(3)=3.')
+var, rhs: ('a', "a(n-2) + a(n-1) for even n, but this doesn't hold. For example, a(2)=2, a(1)=1, a(3)=3. If we use a(3)=a(1)+a(2)=1+2=3, which works. For a(4)=4, a(3)+a(2)=3+2=5≠4. So no.")
+var, rhs: ('a', '2^{n/2} as before.')
+var, rhs: ('a', "2^{n/2}, and for odd n ≥3, a(n) = 2*a(n-2). Let's see if this holds:")
+var, rhs: ('a', "2*a(n-2) + (-1)^k, where k is some function of n. Let's see:")
+var, rhs: ('a', "2*a(n-2) + c, where c alternates between -1, +1, -1, +1, ... starting from n=7. Let's check:")
+var, rhs: ('a', '2^{n/2}')
+var, rhs: ('a', "2*a(n-2) with some exceptions. But since after n=15, the odd terms follow a(n) = 2*a(n-2), perhaps there's a general formula for odd n ≥3 as a(n) = 2^{(n+1)/2} - something, but I'm not sure.")
+var, rhs: ('a', '2*a(n-2) + c, where c is -1, +1, -1, +1, ... starting from n=7, but this seems inconsistent as seen earlier.')
+var, rhs: ('a', "2*a(n-2). Let's check:")
+var, rhs: ('a', '2*a(n-2) ±1, alternating. For even n, a(n) = 2*a(n-2).')
+var, rhs: ('a', '2*a(n-2).')
+var, rhs: ('a', "2*a(n-2) + (-1)^k, where k is some function of n. Specifically, starting from a(7), the pattern alternates between subtracting 1 and adding 1. Let's see:")
+var, rhs: ('a', '2*a(n-2). But why?')
+var, rhs: ('a', "2*a(n-2) + c, where c alternates between -1 and +1, but starting from a certain point, c becomes 0, it's still complex.")
+var, rhs: ('a', "p*a(n-1) + q*a(n-2). Let's try to find p and q.")
+var, rhs: ('a', "2*a(n-1) - a(n-2). Let's check if this holds for subsequent terms.")
+var, rhs: ('a', '2*a(n-2)')
+var, rhs: ('a', '2*a(n-2) + c, where c alternates between -1 and +1 starting from n=7.')
+var, rhs: ('a', '2*a(n-2)')
+var, rhs: ('a', '2*a(n-2) + (-1)^{(n-3)/2}')
+var, rhs: ('a', "2*a(n-2) + (-1)^k, where k is the number of times we've applied the recurrence for odd terms. For example:")
+var, rhs: ('a', '2^{n/2}. For example:')
+var, rhs: ('a', '2^k.')
+var, rhs: ('a', '2*a(n-2), then:')
+var, rhs: ('a', '2^k.')
+var, rhs: ('a', '2^{n/2}.')
+var, rhs: ('a', '2^k.')
+var, rhs: ('a', 'a(n-2) + a(n-1)/2 if n is even, but this is just a guess.')
+latex_matches[-2:] = [('a', '2**k'), ('a', 'latex_seq(n-2) + latex_seq(n-1)/2* if n is even, but this is just a guess')]
+('term', '2**(n/2)')
+('term', "latex_seq(n-1) + latex_seq(n-2). Let's check for n=3: latex_seq(2) + latex_seq(1) = 2+1=3. Correct. For n=5: latex_seq(4) + latex_seq(3) =4+3=7. But actual term is 6. No. So that doesn't work")
+('term', "2 * latex_seq(n-2). Let's check. For n=2: 2*latex_seq(0)=2*1=2. Correct. For n=4: 2*latex_seq(2)=2*2=4. Correct. For n=6: 2*latex_seq(4)=2*4=8. Correct. For n=8: 2*latex_seq(6)=2*8=16. Correct. For n=10: 2*latex_seq(8)=2*16=32. But latex_seq(10) *would be part of the sequence. Wait, the given terms up to n=23. For example, latex_seq(10) *would be 2**5=32. So yes, for even n, latex_seq(n) = 2**(n/2)")
+('term', "latex_seq(n-1) + latex_seq(n-2). Let's check for n=3: latex_seq(2) + latex_seq(1) =2+1=3. Correct. For n=5: latex_seq(4) + latex_seq(3) =4+3=7. But actual term is 6. No. So that doesn't work. Hmm")
+('term', 'latex_seq(n-2) + latex_seq(n-3). For n=3: latex_seq(1) + latex_seq(0) =1+1=2. No, actual is 3. Not matching. For n=5: latex_seq(3) + latex_seq(2) =3+2=5. Actual is 6. No. Hmm')
+('term', '1-')
+('term', '1-')
+('term', "latex_seq(n-2) * 2. Let's check:")
+('term', '1-')
+('term', "2*latex_seq(n-2). But for n=3, it's 2*latex_seq(1) +1. However, if we look at the pattern, after n=3, the odd terms follow latex_seq(n) = 2*latex_seq(n-2). But why does n=3* have an extra +1? Maybe there's a different way to look at it")
+('term', "latex_seq(n-2) + latex_seq(n-1 -k), but I'm not sure. Let's try to find a general formula")
+('term', '2**(n/2)')
+('term', "2*latex_seq(n-2). But for m=1 *(n=3), it's 3=2*1 +1. However, if we consider that for m≥2, latex_seq(n) = 2*latex_seq(n-2), and for m=1, it's a special case, perhaps there's a general formula")
+('term', "latex_seq(n-2) + latex_seq(n-1). Wait, for n=3: latex_seq(3)=latex_seq(1)+latex_seq(2)=1+2=3. Correct. For n=5: latex_seq(5)=latex_seq(3)+latex_seq(4)=3+4=7. But actual term is 6. No. So that doesn't work")
+('term', 'latex_seq(n-2) + latex_seq( (n-1)/2 ). For n=3: latex_seq(1) + latex_seq(1)=1+1=2. No. Actual is 3. Not matching')
+('term', 'latex_seq(n-2) + latex_seq(n-2 -k). Not sure')
+('term', "2*latex_seq(n-2). But why does n=3* not follow this? Let's check if there's a different way to express it")
+('term', '2*latex_seq(n-2) *when n ≥5, and latex_seq(3)=3. But how to express this in a general formula?')
+('term', '2**(n/2)')
+('term', '1-')
+('term', "latex_seq(n-2) + latex_seq(n-2 -k), but I'm not seeing it")
+('term', '2**(n/2), and for odd n ≥5, latex_seq(n) = 2*latex_seq(n-2), we can write a recurrence relation')
+('a', '2**(n/2)')
+('a', '2*latex_seq(n-2) *for n ≥5, with latex_seq(1)=1, latex_seq(3)=3')
+('a', "latex_seq(n-2) + latex_seq(n-1) *for even n, but this doesn't hold. For example, latex_seq(2)=2, latex_seq(1)=1, latex_seq(3)=3. If we use latex_seq(3)=latex_seq(1)+latex_seq(2)=1+2=3, which works. For latex_seq(4)=4, latex_seq(3)+latex_seq(2)=3+2=5≠4. So no")
+('a', '2**(n/2) *as before')
+('a', "2**(n/2), and for odd n ≥3, latex_seq(n) = 2*latex_seq(n-2). Let's see if this holds:")
+('a', "2*latex_seq(n-2) + (-1)**k, where k is some function of n. Let's see:")
+('a', "2*latex_seq(n-2) + c, where c alternates between -1, +1, -1, +1, ... starting from n=7. Let's check:")
+('a', '2**(n/2)')
+('a', '1-')
+('a', '2*latex_seq(n-2) + c, where c is -1, +1, -1, +1, ... starting from n=7, but this seems inconsistent as seen earlier')
+('a', "2*latex_seq(n-2). Let's check:")
+('a', '2*latex_seq(n-2) ±1, alternating. For even n, latex_seq(n) = 2*latex_seq(n-2)')
+('a', '2*latex_seq(n-2)')
+('a', "2*latex_seq(n-2) + (-1)**k, where k is some function of n. Specifically, starting from latex_seq(7), the pattern alternates between subtracting 1* and adding 1. Let's see:")
+('a', '2*latex_seq(n-2). But why?')
+('a', "2*latex_seq(n-2) + c, where c alternates between -1* and +1, but starting from a certain point, c becomes 0, it's still complex")
+('a', "p*latex_seq(n-1) + q*latex_seq(n-2). Let's try to find p and q")
+('a', "2*latex_seq(n-1) - latex_seq(n-2). Let's check if this holds for subsequent terms")
+('a', '2*latex_seq(n-2)')
+('a', '2*latex_seq(n-2) + c, where c alternates between -1* and +1* starting from n=7')
+('a', '2*latex_seq(n-2)')
+('a', '2*latex_seq(n-2) + (-1)**((n-3)/2)')
+('a', "2*latex_seq(n-2) + (-1)**k, where k is the number of times we've applied the recurrence for odd terms. For example:")
+('a', '2**(n/2). For example:')
+('a', '2**k')
+('a', '2*latex_seq(n-2), then:')
+('a', '2**k')
+('a', '2**(n/2)')
+('a', '2**k')
+('a', 'latex_seq(n-2) + latex_seq(n-1)/2* if n is even, but this is just a guess')
+len(latex_matches) = 52
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 1, 2, 3, 4, 6, 8, 11, 16, 23, 32, 45, 64, 91, 128, 181, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096]
+    if n < len(init):
+        return init[n]
+    return 2*latex_seq(n-2) + (-1)**((n-3)/2) 
+
+
+
+-- decoding response finished
+Ground truth: A017911 ,1,1,2,3,4,6,8,11,16,23,32,45,64,91,128,181,256,362,512,724,1024,1448,2048,2896,4096,5793,8192,11585,16384,23170,32768,46341,65536,92682,131072,185364,262144,370728,524288,
+[dasco sequence loaded.]
+ground_truth = [1, 1, 2, 3, 4, 6, 8, 11, 16, 23, 32, 45, 64, 91, 128, 181, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5793, 8192, 11585, 16384, 23170, 32768, 46341, 65536, 92682, 131072, 185364, 262144, 370728, 524288]
+len(ground_truth) = 39
+
+cores = False
+task_id = 2592
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'

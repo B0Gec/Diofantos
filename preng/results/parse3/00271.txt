@@ -1,0 +1,208 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+271
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+00271-7998.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 1, 1, 2, 3, 5, 7, 10, 14, 19, 26, 35, 47, 62, 82, 107, 139, 179, 230, 293, 372, 470, 591, 740'
+question[-200:] = 'Could you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 1, 1, 2, 3, 5, 7, 10, 14, 19, 26, 35, 47, 62, 82, 107, 139, 179, 230, 293, 372, 470, 591, 740'
+inits = [1, 1, 1, 1, 2, 3, 5, 7, 10, 14, 19, 26, 35, 47, 62, 82, 107, 139, 179, 230, 293, 372, 470, 591, 740]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+49
+('term', " a*term(n-1) + b*term(n-2) + c*term(n-3). Let's take some terms and set up equations.")
+('term', " a*term(n-1) + b*term(n-2) + c*term(n-3) + d*term(n-4). Let's take terms from n=4 onwards.")
+('term', " term(n-1) + term(n-3). Let's check:")
+('term', ' term(n-1) + term(n-4)? For n=4: term(4) = term(3) + term(0) → 1 + 1 = 2. Correct. n=5: term(5) = term(4) + term(1) → 2 + 1 = 3. Correct. n=6: term(6) = term(5) + term(2) → 3 + 1 = 4. Actual is 5. No. Not correct.')
+('term', " term(n-1) + term(n-2) - term(n-4). Let's check for n=4: 2 = 1 + 1 - 1 = 1. No. Not correct.")
+('term', " term(n-1) + term(n-4). Let's check:")
+('term', ' term(n-1) + term(n-3)? For n=4: 1 + 1 = 2. Correct. n=5: 2 + 1 = 3. Correct. n=6: 3 + 2 = 5. Correct. n=7: 5 + 3 = 8. Actual is 7. No. So discrepancy here.')
+('term', " term(n-1) + term(n-3) - something. For example, term(7) = 5 + 3 - 1 = 7. Where does the 1 come from? Maybe term(n-4). 1 is term(3). So term(n) = term(n-1) + term(n-3) - term(n-4). Let's check:")
+('term', ' term(n-1) + term(n-3) - term(n-5). For n=4: term(4) = term(3) + term(1) - term(-1). But term(-1) is undefined. Not helpful.')
+('term', ' term(n-1) + term(n-3) - term(n-5). But this seems too arbitrary.')
+('a', ' a(n-1) + a(n-2) - a(n-4). Wait, no, the previous equations gave a=1, b=1, c=-1, d=1 for the fourth-order recurrence. Let me recheck that.')
+('a', ' a(n-1) + a(n-2) - a(n-3) + a(n-4). Wait, no, the coefficients are for the previous terms. Wait, in the general case, a fourth-order linear recurrence would be a(n) = k1*a(n-1) + k2*a(n-2) + k3*a(n-3) + k4*a(n-4). But in our case, the coefficients were a=1 (coefficient for a(n-1)), b=1 (coefficient for a(n-2)), c=-1 (coefficient for a(n-3)), d=1 (coefficient for a(n-4)). So the recurrence is a(n) = a(n-1) + a(n-2) - a(n-3) + a(n-4).')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3).')
+('a', ' 0*a(n-1) + 1*a(n-2) + 1*a(n-3) = a(n-2) + a(n-3)')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4)')
+('a', ' 1*a(n-1) - 1*a(n-2) + 1*a(n-3) + 1*a(n-4)')
+('a', ' c1*a(n-1) + c2*a(n-2) + c3*a(n-3) + ... and find the coefficients.')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4). For n=7, this would be a(7) = p*a(6) + q*a(5) + r*a(4) + s*a(3). Given a(7)=7, a(6)=5, a(5)=3, a(4)=2, a(3)=1.')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4).')
+('a', ' 1*a(n-1) -1*a(n-2) +1*a(n-3) +1*a(n-4)')
+('a', ' a(n-1) + a(n-4). For example:')
+('a', ' a(n-1) + a(n-3). For n=4: 1+1=2. Correct. n=5: 1+1=2, but a(5)=3. No.')
+('a', ' a(n-1) + a(n-4) + something. Not sure.')
+('a', " a(n-1) + a(n-4). Let's test this:")
+('a', ' a(n-1) + a(n-3)?')
+('a', ' a(n-1) + a(n-4) + something?')
+('a', " a(n-1) + a(n-4) + 1 for n >= 4? Let's check:")
+('a', ' a(n-1) + a(n-4) for n >= 4, but with some adjustment for certain terms. This seems too arbitrary.')
+('a', ' c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k).')
+('a', ' x*a(n-1) + y*a(n-2).')
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3).')
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3) + w*a(n-4).')
+('a', ' a(n-1) + a(n-4) holds for some terms. For example:')
+('a', " a(n-1) + a(n-4) works, for others it doesn't. For example, a(10) and a(11) work, but a(13) doesn't. This suggests that there might be an additional term or a different pattern.")
+('a', " a(n-1) + a(n-4) + c, where c is some correction term. Let's see:")
+('a', " a(n-1) + a(n-4) works for some terms but not all, with varying discrepancies. This suggests that the recurrence might not be consistent, or there's another factor at play.")
+('d', ' a(n) - a(n-1)')
+('d', " a(n-4) + something. Let's check:")
+('a', ' a(n-1) + a(n-4), but with some corrections. For example, from n=4 onward:')
+('a', " a(n-1) + a(n-4), let's compute the terms step by step:")
+('a', ' a(n-1) + a(n-4).')
+('a', ' a(n-1) + a(n-4) + c(n), where c(n) is some correction term.')
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3) + ... Let's try to find coefficients.")
+('a', ' p*a(n-1) + q*a(n-2).')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3).')
+('a', " a(n-1) + a(n-4) + 1 seems to hold for some terms, but not all, it's challenging to determine the exact formula.")
+('a', " a(n-1) + a(n-4), but with some initial terms adjusted. However, as we saw earlier, this doesn't hold for a(6). Alternatively, there might be a different recurrence.")
+('P', ' P(n-2) + P(n-3), with initial values P(0)=1, P(1)=1, P(2)=1.')
+('a', " a(n-1) + a(n-4) + correction, but since the user provided the value up to a(24), and assuming that the recurrence might be a(n) = a(n-1) + a(n-5), or another variant, but without more information, it's hard to tell.")
+var, rhs: ('term', "a*term(n-1) + b*term(n-2) + c*term(n-3). Let's take some terms and set up equations.")
+var, rhs: ('term', "a*term(n-1) + b*term(n-2) + c*term(n-3) + d*term(n-4). Let's take terms from n=4 onwards.")
+var, rhs: ('term', "term(n-1) + term(n-3). Let's check:")
+var, rhs: ('term', 'term(n-1) + term(n-4)? For n=4: term(4) = term(3) + term(0) → 1 + 1 = 2. Correct. n=5: term(5) = term(4) + term(1) → 2 + 1 = 3. Correct. n=6: term(6) = term(5) + term(2) → 3 + 1 = 4. Actual is 5. No. Not correct.')
+var, rhs: ('term', "term(n-1) + term(n-2) - term(n-4). Let's check for n=4: 2 = 1 + 1 - 1 = 1. No. Not correct.")
+var, rhs: ('term', "term(n-1) + term(n-4). Let's check:")
+var, rhs: ('term', 'term(n-1) + term(n-3)? For n=4: 1 + 1 = 2. Correct. n=5: 2 + 1 = 3. Correct. n=6: 3 + 2 = 5. Correct. n=7: 5 + 3 = 8. Actual is 7. No. So discrepancy here.')
+var, rhs: ('term', "term(n-1) + term(n-3) - something. For example, term(7) = 5 + 3 - 1 = 7. Where does the 1 come from? Maybe term(n-4). 1 is term(3). So term(n) = term(n-1) + term(n-3) - term(n-4). Let's check:")
+var, rhs: ('term', 'term(n-1) + term(n-3) - term(n-5). For n=4: term(4) = term(3) + term(1) - term(-1). But term(-1) is undefined. Not helpful.')
+var, rhs: ('term', 'term(n-1) + term(n-3) - term(n-5). But this seems too arbitrary.')
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-4). Wait, no, the previous equations gave a=1, b=1, c=-1, d=1 for the fourth-order recurrence. Let me recheck that.')
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-3) + a(n-4). Wait, no, the coefficients are for the previous terms. Wait, in the general case, a fourth-order linear recurrence would be a(n) = k1*a(n-1) + k2*a(n-2) + k3*a(n-3) + k4*a(n-4). But in our case, the coefficients were a=1 (coefficient for a(n-1)), b=1 (coefficient for a(n-2)), c=-1 (coefficient for a(n-3)), d=1 (coefficient for a(n-4)). So the recurrence is a(n) = a(n-1) + a(n-2) - a(n-3) + a(n-4).')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3).')
+var, rhs: ('a', '0*a(n-1) + 1*a(n-2) + 1*a(n-3) = a(n-2) + a(n-3)')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4)')
+var, rhs: ('a', '1*a(n-1) - 1*a(n-2) + 1*a(n-3) + 1*a(n-4)')
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + c3*a(n-3) + ... and find the coefficients.')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4). For n=7, this would be a(7) = p*a(6) + q*a(5) + r*a(4) + s*a(3). Given a(7)=7, a(6)=5, a(5)=3, a(4)=2, a(3)=1.')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4).')
+var, rhs: ('a', '1*a(n-1) -1*a(n-2) +1*a(n-3) +1*a(n-4)')
+var, rhs: ('a', 'a(n-1) + a(n-4). For example:')
+var, rhs: ('a', 'a(n-1) + a(n-3). For n=4: 1+1=2. Correct. n=5: 1+1=2, but a(5)=3. No.')
+var, rhs: ('a', 'a(n-1) + a(n-4) + something. Not sure.')
+var, rhs: ('a', "a(n-1) + a(n-4). Let's test this:")
+var, rhs: ('a', 'a(n-1) + a(n-3)?')
+var, rhs: ('a', 'a(n-1) + a(n-4) + something?')
+var, rhs: ('a', "a(n-1) + a(n-4) + 1 for n >= 4? Let's check:")
+var, rhs: ('a', 'a(n-1) + a(n-4) for n >= 4, but with some adjustment for certain terms. This seems too arbitrary.')
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k).')
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2).')
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3).')
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3) + w*a(n-4).')
+var, rhs: ('a', 'a(n-1) + a(n-4) holds for some terms. For example:')
+var, rhs: ('a', "a(n-1) + a(n-4) works, for others it doesn't. For example, a(10) and a(11) work, but a(13) doesn't. This suggests that there might be an additional term or a different pattern.")
+var, rhs: ('a', "a(n-1) + a(n-4) + c, where c is some correction term. Let's see:")
+var, rhs: ('a', "a(n-1) + a(n-4) works for some terms but not all, with varying discrepancies. This suggests that the recurrence might not be consistent, or there's another factor at play.")
+var, rhs: ('d', 'a(n) - a(n-1)')
+var, rhs: ('d', "a(n-4) + something. Let's check:")
+var, rhs: ('a', 'a(n-1) + a(n-4), but with some corrections. For example, from n=4 onward:')
+var, rhs: ('a', "a(n-1) + a(n-4), let's compute the terms step by step:")
+var, rhs: ('a', 'a(n-1) + a(n-4).')
+var, rhs: ('a', 'a(n-1) + a(n-4) + c(n), where c(n) is some correction term.')
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3) + ... Let's try to find coefficients.")
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2).')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3).')
+var, rhs: ('a', "a(n-1) + a(n-4) + 1 seems to hold for some terms, but not all, it's challenging to determine the exact formula.")
+var, rhs: ('a', "a(n-1) + a(n-4), but with some initial terms adjusted. However, as we saw earlier, this doesn't hold for a(6). Alternatively, there might be a different recurrence.")
+var, rhs: ('P', 'P(n-2) + P(n-3), with initial values P(0)=1, P(1)=1, P(2)=1.')
+var, rhs: ('a', "a(n-1) + a(n-4) + correction, but since the user provided the value up to a(24), and assuming that the recurrence might be a(n) = a(n-1) + a(n-5), or another variant, but without more information, it's hard to tell.")
+latex_matches[-2:] = [('P', 'latex_seq(n-2) + latex_seq(n-3), with initial values latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1'), ('a', "latex_seq(n-1) + latex_seq(n-4) + correction, but since the user provided the value up to latex_seq(24), and assuming that the recurrence might be latex_seq(n) = latex_seq(n-1) + latex_seq(n-5), or another variant, but without more information, it's hard to tell")]
+('term', "a*latex_seq(n-1) + b*latex_seq(n-2) + c*latex_seq(n-3). Let's take some terms and set up equations")
+('term', "a*latex_seq(n-1) + b*latex_seq(n-2) + c*latex_seq(n-3) + d*latex_seq(n-4). Let's take terms from n=4* onwards")
+('term', "latex_seq(n-1) + latex_seq(n-3). Let's check:")
+('term', 'latex_seq(n-1) + latex_seq(n-4)? For n=4: latex_seq(4) = latex_seq(3) + latex_seq(0) → 1 + 1 = 2. Correct. n=5: latex_seq(5) = latex_seq(4) + latex_seq(1) → 2 + 1 = 3. Correct. n=6: latex_seq(6) = latex_seq(5) + latex_seq(2) → 3 + 1 = 4. Actual is 5. No. Not correct')
+('term', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4). Let's check for n=4: 2 = 1 + 1 - 1 = 1. No. Not correct")
+('term', "latex_seq(n-1) + latex_seq(n-4). Let's check:")
+('term', 'latex_seq(n-1) + latex_seq(n-3)? For n=4: 1 + 1 = 2. Correct. n=5: 2 + 1 = 3. Correct. n=6: 3 + 2 = 5. Correct. n=7: 5 + 3 = 8. Actual is 7. No. So discrepancy here')
+('term', '1-')
+('term', 'latex_seq(n-1) + latex_seq(n-3) - latex_seq(n-5). For n=4: latex_seq(4) = latex_seq(3) + latex_seq(1) - latex_seq(-1). But latex_seq(-1) *is undefined. Not helpful')
+('term', 'latex_seq(n-1) + latex_seq(n-3) - latex_seq(n-5). But this seems too arbitrary')
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4). Wait, no, the previous equations gave a=1, b=1, c=-1, d=1* for the fourth-order recurrence. Let me recheck that')
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3) + latex_seq(n-4). Wait, no, the coefficients are for the previous terms. Wait, in the general case, a fourth-order linear recurrence would be latex_seq(n) = k1*latex_seq(n-1) + k2*latex_seq(n-2) + k3*latex_seq(n-3) + k4*latex_seq(n-4). But in our case, the coefficients were a=1 *(coefficient for latex_seq(n-1)), b=1 *(coefficient for latex_seq(n-2)), c=-1 *(coefficient for latex_seq(n-3)), d=1 *(coefficient for latex_seq(n-4)). So the recurrence is latex_seq(n) = latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3) + latex_seq(n-4)')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3)')
+('a', '0*latex_seq(n-1) + 1*latex_seq(n-2) + 1*latex_seq(n-3) = latex_seq(n-2) + latex_seq(n-3)')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4)')
+('a', '1*latex_seq(n-1) - 1*latex_seq(n-2) + 1*latex_seq(n-3) + 1*latex_seq(n-4)')
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + c3*latex_seq(n-3) + ... and find the coefficients')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4). For n=7, this would be latex_seq(7) = p*latex_seq(6) + q*latex_seq(5) + r*latex_seq(4) + s*latex_seq(3). Given latex_seq(7)=7, latex_seq(6)=5, latex_seq(5)=3, latex_seq(4)=2, latex_seq(3)=1')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4)')
+('a', '1*latex_seq(n-1) -1*latex_seq(n-2) +1*latex_seq(n-3) +1*latex_seq(n-4)')
+('a', 'latex_seq(n-1) + latex_seq(n-4). For example:')
+('a', 'latex_seq(n-1) + latex_seq(n-3). For n=4: 1+1=2. Correct. n=5: 1+1=2, but latex_seq(5)=3. No')
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-4). Let's test this:")
+('a', 'latex_seq(n-1) + latex_seq(n-3)?')
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-4) + 1* for n >= 4? Let's check:")
+('a', 'latex_seq(n-1) + latex_seq(n-4) *for n >= 4, but with some adjustment for certain terms. This seems too arbitrary')
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + ... + ck*latex_seq(n-k)')
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2)')
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3)')
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3) + w*latex_seq(n-4)')
+('a', 'latex_seq(n-1) + latex_seq(n-4) *holds for some terms. For example:')
+('a', "latex_seq(n-1) + latex_seq(n-4) *works, for others it doesn't. For example, latex_seq(10) *and latex_seq(11) *work, but latex_seq(13) *doesn't. This suggests that there might be an additional term or a different pattern")
+('a', "latex_seq(n-1) + latex_seq(n-4) + c, where c is some correction term. Let's see:")
+('a', "latex_seq(n-1) + latex_seq(n-4) *works for some terms but not all, with varying discrepancies. This suggests that the recurrence might not be consistent, or there's another factor at play")
+('d', 'a(n) - a(n-1)')
+('d', '1-')
+('a', 'latex_seq(n-1) + latex_seq(n-4), but with some corrections. For example, from n=4* onward:')
+('a', "latex_seq(n-1) + latex_seq(n-4), let's compute the terms step by step:")
+('a', 'latex_seq(n-1) + latex_seq(n-4)')
+('a', 'latex_seq(n-1) + latex_seq(n-4) + c(n), where c(n) *is some correction term')
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3) + ... Let's try to find coefficients")
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2)')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3)')
+('a', "latex_seq(n-1) + latex_seq(n-4) + 1* seems to hold for some terms, but not all, it's challenging to determine the exact formula")
+('a', "latex_seq(n-1) + latex_seq(n-4), but with some initial terms adjusted. However, as we saw earlier, this doesn't hold for latex_seq(6). Alternatively, there might be a different recurrence")
+('P', 'latex_seq(n-2) + latex_seq(n-3), with initial values latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1')
+('a', "latex_seq(n-1) + latex_seq(n-4) + correction, but since the user provided the value up to latex_seq(24), and assuming that the recurrence might be latex_seq(n) = latex_seq(n-1) + latex_seq(n-5), or another variant, but without more information, it's hard to tell")
+len(latex_matches) = 49
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 1, 1, 1, 2, 3, 5, 7, 10, 14, 19, 26, 35, 47, 62, 82, 107, 139, 179, 230, 293, 372, 470, 591, 740]
+    if n < len(init):
+        return init[n]
+    return p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) 
+
+
+
+-- decoding response finished
+Ground truth: A001522 ,1,1,1,1,2,3,5,7,10,14,19,26,35,47,62,82,107,139,179,230,293,372,470,591,740,924,1148,1422,1756,2161,2651,3244,3957,4815,5844,7075,8545,10299,12383,14859,17794,21267,25368,30207,35902,42600,50462,59678,70465,83079,97800,114967,134956,158205,185209,216546,252859,
+[dasco sequence loaded.]
+ground_truth = [1, 1, 1, 1, 2, 3, 5, 7, 10, 14, 19, 26, 35, 47, 62, 82, 107, 139, 179, 230, 293, 372, 470, 591, 740, 924, 1148, 1422, 1756, 2161, 2651, 3244, 3957, 4815, 5844, 7075, 8545, 10299, 12383, 14859, 17794, 21267, 25368, 30207, 35902, 42600, 50462, 59678, 70465, 83079, 97800, 114967, 134956, 158205, 185209, 216546, 252859]
+len(ground_truth) = 57
+
+cores = False
+task_id = 271
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'p' is not defined

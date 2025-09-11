@@ -1,0 +1,203 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+9774
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+09774-1477.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 2, 1, 0, 1, 1, 1, 2, 4, 6, 10, 16, 28, 48, 83, 145, 256, 453, 809, 1452, 2621, 4755, 8665, 15857, 29127, 53687'
+question[-200:] = 'ive me a recursive equation in a form of a Python code for the following number sequence: 2, 1, 0, 1, 1, 1, 2, 4, 6, 10, 16, 28, 48, 83, 145, 256, 453, 809, 1452, 2621, 4755, 8665, 15857, 29127, 53687'
+inits = [2, 1, 0, 1, 1, 1, 2, 4, 6, 10, 16, 28, 48, 83, 145, 256, 453, 809, 1452, 2621, 4755, 8665, 15857, 29127, 53687]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+48
+('a', " a(n-1) + a(n-2) works. For example, the third term is 0. If n=2, a(2) = a(1) + a(0) would be 1 + 2 = 3, but actual is 0. So that doesn't fit. Maybe another combination.")
+('a', ' a(n-1) + a(n-2) + a(n-3). For n=3: a(3) should be 1 + 0 + 1 = 2? But actual is 1. No. Not matching.')
+('a', ' a(n-2) + a(n-3). For n=3: a(1) + a(0) = 1 + 2 = 3. No. Not matching.')
+('a', ' a(n-1) + a(n-3). For n=3: a(2) + a(0) = 0 + 2 = 2. But actual is 1. No. Not matching.')
+('a', ' a(n-1) + a(n-2) + a(n-3) + a(n-4). For n=4: a(3)+a(2)+a(1)+a(0) = 1+0+1+2=4. Actual is 1. No. Not matching.')
+('a', " a(n-1) + a(n-3) + something. Let's think differently. Let's look at the differences between terms. For example, from n=2 onwards:")
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3) + ... ')
+('a', " a(n-1) + a(n-2) + a(n-3). But that didn't work earlier. Let me try again.")
+('a', " a(n-1) + a(n-3). Let's check:")
+('a', ' a(n-2) + a(n-3). For n=3: a(1) + a(0) = 1 + 2 = 3. No.')
+('a', ' a(n-1) + a(n-2). For n=2: a(2) = a(1) + a(0) → 1 + 2 = 3. But actual is 0. So no. ')
+('a', " a(n-1) + a(n-2) - something. Let's look at a(6) = 2. Previous terms are a(5)=1, a(4)=1. 1+1=2. That works. Then a(7) = 4. a(6) + a(5) = 2 + 1 = 3. But actual is 4. So no. Not matching.")
+('a', ' a(n-1) + a(n-3). For a(6): a(5) + a(3) = 1 + 1 = 2. Yes. For a(7): a(6) + a(4) = 2 + 1 = 3. But actual is 4. No. Not matching.')
+('a', " a(n-1) + a(n-2) + a(n-3). Let's check for a(6): a(5)+a(4)+a(3) = 1+1+1=3. But actual is 2. No. Not matching.")
+('a', " a(n-1) + a(n-2) - a(n-3). Let's check for a(3): a(2) + a(1) - a(0) = 0 + 1 - 2 = -1. No. Not matching. ")
+('a', ' a(n-1) + a(n-3). For a(3): a(2) + a(0) = 0 + 2 = 2. But actual is 1. No. ')
+('a', ' a(n-2) + a(n-3). For a(3): a(1) + a(0) = 1 + 2 = 3. No. ')
+('a', " a(n-1) + a(n-2) + a(n-3). Let's check for a(6): a(5) + a(4) + a(3) = 1 + 1 + 1 = 3. Actual is 2. No. ")
+('a', ' a(n-1) + a(n-2) - a(n-4). For a(6): a(5) + a(4) - a(2) = 1 + 1 - 0 = 2. Yes. For a(7): a(6) + a(5) - a(3) = 2 + 1 - 1 = 2. But actual is 4. No. ')
+('a', " a(n-1) + a(n-2) + a(n-3). Let's check for a(6): 1 + 1 + 1 = 3. No. ")
+('a', ' a(n-1) + a(n-3). For a(6): a(5) + a(3) = 1 + 1 = 2. Yes. For a(7): a(6) + a(4) = 2 + 1 = 3. But actual is 4. No. ')
+('a', ' a(n-1) + a(n-2) - a(n-4). For a(6): a(5) + a(4) - a(2) = 1 + 1 - 0 = 2. For a(7): a(6) + a(5) - a(3) = 2 + 1 - 1 = 2. But actual is 4. No. ')
+('a', ' a(n-1) + a(n-2). For a(7): a(6) + a(5) = 2 + 1 = 3. No. Actual is 4. ')
+('a', " a(n-1) + a(n-2) + a(n-3). Let's check for a(6): 1 + 1 + 1 = 3. No. ")
+('a', " a(n-1) + a(n-2). Let's check for a(7): a(6) + a(5) = 2 + 1 = 3. No. Actual is 4. ")
+('a', ' a(n-1) + a(n-3). For a(8): a(7) + a(5) = 4 + 1 = 5. No. Actual is 6. ')
+('a', ' a(n-1) + a(n-2) for n ≥ 6. But then a(7) would be a(6) + a(5) = 2 + 1 = 3. But actual is 4. So no. ')
+('a', " a(n-1) + a(n-2) + a(n-3). Let's check for a(6): a(5) + a(4) + a(3) = 1 + 1 + 1 = 3. No. ")
+('a', " a(n-1) + a(n-3) for n ≥ 3. Let's check:")
+('a', " a(n-1) + a(n-3) for n ≥ 5. Let's check:")
+('a', " a(n-1) + a(n-2). But a(11) is 28, which would require a(10) + a(9) = 16 + 10 = 26, but actual is 28. So there's an inconsistency. ")
+('a', ' a(n-1) + a(n-k) for some k. ')
+('a', " a(n-1) + a(n-2) + a(n-3). Let's check:")
+('a', ' a(n-1) + a(n-3). ')
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3). ')
+('a', ' 2*a(n-1) -2*a(n-2) + 2*a(n-3).')
+('a', ' a(n-1) + a(n-3). ')
+('a', " a(n-1) + a(n-2) for n ≥ 5? Let's check:")
+('a', ' a(n-1) + a(n-2), except for n=7, which should be 3 but is 4. This suggests that there might be an error in the sequence provided, or perhaps the initial terms are different. ')
+('a', " a(n-1) + a(n-2) for n ≥ 6, but with a(5)=1 and a(6)=2. Let's see:")
+('a', ' a(n-1) + a(n-2) + something. For example, for n=7, to get 4 instead of 3, we need an extra 1. Maybe the recurrence is a(n) = a(n-1) + a(n-2) + c, where c is some constant or function. ')
+('a', " a(n-1) + a(n-2) for n ≥ 7, but with a(7)=4. Let's see:")
+('a', " a(n-1) + 2*a(n-2). Let's check:")
+('a', ' 2*a(n-1) - a(n-2). For n=11: 2*16 - 10 = 32 -10=22. No. ')
+('a', ' a(n-1) + a(n-3). For n=11: a(10) + a(8) = 16 + 6 = 22. No. ')
+('a', ' a(n-1) + a(n-2) for n ≥ 6, but with a(5)=1 and a(6)=2. Then:')
+('a', " a(n-1) + 2*a(n-2) for n ≥ 6. Let's test:")
+('a', ' a(n-1) + a(n-2) - something. ')
+var, rhs: ('a', "a(n-1) + a(n-2) works. For example, the third term is 0. If n=2, a(2) = a(1) + a(0) would be 1 + 2 = 3, but actual is 0. So that doesn't fit. Maybe another combination.")
+var, rhs: ('a', 'a(n-1) + a(n-2) + a(n-3). For n=3: a(3) should be 1 + 0 + 1 = 2? But actual is 1. No. Not matching.')
+var, rhs: ('a', 'a(n-2) + a(n-3). For n=3: a(1) + a(0) = 1 + 2 = 3. No. Not matching.')
+var, rhs: ('a', 'a(n-1) + a(n-3). For n=3: a(2) + a(0) = 0 + 2 = 2. But actual is 1. No. Not matching.')
+var, rhs: ('a', 'a(n-1) + a(n-2) + a(n-3) + a(n-4). For n=4: a(3)+a(2)+a(1)+a(0) = 1+0+1+2=4. Actual is 1. No. Not matching.')
+var, rhs: ('a', "a(n-1) + a(n-3) + something. Let's think differently. Let's look at the differences between terms. For example, from n=2 onwards:")
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3) + ...')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). But that didn't work earlier. Let me try again.")
+var, rhs: ('a', "a(n-1) + a(n-3). Let's check:")
+var, rhs: ('a', 'a(n-2) + a(n-3). For n=3: a(1) + a(0) = 1 + 2 = 3. No.')
+var, rhs: ('a', 'a(n-1) + a(n-2). For n=2: a(2) = a(1) + a(0) → 1 + 2 = 3. But actual is 0. So no.')
+var, rhs: ('a', "a(n-1) + a(n-2) - something. Let's look at a(6) = 2. Previous terms are a(5)=1, a(4)=1. 1+1=2. That works. Then a(7) = 4. a(6) + a(5) = 2 + 1 = 3. But actual is 4. So no. Not matching.")
+var, rhs: ('a', 'a(n-1) + a(n-3). For a(6): a(5) + a(3) = 1 + 1 = 2. Yes. For a(7): a(6) + a(4) = 2 + 1 = 3. But actual is 4. No. Not matching.')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). Let's check for a(6): a(5)+a(4)+a(3) = 1+1+1=3. But actual is 2. No. Not matching.")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-3). Let's check for a(3): a(2) + a(1) - a(0) = 0 + 1 - 2 = -1. No. Not matching.")
+var, rhs: ('a', 'a(n-1) + a(n-3). For a(3): a(2) + a(0) = 0 + 2 = 2. But actual is 1. No.')
+var, rhs: ('a', 'a(n-2) + a(n-3). For a(3): a(1) + a(0) = 1 + 2 = 3. No.')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). Let's check for a(6): a(5) + a(4) + a(3) = 1 + 1 + 1 = 3. Actual is 2. No.")
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-4). For a(6): a(5) + a(4) - a(2) = 1 + 1 - 0 = 2. Yes. For a(7): a(6) + a(5) - a(3) = 2 + 1 - 1 = 2. But actual is 4. No.')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). Let's check for a(6): 1 + 1 + 1 = 3. No.")
+var, rhs: ('a', 'a(n-1) + a(n-3). For a(6): a(5) + a(3) = 1 + 1 = 2. Yes. For a(7): a(6) + a(4) = 2 + 1 = 3. But actual is 4. No.')
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-4). For a(6): a(5) + a(4) - a(2) = 1 + 1 - 0 = 2. For a(7): a(6) + a(5) - a(3) = 2 + 1 - 1 = 2. But actual is 4. No.')
+var, rhs: ('a', 'a(n-1) + a(n-2). For a(7): a(6) + a(5) = 2 + 1 = 3. No. Actual is 4.')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). Let's check for a(6): 1 + 1 + 1 = 3. No.")
+var, rhs: ('a', "a(n-1) + a(n-2). Let's check for a(7): a(6) + a(5) = 2 + 1 = 3. No. Actual is 4.")
+var, rhs: ('a', 'a(n-1) + a(n-3). For a(8): a(7) + a(5) = 4 + 1 = 5. No. Actual is 6.')
+var, rhs: ('a', 'a(n-1) + a(n-2) for n ≥ 6. But then a(7) would be a(6) + a(5) = 2 + 1 = 3. But actual is 4. So no.')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). Let's check for a(6): a(5) + a(4) + a(3) = 1 + 1 + 1 = 3. No.")
+var, rhs: ('a', "a(n-1) + a(n-3) for n ≥ 3. Let's check:")
+var, rhs: ('a', "a(n-1) + a(n-3) for n ≥ 5. Let's check:")
+var, rhs: ('a', "a(n-1) + a(n-2). But a(11) is 28, which would require a(10) + a(9) = 16 + 10 = 26, but actual is 28. So there's an inconsistency.")
+var, rhs: ('a', 'a(n-1) + a(n-k) for some k.')
+var, rhs: ('a', "a(n-1) + a(n-2) + a(n-3). Let's check:")
+var, rhs: ('a', 'a(n-1) + a(n-3).')
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3).')
+var, rhs: ('a', '2*a(n-1) -2*a(n-2) + 2*a(n-3).')
+var, rhs: ('a', 'a(n-1) + a(n-3).')
+var, rhs: ('a', "a(n-1) + a(n-2) for n ≥ 5? Let's check:")
+var, rhs: ('a', 'a(n-1) + a(n-2), except for n=7, which should be 3 but is 4. This suggests that there might be an error in the sequence provided, or perhaps the initial terms are different.')
+var, rhs: ('a', "a(n-1) + a(n-2) for n ≥ 6, but with a(5)=1 and a(6)=2. Let's see:")
+var, rhs: ('a', 'a(n-1) + a(n-2) + something. For example, for n=7, to get 4 instead of 3, we need an extra 1. Maybe the recurrence is a(n) = a(n-1) + a(n-2) + c, where c is some constant or function.')
+var, rhs: ('a', "a(n-1) + a(n-2) for n ≥ 7, but with a(7)=4. Let's see:")
+var, rhs: ('a', "a(n-1) + 2*a(n-2). Let's check:")
+var, rhs: ('a', '2*a(n-1) - a(n-2). For n=11: 2*16 - 10 = 32 -10=22. No.')
+var, rhs: ('a', 'a(n-1) + a(n-3). For n=11: a(10) + a(8) = 16 + 6 = 22. No.')
+var, rhs: ('a', 'a(n-1) + a(n-2) for n ≥ 6, but with a(5)=1 and a(6)=2. Then:')
+var, rhs: ('a', "a(n-1) + 2*a(n-2) for n ≥ 6. Let's test:")
+var, rhs: ('a', 'a(n-1) + a(n-2) - something.')
+latex_matches[-2:] = [('a', "latex_seq(n-1) + 2*latex_seq(n-2) *for n ≥ 6. Let's test:"), ('a', '1-')]
+('a', "latex_seq(n-1) + latex_seq(n-2) *works. For example, the third term is 0. If n=2, latex_seq(2) = latex_seq(1) + latex_seq(0) *would be 1 + 2 = 3, but actual is 0. So that doesn't fit. Maybe another combination")
+('a', 'latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). For n=3: latex_seq(3) *should be 1 + 0 + 1 = 2? But actual is 1. No. Not matching')
+('a', 'latex_seq(n-2) + latex_seq(n-3). For n=3: latex_seq(1) + latex_seq(0) = 1 + 2 = 3. No. Not matching')
+('a', 'latex_seq(n-1) + latex_seq(n-3). For n=3: latex_seq(2) + latex_seq(0) = 0 + 2 = 2. But actual is 1. No. Not matching')
+('a', 'latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3) + latex_seq(n-4). For n=4: latex_seq(3)+latex_seq(2)+latex_seq(1)+latex_seq(0) = 1+0+1+2=4. Actual is 1. No. Not matching')
+('a', '1-')
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3) +')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). But that didn't work earlier. Let me try again")
+('a', "latex_seq(n-1) + latex_seq(n-3). Let's check:")
+('a', 'latex_seq(n-2) + latex_seq(n-3). For n=3: latex_seq(1) + latex_seq(0) = 1 + 2 = 3. No')
+('a', 'latex_seq(n-1) + latex_seq(n-2). For n=2: latex_seq(2) = latex_seq(1) + latex_seq(0) → 1 + 2 = 3. But actual is 0. So no')
+('a', '1-')
+('a', 'latex_seq(n-1) + latex_seq(n-3). For latex_seq(6): latex_seq(5) + latex_seq(3) = 1 + 1 = 2. Yes. For latex_seq(7): latex_seq(6) + latex_seq(4) = 2 + 1 = 3. But actual is 4. No. Not matching')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). Let's check for latex_seq(6): latex_seq(5)+latex_seq(4)+latex_seq(3) = 1+1+1=3. But actual is 2. No. Not matching")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3). Let's check for latex_seq(3): latex_seq(2) + latex_seq(1) - latex_seq(0) = 0 + 1 - 2 = -1. No. Not matching")
+('a', 'latex_seq(n-1) + latex_seq(n-3). For latex_seq(3): latex_seq(2) + latex_seq(0) = 0 + 2 = 2. But actual is 1. No')
+('a', 'latex_seq(n-2) + latex_seq(n-3). For latex_seq(3): latex_seq(1) + latex_seq(0) = 1 + 2 = 3. No')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). Let's check for latex_seq(6): latex_seq(5) + latex_seq(4) + latex_seq(3) = 1 + 1 + 1 = 3. Actual is 2. No")
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4). For latex_seq(6): latex_seq(5) + latex_seq(4) - latex_seq(2) = 1 + 1 - 0 = 2. Yes. For latex_seq(7): latex_seq(6) + latex_seq(5) - latex_seq(3) = 2 + 1 - 1 = 2. But actual is 4. No')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). Let's check for latex_seq(6): 1 + 1 + 1 = 3. No")
+('a', 'latex_seq(n-1) + latex_seq(n-3). For latex_seq(6): latex_seq(5) + latex_seq(3) = 1 + 1 = 2. Yes. For latex_seq(7): latex_seq(6) + latex_seq(4) = 2 + 1 = 3. But actual is 4. No')
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4). For latex_seq(6): latex_seq(5) + latex_seq(4) - latex_seq(2) = 1 + 1 - 0 = 2. For latex_seq(7): latex_seq(6) + latex_seq(5) - latex_seq(3) = 2 + 1 - 1 = 2. But actual is 4. No')
+('a', 'latex_seq(n-1) + latex_seq(n-2). For latex_seq(7): latex_seq(6) + latex_seq(5) = 2 + 1 = 3. No. Actual is 4')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). Let's check for latex_seq(6): 1 + 1 + 1 = 3. No")
+('a', "latex_seq(n-1) + latex_seq(n-2). Let's check for latex_seq(7): latex_seq(6) + latex_seq(5) = 2 + 1 = 3. No. Actual is 4")
+('a', 'latex_seq(n-1) + latex_seq(n-3). For latex_seq(8): latex_seq(7) + latex_seq(5) = 4 + 1 = 5. No. Actual is 6')
+('a', 'latex_seq(n-1) + latex_seq(n-2) *for n ≥ 6. But then latex_seq(7) *would be latex_seq(6) + latex_seq(5) = 2 + 1 = 3. But actual is 4. So no')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). Let's check for latex_seq(6): latex_seq(5) + latex_seq(4) + latex_seq(3) = 1 + 1 + 1 = 3. No")
+('a', "latex_seq(n-1) + latex_seq(n-3) *for n ≥ 3. Let's check:")
+('a', "latex_seq(n-1) + latex_seq(n-3) *for n ≥ 5. Let's check:")
+('a', "latex_seq(n-1) + latex_seq(n-2). But latex_seq(11) *is 28, which would require latex_seq(10) + latex_seq(9) = 16 + 10 = 26, but actual is 28. So there's an inconsistency")
+('a', 'latex_seq(n-1) + latex_seq(n-k) *for some k')
+('a', "latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3). Let's check:")
+('a', 'latex_seq(n-1) + latex_seq(n-3)')
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3)')
+('a', '2*latex_seq(n-1) -2*latex_seq(n-2) + 2*latex_seq(n-3)')
+('a', 'latex_seq(n-1) + latex_seq(n-3)')
+('a', "latex_seq(n-1) + latex_seq(n-2) *for n ≥ 5? Let's check:")
+('a', 'latex_seq(n-1) + latex_seq(n-2), except for n=7, which should be 3* but is 4. This suggests that there might be an error in the sequence provided, or perhaps the initial terms are different')
+('a', "latex_seq(n-1) + latex_seq(n-2) *for n ≥ 6, but with latex_seq(5)=1* and latex_seq(6)=2. Let's see:")
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-2) *for n ≥ 7, but with latex_seq(7)=4. Let's see:")
+('a', "latex_seq(n-1) + 2*latex_seq(n-2). Let's check:")
+('a', '2*latex_seq(n-1) - latex_seq(n-2). For n=11: 2*16 - 10 = 32 -10=22. No')
+('a', 'latex_seq(n-1) + latex_seq(n-3). For n=11: latex_seq(10) + latex_seq(8) = 16 + 6 = 22. No')
+('a', 'latex_seq(n-1) + latex_seq(n-2) *for n ≥ 6, but with latex_seq(5)=1* and latex_seq(6)=2. Then:')
+('a', "latex_seq(n-1) + 2*latex_seq(n-2) *for n ≥ 6. Let's test:")
+('a', '1-')
+len(latex_matches) = 48
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [2, 1, 0, 1, 1, 1, 2, 4, 6, 10, 16, 28, 48, 83, 145, 256, 453, 809, 1452, 2621, 4755, 8665, 15857, 29127, 53687]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) + latex_seq(n-3) 
+
+
+
+-- decoding response finished
+Ground truth: A060505 ,2,1,0,1,1,1,2,4,6,10,16,28,48,83,145,256,453,809,1452,2621,4755,8665,15857,29127,53687,99273,184112,342392,638372,1193046,2234634,4194304,7887910,14861478,28048766,53024287,100393684,190358661,361443664,
+[dasco sequence loaded.]
+ground_truth = [2, 1, 0, 1, 1, 1, 2, 4, 6, 10, 16, 28, 48, 83, 145, 256, 453, 809, 1452, 2621, 4755, 8665, 15857, 29127, 53687, 99273, 184112, 342392, 638372, 1193046, 2234634, 4194304, 7887910, 14861478, 28048766, 53024287, 100393684, 190358661, 361443664]
+len(ground_truth) = 39
+
+cores = False
+task_id = 9774
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [2, 1, 0, 1, 1, 1, 2, 4, 6, 10, 16, 28, 48, 83, 145, 256, 453, 809, 1452, 2621, 4755, 8665, 15857, 29127, 53687, 69544, 98671, 152358, 221902, 320573, 472931, 694833, 1015406, 1488337, 2183170]
+len(seq_pred) = 35
+
+is_Dasco False
+

@@ -46,8 +46,10 @@ if __name__ == '__main__':
     EXPERIMENT_ID = 'zshot_eval-merge1112'
     # EXPERIMENT_ID = 'lookup-eval'
     # EXPERIMENT_ID = 'lookup-corev2'
-    EXPERIMENT_ID = 'lookup-corev3'
-    EXPERIMENT_ID = 'obatcor-eval'
+    # EXPERIMENT_ID = 'lookup-corev3'
+    # EXPERIMENT_ID = 'obatcor-eval'
+    EXPERIMENT_ID = 'parse2'
+    EXPERIMENT_ID = 'parse3'
 
     is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2', 'lookup-corev3', 'obatcor-eval')
 
@@ -317,7 +319,7 @@ if __name__ == '__main__':
     print(f'\n{len(files) = }')
     print(f'total tasks in bins: {sum(bins_sizes)}')
 
-    # 1/0
+    1/0
 
 
     # 3. Fails analisys:
@@ -370,31 +372,34 @@ if __name__ == '__main__':
 
     # '00214', '00313', '03274', '04407', '04435', '04915', '06939', '08820', '09679']
 
-    # # 3.3 TypeError:
-    # print()
-    # for task, err in errors_store_byerror['TypeError']:
-    #     print(f'{task}: {err}')
-    # 1/0
 
-    # # Type errors:
-    # TYPEERRORS = ['TypeError: list indices must be integers or slices, not float',
-    #               "TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'",
-    #               "TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'",
-    #               "TypeError: unsupported operand type(s) for +: 'int' and 'tuple'",
-    #               "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'",
-    #               "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'",
-    #               "TypeError: unsupported operand type(s) for *: 'functools._lru_cache_wrapper' and 'int'",
-    #               "TypeError: unsupported operand type(s) for -: 'int' and 'functools._lru_cache_wrapper'",
-    #               "TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'",
-    #               "TypeError: find_next_prime() missing 1 required positional argument: 'prev'",
-    #               "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'", ]
-    # specific = 10000
-    # for type_suberror in TYPEERRORS[:specific]:
-    #     for task, err in errors_store_byerror['TypeError']:
-    #         if err == type_suberror:
-    #             print(f'{task}: {err}')
-    #     if err not in TYPEERRORS:
-    #         print(f'{task}: {err}')
+    # 3.3 TypeError:
+    doTypeErrors = False
+    if doTypeErrors:
+        print()
+        for task, err in errors_store_byerror['TypeError']:
+            print(f'{task}: {err}')
+        # 1/0
+
+        # Type errors:
+        TYPEERRORS = ['TypeError: list indices must be integers or slices, not float',
+                      "TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'",
+                      "TypeError: unsupported operand type(s) for -: 'int' and 'ellipsis'",
+                      "TypeError: unsupported operand type(s) for +: 'int' and 'tuple'",
+                      "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'",
+                      "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'",
+                      "TypeError: unsupported operand type(s) for *: 'functools._lru_cache_wrapper' and 'int'",
+                      "TypeError: unsupported operand type(s) for -: 'int' and 'functools._lru_cache_wrapper'",
+                      "TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'functools._lru_cache_wrapper'",
+                      "TypeError: find_next_prime() missing 1 required positional argument: 'prev'",
+                      "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'complex'", ]
+        specific = 10000
+        for type_suberror in TYPEERRORS[:specific]:
+            for task, err in errors_store_byerror['TypeError']:
+                if err == type_suberror:
+                    print(f'{task}: {err}')
+            if err not in TYPEERRORS:
+                print(f'{task}: {err}')
 
 
     # # 3.4 Index Error:
@@ -439,7 +444,7 @@ if __name__ == '__main__':
 
     # 3.6 NameError:
     doNameError = True
-    # doNameError = False
+    doNameError = False
     if doNameError:
         subcount = dict()
         print(len(errors_store_byerror['NameError']))
@@ -452,7 +457,7 @@ if __name__ == '__main__':
                 print(f'{task}: {err}')
 
         print(sorted(subcount.values()))
-    1/0
+    # 1/0
 
 
     print(f'{errors_count = }')
@@ -490,6 +495,7 @@ if __name__ == '__main__':
     # mainly missing files, other halucinations. (this error is very clean-cut)
 
 
+    1/0
     # 3.7? Local errors
     a,b = 5384, 5493
     a,b = 0, 10000
@@ -516,7 +522,7 @@ if __name__ == '__main__':
     print(len(loc_pure_fails))
     print(f'{len(loc_pure_fails) + sum(successes) = }')
 
-    1/0
+    # 1/0
 
     local_err_count = {err: len([task for task, err_dict in errors_store.items() if task in tasks and err in err_dict.keys()]) for err in errors_count.keys()}
     print(local_err_count)

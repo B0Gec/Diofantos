@@ -1,0 +1,166 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+65
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+00065-6708.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 3, 4, 6, 8, 9, 11, 12, 14, 16, 17, 19, 21, 22, 24, 25, 27, 29, 30, 32, 33, 35, 37, 38, 40'
+question[-200:] = 'sk:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 3, 4, 6, 8, 9, 11, 12, 14, 16, 17, 19, 21, 22, 24, 25, 27, 29, 30, 32, 33, 35, 37, 38, 40'
+inits = [1, 3, 4, 6, 8, 9, 11, 12, 14, 16, 17, 19, 21, 22, 24, 25, 27, 29, 30, 32, 33, 35, 37, 38, 40]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+35
+('term', " term(n-1) + 2 or 1. But that's already known from the differences.")
+('term', " term(n-1) + term(n-2) - something. But given the terms, it's hard to see.")
+('term', " term(n-1) + term(n-2). Let's see:")
+('S', ' 2*(number of 0s in first n Fibonacci word terms) + 1*(number of 1s in first n Fibonacci word terms).')
+('S', ' 2*(n - c(n)) + 1*c(n) = 2n - c(n), where c(n) is the number of 1s in the first n terms of the Fibonacci word.')
+('a', ' floor(n*phi), where phi = (1+sqrt(5))/2.')
+('a', ' floor(n*phi). For n=1: floor(1.618)=1, n=2: floor(3.236)=3, n=3: floor(4.854)=4, n=4: floor(6.472)=6, etc. So up to n=4 (positions 1 to 4), the lower Wythoff numbers ≤4 are 1,3,4. So there are 3 such numbers. According to formula floor(n/phi + 1/phi): for n=4, phi≈1.618, 4/phi≈2.472, 1/phi≈0.618, total≈3.09, floor is 3. Correct. For n=3: floor(3/phi + 1/phi)=floor( (3+1)/phi )=floor(4/1.618)=floor(2.472)=2. But actual number of lower Wythoff numbers ≤3 is 2 (1 and 3). Correct. For n=2: floor(2/phi + 1/phi)=floor(3/1.618)=floor(1.854)=1. Correct. For n=1: floor(1/phi + 1/phi)=floor(2/1.618)=floor(1.236)=1. But actual number is 1 (only a(1)=1). Correct. For n=5: floor(5/phi + 1/phi)=floor(6/1.618)=floor(3.708)=3. Actual lower Wythoff numbers ≤5 are 1,3,4. So 3 numbers. Correct. For n=6: floor(6/phi + 1/phi)=floor(7/1.618)=floor(4.326)=4. Actual lower Wythoff numbers ≤6 are 1,3,4,6. Correct. So the formula is floor((n + 1)/phi).')
+('c', ' floor((n + 1)/phi).')
+('S', ' 2n - c(n) = 2n - floor((n + 1)/phi).')
+('term', ' 1 + sum_{i=1}^n difference_i. Therefore, term(n) = 1 + S(n), where S(n) = 2n - floor((n + 1)/phi).')
+('S', " sum_{i=1}^n difference_i. And we derived S(n) = 2n - c(n), where c(n) is the number of 1s in the first n differences. But according to our previous analysis, c(n) = floor((n + 1)/phi). However, when n=1, the first difference is 2 (which is a 0 in the Fibonacci word, mapped to 2). The number of 1s in the first 1 term of the Fibonacci word is 0, since the first term is 0. But according to c(1) = floor((1 + 1)/phi) = floor(2/1.618) ≈ 1.236 → 1. Which is incorrect. There's a mistake here.")
+('a', " floor(n*phi), and the upper Wythoff sequence is b(n) = floor(n*phi^2). The positions of the 0s and 1s in the Fibonacci word are determined by these sequences. Specifically, the Fibonacci word can be generated by starting with 0 and applying the morphism 0 → 01, 1 → 0. Alternatively, the nth term is 0 if n = b(k) for some k, and 1 otherwise. Wait no, perhaps it's the other way around. Let me check.")
+('a', ' floor(n*phi):')
+('b', ' floor(n*phi^2). For n=1: floor(1*2.618)=2, n=2: floor(2*2.618)=5, n=3: floor(3*2.618)=7, n=4: floor(4*2.618)=10, etc. Yes! These correspond to the positions of 1s in the Fibonacci word: 2,5,7,10,... So the number of 1s in the first n terms of the Fibonacci word is equal to the number of m such that b(m) ≤ n, where b(m) is the upper Wythoff sequence. ')
+('a', ' floor(n*phi), the inverse relation is that for any integer k, the value m such that a(m) = k is approximately m = k/phi. More precisely, m = floor(k/phi + 1/2). But this might not be helpful here.')
+('c', ' n - floor((n + 1)/phi).')
+('S', ' 2n - c(n), where c(n) is the number of 1s in the differences (which are the Fibonacci word terms, 0 mapped to 2, 1 mapped to 1). Wait no, the differences are: in the Fibonacci word, each term is 0 or 1, but in our case, the differences are 2 for 0 and 1 for 1. Therefore, the sum S(n) = sum_{i=1}^n (2 if word[i] is 0 else 1). Since the word has c(n) 1s and (n - c(n)) 0s, the sum is 1*c(n) + 2*(n - c(n)) = 2n - c(n). Yes. And we just found that c(n) = n - floor((n + 1)/phi). Therefore, S(n) = 2n - [n - floor((n + 1)/phi)] = n + floor((n + 1)/phi).')
+('S', ' n + floor((n + 1)/phi).')
+('S', ' 1*c(n) + 2*(n - c(n)) = 2n - c(n), where c(n) is the number of 1s in the first n terms of the Fibonacci word. And we found that c(n) = n - floor((n + 1)/phi). Therefore, S(n) = 2n - [n - floor((n + 1)/phi)] = n + floor((n + 1)/phi).')
+('S', ' n + floor((n + 1)/phi).')
+('a', " floor(n*phi). For n=1: 1, n=2: 3, n=3: 4, n=4: 6, n=5: 8. The terms we calculated (2,3,5,7,8) are different. So perhaps the sequence is the upper Wythoff sequence or another sequence. Alternatively, maybe it's the Fibonacci word's positions or something else.")
+('S', ' n + floor((n + 1)/phi), we can proceed with calculating S(10^5).')
+('a', " floor(n*phi) and the upper Wythoff sequence b(n) = floor(n*phi^2). There's an identity that b(n) = a(n) + n.")
+('S', " n + floor((n + 1)/phi). Let's see if this can be expressed in terms of known sequences.")
+('S', "161804, let's check for smaller n if there's a pattern.")
+('S', "a(n). For n=1, it's different. Maybe there's an offset or a different indexing.")
+('S', " a(n+1) for n ≥ 1? Let's check:")
+('S', ' a(n) + something. For example:')
+('S', ' \\sum_{i=1}^{n} (2 - a_i)')
+('S', ' 2n - \\sum_{i=1}^{n} a_i')
+('c', ' \\sum_{i=1}^{n} a_i $, the number of 1s in the first $ n $ terms of the pattern. Then:')
+('S', ' 2n - c(n)')
+('a', ' \\lfloor n \\phi \\rfloor')
+('c', ' \\lfloor \\frac{n}{\\phi} \\rfloor')
+('S', ' 2n - \\left\\lfloor \\frac{n}{\\phi} \\right\\rfloor')
+var, rhs: ('term', "term(n-1) + 2 or 1. But that's already known from the differences.")
+var, rhs: ('term', "term(n-1) + term(n-2) - something. But given the terms, it's hard to see.")
+var, rhs: ('term', "term(n-1) + term(n-2). Let's see:")
+var, rhs: ('S', '2*(number of 0s in first n Fibonacci word terms) + 1*(number of 1s in first n Fibonacci word terms).')
+var, rhs: ('S', '2*(n - c(n)) + 1*c(n) = 2n - c(n), where c(n) is the number of 1s in the first n terms of the Fibonacci word.')
+var, rhs: ('a', 'floor(n*phi), where phi = (1+sqrt(5))/2.')
+var, rhs: ('a', 'floor(n*phi). For n=1: floor(1.618)=1, n=2: floor(3.236)=3, n=3: floor(4.854)=4, n=4: floor(6.472)=6, etc. So up to n=4 (positions 1 to 4), the lower Wythoff numbers ≤4 are 1,3,4. So there are 3 such numbers. According to formula floor(n/phi + 1/phi): for n=4, phi≈1.618, 4/phi≈2.472, 1/phi≈0.618, total≈3.09, floor is 3. Correct. For n=3: floor(3/phi + 1/phi)=floor( (3+1)/phi )=floor(4/1.618)=floor(2.472)=2. But actual number of lower Wythoff numbers ≤3 is 2 (1 and 3). Correct. For n=2: floor(2/phi + 1/phi)=floor(3/1.618)=floor(1.854)=1. Correct. For n=1: floor(1/phi + 1/phi)=floor(2/1.618)=floor(1.236)=1. But actual number is 1 (only a(1)=1). Correct. For n=5: floor(5/phi + 1/phi)=floor(6/1.618)=floor(3.708)=3. Actual lower Wythoff numbers ≤5 are 1,3,4. So 3 numbers. Correct. For n=6: floor(6/phi + 1/phi)=floor(7/1.618)=floor(4.326)=4. Actual lower Wythoff numbers ≤6 are 1,3,4,6. Correct. So the formula is floor((n + 1)/phi).')
+var, rhs: ('c', 'floor((n + 1)/phi).')
+var, rhs: ('S', '2n - c(n) = 2n - floor((n + 1)/phi).')
+var, rhs: ('term', '1 + sum_{i=1}^n difference_i. Therefore, term(n) = 1 + S(n), where S(n) = 2n - floor((n + 1)/phi).')
+var, rhs: ('S', "sum_{i=1}^n difference_i. And we derived S(n) = 2n - c(n), where c(n) is the number of 1s in the first n differences. But according to our previous analysis, c(n) = floor((n + 1)/phi). However, when n=1, the first difference is 2 (which is a 0 in the Fibonacci word, mapped to 2). The number of 1s in the first 1 term of the Fibonacci word is 0, since the first term is 0. But according to c(1) = floor((1 + 1)/phi) = floor(2/1.618) ≈ 1.236 → 1. Which is incorrect. There's a mistake here.")
+var, rhs: ('a', "floor(n*phi), and the upper Wythoff sequence is b(n) = floor(n*phi^2). The positions of the 0s and 1s in the Fibonacci word are determined by these sequences. Specifically, the Fibonacci word can be generated by starting with 0 and applying the morphism 0 → 01, 1 → 0. Alternatively, the nth term is 0 if n = b(k) for some k, and 1 otherwise. Wait no, perhaps it's the other way around. Let me check.")
+var, rhs: ('a', 'floor(n*phi):')
+var, rhs: ('b', 'floor(n*phi^2). For n=1: floor(1*2.618)=2, n=2: floor(2*2.618)=5, n=3: floor(3*2.618)=7, n=4: floor(4*2.618)=10, etc. Yes! These correspond to the positions of 1s in the Fibonacci word: 2,5,7,10,... So the number of 1s in the first n terms of the Fibonacci word is equal to the number of m such that b(m) ≤ n, where b(m) is the upper Wythoff sequence.')
+var, rhs: ('a', 'floor(n*phi), the inverse relation is that for any integer k, the value m such that a(m) = k is approximately m = k/phi. More precisely, m = floor(k/phi + 1/2). But this might not be helpful here.')
+var, rhs: ('c', 'n - floor((n + 1)/phi).')
+var, rhs: ('S', '2n - c(n), where c(n) is the number of 1s in the differences (which are the Fibonacci word terms, 0 mapped to 2, 1 mapped to 1). Wait no, the differences are: in the Fibonacci word, each term is 0 or 1, but in our case, the differences are 2 for 0 and 1 for 1. Therefore, the sum S(n) = sum_{i=1}^n (2 if word[i] is 0 else 1). Since the word has c(n) 1s and (n - c(n)) 0s, the sum is 1*c(n) + 2*(n - c(n)) = 2n - c(n). Yes. And we just found that c(n) = n - floor((n + 1)/phi). Therefore, S(n) = 2n - [n - floor((n + 1)/phi)] = n + floor((n + 1)/phi).')
+var, rhs: ('S', 'n + floor((n + 1)/phi).')
+var, rhs: ('S', '1*c(n) + 2*(n - c(n)) = 2n - c(n), where c(n) is the number of 1s in the first n terms of the Fibonacci word. And we found that c(n) = n - floor((n + 1)/phi). Therefore, S(n) = 2n - [n - floor((n + 1)/phi)] = n + floor((n + 1)/phi).')
+var, rhs: ('S', 'n + floor((n + 1)/phi).')
+var, rhs: ('a', "floor(n*phi). For n=1: 1, n=2: 3, n=3: 4, n=4: 6, n=5: 8. The terms we calculated (2,3,5,7,8) are different. So perhaps the sequence is the upper Wythoff sequence or another sequence. Alternatively, maybe it's the Fibonacci word's positions or something else.")
+var, rhs: ('S', 'n + floor((n + 1)/phi), we can proceed with calculating S(10^5).')
+var, rhs: ('a', "floor(n*phi) and the upper Wythoff sequence b(n) = floor(n*phi^2). There's an identity that b(n) = a(n) + n.")
+var, rhs: ('S', "n + floor((n + 1)/phi). Let's see if this can be expressed in terms of known sequences.")
+var, rhs: ('S', "161804, let's check for smaller n if there's a pattern.")
+var, rhs: ('S', "a(n). For n=1, it's different. Maybe there's an offset or a different indexing.")
+var, rhs: ('S', "a(n+1) for n ≥ 1? Let's check:")
+var, rhs: ('S', 'a(n) + something. For example:')
+var, rhs: ('S', '\\sum_{i=1}^{n} (2 - a_i)')
+var, rhs: ('S', '2n - \\sum_{i=1}^{n} a_i')
+var, rhs: ('c', '\\sum_{i=1}^{n} a_i $, the number of 1s in the first $ n $ terms of the pattern. Then:')
+var, rhs: ('S', '2n - c(n)')
+var, rhs: ('a', '\\lfloor n \\phi \\rfloor')
+var, rhs: ('c', '\\lfloor \\frac{n}{\\phi} \\rfloor')
+var, rhs: ('S', '2n - \\left\\lfloor \\frac{n}{\\phi} \\right\\rfloor')
+latex_matches[-2:] = [('c', '\\lmath.floor (n)/(\\phi) \\rmath.floor'), ('S', '2*n - math.floor( (n)/(\\phi) )')]
+('term', "latex_seq(n-1) + 2* or 1. But that's already known from the differences")
+('term', '1-')
+('term', "latex_seq(n-1) + latex_seq(n-2). Let's see:")
+('S', '2*(number of 0*s in first n Fibonacci word terms) + 1*(number of 1*s in first n Fibonacci word terms)')
+('S', '2*(n - c(n)) + 1*c(n) = 2*n - c(n), where c(n) *is the number of 1*s in the first n terms of the Fibonacci word')
+('a', 'math.floor(n*phi), where phi = (1+sqrt(5))/2')
+('a', 'math.floor(n*phi). For n=1: math.floor(1.618)=1, n=2: math.floor(3.236)=3, n=3: math.floor(4.854)=4, n=4: math.floor(6.472)=6, etc. So up to n=4 *(positions 1* to 4), the lower Wythoff numbers ≤4* are 1,3,4. So there are 3* such numbers. According to formula math.floor(n/phi + 1/phi): for n=4, phi≈1.618, 4/phi≈2.472, 1/phi≈0.618, total≈3.09, math.floor is 3. Correct. For n=3: math.floor(3/phi + 1/phi)=math.floor( (3+1)/phi )=math.floor(4/1.618)=math.floor(2.472)=2. But actual number of lower Wythoff numbers ≤3* is 2 *(1* and 3). Correct. For n=2: math.floor(2/phi + 1/phi)=math.floor(3/1.618)=math.floor(1.854)=1. Correct. For n=1: math.floor(1/phi + 1/phi)=math.floor(2/1.618)=math.floor(1.236)=1. But actual number is 1 *(only latex_seq(1)=1). Correct. For n=5: math.floor(5/phi + 1/phi)=math.floor(6/1.618)=math.floor(3.708)=3. Actual lower Wythoff numbers ≤5* are 1,3,4. So 3* numbers. Correct. For n=6: math.floor(6/phi + 1/phi)=math.floor(7/1.618)=math.floor(4.326)=4. Actual lower Wythoff numbers ≤6* are 1,3,4,6. Correct. So the formula is math.floor((n + 1)/phi)')
+('c', 'math.floor((n + 1)/phi)')
+('S', '2*n - c(n) = 2*n - math.floor((n + 1)/phi)')
+('term', '1 + sum_{i=1}**n difference_i. Therefore, latex_seq(n) = 1 + S(n), where S(n) = 2*n - math.floor((n + 1)/phi)')
+('S', "sum_{i=1}**n difference_i. And we derived latex_seq(n) = 2*n - c(n), where c(n) *is the number of 1*s in the first n differences. But according to our previous analysis, c(n) = math.floor((n + 1)/phi). However, when n=1, the first difference is 2 *(which is a 0* in the Fibonacci word, mapped to 2). The number of 1*s in the first 1* term of the Fibonacci word is 0, since the first term is 0. But according to c(1) = math.floor((1 + 1)/phi) = math.floor(2/1.618) ≈ 1.236 → 1. Which is incorrect. There's a mistake here")
+('a', '1-')
+('a', 'math.floor(n*phi):')
+('b', 'math.floor(n*phi**2). For n=1: math.floor(1*2.618)=2, n=2: math.floor(2*2.618)=5, n=3: math.floor(3*2.618)=7, n=4: math.floor(4*2.618)=10, etc. Yes! These correspond to the positions of 1*s in the Fibonacci word: 2,5,7,10,... So the number of 1*s in the first n terms of the Fibonacci word is equal to the number of m such that latex_seq(m) ≤ n, where latex_seq(m) *is the upper Wythoff sequence')
+('a', 'math.floor(n*phi), the inverse relation is that for any integer k, the value m such that latex_seq(m) = k is approximately m = k/phi. More precisely, m = math.floor(k/phi + 1/2). But this might not be helpful here')
+('c', 'n - math.floor((n + 1)/phi)')
+('S', '2*n - c(n), where c(n) *is the number of 1*s in the differences (which are the Fibonacci word terms, 0* mapped to 2, 1* mapped to 1). Wait no, the differences are: in the Fibonacci word, each term is 0* or 1, but in our case, the differences are 2* for 0* and 1* for 1. Therefore, the sum latex_seq(n) = sum_{i=1}* n*(2* if word(i) *is 0* else 1). Since the word has c(n) *1*s and (n - c(n)) *0*s, the sum is 1*c(n) + 2*(n - c(n)) = 2*n - c(n). Yes. And we just found that c(n) = n - math.floor((n + 1)/phi). Therefore, latex_seq(n) = 2*n - (n - math.floor((n + 1)/phi)) = n + math.floor((n + 1)/phi)')
+('S', 'n + math.floor((n + 1)/phi)')
+('S', '1*c(n) + 2*(n - c(n)) = 2*n - c(n), where c(n) *is the number of 1*s in the first n terms of the Fibonacci word. And we found that c(n) = n - math.floor((n + 1)/phi). Therefore, latex_seq(n) = 2*n - (n - math.floor((n + 1)/phi)) = n + math.floor((n + 1)/phi)')
+('S', 'n + math.floor((n + 1)/phi)')
+('a', '1-')
+('S', 'n + math.floor((n + 1)/phi), we can proceed with calculating latex_seq(10**5)')
+('a', "math.floor(n*phi) *and the upper Wythoff sequence b(n) = math.floor(n*phi**2). There's an identity that b(n) = latex_seq(n) + n")
+('S', "n + math.floor((n + 1)/phi). Let's see if this can be expressed in terms of known sequences")
+('S', "161804, let's check for smaller n if there's a pattern")
+('S', "a(n). For n=1, it's different. Maybe there's an offset or a different indexing")
+('S', "a(n+1) *for n ≥ 1? Let's check:")
+('S', '1-')
+('S', '\\sum_{i=1}**(n) *(2 - a_i)')
+('S', '2*n - \\sum_{i=1}**(n) *a_i')
+('c', '\\sum_{i=1}**(n) *a_i $, the number of 1*s in the first $ n $ terms of the pattern. Then:')
+('S', '2*n - c(n)')
+('a', '\\lmath.floor n \\phi \\rmath.floor')
+('c', '\\lmath.floor (n)/(\\phi) \\rmath.floor')
+('S', '2*n - math.floor( (n)/(\\phi) )')
+len(latex_matches) = 35
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 3, 4, 6, 8, 9, 11, 12, 14, 16, 17, 19, 21, 22, 24, 25, 27, 29, 30, 32, 33, 35, 37, 38, 40]
+    if n < len(init):
+        return init[n]
+    return 2*n - c(n) 
+
+
+
+-- decoding response finished
+Ground truth: A000201 ,1,3,4,6,8,9,11,12,14,16,17,19,21,22,24,25,27,29,30,32,33,35,37,38,40,42,43,45,46,48,50,51,53,55,56,58,59,61,63,64,66,67,69,71,72,74,76,77,79,80,82,84,85,87,88,90,92,93,95,97,98,100,101,103,105,106,108,110,
+[dasco sequence loaded.]
+ground_truth = [1, 3, 4, 6, 8, 9, 11, 12, 14, 16, 17, 19, 21, 22, 24, 25, 27, 29, 30, 32, 33, 35, 37, 38, 40, 42, 43, 45, 46, 48, 50, 51, 53, 55, 56, 58, 59, 61, 63, 64, 66, 67, 69, 71, 72, 74, 76, 77, 79, 80, 82, 84, 85, 87, 88, 90, 92, 93, 95, 97, 98, 100, 101, 103, 105, 106, 108, 110]
+len(ground_truth) = 68
+
+cores = False
+task_id = 65
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'c' is not defined

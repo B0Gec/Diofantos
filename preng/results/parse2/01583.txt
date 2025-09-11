@@ -1,0 +1,68 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+1583
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+01583-8091.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 55, 75, 97, 128, 164, 212, 267, 340, 423, 530, 653, 807, 984, 1204'
+question[-200:] = ' you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 55, 75, 97, 128, 164, 212, 267, 340, 423, 530, 653, 807, 984, 1204'
+inits = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 55, 75, 97, 128, 164, 212, 267, 340, 423, 530, 653, 807, 984, 1204]
+code_blocks = ['from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef partition(n):\n    if n < 0:\n        return 0\n    if n == 0:\n        return 1\n    result = 0\n    m = 1\n    while True:\n        g1 = m * (3 * m - 1) // 2\n        if g1 > n:\n            break\n        g2 = m * (3 * m + 1) // 2\n        term = partition(n - g1)\n        if g2 <= n:\n            term += partition(n - g2)\n        sign = (-1) ** (m - 1)\n        result += sign * term\n        m += 1\n    return result\n', 'print(partition(6))  # Output: 11\nprint(partition(10)) # Output: 42\n']
+
+Test code was censored for imports and manipulated to avoid user input and the code has actually changed for real!
+Here are all censored lines:
+from functools import lru_cache
+And here are all the manipulated lines:
+
+
+function_name = 'partition'
+-- test_code 
+
+
+
+
+
+@lru_cache(maxsize=None)
+def partition(n):
+    if n < 0:
+        return 0
+    if n == 0:
+        return 1
+    result = 0
+    m = 1
+    while True:
+        g1 = m * (3 * m - 1) // 2
+        if g1 > n:
+            break
+        g2 = m * (3 * m + 1) // 2
+        term = partition(n - g1)
+        if g2 <= n:
+            term += partition(n - g2)
+        sign = (-1) ** (m - 1)
+        result += sign * term
+        m += 1
+    return result 
+
+
+
+-- decoding response finished
+Ground truth: A008639 ,1,1,2,3,5,7,11,15,22,30,42,55,75,97,128,164,212,267,340,423,530,653,807,984,1204,1455,1761,2112,2534,3015,3590,4242,5013,5888,6912,8070,9418,10936,12690,14663,16928,19466,22367,25608,29292,33401,38047,
+[dasco sequence loaded.]
+ground_truth = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 55, 75, 97, 128, 164, 212, 267, 340, 423, 530, 653, 807, 984, 1204, 1455, 1761, 2112, 2534, 3015, 3590, 4242, 5013, 5888, 6912, 8070, 9418, 10936, 12690, 14663, 16928, 19466, 22367, 25608, 29292, 33401, 38047]
+len(ground_truth) = 47
+
+cores = False
+task_id = 1583
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = partition
+start = 0
+    seq_pred = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310]
+len(seq_pred) = 35
+
+is_Dasco False
+

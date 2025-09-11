@@ -1,0 +1,185 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+3055
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+03055-5812.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 42, 43, 44, 45, 56, 57'
+question[-200:] = 'r Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 42, 43, 44, 45, 56, 57'
+inits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 42, 43, 44, 45, 56, 57]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+42
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n- k), where k varies. But how to find a general formula?')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - (n - 15))? Not sure. ')
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) when n is 16? But for n=16, 28 = 27? No. Wait, term15 is 15, term14 is 14. 15+14=29, but term16 is 28. So that's not. ")
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - (16 - (n - 16))) ? Not sure. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(15 - k), where k increases by 1 each time. But how to model this in a general formula?')
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence( (n - 1) % 15 ). Let's test this. For n=16: (16-1) %15 =15%15=0. But there's no term0. Hmm. ")
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence( (n - 1) - 15 ). For n=16: 16-1-15=0. Again, no term0. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 16 + 1). For n=16: 16-16+1=1. So term1 is 1. 15+1=16? But term16 is 28. No. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - m), where m is some function. ')
+('calculate_sequence', ' calculate_sequence(n-1) + (15 - k), where k increases by 1 each time. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) when n is congruent to 1 mod 3? Not sure. ')
+('calculate_sequence', ' n. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(15 - ( (n - 16) // 2 + 1 )) ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(15 - ( (n - 16) // 2 + 1 )) if n is in the sequence of special positions, else calculate_sequence(n) = calculate_sequence(n-1) + 1. ')
+('calculate_sequence', " n for n < 16, and for n ≥ 16, calculate_sequence(n) = calculate_sequence(n-1) + calculate_sequence(n - 3) when n is even, and calculate_sequence(n-1) + 1 when odd? Let's test for n=16 (even): calculate_sequence(15) + calculate_sequence(13) =15+13=28. Yes! For n=17 (odd): 28 +1=29. For n=18 (even): 29 + calculate_sequence(15) =29+15=44? But the next term after 30 is 42, not 44. So this doesn't fit. ")
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 16 + 3k, else calculate_sequence(n-1) +1. ')
+('calculate_sequence', ' n. ')
+('calculate_sequence', ' calculate_sequence(n-1) + (15 - (k)), where k is the step in the sequence (k=2,3,4,...). Otherwise, calculate_sequence(n) = calculate_sequence(n-1) + 1. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(15 - (n - 16 - m)), where m is some function. ')
+('calculate_sequence', ' calculate_sequence(n-1) + d, where d is either a decreasing number (13,12,11,...) or 1, depending on the position. ')
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) if n is even, and calculate_sequence(n-1) + 1 if n is odd. But this didn't work earlier. ")
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) when n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise. Let's test: ")
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) when n is of the form 3k + 1, but this didn't work for n=19. ")
+('calculate_sequence', ' calculate_sequence(n-1) + (15 - (n - 16 - 1)). For n=16: 15 - (16-16 -1) =15 -(-1)=16? No. ')
+('calculate_sequence', ' calculate_sequence(n-1) + (15 - k), where k increases by 1 each time, and the special terms occur at positions that are 16 + 3 + 4 + ... + (k+1). ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) if n is even, and calculate_sequence(n-1) + 1 if n is odd. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) when n is a multiple of 3 plus 1, and calculate_sequence(n-1) + 1 otherwise. ')
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n-15) for n ≥ 16. Let's test: ")
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, even though it doesn't fit for n=19. Alternatively, there might be a different pattern. ")
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n-3), then calculate_sequence(19) = calculate_sequence(18) + calculate_sequence(16) =30 +28=58, but the actual value is 42. This discrepancy suggests the hypothesis is incorrect. ')
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, even though it doesn't fit for n=19. Alternatively, there might be a different pattern. ")
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) when n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n-3) for n ≥ 16, and calculate_sequence(n) = calculate_sequence(n-1) + 1 otherwise, with initial conditions from n=0 to n=15 as calculate_sequence(n) = n. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n-4) for n ≥ 16: ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n-15) for n ≥ 16: ')
+('calculate_sequence', ' calculate_sequence(n-1) + d, where d is 13, 1, 1, 12, 1, 1, 1, 11, 1, ... following the pattern of decreasing numbers followed by increasing numbers of 1s. ')
+('calculate_sequence', " calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, even though it doesn't fit for n=19. ")
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 4) if n is of the form 4k + 1, and calculate_sequence(n-1) + 1 otherwise. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, with initial conditions from n=0 to n=15 as calculate_sequence(n) = n. ')
+('calculate_sequence', ' calculate_sequence(n-1) + calculate_sequence(n-3) for n ≥ 16, and calculate_sequence(n) = calculate_sequence(n-1) + 1 otherwise, with initial conditions calculate_sequence(n) = n for 0 ≤ n ≤ 15.')
+('d', ' 1 $ for most $ n $')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n- k), where k varies. But how to find a general formula?')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - (n - 15))? Not sure.')
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) when n is 16? But for n=16, 28 = 27? No. Wait, term15 is 15, term14 is 14. 15+14=29, but term16 is 28. So that's not.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - (16 - (n - 16))) ? Not sure.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(15 - k), where k increases by 1 each time. But how to model this in a general formula?')
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence( (n - 1) % 15 ). Let's test this. For n=16: (16-1) %15 =15%15=0. But there's no term0. Hmm.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence( (n - 1) - 15 ). For n=16: 16-1-15=0. Again, no term0.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 16 + 1). For n=16: 16-16+1=1. So term1 is 1. 15+1=16? But term16 is 28. No.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - m), where m is some function.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + (15 - k), where k increases by 1 each time.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) when n is congruent to 1 mod 3? Not sure.')
+var, rhs: ('calculate_sequence', 'n.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(15 - ( (n - 16) // 2 + 1 ))')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(15 - ( (n - 16) // 2 + 1 )) if n is in the sequence of special positions, else calculate_sequence(n) = calculate_sequence(n-1) + 1.')
+var, rhs: ('calculate_sequence', "n for n < 16, and for n ≥ 16, calculate_sequence(n) = calculate_sequence(n-1) + calculate_sequence(n - 3) when n is even, and calculate_sequence(n-1) + 1 when odd? Let's test for n=16 (even): calculate_sequence(15) + calculate_sequence(13) =15+13=28. Yes! For n=17 (odd): 28 +1=29. For n=18 (even): 29 + calculate_sequence(15) =29+15=44? But the next term after 30 is 42, not 44. So this doesn't fit.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 16 + 3k, else calculate_sequence(n-1) +1.')
+var, rhs: ('calculate_sequence', 'n.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + (15 - (k)), where k is the step in the sequence (k=2,3,4,...). Otherwise, calculate_sequence(n) = calculate_sequence(n-1) + 1.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(15 - (n - 16 - m)), where m is some function.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + d, where d is either a decreasing number (13,12,11,...) or 1, depending on the position.')
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) if n is even, and calculate_sequence(n-1) + 1 if n is odd. But this didn't work earlier.")
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) when n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise. Let's test:")
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) when n is of the form 3k + 1, but this didn't work for n=19.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + (15 - (n - 16 - 1)). For n=16: 15 - (16-16 -1) =15 -(-1)=16? No.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + (15 - k), where k increases by 1 each time, and the special terms occur at positions that are 16 + 3 + 4 + ... + (k+1).')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) if n is even, and calculate_sequence(n-1) + 1 if n is odd.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) when n is a multiple of 3 plus 1, and calculate_sequence(n-1) + 1 otherwise.')
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n-15) for n ≥ 16. Let's test:")
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, even though it doesn't fit for n=19. Alternatively, there might be a different pattern.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n-3), then calculate_sequence(19) = calculate_sequence(18) + calculate_sequence(16) =30 +28=58, but the actual value is 42. This discrepancy suggests the hypothesis is incorrect.')
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, even though it doesn't fit for n=19. Alternatively, there might be a different pattern.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) when n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n-3) for n ≥ 16, and calculate_sequence(n) = calculate_sequence(n-1) + 1 otherwise, with initial conditions from n=0 to n=15 as calculate_sequence(n) = n.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n-4) for n ≥ 16:')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n-15) for n ≥ 16:')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + d, where d is 13, 1, 1, 12, 1, 1, 1, 11, 1, ... following the pattern of decreasing numbers followed by increasing numbers of 1s.')
+var, rhs: ('calculate_sequence', "calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, even though it doesn't fit for n=19.")
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 4) if n is of the form 4k + 1, and calculate_sequence(n-1) + 1 otherwise.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n - 3) if n is of the form 3k + 1, and calculate_sequence(n-1) + 1 otherwise, with initial conditions from n=0 to n=15 as calculate_sequence(n) = n.')
+var, rhs: ('calculate_sequence', 'calculate_sequence(n-1) + calculate_sequence(n-3) for n ≥ 16, and calculate_sequence(n) = calculate_sequence(n-1) + 1 otherwise, with initial conditions calculate_sequence(n) = n for 0 ≤ n ≤ 15.')
+var, rhs: ('d', '1 $ for most $ n $')
+latex_matches[-2:] = [('calculate_sequence', '1-'), ('d', '1 $ for most $ n $')]
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n- k), where k varies. But how to find a general formula?')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - (n - 15))? Not sure')
+('calculate_sequence', "latex_seq(n-1) + latex_seq(n - 3) *when n is 16? But for n=16, 28 = 27? No. Wait, term15* is 15, term14* is 14. 15+14=29, but term16* is 28. So that's not")
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - (16 - (n - 16))) ? Not sure')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(15 - k), where k increases by 1* each time. But how to model this in a general formula?')
+('calculate_sequence', "latex_seq(n-1) + latex_seq( (n - 1) % 15 ). Let's test this. For n=16: (16-1) %15 =15%15=0. But there's no term0. Hmm")
+('calculate_sequence', 'latex_seq(n-1) + latex_seq( (n - 1) - 15 ). For n=16: 16-1-15=0. Again, no term0')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - 16 + 1). For n=16: 16-16+1=1. So term1* is 1. 15+1=16? But term16* is 28. No')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - m), where m is some function')
+('calculate_sequence', 'latex_seq(n-1) + (15 - k), where k increases by 1* each time')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - 3) *when n is congruent to 1* mod 3? Not sure')
+('calculate_sequence', 'n')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(15 - ( (n - 16) // 2 + 1 ))')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(15 - ( (n - 16) // 2 + 1 )) *if n is in the sequence of special positions, else latex_seq(n) = latex_seq(n-1) + 1')
+('calculate_sequence', "n for n < 16, and for n ≥ 16, latex_seq(n) = latex_seq(n-1) + latex_seq(n - 3) *when n is even, and latex_seq(n-1) + 1* when odd? Let's test for n=16 *(even): latex_seq(15) + latex_seq(13) =15+13=28. Yes! For n=17 *(odd): 28 +1=29. For n=18 *(even): 29 + latex_seq(15) =29+15=44? But the next term after 30* is 42, not 44. So this doesn't fit")
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - 3) *if n is of the form 16 + 3*k, else latex_seq(n-1) +1')
+('calculate_sequence', 'n')
+('calculate_sequence', 'latex_seq(n-1) + (15 - (k)), where k is the step in the sequence (k=2,3,4,...). Otherwise, latex_seq(n) = latex_seq(n-1) + 1')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(15 - (n - 16 - m)), where m is some function')
+('calculate_sequence', 'latex_seq(n-1) + d, where d is either a decreasing number (13,12,11,...) *or 1, depending on the position')
+('calculate_sequence', "latex_seq(n-1) + latex_seq(n - 3) *if n is even, and latex_seq(n-1) + 1* if n is odd. But this didn't work earlier")
+('calculate_sequence', '1-')
+('calculate_sequence', "latex_seq(n-1) + latex_seq(n - 3) *when n is of the form 3*k + 1, but this didn't work for n=19")
+('calculate_sequence', 'latex_seq(n-1) + (15 - (n - 16 - 1)). For n=16: 15 - (16-16 -1) =15 -(-1)=16? No')
+('calculate_sequence', 'latex_seq(n-1) + (15 - k), where k increases by 1* each time, and the special terms occur at positions that are 16 + 3 + 4 + ... + (k+1)')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n - 3) *if n is even, and latex_seq(n-1) + 1* if n is odd')
+('calculate_sequence', '1-')
+('calculate_sequence', "latex_seq(n-1) + latex_seq(n-15) *for n ≥ 16. Let's test:")
+('calculate_sequence', '1-')
+('calculate_sequence', '1-')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n-3), then latex_seq(19) = latex_seq(18) + latex_seq(16) =30 +28=58, but the actual value is 42. This discrepancy suggests the hypothesis is incorrect')
+('calculate_sequence', '1-')
+('calculate_sequence', '1-')
+('calculate_sequence', '1-')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n-4) *for n ≥ 16:')
+('calculate_sequence', 'latex_seq(n-1) + latex_seq(n-15) *for n ≥ 16:')
+('calculate_sequence', 'latex_seq(n-1) + d, where d is 13, 1, 1, 12, 1, 1, 1, 11, 1, ... following the pattern of decreasing numbers followed by increasing numbers of 1*s')
+('calculate_sequence', '1-')
+('calculate_sequence', '1-')
+('calculate_sequence', '1-')
+('calculate_sequence', '1-')
+('d', '1 $ for most $ n $')
+len(latex_matches) = 42
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 42, 43, 44, 45, 56, 57]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) + latex_seq(15 - ( (n - 16) // 2 + 1 )) 
+
+
+
+-- decoding response finished
+Ground truth: A023769 ,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,28,29,30,42,43,44,45,56,57,58,59,60,70,71,72,73,74,75,84,85,86,87,88,89,90,98,99,100,101,102,103,104,105,112,113,114,115,116,117,118,119,120,126,127,128,129,130,
+[dasco sequence loaded.]
+ground_truth = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 42, 43, 44, 45, 56, 57, 58, 59, 60, 70, 71, 72, 73, 74, 75, 84, 85, 86, 87, 88, 89, 90, 98, 99, 100, 101, 102, 103, 104, 105, 112, 113, 114, 115, 116, 117, 118, 119, 120, 126, 127, 128, 129, 130]
+len(ground_truth) = 63
+
+cores = False
+task_id = 3055
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 42, 43, 44, 45, 56, 57, 67, 76, 85, 93, 101, 108, 115, 121, 127, 132]
+len(seq_pred) = 35
+
+is_Dasco False
+

@@ -1,0 +1,248 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+6447
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+06447-2858.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 27, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2'
+question[-200:] = '**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 27, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2'
+inits = [27, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+63
+('term', " term(n-5) * something. Let's check:")
+('term', " term(n-5) * 1? But then for n=10, term(10) is 54 which is 27*2. So for n=10 (mod 5 is 0), term(10) = term(5) * 2. And term(5) is 27. So 27*2=54. Then for n=15, term(15) is 27 again. Wait, but term(15) would be term(10) * something? 54 * something equals 27. That would be 0.5, which is not integer. Hmm, maybe there's another pattern.")
+('term', " 27 if (n/5) is even? Or perhaps term(n) = 27 * (something based on how many times 5 divides into n). Let's see:")
+('term', " term(n-5) * something. For example, term(5) = term(0) → 27. term(10) = term(5) * 2 → 27*2=54. term(15) = term(10) * something? 54 * something equals 27. That would be 0.5, which is not integer. So that's not possible. So maybe there's another pattern.")
+('term', " term(n-5) * something based on the position. Let's check for each position modulo 5.")
+('term', " 27 if (n//5) is even? Or perhaps term(n) = 27 * (something based on (n//5) % 2). For example, when (n//5) is even, multiply by 1, when odd, multiply by 2. Let's see:")
+('term', ' term(n-5) * 1 if (n//5) is even, and *2 if odd? But how to model that recursively.')
+('term', " previous value for that residue multiplied by a factor. For example, for residue 0, when you go from n=0 to n=5, it's same value. Then from n=5 to n=10, multiply by 2. From n=10 to n=15, multiply by 0.5 (but that's not integer). Hmm, but term(10) is 54, term(15) is 27. So 54 * 0.5 = 27. But how to model that in a recurrence with integer operations.")
+('term', ' if (n//5) is even then 27 else 54? But how to express that recursively.')
+('term', ' term(n-5) * 1 if (n//5) is even, else * 2? But how to determine that in a recurrence.')
+('term', ' term(n-5) * 1 if (n//5) is even, else * 2. But this seems complicated.')
+('term', ' term(n-5) * something, and for other residues, term(n) = term(n-5) * something else. But how to find that something.')
+('term', " term(n-5) * something based on the position. For example, for residue 0, when n=5k, term(n) = 27 * 2^{floor(k/2)}? Let's check:")
+('term', " 27 * 2^{floor(k/1)} where k is the number of times we've added 5. But this seems arbitrary.")
+('term', ' term(n-5) * something based on the residue. For example:')
+('term', ' term(n-5) * 1 if (n//5) is even, else * 2. But how to express this in a general recurrence.')
+('term', ' 27')
+('term', ' 54')
+('term', ' 1')
+('term', ' 2')
+('term', ' 10')
+('term', ' 5')
+('term', ' 5')
+('term', ' 10')
+('term', ' 2')
+('term', ' 1')
+('term', ' term(n-10) * something. For example, term(5) = 27 = term(-5)... no. Not helpful.')
+('term', ' term(n-5) * something based on the residue. For example, for residue 0, term(n) = term(n-5) * 1 if (n//5) is even, else * 2. But how to express this in terms of previous terms.')
+('term', ' term(n-10) * something. For example, term(5) = 27 = term(-5)... no.')
+('term', ' term(n-5) * term(n-5 + something). But this seems arbitrary.')
+('term', " term(n-5) * 1 if (n mod 10) < 5, else term(n-5) * 2. Let's check:")
+('term', ' term(n-5) * 1 if (n//5) is even, else * 2. For n=5: n//5 = 1 (odd), so term(5) = term(0)*2 = 54, but actual term(5) is 27. No.')
+('term', ' term(n-10) * something. For example, term(5) = 27 = term(-5)... no. Not helpful.')
+('term', ' term(n-5) * something based on the position. For example, for residue 0, term(n) = term(n-5) * 1 if the previous block was even, else * 2. But this is not a standard recurrence.')
+('term', " term(n-5) * something, but I'm not seeing it. Alternatively, perhaps the sequence is defined by the following rules:")
+('term', " term(n-5) * something, but I'm not seeing the exact relation.")
+('term', ' term(n-5) * term(n-5 + 5) / term(n-10). But this seems too convoluted.')
+('term', ' term(n-10) * 2 if (n//5) is odd, else term(n-10). But this is still not a simple recurrence.')
+('term', " term(n-5) * something based on the position, but I'm not seeing it.")
+('term', " term(n-5) * something, but since I can't find it, maybe the problem expects a different approach.")
+('term', ' term(n-5) * 1, 2, 0.5, 2, 0.5, ... depending on the position. But this is not a standard recurrence.')
+('term', ' term(n-5) * something based on n mod 5. For example:')
+('term', ' term(n-10) * 2 if n is a multiple of 10, otherwise term(n) = term(n-5) * something. But this is speculative.')
+('term', ' term(n-5) * 2 if n is even, and term(n-5) / 2 if n is odd. But testing this:')
+('term', " term(n-5) * 2 if (n-5) mod 10 is 0, 1, 3, 4, 6, 7, 9, etc., but this is too complex. However, there's a pattern where every 5 terms, the multiplier alternates between *2 and /2, depending on the position.")
+('term', ' term(n-5) * 2 if (n//5) is odd, and term(n-5) / 2 if (n//5) is even. But this is just a hypothesis.')
+('term', " term(n-5) * 2 if n mod 10 is in {0, 2, 4}, and term(n-5) / 2 otherwise. But without more information, it's hard to say.")
+('term', ' term(n-5) * 2 if (n mod 10) is even, and term(n-5) / 2 if (n mod 10) is odd. But testing this:')
+('term', ' term(n-5) * 2 if (n-5) mod 4 is 0 or 2, and term(n-5) / 2 otherwise. But this is also speculative.')
+('term', ' term(n-5) * 2 if n is even and n ≥ 10, and term(n-5) / 2 if n is odd and n ≥ 5, with initial terms term(0) to term(4) given. But this is not fully accurate based on the earlier examples.')
+('term', " term(n-5) * 2 if (n-5) % 4 == 0 or 2, and term(n-5) / 2 otherwise. But again, without more data, it's hard to confirm.")
+('term', ' term(n-5) * 2 if n is even, and term(n-5) / 2 if n is odd.')
+('a', ' a(n-10) * 2 if n mod 10 == 0, otherwise a(n) = a(n-5).')
+('a', " a(n-5) * 2 if n is a multiple of 5, otherwise a(n) = a(n-5). Let's test:")
+('a', " a(n-10) * 2 if n mod 10 == 0, else a(n) = a(n-10). But let's check:")
+('a', ' a(n-10) * 2 if n mod 10 == 0, otherwise a(n) = a(n-10).')
+('a', ' a(n-5) * 2 if (n//5) is odd, and a(n-5) / 2 if (n//5) is even. But this is also complex.')
+('a', ' a(n-5) * 2 if n is a multiple of 10, otherwise a(n) = a(n-5).')
+('a', ' a(n-5) * 2 if n mod 5 == 0, else a(n) = a(10 - n) for 0 ≤ n < 5.')
+('a', ' a(n-5) * 2 if n is a multiple of 10, otherwise a(n) = a(n-5).')
+('a', ' a(n-5) * 2 if n is even, and a(n) = a(n-5) / 2 if n is odd.')
+('a', ' a(n-10) * 2 if n is a multiple of 10, otherwise a(n) = a(n-10).')
+('a', ' a(n-10) * 2 if n is a multiple of 10, otherwise a(n) = a(n-10).')
+var, rhs: ('term', "term(n-5) * something. Let's check:")
+var, rhs: ('term', "term(n-5) * 1? But then for n=10, term(10) is 54 which is 27*2. So for n=10 (mod 5 is 0), term(10) = term(5) * 2. And term(5) is 27. So 27*2=54. Then for n=15, term(15) is 27 again. Wait, but term(15) would be term(10) * something? 54 * something equals 27. That would be 0.5, which is not integer. Hmm, maybe there's another pattern.")
+var, rhs: ('term', "27 if (n/5) is even? Or perhaps term(n) = 27 * (something based on how many times 5 divides into n). Let's see:")
+var, rhs: ('term', "term(n-5) * something. For example, term(5) = term(0) → 27. term(10) = term(5) * 2 → 27*2=54. term(15) = term(10) * something? 54 * something equals 27. That would be 0.5, which is not integer. So that's not possible. So maybe there's another pattern.")
+var, rhs: ('term', "term(n-5) * something based on the position. Let's check for each position modulo 5.")
+var, rhs: ('term', "27 if (n//5) is even? Or perhaps term(n) = 27 * (something based on (n//5) % 2). For example, when (n//5) is even, multiply by 1, when odd, multiply by 2. Let's see:")
+var, rhs: ('term', 'term(n-5) * 1 if (n//5) is even, and *2 if odd? But how to model that recursively.')
+var, rhs: ('term', "previous value for that residue multiplied by a factor. For example, for residue 0, when you go from n=0 to n=5, it's same value. Then from n=5 to n=10, multiply by 2. From n=10 to n=15, multiply by 0.5 (but that's not integer). Hmm, but term(10) is 54, term(15) is 27. So 54 * 0.5 = 27. But how to model that in a recurrence with integer operations.")
+var, rhs: ('term', 'if (n//5) is even then 27 else 54? But how to express that recursively.')
+var, rhs: ('term', 'term(n-5) * 1 if (n//5) is even, else * 2? But how to determine that in a recurrence.')
+var, rhs: ('term', 'term(n-5) * 1 if (n//5) is even, else * 2. But this seems complicated.')
+var, rhs: ('term', 'term(n-5) * something, and for other residues, term(n) = term(n-5) * something else. But how to find that something.')
+var, rhs: ('term', "term(n-5) * something based on the position. For example, for residue 0, when n=5k, term(n) = 27 * 2^{floor(k/2)}? Let's check:")
+var, rhs: ('term', "27 * 2^{floor(k/1)} where k is the number of times we've added 5. But this seems arbitrary.")
+var, rhs: ('term', 'term(n-5) * something based on the residue. For example:')
+var, rhs: ('term', 'term(n-5) * 1 if (n//5) is even, else * 2. But how to express this in a general recurrence.')
+var, rhs: ('term', '27')
+var, rhs: ('term', '54')
+var, rhs: ('term', '1')
+var, rhs: ('term', '2')
+var, rhs: ('term', '10')
+var, rhs: ('term', '5')
+var, rhs: ('term', '5')
+var, rhs: ('term', '10')
+var, rhs: ('term', '2')
+var, rhs: ('term', '1')
+var, rhs: ('term', 'term(n-10) * something. For example, term(5) = 27 = term(-5)... no. Not helpful.')
+var, rhs: ('term', 'term(n-5) * something based on the residue. For example, for residue 0, term(n) = term(n-5) * 1 if (n//5) is even, else * 2. But how to express this in terms of previous terms.')
+var, rhs: ('term', 'term(n-10) * something. For example, term(5) = 27 = term(-5)... no.')
+var, rhs: ('term', 'term(n-5) * term(n-5 + something). But this seems arbitrary.')
+var, rhs: ('term', "term(n-5) * 1 if (n mod 10) < 5, else term(n-5) * 2. Let's check:")
+var, rhs: ('term', 'term(n-5) * 1 if (n//5) is even, else * 2. For n=5: n//5 = 1 (odd), so term(5) = term(0)*2 = 54, but actual term(5) is 27. No.')
+var, rhs: ('term', 'term(n-10) * something. For example, term(5) = 27 = term(-5)... no. Not helpful.')
+var, rhs: ('term', 'term(n-5) * something based on the position. For example, for residue 0, term(n) = term(n-5) * 1 if the previous block was even, else * 2. But this is not a standard recurrence.')
+var, rhs: ('term', "term(n-5) * something, but I'm not seeing it. Alternatively, perhaps the sequence is defined by the following rules:")
+var, rhs: ('term', "term(n-5) * something, but I'm not seeing the exact relation.")
+var, rhs: ('term', 'term(n-5) * term(n-5 + 5) / term(n-10). But this seems too convoluted.')
+var, rhs: ('term', 'term(n-10) * 2 if (n//5) is odd, else term(n-10). But this is still not a simple recurrence.')
+var, rhs: ('term', "term(n-5) * something based on the position, but I'm not seeing it.")
+var, rhs: ('term', "term(n-5) * something, but since I can't find it, maybe the problem expects a different approach.")
+var, rhs: ('term', 'term(n-5) * 1, 2, 0.5, 2, 0.5, ... depending on the position. But this is not a standard recurrence.')
+var, rhs: ('term', 'term(n-5) * something based on n mod 5. For example:')
+var, rhs: ('term', 'term(n-10) * 2 if n is a multiple of 10, otherwise term(n) = term(n-5) * something. But this is speculative.')
+var, rhs: ('term', 'term(n-5) * 2 if n is even, and term(n-5) / 2 if n is odd. But testing this:')
+var, rhs: ('term', "term(n-5) * 2 if (n-5) mod 10 is 0, 1, 3, 4, 6, 7, 9, etc., but this is too complex. However, there's a pattern where every 5 terms, the multiplier alternates between *2 and /2, depending on the position.")
+var, rhs: ('term', 'term(n-5) * 2 if (n//5) is odd, and term(n-5) / 2 if (n//5) is even. But this is just a hypothesis.')
+var, rhs: ('term', "term(n-5) * 2 if n mod 10 is in {0, 2, 4}, and term(n-5) / 2 otherwise. But without more information, it's hard to say.")
+var, rhs: ('term', 'term(n-5) * 2 if (n mod 10) is even, and term(n-5) / 2 if (n mod 10) is odd. But testing this:')
+var, rhs: ('term', 'term(n-5) * 2 if (n-5) mod 4 is 0 or 2, and term(n-5) / 2 otherwise. But this is also speculative.')
+var, rhs: ('term', 'term(n-5) * 2 if n is even and n ≥ 10, and term(n-5) / 2 if n is odd and n ≥ 5, with initial terms term(0) to term(4) given. But this is not fully accurate based on the earlier examples.')
+var, rhs: ('term', "term(n-5) * 2 if (n-5) % 4 == 0 or 2, and term(n-5) / 2 otherwise. But again, without more data, it's hard to confirm.")
+var, rhs: ('term', 'term(n-5) * 2 if n is even, and term(n-5) / 2 if n is odd.')
+var, rhs: ('a', 'a(n-10) * 2 if n mod 10 == 0, otherwise a(n) = a(n-5).')
+var, rhs: ('a', "a(n-5) * 2 if n is a multiple of 5, otherwise a(n) = a(n-5). Let's test:")
+var, rhs: ('a', "a(n-10) * 2 if n mod 10 == 0, else a(n) = a(n-10). But let's check:")
+var, rhs: ('a', 'a(n-10) * 2 if n mod 10 == 0, otherwise a(n) = a(n-10).')
+var, rhs: ('a', 'a(n-5) * 2 if (n//5) is odd, and a(n-5) / 2 if (n//5) is even. But this is also complex.')
+var, rhs: ('a', 'a(n-5) * 2 if n is a multiple of 10, otherwise a(n) = a(n-5).')
+var, rhs: ('a', 'a(n-5) * 2 if n mod 5 == 0, else a(n) = a(10 - n) for 0 ≤ n < 5.')
+var, rhs: ('a', 'a(n-5) * 2 if n is a multiple of 10, otherwise a(n) = a(n-5).')
+var, rhs: ('a', 'a(n-5) * 2 if n is even, and a(n) = a(n-5) / 2 if n is odd.')
+var, rhs: ('a', 'a(n-10) * 2 if n is a multiple of 10, otherwise a(n) = a(n-10).')
+var, rhs: ('a', 'a(n-10) * 2 if n is a multiple of 10, otherwise a(n) = a(n-10).')
+latex_matches[-2:] = [('a', '1-'), ('a', '1-')]
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', 'latex_seq(n-5) * 1* if (n//5) *is even, and *2* if odd? But how to model that recursively')
+('term', "previous value for that residue multiplied by a factor. For example, for residue 0, when you go from n=0* to n=5, it's same value. Then from n=5* to n=10, multiply by 2. From n=10* to n=15, multiply by 0.5 *(but that's not integer). Hmm, but latex_seq(10) *is 54, latex_seq(15) *is 27. So 54 * 0.5 = 27. But how to model that in a recurrence with integer operations")
+('term', 'if (n//5) *is even then* 27* else 54? But how to express that recursively')
+('term', 'latex_seq(n-5) * 1* if (n//5) *is even, else * 2? But how to determine that in a recurrence')
+('term', 'latex_seq(n-5) * 1* if (n//5) *is even, else * 2. But this seems complicated')
+('term', '1-')
+('term', '1-')
+('term', "27 * 2**(math.floor(k/1)) *where k is the number of times we've added 5. But this seems arbitrary")
+('term', '1-')
+('term', 'latex_seq(n-5) * 1* if (n//5) *is even, else * 2. But how to express this in a general recurrence')
+('term', '27')
+('term', '54')
+('term', '1')
+('term', '2')
+('term', '10')
+('term', '5')
+('term', '5')
+('term', '10')
+('term', '2')
+('term', '1')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', "latex_seq(n-5) * 1* if (n mod 10) < 5, else latex_seq(n-5) * 2. Let's check:")
+('term', 'latex_seq(n-5) * 1* if (n//5) *is even, else * 2. For n=5: n//5 = 1 *(odd), so latex_seq(5) = latex_seq(0)*2 = 54, but actual latex_seq(5) *is 27. No')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', '1-')
+('term', 'latex_seq(n-5) * latex_seq(n-5 + 5) / latex_seq(n-10). But this seems too convoluted')
+('term', 'latex_seq(n-10) * 2* if (n//5) *is odd, else latex_seq(n-10). But this is still not a simple recurrence')
+('term', '1-')
+('term', '1-')
+('term', 'latex_seq(n-5) * 1, 2, 0.5, 2, 0.5, ... depending on the position. But this is not a standard recurrence')
+('term', '1-')
+('term', '1-')
+('term', 'latex_seq(n-5) * 2* if n is even, and latex_seq(n-5) / 2* if n is odd. But testing this:')
+('term', "latex_seq(n-5) * 2* if (n-5) *mod 10* is 0, 1, 3, 4, 6, 7, 9, etc., but this is too complex. However, there's a pattern where every 5* terms, the multiplier alternates between *2* and /2, depending on the position")
+('term', 'latex_seq(n-5) * 2* if (n//5) *is odd, and latex_seq(n-5) / 2* if (n//5) *is even. But this is just a hypothesis')
+('term', '1-')
+('term', 'latex_seq(n-5) * 2* if (n mod 10) *is even, and latex_seq(n-5) / 2* if (n mod 10) *is odd. But testing this:')
+('term', '1-')
+('term', 'latex_seq(n-5) * 2* if n is even and n ≥ 10, and latex_seq(n-5) / 2* if n is odd and n ≥ 5, with initial terms latex_seq(0) *to latex_seq(4) *given. But this is not fully accurate based on the earlier examples')
+('term', '1-')
+('term', 'latex_seq(n-5) * 2* if n is even, and latex_seq(n-5) / 2* if n is odd')
+('a', '1-')
+('a', '1-')
+('a', "latex_seq(n-10) * 2* if n mod 10 == 0, else latex_seq(n) = latex_seq(n-10). But let's check:")
+('a', '1-')
+('a', 'latex_seq(n-5) * 2* if (n//5) *is odd, and latex_seq(n-5) / 2* if (n//5) *is even. But this is also complex')
+('a', '1-')
+('a', 'latex_seq(n-5) * 2* if n mod 5 == 0, else latex_seq(n) = latex_seq(10 - n) *for 0 ≤ n < 5')
+('a', '1-')
+('a', 'latex_seq(n-5) * 2* if n is even, and latex_seq(n) = latex_seq(n-5) / 2* if n is odd')
+('a', '1-')
+('a', '1-')
+len(latex_matches) = 63
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [27, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2]
+    if n < len(init):
+        return init[n]
+    return 1 
+
+
+
+-- decoding response finished
+Ground truth: A040751 ,27,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,10,1,54,1,10,5,2,27,2,5,
+[dasco sequence loaded.]
+ground_truth = [27, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5]
+len(ground_truth) = 78
+
+cores = False
+task_id = 6447
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [27, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 27, 2, 5, 10, 1, 54, 1, 10, 5, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+len(seq_pred) = 35
+
+is_Dasco False
+

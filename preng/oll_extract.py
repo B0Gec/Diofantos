@@ -21,6 +21,7 @@ local - check it
         \_> examples: 02070, 02373, 03729, 04931, 05184, 08415, 09505 : self-reccerence or a(n+1)
 
     * 5006: function preferenec / scoring  (calculate_sequence is in code before the last function, but that one is used instead)
+    * 3414, 4758: "return 2*latex_seq(n-1) + 554*latex_seq(n-2). No" causes error  AttributeError: 'int' object has no attribute 'No'
 
 
     Todo (later):
@@ -183,9 +184,9 @@ if __name__ == '__main__':
     # batch = 'obat-dasco25-10k_skip4097/'
 
     batch = 'obat-dasco25-10k-merged/'
-    batch = 'lookup/'
-    batch = 'lookup-cores/'
-    batch = 'obatch_qcor/'
+    # batch = 'lookup/'
+    # batch = 'lookup-cores/'
+    # batch = 'obatch_qcor/'
     cores = batch in ( 'obatch_qcor/', 'lookup-cores/')
     is_lookup = batch in ('lookup/', 'lookup-cores/')
     IS_QUICK_CORES = True
@@ -457,9 +458,15 @@ if __name__ == '__main__':
     # 00152: NameError: name 'c_1' is not defined
 
 
+    TASK_ID = 9992
+    # TASK_ID = 107
+    TASK_ID = 2140
 
-
-
+    # parse2: more than 50mins:
+    # TASK_ID = 6710
+    # TASK_ID = 8093
+    # TASK_ID = 5007
+    TASK_ID = 1091
 
 
     parser = argparse.ArgumentParser()
@@ -617,7 +624,7 @@ except RecursionError as e:
     print("\n --- <exe> --- Below are prints from the executed code: --- <exe> ---\n")
     case02140 = """ latex_matches[-2:] = [('a', 'latex_seq(n - 10) \\qulatex_seqd \\text{for } n \\geq 10'), """
 
-    print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
+    # print(f'look 02140 for {case02140} in eval11 vs eval8 latex_seq(n-10)')
     print(f'look 00107 for \'    return latex_seq(n+1) - latex_seq_n\' ')
     # print(test_code)
     # exec(test_code, allowed_builtins)

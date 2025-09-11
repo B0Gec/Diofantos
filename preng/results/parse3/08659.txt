@@ -1,0 +1,238 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+8659
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+08659-1455.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1'
+question[-200:] = '```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1'
+inits = [2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+59
+('a', " a(n-1) + a(n-2). But for n=5, a(5) would be a(4)+a(3) = 2+2=4, which is not 1. So that's not it. What if it's a subtraction? a(n) = a(n-2) - a(n-1)? For n=5, a(5) would be a(3) - a(4) = 2-2=0, which is not 1. Not helpful.")
+('a', ' a(n-1) * something. But again, not obvious.')
+('a', " a(n-5) or something. Let's check:")
+('a', ' a(n-1) if some condition, else something else. But how to find that?')
+('a', ' a(n-1) if a(n-2) is something. But this is too vague.')
+('a', " a(n-1) + a(n-2) - a(n-3) or something like that. Let's try for some terms.")
+('a', ' a(n-2) - a(n-1). For n=5, a(5) would be a(3) - a(4) = 2-2=0. Not matching. Not helpful.')
+('a', ' 2 if n < 5 or t(n) is 1, else 1.')
+('a', ' 2.')
+('a', ' 2 if the number of 1s in the binary representation of n is odd, else 1.')
+('a', '2 for n <5.')
+('a', " 3 - a(floor(n/2)) if n is even, and a(n) = 3 - a(floor((n-1)/2)) if n is odd. Wait, because if t(n) = 1 - t(floor(n/2)) when n is odd, then our a(n) would be 2 if t(n) is 1, which would be 3 - a(floor((n-1)/2)) if n is odd. Let's check:")
+('t', ' t(floor(n/2)) if n is even, and 1 - t(floor(n/2)) if n is odd. So for our a(n), which is 2 if t(n)=1 and 1 if t(n)=0 for n >=5, we can write:')
+('a', ' a(n/2) if t(n/2) = t(n), else 3 - a(n/2). Wait, this seems complicated.')
+('a', ' 1 + t(n) for n >=5 (since t(n) is 0 or 1, and a(n) is 1 or 2), then perhaps:')
+('a', ' a(n/2) if the number of 1s in n is even when n is even? No, this is not straightforward.')
+('t', ' t(floor(n/2)) XOR (n mod 2). So for our a(n), which is 1 + t(n), we have:')
+('a', ' 1 + t(n) = 1 + (t(floor(n/2)) XOR (n mod 2)).')
+('a', ' 1 + [t(floor(n/2)) + (n mod 2)] mod 2.')
+('a', ' 1 + t(n), and t(n) = t(floor(n/2)) XOR (n mod 2), then:')
+('t', ' t(n/2), so a(n) = 1 + t(n/2) = a(n/2) if n/2 >=5, but for n=6 (even), n/2=3 <5. So this complicates things.')
+('a', ' 3 - a(floor(n/2)) if n is odd and n >=5,')
+('a', ' a(floor(n/2)) if n is even and n >=5.')
+('a', 'a(floor(n/2)), which would be a(3)=2. This is wrong.')
+('t', ' t(n/2), so a(n) = 1 + t(n/2) = 1 + (a(n/2) - 1) if n/2 >=5. But if n/2 <5, then a(n/2)=2, so t(n/2) = a(n/2) -1 = 1. Thus, for even n >=5, t(n) = t(n/2) = 1 if n/2 <5, leading to a(n)=1 + 1=2. But for n=6, which is even, n/2=3 <5, so a(6)=2, but actual a(6)=1. This is a contradiction.')
+('a', " 2 for n <5, and for n >=5, it's 2 if the number of 1s in binary n is odd, else 1.")
+('t', ' 1 - t(n - 2^floor(log2(n))) for n >=1.')
+('a', ' 3 - a(n - 2^floor(log2(n))).')
+('a', ' 3 - a(n - 2^k), where 2^k is the largest power of 2 less than or equal to n.')
+('a', ' 3 - a(n - 2^k) if the next bit is set? No, this is getting too vague.')
+('a', " a(n-4) for some cases, but it's not clear.")
+('t', ' 1 - t(floor(n/2)) when n is odd, and t(n) = t(floor(n/2)) when n is even. So for our a(n), which is 1 + t(n) for n >=5, we have:')
+('a', ' 1 + t(n) = 1 + t(n/2) = a(n/2) if n/2 >=5, else 1 + t(n/2) = 1 + (a(n/2) - 1) if n/2 >=5? No, this is getting too tangled.')
+('a', " a(n/2) if n/2 >=5, else 1 + t(n/2) where t(n/2) is 1 if n/2 is in the initial conditions (which it isn't). This seems too case-based.")
+('a', ' 3 - a(n - 2^floor(log2(n))).')
+('a', ' 3 - a(n - 2^k), where 2^k is the largest power of 2 less than n.')
+('a', '1.')
+('a', '1.')
+('a', '2.')
+('a', '2.')
+('a', '1.')
+('a', '1.')
+('a', '2.')
+('a', '1.')
+('a', '2.')
+('a', '2.')
+('a', '1.')
+('a', '2.')
+('a', " 1 + [(parity of floor(n/2)'s 1s) XOR (n mod 2)].")
+('a', ' 1 + parity, and parity = (a(floor(n/2)) - 1) if floor(n/2) >=5, or 1 if floor(n/2) <5 (since for n <5, a(n)=2, so parity is 1).')
+('a', ' 1 + [( (a(floor(n/2)) - 1) if floor(n/2) >=5 else 1 ) XOR (n mod 2)].')
+('a', ' 1 + [(a(floor(n/2)) - 1 + n mod 2) mod 2]')
+('a', ' 3 - a(n - 2^floor(log2(n)))')
+('a', ' 3 - a(n - 2^k), where 2^k is the largest power of 2 less than or equal to n, for n >= 5, with initial conditions a(0) through a(4) = 2.')
+('a', ' a(n-4) for n >=5, but checking:')
+('a', ' 3 - a(n - 2^floor(log2(n))).')
+('a', " a(n-1) if the least significant bit is 0, and 3 - a(n-1) if it's 1, but this would require more analysis.")
+('a', ' 3 - a(n - 2^{\\lfloor \\log_2 n \\rfloor}) $,  ')
+('a', ' 3 - a(n - 2^{\\lfloor \\log_2 n \\rfloor}) $ mirrors the recursive structure of the Thue-Morse sequence, where the parity of the number of 1s in $ n $ is determined by the parity in $ n - 2^{\\lfloor \\log_2 n \\rfloor} $, adjusted by the least significant bit.')
+var, rhs: ('a', "a(n-1) + a(n-2). But for n=5, a(5) would be a(4)+a(3) = 2+2=4, which is not 1. So that's not it. What if it's a subtraction? a(n) = a(n-2) - a(n-1)? For n=5, a(5) would be a(3) - a(4) = 2-2=0, which is not 1. Not helpful.")
+var, rhs: ('a', 'a(n-1) * something. But again, not obvious.')
+var, rhs: ('a', "a(n-5) or something. Let's check:")
+var, rhs: ('a', 'a(n-1) if some condition, else something else. But how to find that?')
+var, rhs: ('a', 'a(n-1) if a(n-2) is something. But this is too vague.')
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-3) or something like that. Let's try for some terms.")
+var, rhs: ('a', 'a(n-2) - a(n-1). For n=5, a(5) would be a(3) - a(4) = 2-2=0. Not matching. Not helpful.')
+var, rhs: ('a', '2 if n < 5 or t(n) is 1, else 1.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', '2 if the number of 1s in the binary representation of n is odd, else 1.')
+var, rhs: ('a', '2 for n <5.')
+var, rhs: ('a', "3 - a(floor(n/2)) if n is even, and a(n) = 3 - a(floor((n-1)/2)) if n is odd. Wait, because if t(n) = 1 - t(floor(n/2)) when n is odd, then our a(n) would be 2 if t(n) is 1, which would be 3 - a(floor((n-1)/2)) if n is odd. Let's check:")
+var, rhs: ('t', 't(floor(n/2)) if n is even, and 1 - t(floor(n/2)) if n is odd. So for our a(n), which is 2 if t(n)=1 and 1 if t(n)=0 for n >=5, we can write:')
+var, rhs: ('a', 'a(n/2) if t(n/2) = t(n), else 3 - a(n/2). Wait, this seems complicated.')
+var, rhs: ('a', '1 + t(n) for n >=5 (since t(n) is 0 or 1, and a(n) is 1 or 2), then perhaps:')
+var, rhs: ('a', 'a(n/2) if the number of 1s in n is even when n is even? No, this is not straightforward.')
+var, rhs: ('t', 't(floor(n/2)) XOR (n mod 2). So for our a(n), which is 1 + t(n), we have:')
+var, rhs: ('a', '1 + t(n) = 1 + (t(floor(n/2)) XOR (n mod 2)).')
+var, rhs: ('a', '1 + [t(floor(n/2)) + (n mod 2)] mod 2.')
+var, rhs: ('a', '1 + t(n), and t(n) = t(floor(n/2)) XOR (n mod 2), then:')
+var, rhs: ('t', 't(n/2), so a(n) = 1 + t(n/2) = a(n/2) if n/2 >=5, but for n=6 (even), n/2=3 <5. So this complicates things.')
+var, rhs: ('a', '3 - a(floor(n/2)) if n is odd and n >=5,')
+var, rhs: ('a', 'a(floor(n/2)) if n is even and n >=5.')
+var, rhs: ('a', 'a(floor(n/2)), which would be a(3)=2. This is wrong.')
+var, rhs: ('t', 't(n/2), so a(n) = 1 + t(n/2) = 1 + (a(n/2) - 1) if n/2 >=5. But if n/2 <5, then a(n/2)=2, so t(n/2) = a(n/2) -1 = 1. Thus, for even n >=5, t(n) = t(n/2) = 1 if n/2 <5, leading to a(n)=1 + 1=2. But for n=6, which is even, n/2=3 <5, so a(6)=2, but actual a(6)=1. This is a contradiction.')
+var, rhs: ('a', "2 for n <5, and for n >=5, it's 2 if the number of 1s in binary n is odd, else 1.")
+var, rhs: ('t', '1 - t(n - 2^floor(log2(n))) for n >=1.')
+var, rhs: ('a', '3 - a(n - 2^floor(log2(n))).')
+var, rhs: ('a', '3 - a(n - 2^k), where 2^k is the largest power of 2 less than or equal to n.')
+var, rhs: ('a', '3 - a(n - 2^k) if the next bit is set? No, this is getting too vague.')
+var, rhs: ('a', "a(n-4) for some cases, but it's not clear.")
+var, rhs: ('t', '1 - t(floor(n/2)) when n is odd, and t(n) = t(floor(n/2)) when n is even. So for our a(n), which is 1 + t(n) for n >=5, we have:')
+var, rhs: ('a', '1 + t(n) = 1 + t(n/2) = a(n/2) if n/2 >=5, else 1 + t(n/2) = 1 + (a(n/2) - 1) if n/2 >=5? No, this is getting too tangled.')
+var, rhs: ('a', "a(n/2) if n/2 >=5, else 1 + t(n/2) where t(n/2) is 1 if n/2 is in the initial conditions (which it isn't). This seems too case-based.")
+var, rhs: ('a', '3 - a(n - 2^floor(log2(n))).')
+var, rhs: ('a', '3 - a(n - 2^k), where 2^k is the largest power of 2 less than n.')
+var, rhs: ('a', '1.')
+var, rhs: ('a', '1.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', '1.')
+var, rhs: ('a', '1.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', '1.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', '1.')
+var, rhs: ('a', '2.')
+var, rhs: ('a', "1 + [(parity of floor(n/2)'s 1s) XOR (n mod 2)].")
+var, rhs: ('a', '1 + parity, and parity = (a(floor(n/2)) - 1) if floor(n/2) >=5, or 1 if floor(n/2) <5 (since for n <5, a(n)=2, so parity is 1).')
+var, rhs: ('a', '1 + [( (a(floor(n/2)) - 1) if floor(n/2) >=5 else 1 ) XOR (n mod 2)].')
+var, rhs: ('a', '1 + [(a(floor(n/2)) - 1 + n mod 2) mod 2]')
+var, rhs: ('a', '3 - a(n - 2^floor(log2(n)))')
+var, rhs: ('a', '3 - a(n - 2^k), where 2^k is the largest power of 2 less than or equal to n, for n >= 5, with initial conditions a(0) through a(4) = 2.')
+var, rhs: ('a', 'a(n-4) for n >=5, but checking:')
+var, rhs: ('a', '3 - a(n - 2^floor(log2(n))).')
+var, rhs: ('a', "a(n-1) if the least significant bit is 0, and 3 - a(n-1) if it's 1, but this would require more analysis.")
+var, rhs: ('a', '3 - a(n - 2^{\\lfloor \\log_2 n \\rfloor}) $,')
+var, rhs: ('a', '3 - a(n - 2^{\\lfloor \\log_2 n \\rfloor}) $ mirrors the recursive structure of the Thue-Morse sequence, where the parity of the number of 1s in $ n $ is determined by the parity in $ n - 2^{\\lfloor \\log_2 n \\rfloor} $, adjusted by the least significant bit.')
+latex_matches[-2:] = [('a', '3 - latex_seq(n - 2**(\\lmath.floor \\log(n, 2) \\rmath.floor)) $'), ('a', '3 - latex_seq(n - 2**(\\lmath.floor \\log(n, 2) \\rmath.floor)) $ mirrors the recursive structure of the Thue-Morse sequence, where the parity of the number of 1*s in $ n $ is determined by the parity in $ n - 2**(\\lmath.floor \\log(n, 2) \\rmath.floor) $, adjusted by the least significant bit')]
+('a', "latex_seq(n-1) + latex_seq(n-2). But for n=5, latex_seq(5) *would be latex_seq(4)+latex_seq(3) = 2+2=4, which is not 1. So that's not it. What if it's a subtraction? latex_seq(n) = latex_seq(n-2) - latex_seq(n-1)? For n=5, latex_seq(5) *would be latex_seq(3) - latex_seq(4) = 2-2=0, which is not 1. Not helpful")
+('a', '1-')
+('a', '1-')
+('a', '1-')
+('a', '1-')
+('a', '1-')
+('a', 'latex_seq(n-2) - latex_seq(n-1). For n=5, latex_seq(5) *would be latex_seq(3) - latex_seq(4) = 2-2=0. Not matching. Not helpful')
+('a', '2* if n < 5* or t(n) *is 1, else 1')
+('a', '2')
+('a', '2* if the number of 1*s in the binary representation of n is odd, else 1')
+('a', '2* for n <5')
+('a', "3 - latex_seq(math.floor(n/2)) *if n is even, and latex_seq(n) = 3 - latex_seq(math.floor((n-1)/2)) *if n is odd. Wait, because if t(n) = 1 - t(math.floor(n/2)) *when n is odd, then our latex_seq(n) *would be 2* if t(n) *is 1, which would be 3 - latex_seq(math.floor((n-1)/2)) *if n is odd. Let's check:")
+('t', 'latex_seq(math.floor(n/2)) *if n is even, and 1 - latex_seq(math.floor(n/2)) *if n is odd. So for our a(n), which is 2* if latex_seq(n)=1* and 1* if latex_seq(n)=0* for n >=5, we can write:')
+('a', 'latex_seq(n/2) *if t(n/2) = t(n), else 3 - latex_seq(n/2). Wait, this seems complicated')
+('a', '1 + t(n) *for n >=5 *(since t(n) *is 0* or 1, and latex_seq(n) *is 1* or 2), then perhaps:')
+('a', 'latex_seq(n/2) *if the number of 1*s in n is even when n is even? No, this is not straightforward')
+('t', 'latex_seq(math.floor(n/2)) *XOR (n mod 2). So for our a(n), which is 1 + latex_seq(n), we have:')
+('a', '1 + t(n) = 1 + (t(math.floor(n/2)) *XOR (n mod 2))')
+('a', '1 + (t(math.floor(n/2)) + (n mod 2)) *mod 2')
+('a', '1 + t(n), and t(n) = t(math.floor(n/2)) *XOR (n mod 2), then:')
+('t', 'latex_seq(n/2), so a(n) = 1 + latex_seq(n/2) = a(n/2) *if n/2 >=5, but for n=6 *(even), n/2=3 <5. So this complicates things')
+('a', '3 - latex_seq(math.floor(n/2)) *if n is odd and n >=5')
+('a', 'latex_seq(math.floor(n/2)) *if n is even and n >=5')
+('a', 'latex_seq(math.floor(n/2)), which would be latex_seq(3)=2. This is wrong')
+('t', 'latex_seq(n/2), so a(n) = 1 + latex_seq(n/2) = 1 + (a(n/2) - 1) *if n/2 >=5. But if n/2 <5, then a(n/2)=2, so latex_seq(n/2) = a(n/2) -1 = 1. Thus, for even n >=5, latex_seq(n) = latex_seq(n/2) = 1* if n/2 <5, leading to a(n)=1 + 1=2. But for n=6, which is even, n/2=3 <5, so a(6)=2, but actual a(6)=1. This is a contradiction')
+('a', "2* for n <5, and for n >=5, it's 2* if the number of 1*s in binary n is odd, else 1")
+('t', '1 - latex_seq(n - 2**math.floor(log2*(n))) *for n >=1')
+('a', '3 - latex_seq(n - 2**math.floor(log2*(n)))')
+('a', '3 - latex_seq(n - 2**k), where 2**k is the largest power of 2* less than or equal to n')
+('a', '3 - latex_seq(n - 2**k) *if the next bit is set? No, this is getting too vague')
+('a', "latex_seq(n-4) *for some cases, but it's not clear")
+('t', '1 - latex_seq(math.floor(n/2)) *when n is odd, and latex_seq(n) = latex_seq(math.floor(n/2)) *when n is even. So for our a(n), which is 1 + latex_seq(n) *for n >=5, we have:')
+('a', '1 + t(n) = 1 + t(n/2) = latex_seq(n/2) *if n/2 >=5, else 1 + t(n/2) = 1 + (latex_seq(n/2) - 1) *if n/2 >=5? No, this is getting too tangled')
+('a', "latex_seq(n/2) *if n/2 >=5, else 1 + t(n/2) *where t(n/2) *is 1* if n/2* is in the initial conditions (which it isn't). This seems too case-based")
+('a', '3 - latex_seq(n - 2**math.floor(log2*(n)))')
+('a', '3 - latex_seq(n - 2**k), where 2**k is the largest power of 2* less than n')
+('a', '1')
+('a', '1')
+('a', '2')
+('a', '2')
+('a', '1')
+('a', '1')
+('a', '2')
+('a', '1')
+('a', '2')
+('a', '2')
+('a', '1')
+('a', '2')
+('a', "1 + ((parity of math.floor(n/2)'s 1*s) *XOR (n mod 2))")
+('a', '1 + parity, and parity = (latex_seq(math.floor(n/2)) - 1) *if math.floor(n/2) >=5, or 1* if math.floor(n/2) <5 *(since for n <5, latex_seq(n)=2, so parity is 1)')
+('a', '1 + (( (latex_seq(math.floor(n/2)) - 1) *if math.floor(n/2) >=5* else 1 ) *XOR (n mod 2))')
+('a', '1 + ((latex_seq(math.floor(n/2)) - 1 + n mod 2) *mod 2)')
+('a', '3 - latex_seq(n - 2**math.floor(log2*(n)))')
+('a', '3 - latex_seq(n - 2**k), where 2**k is the largest power of 2* less than or equal to n, for n >= 5, with initial conditions latex_seq(0) *through latex_seq(4) = 2')
+('a', 'latex_seq(n-4) *for n >=5, but checking:')
+('a', '3 - latex_seq(n - 2**math.floor(log2*(n)))')
+('a', "latex_seq(n-1) *if the least significant bit is 0, and 3 - latex_seq(n-1) *if it's 1, but this would require more analysis")
+('a', '3 - latex_seq(n - 2**(\\lmath.floor \\log(n, 2) \\rmath.floor)) $')
+('a', '3 - latex_seq(n - 2**(\\lmath.floor \\log(n, 2) \\rmath.floor)) $ mirrors the recursive structure of the Thue-Morse sequence, where the parity of the number of 1*s in $ n $ is determined by the parity in $ n - 2**(\\lmath.floor \\log(n, 2) \\rmath.floor) $, adjusted by the least significant bit')
+len(latex_matches) = 59
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1]
+    if n < len(init):
+        return init[n]
+    return 3 - latex_seq(n - 2**math.floor(log2*(n))) 
+
+
+
+-- decoding response finished
+Ground truth: A054348 ,2,2,2,2,2,1,1,2,2,1,1,2,1,2,2,1,1,2,1,2,2,1,2,2,1,1,2,1,2,2,1,2,2,1,1,2,2,2,1,1,2,1,2,2,1,2,2,1,1,2,1,1,2,2,1,2,1,1,2,2,1,1,2,1,2,2,1,2,2,1,1,2,1,1,2,2,1,2,1,1,2,1,2,2,1,1,2,1,1,2,1,
+[dasco sequence loaded.]
+ground_truth = [2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1]
+len(ground_truth) = 91
+
+cores = False
+task_id = 8659
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'log2' is not defined

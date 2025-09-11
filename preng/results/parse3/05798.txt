@@ -1,0 +1,209 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+5798
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+05798-6037.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 10, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20'
+question[-200:] = 'our Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 10, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20'
+inits = [10, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+50
+('term', " 25 / term(n-1). Let's check: term1 is 5. term2 would be 25 /5 =5. No, but term2 is 20. So that doesn't work. What if it's 100 / term(n-1)? For term1: 100/10=10, but term1 is 5. Not helpful.")
+('term', " 4 * term(n-2). Let's check:")
+('term', ' term(n-2). Because if you look at term1=5, term3=5, term5=5... Similarly term2=20, term4=20, etc. But that would mean for even n ≥2, term(n) is same as term(n-2). But how does that fit with the initial terms?')
+('term', " term(n-2), then term2 would be term0=10. Which is not 20. So that doesn't work.")
+('term', " term(n-2) * 2. Let's see. For term2: term0 *2=10*2=20. Yes. Then term3 would be term1 *2=5*2=10. But term3 is 5. No. So that's not it.")
+('term', ' 4 * term(n-1) if the previous term was 5, and term(n) = term(n-1)/4 if previous was 20. But that seems to require checking previous value, which is part of the recursion.')
+('term', " 25 / term(n-1). Let's check:")
+('term', " a*term(n-1) + b*term(n-2) + ... Let's check for possible linear relations.")
+('term', ' 5 if n is odd, 20 if even. So for n ≥1, term(n) can be expressed as 25 / term(n-1). Let me check:')
+('term', " (term(n-2) * 2) if n is even? For example, term2 is 2*term0=2*10=20. Yes. Then term4 would be 2*term2=40. But in the given sequence, term4 is 20. So that's not matching. So no.")
+('term', ' 5 if n is odd, 20 if even. How can this be modeled recursively?')
+('term', ' 5 if term(n-1) is 20, and 20 if term(n-1) is 5. But how to express that in a recurrence. For example, if the previous term is 5, then multiply by 4 to get 20. If previous is 20, divide by 4 to get 5. But how to write that recursively. Well, for n ≥1, term(n) = 25 / term(n-1) ?')
+('term', ' 100 / term(n-1). For term1: 100/10=10. Not 5. No.')
+('term', ' term(n-1) *4? No, because for n=1, term1 is term0 divided by 2. Then for n=2, term2 is term1 multiplied by 4. For n=3, term3 is term2 divided by 4. So the pattern is that for even n (starting from n=0?), but perhaps for n ≥1, the operation alternates between multiplying by 4 and dividing by 4. But how to express this in a recurrence.')
+('term', " 4 * term(n-2). Let's check:")
+('term', " term(n-2). But for term1 (n=1), term(n) is 5. term(n-2) would be term(-1), which is undefined. So that's not helpful.")
+('term', " term(n-2). Let's check:")
+('term', '4 * term(n-1)')
+('term', ' term(n-2)')
+('term', " 4 * term(n-1) if n is even, else term(n) = term(n-2). But how to write this without checking parity. It's tricky.")
+('term', ' 5 if n is odd, 20 if even. But how to express this recursively. For example, for n ≥1, term(n) = 5 if term(n-1) is 20, else 20. But again, this requires checking previous value.')
+('term', " 25 / term(n-1). Let's check:")
+('term', ' 20')
+('term', " term(n-2). But then for n=2, term(2) would be term(0)=10, but it's supposed to be 20. So no.")
+('term', " 2 * term(n-2). For n=2: 2*term(0)=2*10=20. Yes. For n=3: 2*term(1)=2*5=10. But term(3) is 5. No. So that's not.")
+('term', "20=2*term(0). For n=4, term(n)=20=2*term(2)=2*20=40. No. So that's not.")
+('term', " 20, and for odd n ≥1, term(n)=5. So the recurrence for even n ≥2 is term(n) = 20, and for odd n ≥1, term(n)=5. But how to express this in a general recurrence. It seems like it's more of a direct formula rather than a recurrence.")
+('term', " term(n-2). But as discussed earlier, this would give term(2)=term(0)=10, which is incorrect. So that's not.")
+('term', ' term(n-2). But for n=2, term(2)=20, which is not equal to term(0)=10. So no.')
+('term', " term(n-2) * 1 if n is even and ≥2, but that doesn't help. ")
+('term', " 4 * term(n-2) for even n ≥2, and term(n) = (term(n-2))/4 for odd n ≥3. Let's check:")
+('term', '2*term(0)=2*10=20. Yes. For n=4, term(4)=2*term(2)=2*20=40. But given term(4) is 20. No.')
+('term', " 5 if n is odd, 20 if even. So for n ≥1, term(n) = 25 / term(n-1). Let's check:")
+('term', " 4 * term(n-1) if n is even, and term(n) = (1/4)*term(n-1) if n is odd? Let's see:")
+('term', ' 4 * term(n-1) if term(n-1) is 5, else term(n) = (1/4) * term(n-1).')
+('term', ' 20 if n is even, 5 if odd. But again, this requires knowing the parity of n.')
+('term', " term(n-2). But with adjusted base cases. Wait, if we set term(1)=5 and term(2)=20, then for n ≥3, term(n) = term(n-2). Let's check:")
+('term', ' term(n-2)')
+('a', ' a(n-2)')
+('a', ' a(n-2) * 2 if n is even, but that would change the values. Let me think again.')
+('a', ' a(n-2) for n ≥3 is valid.')
+('a', ' a(n-2)')
+('a', ' a(n-2) if n is even? No. Wait, for n=2, a(2)=4*a(1). For n=3, a(3)=a(1). For n=4, a(4)=a(2). For n=5, a(5)=a(3). So perhaps for n ≥2, a(n) = a(n-2) if n is odd, and a(n) = 4*a(n-1) if n is even? But this seems inconsistent.')
+('a', " 4*a(n-1) if n is even, and a(n) = a(n-2) if n is odd. Let's check:")
+('a', ' 4 * a(n-1)')
+('a', ' a(n-2)')
+('a', " 4*a(n-1), and for odd n ≥3, a(n) = a(n-2). But this still requires conditional logic based on n's parity.")
+('a', ' a(n-2). This avoids the need to check for even/odd in the recurrence.')
+('a', ' a(n-2)')
+('a', ' a(n - 2)')
+var, rhs: ('term', "25 / term(n-1). Let's check: term1 is 5. term2 would be 25 /5 =5. No, but term2 is 20. So that doesn't work. What if it's 100 / term(n-1)? For term1: 100/10=10, but term1 is 5. Not helpful.")
+var, rhs: ('term', "4 * term(n-2). Let's check:")
+var, rhs: ('term', 'term(n-2). Because if you look at term1=5, term3=5, term5=5... Similarly term2=20, term4=20, etc. But that would mean for even n ≥2, term(n) is same as term(n-2). But how does that fit with the initial terms?')
+var, rhs: ('term', "term(n-2), then term2 would be term0=10. Which is not 20. So that doesn't work.")
+var, rhs: ('term', "term(n-2) * 2. Let's see. For term2: term0 *2=10*2=20. Yes. Then term3 would be term1 *2=5*2=10. But term3 is 5. No. So that's not it.")
+var, rhs: ('term', '4 * term(n-1) if the previous term was 5, and term(n) = term(n-1)/4 if previous was 20. But that seems to require checking previous value, which is part of the recursion.')
+var, rhs: ('term', "25 / term(n-1). Let's check:")
+var, rhs: ('term', "a*term(n-1) + b*term(n-2) + ... Let's check for possible linear relations.")
+var, rhs: ('term', '5 if n is odd, 20 if even. So for n ≥1, term(n) can be expressed as 25 / term(n-1). Let me check:')
+var, rhs: ('term', "(term(n-2) * 2) if n is even? For example, term2 is 2*term0=2*10=20. Yes. Then term4 would be 2*term2=40. But in the given sequence, term4 is 20. So that's not matching. So no.")
+var, rhs: ('term', '5 if n is odd, 20 if even. How can this be modeled recursively?')
+var, rhs: ('term', '5 if term(n-1) is 20, and 20 if term(n-1) is 5. But how to express that in a recurrence. For example, if the previous term is 5, then multiply by 4 to get 20. If previous is 20, divide by 4 to get 5. But how to write that recursively. Well, for n ≥1, term(n) = 25 / term(n-1) ?')
+var, rhs: ('term', '100 / term(n-1). For term1: 100/10=10. Not 5. No.')
+var, rhs: ('term', 'term(n-1) *4? No, because for n=1, term1 is term0 divided by 2. Then for n=2, term2 is term1 multiplied by 4. For n=3, term3 is term2 divided by 4. So the pattern is that for even n (starting from n=0?), but perhaps for n ≥1, the operation alternates between multiplying by 4 and dividing by 4. But how to express this in a recurrence.')
+var, rhs: ('term', "4 * term(n-2). Let's check:")
+var, rhs: ('term', "term(n-2). But for term1 (n=1), term(n) is 5. term(n-2) would be term(-1), which is undefined. So that's not helpful.")
+var, rhs: ('term', "term(n-2). Let's check:")
+var, rhs: ('term', '4 * term(n-1)')
+var, rhs: ('term', 'term(n-2)')
+var, rhs: ('term', "4 * term(n-1) if n is even, else term(n) = term(n-2). But how to write this without checking parity. It's tricky.")
+var, rhs: ('term', '5 if n is odd, 20 if even. But how to express this recursively. For example, for n ≥1, term(n) = 5 if term(n-1) is 20, else 20. But again, this requires checking previous value.')
+var, rhs: ('term', "25 / term(n-1). Let's check:")
+var, rhs: ('term', '20')
+var, rhs: ('term', "term(n-2). But then for n=2, term(2) would be term(0)=10, but it's supposed to be 20. So no.")
+var, rhs: ('term', "2 * term(n-2). For n=2: 2*term(0)=2*10=20. Yes. For n=3: 2*term(1)=2*5=10. But term(3) is 5. No. So that's not.")
+var, rhs: ('term', "20=2*term(0). For n=4, term(n)=20=2*term(2)=2*20=40. No. So that's not.")
+var, rhs: ('term', "20, and for odd n ≥1, term(n)=5. So the recurrence for even n ≥2 is term(n) = 20, and for odd n ≥1, term(n)=5. But how to express this in a general recurrence. It seems like it's more of a direct formula rather than a recurrence.")
+var, rhs: ('term', "term(n-2). But as discussed earlier, this would give term(2)=term(0)=10, which is incorrect. So that's not.")
+var, rhs: ('term', 'term(n-2). But for n=2, term(2)=20, which is not equal to term(0)=10. So no.')
+var, rhs: ('term', "term(n-2) * 1 if n is even and ≥2, but that doesn't help.")
+var, rhs: ('term', "4 * term(n-2) for even n ≥2, and term(n) = (term(n-2))/4 for odd n ≥3. Let's check:")
+var, rhs: ('term', '2*term(0)=2*10=20. Yes. For n=4, term(4)=2*term(2)=2*20=40. But given term(4) is 20. No.')
+var, rhs: ('term', "5 if n is odd, 20 if even. So for n ≥1, term(n) = 25 / term(n-1). Let's check:")
+var, rhs: ('term', "4 * term(n-1) if n is even, and term(n) = (1/4)*term(n-1) if n is odd? Let's see:")
+var, rhs: ('term', '4 * term(n-1) if term(n-1) is 5, else term(n) = (1/4) * term(n-1).')
+var, rhs: ('term', '20 if n is even, 5 if odd. But again, this requires knowing the parity of n.')
+var, rhs: ('term', "term(n-2). But with adjusted base cases. Wait, if we set term(1)=5 and term(2)=20, then for n ≥3, term(n) = term(n-2). Let's check:")
+var, rhs: ('term', 'term(n-2)')
+var, rhs: ('a', 'a(n-2)')
+var, rhs: ('a', 'a(n-2) * 2 if n is even, but that would change the values. Let me think again.')
+var, rhs: ('a', 'a(n-2) for n ≥3 is valid.')
+var, rhs: ('a', 'a(n-2)')
+var, rhs: ('a', 'a(n-2) if n is even? No. Wait, for n=2, a(2)=4*a(1). For n=3, a(3)=a(1). For n=4, a(4)=a(2). For n=5, a(5)=a(3). So perhaps for n ≥2, a(n) = a(n-2) if n is odd, and a(n) = 4*a(n-1) if n is even? But this seems inconsistent.')
+var, rhs: ('a', "4*a(n-1) if n is even, and a(n) = a(n-2) if n is odd. Let's check:")
+var, rhs: ('a', '4 * a(n-1)')
+var, rhs: ('a', 'a(n-2)')
+var, rhs: ('a', "4*a(n-1), and for odd n ≥3, a(n) = a(n-2). But this still requires conditional logic based on n's parity.")
+var, rhs: ('a', 'a(n-2). This avoids the need to check for even/odd in the recurrence.')
+var, rhs: ('a', 'a(n-2)')
+var, rhs: ('a', 'a(n - 2)')
+latex_matches[-2:] = [('a', 'latex_seq(n-2)'), ('a', 'latex_seq(n - 2)')]
+('term', "25 / latex_seq(n-1). Let's check: term1* is 5. term2* would be 25 /5 =5. No, but term2* is 20. So that doesn't work. What if it's 100 / latex_seq(n-1)? For term1: 100/10=10, but term1* is 5. Not helpful")
+('term', "4 * latex_seq(n-2). Let's check:")
+('term', 'latex_seq(n-2). Because if you look at term1=5, term3=5, term5=5... Similarly term2=20, term4=20, etc. But that would mean for even n ≥2, latex_seq(n) *is same as latex_seq(n-2). But how does that fit with the initial terms?')
+('term', "latex_seq(n-2), then term2* would be term0=10. Which is not 20. So that doesn't work")
+('term', "latex_seq(n-2) * 2. Let's see. For term2: term0 *2=10*2=20. Yes. Then term3* would be term1 *2=5*2=10. But term3* is 5. No. So that's not it")
+('term', '4 * latex_seq(n-1) *if the previous term was 5, and latex_seq(n) = latex_seq(n-1)/4* if previous was 20. But that seems to require checking previous value, which is part of the recursion')
+('term', "25 / latex_seq(n-1). Let's check:")
+('term', "a*latex_seq(n-1) + b*latex_seq(n-2) + ... Let's check for possible linear relations")
+('term', '5* if n is odd, 20* if even. So for n ≥1, latex_seq(n) *can be expressed as 25 / latex_seq(n-1). Let me check:')
+('term', "(latex_seq(n-2) * 2) *if n is even? For example, term2* is 2*term0=2*10=20. Yes. Then term4* would be 2*term2=40. But in the given sequence, term4* is 20. So that's not matching. So no")
+('term', '5* if n is odd, 20* if even. How can this be modeled recursively?')
+('term', '5* if latex_seq(n-1) *is 20, and 20* if latex_seq(n-1) *is 5. But how to express that in a recurrence. For example, if the previous term is 5, then multiply by 4* to get 20. If previous is 20, divide by 4* to get 5. But how to write that recursively. Well, for n ≥1, latex_seq(n) = 25 / latex_seq(n-1) ?')
+('term', '100 / latex_seq(n-1). For term1: 100/10=10. Not 5. No')
+('term', 'latex_seq(n-1) *4? No, because for n=1, term1* is term0* divided by 2. Then for n=2, term2* is term1* multiplied by 4. For n=3, term3* is term2* divided by 4. So the pattern is that for even n* (starting from n=0?), but perhaps for n ≥1, the operation alternates between multiplying by 4* and dividing by 4. But how to express this in a recurrence')
+('term', "4 * latex_seq(n-2). Let's check:")
+('term', "latex_seq(n-2). But for term1 *(n=1), latex_seq(n) *is 5. latex_seq(n-2) *would be latex_seq(-1), which is undefined. So that's not helpful")
+('term', "latex_seq(n-2). Let's check:")
+('term', '4 * latex_seq(n-1)')
+('term', 'latex_seq(n-2)')
+('term', "4 * latex_seq(n-1) *if n is even, else latex_seq(n) = latex_seq(n-2). But how to write this without checking parity. It's tricky")
+('term', '5* if n is odd, 20* if even. But how to express this recursively. For example, for n ≥1, latex_seq(n) = 5* if latex_seq(n-1) *is 20, else 20. But again, this requires checking previous value')
+('term', "25 / latex_seq(n-1). Let's check:")
+('term', '20')
+('term', "latex_seq(n-2). But then for n=2, latex_seq(2) *would be latex_seq(0)=10, but it's supposed to be 20. So no")
+('term', "2 * latex_seq(n-2). For n=2: 2*latex_seq(0)=2*10=20. Yes. For n=3: 2*latex_seq(1)=2*5=10. But latex_seq(3) *is 5. No. So that's not")
+('term', "20=2*latex_seq(0). For n=4, latex_seq(n)=20=2*latex_seq(2)=2*20=40. No. So that's not")
+('term', "20, and for odd n ≥1, latex_seq(n)=5. So the recurrence for even n ≥2* is latex_seq(n) = 20, and for odd n ≥1, latex_seq(n)=5. But how to express this in a general recurrence. It seems like it's more of a direct formula rather than a recurrence")
+('term', "latex_seq(n-2). But as discussed earlier, this would give latex_seq(2)=latex_seq(0)=10, which is incorrect. So that's not")
+('term', 'latex_seq(n-2). But for n=2, latex_seq(2)=20, which is not equal to latex_seq(0)=10. So no')
+('term', "latex_seq(n-2) * 1* if n is even and ≥2, but that doesn't help")
+('term', "4 * latex_seq(n-2) *for even n ≥2, and latex_seq(n) = (latex_seq(n-2))/4* for odd n ≥3. Let's check:")
+('term', '2*latex_seq(0)=2*10=20. Yes. For n=4, latex_seq(4)=2*latex_seq(2)=2*20=40. But given latex_seq(4) *is 20. No')
+('term', "5* if n is odd, 20* if even. So for n ≥1, latex_seq(n) = 25 / latex_seq(n-1). Let's check:")
+('term', "4 * latex_seq(n-1) *if n is even, and latex_seq(n) = (1/4)*latex_seq(n-1) *if n is odd? Let's see:")
+('term', '4 * latex_seq(n-1) *if latex_seq(n-1) *is 5, else latex_seq(n) = (1/4) * latex_seq(n-1)')
+('term', '20* if n is even, 5* if odd. But again, this requires knowing the parity of n')
+('term', "latex_seq(n-2). But with adjusted base cases. Wait, if we set latex_seq(1)=5* and latex_seq(2)=20, then for n ≥3, latex_seq(n) = latex_seq(n-2). Let's check:")
+('term', 'latex_seq(n-2)')
+('a', 'latex_seq(n-2)')
+('a', 'latex_seq(n-2) * 2* if n is even, but that would change the values. Let me think again')
+('a', 'latex_seq(n-2) *for n ≥3* is valid')
+('a', 'latex_seq(n-2)')
+('a', 'latex_seq(n-2) *if n is even? No. Wait, for n=2, latex_seq(2)=4*latex_seq(1). For n=3, latex_seq(3)=latex_seq(1). For n=4, latex_seq(4)=latex_seq(2). For n=5, latex_seq(5)=latex_seq(3). So perhaps for n ≥2, latex_seq(n) = latex_seq(n-2) *if n is odd, and latex_seq(n) = 4*latex_seq(n-1) *if n is even? But this seems inconsistent')
+('a', "4*latex_seq(n-1) *if n is even, and latex_seq(n) = latex_seq(n-2) *if n is odd. Let's check:")
+('a', '4 * latex_seq(n-1)')
+('a', 'latex_seq(n-2)')
+('a', "4*latex_seq(n-1), and for odd n ≥3, latex_seq(n) = latex_seq(n-2). But this still requires conditional logic based on n's parity")
+('a', 'latex_seq(n-2). This avoids the need to check for even/odd in the recurrence')
+('a', 'latex_seq(n-2)')
+('a', 'latex_seq(n - 2)')
+len(latex_matches) = 50
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [10, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20]
+    if n < len(init):
+        return init[n]
+    return 4 * latex_seq(n-1) 
+
+
+
+-- decoding response finished
+Ground truth: A040093 ,10,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,20,5,
+[dasco sequence loaded.]
+ground_truth = [10, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5]
+len(ground_truth) = 66
+
+cores = False
+task_id = 5798
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [10, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 5, 20, 80, 320, 1280, 5120, 20480, 81920, 327680, 1310720, 5242880, 20971520]
+len(seq_pred) = 35
+
+is_Dasco False
+

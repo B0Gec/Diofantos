@@ -1,0 +1,98 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+1399
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+01399-2553.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 0, 0, 1, 2, 4, 7, 10, 15, 20, 27, 34, 44, 53, 66, 78, 94, 109, 129, 147, 171, 193, 221, 247, 280, 310'
+question[-200:] = 'uld you give me a recursive equation in a form of a Python code for the following number sequence: 0, 0, 1, 2, 4, 7, 10, 15, 20, 27, 34, 44, 53, 66, 78, 94, 109, 129, 147, 171, 193, 221, 247, 280, 310'
+inits = [0, 0, 1, 2, 4, 7, 10, 15, 20, 27, 34, 44, 53, 66, 78, 94, 109, 129, 147, 171, 193, 221, 247, 280, 310]
+code_blocks = ['def multiply_matrix(A, B):\n    """Multiply two 3x3 matrices."""\n    result = [[0]*3 for _ in range(3)]\n    for i in range(3):\n        for j in range(3):\n            result[i][j] = sum(A[i][k] * B[k][j] for k in range(3))\n    return result\n\ndef matrix_power(matrix, power):\n    """Raise a 3x3 matrix to a given power using binary exponentiation."""\n    result = [[1 if i == j else 0 for j in range(3)] for i in range(3)]  # Identity matrix\n    while power > 0:\n        if power % 2 == 1:\n            result = multiply_matrix(result, matrix)\n        matrix = multiply_matrix(matrix, matrix)\n        power //= 2\n    return result\n\ndef multiply_matrix_vector(matrix, vector):\n    """Multiply a 3x3 matrix with a 3x1 vector."""\n    result = [0] * 3\n    for i in range(3):\n        result[i] = sum(matrix[i][j] * vector[j] for j in range(3))\n    return result\n\ndef count_valid_sequences(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 2\n    elif n == 2:\n        return 4\n    \n    # Define the transformation matrix\n    M = [\n        [1, 1, 1],\n        [1, 0, 0],\n        [0, 1, 0]\n    ]\n    \n    # Compute M^(n-2)\n    power = n - 2\n    M_power = matrix_power(M, power)\n    \n    # Initial vector [a(2), a(1), a(0)]\n    V = [4, 2, 1]\n    \n    # Multiply M^(n-2) with V\n    result_vector = multiply_matrix_vector(M_power, V)\n    \n    return result_vector[0]\n', 'print(count_valid_sequences(3))  # Output: 7\nprint(count_valid_sequences(4))  # Output: 13\nprint(count_valid_sequences(10)) # Output: 504\n']
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'count_valid_sequences'
+-- test_code 
+
+
+
+
+def multiply_matrix(A, B):
+    """Multiply two 3x3 matrices."""
+    result = [[0]*3 for _ in range(3)]
+    for i in range(3):
+        for j in range(3):
+            result[i][j] = sum(A[i][k] * B[k][j] for k in range(3))
+    return result
+
+def matrix_power(matrix, power):
+    """Raise a 3x3 matrix to a given power using binary exponentiation."""
+    result = [[1 if i == j else 0 for j in range(3)] for i in range(3)]  # Identity matrix
+    while power > 0:
+        if power % 2 == 1:
+            result = multiply_matrix(result, matrix)
+        matrix = multiply_matrix(matrix, matrix)
+        power //= 2
+    return result
+
+def multiply_matrix_vector(matrix, vector):
+    """Multiply a 3x3 matrix with a 3x1 vector."""
+    result = [0] * 3
+    for i in range(3):
+        result[i] = sum(matrix[i][j] * vector[j] for j in range(3))
+    return result
+
+def count_valid_sequences(n):
+    if n == 0:
+        return 1
+    elif n == 1:
+        return 2
+    elif n == 2:
+        return 4
+
+    # Define the transformation matrix
+    M = [
+        [1, 1, 1],
+        [1, 0, 0],
+        [0, 1, 0]
+    ]
+
+    # Compute M^(n-2)
+    power = n - 2
+    M_power = matrix_power(M, power)
+
+    # Initial vector [a(2), a(1), a(0)]
+    V = [4, 2, 1]
+
+    # Multiply M^(n-2) with V
+    result_vector = multiply_matrix_vector(M_power, V)
+
+    return result_vector[0] 
+
+
+
+-- decoding response finished
+Ground truth: A007983 ,0,0,1,2,4,7,10,15,20,27,34,44,53,66,78,94,109,129,147,171,193,221,247,280,310,348,383,426,466,515,560,615,666,727,784,852,915,990,1060,1142,1219,1309,1393,1491,1583,1689,1789,1904,2012,2136,2253,2386,2512,
+[dasco sequence loaded.]
+ground_truth = [0, 0, 1, 2, 4, 7, 10, 15, 20, 27, 34, 44, 53, 66, 78, 94, 109, 129, 147, 171, 193, 221, 247, 280, 310, 348, 383, 426, 466, 515, 560, 615, 666, 727, 784, 852, 915, 990, 1060, 1142, 1219, 1309, 1393, 1491, 1583, 1689, 1789, 1904, 2012, 2136, 2253, 2386, 2512]
+len(ground_truth) = 53
+
+cores = False
+task_id = 1399
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = count_valid_sequences
+start = 2
+    seq_pred = [4, 7, 13, 24, 44, 81, 149, 274, 504, 927, 1705, 3136, 5768, 10609, 19513, 35890, 66012, 121415, 223317, 410744, 755476, 1389537, 2555757, 4700770, 8646064, 15902591, 29249425, 53798080, 98950096, 181997601, 334745777, 615693474, 1132436852, 2082876103, 3831006429]
+len(seq_pred) = 35
+
+is_Dasco False
+

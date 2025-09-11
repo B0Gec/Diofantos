@@ -1,0 +1,83 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+4387
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+04387-1035.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 18, 19, 47, 48, 49, 50, 98, 99, 100, 101, 102, 103, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 288, 289, 290'
+question[-200:] = 'e a recursive equation in a form of a Python code for the following number sequence: 18, 19, 47, 48, 49, 50, 98, 99, 100, 101, 102, 103, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 288, 289, 290'
+inits = [18, 19, 47, 48, 49, 50, 98, 99, 100, 101, 102, 103, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 288, 289, 290]
+code_blocks = ['def find_nth_number(n):\n    def compute_c(m):\n        if m < 0:\n            return 0\n        return m * (m + 1) * (m + 2) // 6\n\n    def find_m(n):\n        low, high = 1, 2 * 10**6  # Upper bound for m\n        while low < high:\n            mid = (low + high) // 2\n            c = compute_c(mid)\n            if c >= n:\n                high = mid\n            else:\n                low = mid + 1\n        return low\n\n    def compute_sum_d(k):\n        if k == 0:\n            return 0\n        sum_d = 0\n        current_d = 0\n        for i in range(1, k + 1):\n            if i == 1:\n                current_d = 29\n            else:\n                current_d += i * i + 18\n            sum_d += current_d\n        return sum_d\n\n    m = find_m(n)\n    c_prev = compute_c(m - 1)\n    p = n - c_prev\n    sum_d = compute_sum_d(m - 1)\n    S_m = 18 + sum_d\n    return S_m + (p - 1)\n', 'print(find_nth_number(1))   # Output: 18\nprint(find_nth_number(4))   # Output: 49\nprint(find_nth_number(10))  # Output: 103\nprint(find_nth_number(20))  # Output: 185\n']
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'find_nth_number'
+-- test_code 
+
+
+
+
+def find_nth_number(n):
+    def compute_c(m):
+        if m < 0:
+            return 0
+        return m * (m + 1) * (m + 2) // 6
+
+    def find_m(n):
+        low, high = 1, 2 * 10**6  # Upper bound for m
+        while low < high:
+            mid = (low + high) // 2
+            c = compute_c(mid)
+            if c >= n:
+                high = mid
+            else:
+                low = mid + 1
+        return low
+
+    def compute_sum_d(k):
+        if k == 0:
+            return 0
+        sum_d = 0
+        current_d = 0
+        for i in range(1, k + 1):
+            if i == 1:
+                current_d = 29
+            else:
+                current_d += i * i + 18
+            sum_d += current_d
+        return sum_d
+
+    m = find_m(n)
+    c_prev = compute_c(m - 1)
+    p = n - c_prev
+    sum_d = compute_sum_d(m - 1)
+    S_m = 18 + sum_d
+    return S_m + (p - 1) 
+
+
+
+-- decoding response finished
+Ground truth: A034122 ,18,19,47,48,49,50,98,99,100,101,102,103,176,177,178,179,180,181,182,183,184,185,288,289,290,291,292,293,294,295,296,297,298,299,300,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,
+[dasco sequence loaded.]
+ground_truth = [18, 19, 47, 48, 49, 50, 98, 99, 100, 101, 102, 103, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456]
+len(ground_truth) = 53
+
+cores = False
+task_id = 4387
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = find_nth_number
+start = 1
+    seq_pred = [18, 47, 48, 49, 98, 99, 100, 101, 102, 103, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302]
+len(seq_pred) = 35
+
+is_Dasco False
+

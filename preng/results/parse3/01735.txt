@@ -1,0 +1,203 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+1735
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+01735-4855.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 18, 66, 146, 258, 402, 578, 786, 1026, 1298, 1602, 1938, 2306, 2706, 3138, 3602, 4098, 4626, 5186, 5778, 6402, 7058, 7746, 8466, 9218'
+question[-200:] = 'n in a form of a Python code for the following number sequence: 1, 18, 66, 146, 258, 402, 578, 786, 1026, 1298, 1602, 1938, 2306, 2706, 3138, 3602, 4098, 4626, 5186, 5778, 6402, 7058, 7746, 8466, 9218'
+inits = [1, 18, 66, 146, 258, 402, 578, 786, 1026, 1298, 1602, 1938, 2306, 2706, 3138, 3602, 4098, 4626, 5186, 5778, 6402, 7058, 7746, 8466, 9218]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+48
+('a', ' x*a(n-1) + y*a(n-2).')
+('a', " a(n-1) + something. Let's look at the first differences again. The first differences are 17, 48, 80, 112, 144, etc. The second differences (differences of first differences) after the first one are 32. So if the second differences are constant, then the first differences form an arithmetic sequence. But the first difference starts at 17, then increases by 31 (to 48), then by 32 each time. So maybe there's an initial adjustment. Let's model the first difference as starting with 17, then adding 32 each time after the first step. Wait, for k=1 (difference between term 2 and 1) is 17. Then for k=2 (term3-term2) is 48, which is 17 + 31. Then for k=3, it's 48 + 32 = 80. Then 80 +32=112, etc. So the first difference for term n (assuming n starts at 2) is 17 + 31*(n-2) + 32*(something). Hmm, maybe not. Alternatively, perhaps the first difference is 17 + 32*(k-1) - 1? Let me check:")
+('d', " an² + bn + c. Let's take some values. For n=1 (difference between term 2 and 1), d(1)=17. For n=2, d(2)=48. For n=3, d(3)=80. Let's set up equations:")
+('d', " 0.5n² +29.5n -13. Let's test for n=4: 0.5*(16) +29.5*4 -13 = 8 + 118 -13 = 113. But the actual first difference for n=4 (term 5 - term4) is 258-146=112. Close but not exact. Hmm. Maybe there's a mistake here. Alternatively, perhaps the quadratic approach isn't the right way.")
+('a', " p*a(n-1) + q*a(n-2). Let's take terms 2, 3, 4, etc.")
+('a', ' a(n-1) + d(n-1), where d(n-1) is the first difference between a(n-1) and a(n-2). So if we can find a recurrence for d(n), then we can find a recurrence for a(n).')
+('d', ' d(n-1) + 32. Except for the first step, which is d(2) = d(1) +31. ')
+('d', " d(n-1) + 32, except for n=2 where it's +31. But how to model this? Maybe there's a general formula for d(n). Let's see:")
+('d', " d(n-1) + 32, except for n=2 where the increment is 31 instead of 32. But perhaps there's a way to write this as a recurrence with a constant increment. Let's adjust for the initial step. For example, if we consider that for n ≥3, d(n) = d(n-1) +32. Then for n=3, d(3)=d(2)+32=48+32=80, which matches. For n=4, 80+32=112, etc. But for n=2, it's 17+31=48. So the recurrence for d(n) is:")
+('d', 'd(n-1) +32.')
+('a', ' a(n-1) +d(n-1), and d(n-1) for n ≥2 is d(n-1) = d(n-2) + 32 (for n ≥3). So for n ≥3, d(n-1) = d(n-2) +32. Therefore, substituting into a(n):')
+('a', ' a(n-1) + d(n-1) ')
+('a', ' [a(n-2) +d(n-2)] + [d(n-2) +32] ')
+('a', ' a(n-1) + d(n-1)')
+('a', ' a(n-1) + [a(n-1) - a(n-2)] ')
+('a', ' 2a(n-1) -a(n-2)')
+('a', ' 2a(n-1) -a(n-2) +32, for n ≥3.')
+('a', ' 2a(n-1) -a(n-2) +32, with initial terms a(0)=1, a(1)=18.')
+('a', ' 2a(n-1) -a(n-2) +32 holds for n ≥3, but not for n=2. Therefore, the correct recurrence is:')
+('a', ' 2a(n-1) -a(n-2) +32.')
+('a', ' 2a(n-1) -a(n-2) +32 for n ≥3,')
+('a', ' 2a(n-1) -a(n-2) +32.')
+('a', ' 2a(n-1) - a(n-2) + 32, for n ≥ 2,')
+('a', ' 2a(n-1) -a(n-2) + c, where c is 32 for n ≥3 and 31 for n=2.')
+('a', ' A + Bn +16n².')
+('a', "1 +n +16n², but adjusted for the discrepancy at n=2. Wait, but according to the general solution, a(2)=1 +2 +16*4=3+64=67, but actual a(2)=66. So there's an error of -1 at n=2. This suggests that the particular solution needs to be adjusted. However, since the recurrence for n≥3 is correct, and the discrepancy is only at n=2, perhaps we can proceed with the general solution for n≥3 and use the initial conditions to express the solution.")
+('a', ' 2a(n-1) -a(n-2) +32. This is a linear nonhomogeneous recurrence. The solution would be the homogeneous solution plus a particular solution. As before, the homogeneous solution is A + Bn, and the particular solution is 16n². Therefore, the general solution for n≥3 is a(n) = A + Bn +16n². To find A and B, we can use the values at n=2 and n=3.')
+('a', '2 +0*n +16n²=2 +16n².')
+('a', "2 +16n². Let's check for n=0 and n=1:")
+('a', '2 +16n² is valid for n≥1, but not for n=0. However, since the original recurrence starts affecting from n≥3, and the initial conditions are given for n=0,1,2, we can write the closed-form as:')
+('a', ' 16n² + 2 for n ≥1, with a(0)=1.')
+('a', ' 16n² + 2 for n ≥1, and a(0)=1.')
+('a', ' 2a(n-1) -a(n-2) +32.')
+('a', " 2a(n-1) -a(n-2) + c, where c is 32 for n ≥3 and 31 for n=2. However, this isn't a standard recurrence.")
+('a', "16n² +2. Let's express this in terms of previous terms.")
+('a', '16n² +2.')
+('a', '16n² +2. But for n=0, a(0)=1, which is not equal to 16*0² +2=2. Therefore, the closed-form a(n)=16n² +2 is valid for n ≥1, but not for n=0. Therefore, when we compute the recurrence for n=2, using the closed-form for a(2), a(1), and a(0), we get:')
+('a', '16n² +2 is only valid for n≥1, and the initial term a(0)=1 breaks the pattern. Therefore, the correct recurrence is:')
+('a', ' 2a(n-1) -a(n-2) +32,')
+('a', ' 2a(n-1) - a(n-2) + 32 for n ≥ 3,')
+('a', ' 2a(n-1) -a(n-2) + c(n), where c(n) is 32 for n ≥3 and 31 for n=2.')
+('a', '16n² +2, then for n ≥1, the recurrence a(n) = 2a(n-1) -a(n-2) +32 holds for n ≥3, but for n=2, it would require a different constant. However, since the problem provides the sequence starting from a(0), and the initial terms are given, the correct recurrence is as stated.')
+('a', '2a(n-1)-a(n-2)+32. This recurrence would hold for n ≥3, since for n=2, using a(2)=66, a(1)=18, a(0)=1, we get 66 - 2*18 +1=31≠32. But if we start the recurrence from n=3, it works.')
+('a', ' 2a(n-1) - a(n-2) + 32,')
+('a', ' 1, 18, 66, 146, 258, \\dots')
+('a', ' 2a(n-1) - a(n-2) + c')
+('a', ' 2a(n-1) - a(n-2) + c')
+('a', ' 2a(n-1) - a(n-2) + 32 \\quad \\text{for } n \\geq 3 ')
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2).')
+var, rhs: ('a', "a(n-1) + something. Let's look at the first differences again. The first differences are 17, 48, 80, 112, 144, etc. The second differences (differences of first differences) after the first one are 32. So if the second differences are constant, then the first differences form an arithmetic sequence. But the first difference starts at 17, then increases by 31 (to 48), then by 32 each time. So maybe there's an initial adjustment. Let's model the first difference as starting with 17, then adding 32 each time after the first step. Wait, for k=1 (difference between term 2 and 1) is 17. Then for k=2 (term3-term2) is 48, which is 17 + 31. Then for k=3, it's 48 + 32 = 80. Then 80 +32=112, etc. So the first difference for term n (assuming n starts at 2) is 17 + 31*(n-2) + 32*(something). Hmm, maybe not. Alternatively, perhaps the first difference is 17 + 32*(k-1) - 1? Let me check:")
+var, rhs: ('d', "an² + bn + c. Let's take some values. For n=1 (difference between term 2 and 1), d(1)=17. For n=2, d(2)=48. For n=3, d(3)=80. Let's set up equations:")
+var, rhs: ('d', "0.5n² +29.5n -13. Let's test for n=4: 0.5*(16) +29.5*4 -13 = 8 + 118 -13 = 113. But the actual first difference for n=4 (term 5 - term4) is 258-146=112. Close but not exact. Hmm. Maybe there's a mistake here. Alternatively, perhaps the quadratic approach isn't the right way.")
+var, rhs: ('a', "p*a(n-1) + q*a(n-2). Let's take terms 2, 3, 4, etc.")
+var, rhs: ('a', 'a(n-1) + d(n-1), where d(n-1) is the first difference between a(n-1) and a(n-2). So if we can find a recurrence for d(n), then we can find a recurrence for a(n).')
+var, rhs: ('d', 'd(n-1) + 32. Except for the first step, which is d(2) = d(1) +31.')
+var, rhs: ('d', "d(n-1) + 32, except for n=2 where it's +31. But how to model this? Maybe there's a general formula for d(n). Let's see:")
+var, rhs: ('d', "d(n-1) + 32, except for n=2 where the increment is 31 instead of 32. But perhaps there's a way to write this as a recurrence with a constant increment. Let's adjust for the initial step. For example, if we consider that for n ≥3, d(n) = d(n-1) +32. Then for n=3, d(3)=d(2)+32=48+32=80, which matches. For n=4, 80+32=112, etc. But for n=2, it's 17+31=48. So the recurrence for d(n) is:")
+var, rhs: ('d', 'd(n-1) +32.')
+var, rhs: ('a', 'a(n-1) +d(n-1), and d(n-1) for n ≥2 is d(n-1) = d(n-2) + 32 (for n ≥3). So for n ≥3, d(n-1) = d(n-2) +32. Therefore, substituting into a(n):')
+var, rhs: ('a', 'a(n-1) + d(n-1)')
+var, rhs: ('a', '[a(n-2) +d(n-2)] + [d(n-2) +32]')
+var, rhs: ('a', 'a(n-1) + d(n-1)')
+var, rhs: ('a', 'a(n-1) + [a(n-1) - a(n-2)]')
+var, rhs: ('a', '2a(n-1) -a(n-2)')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32, for n ≥3.')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32, with initial terms a(0)=1, a(1)=18.')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32 holds for n ≥3, but not for n=2. Therefore, the correct recurrence is:')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32.')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32 for n ≥3,')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32.')
+var, rhs: ('a', '2a(n-1) - a(n-2) + 32, for n ≥ 2,')
+var, rhs: ('a', '2a(n-1) -a(n-2) + c, where c is 32 for n ≥3 and 31 for n=2.')
+var, rhs: ('a', 'A + Bn +16n².')
+var, rhs: ('a', "1 +n +16n², but adjusted for the discrepancy at n=2. Wait, but according to the general solution, a(2)=1 +2 +16*4=3+64=67, but actual a(2)=66. So there's an error of -1 at n=2. This suggests that the particular solution needs to be adjusted. However, since the recurrence for n≥3 is correct, and the discrepancy is only at n=2, perhaps we can proceed with the general solution for n≥3 and use the initial conditions to express the solution.")
+var, rhs: ('a', '2a(n-1) -a(n-2) +32. This is a linear nonhomogeneous recurrence. The solution would be the homogeneous solution plus a particular solution. As before, the homogeneous solution is A + Bn, and the particular solution is 16n². Therefore, the general solution for n≥3 is a(n) = A + Bn +16n². To find A and B, we can use the values at n=2 and n=3.')
+var, rhs: ('a', '2 +0*n +16n²=2 +16n².')
+var, rhs: ('a', "2 +16n². Let's check for n=0 and n=1:")
+var, rhs: ('a', '2 +16n² is valid for n≥1, but not for n=0. However, since the original recurrence starts affecting from n≥3, and the initial conditions are given for n=0,1,2, we can write the closed-form as:')
+var, rhs: ('a', '16n² + 2 for n ≥1, with a(0)=1.')
+var, rhs: ('a', '16n² + 2 for n ≥1, and a(0)=1.')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32.')
+var, rhs: ('a', "2a(n-1) -a(n-2) + c, where c is 32 for n ≥3 and 31 for n=2. However, this isn't a standard recurrence.")
+var, rhs: ('a', "16n² +2. Let's express this in terms of previous terms.")
+var, rhs: ('a', '16n² +2.')
+var, rhs: ('a', '16n² +2. But for n=0, a(0)=1, which is not equal to 16*0² +2=2. Therefore, the closed-form a(n)=16n² +2 is valid for n ≥1, but not for n=0. Therefore, when we compute the recurrence for n=2, using the closed-form for a(2), a(1), and a(0), we get:')
+var, rhs: ('a', '16n² +2 is only valid for n≥1, and the initial term a(0)=1 breaks the pattern. Therefore, the correct recurrence is:')
+var, rhs: ('a', '2a(n-1) -a(n-2) +32,')
+var, rhs: ('a', '2a(n-1) - a(n-2) + 32 for n ≥ 3,')
+var, rhs: ('a', '2a(n-1) -a(n-2) + c(n), where c(n) is 32 for n ≥3 and 31 for n=2.')
+var, rhs: ('a', '16n² +2, then for n ≥1, the recurrence a(n) = 2a(n-1) -a(n-2) +32 holds for n ≥3, but for n=2, it would require a different constant. However, since the problem provides the sequence starting from a(0), and the initial terms are given, the correct recurrence is as stated.')
+var, rhs: ('a', '2a(n-1)-a(n-2)+32. This recurrence would hold for n ≥3, since for n=2, using a(2)=66, a(1)=18, a(0)=1, we get 66 - 2*18 +1=31≠32. But if we start the recurrence from n=3, it works.')
+var, rhs: ('a', '2a(n-1) - a(n-2) + 32,')
+var, rhs: ('a', '1, 18, 66, 146, 258, \\dots')
+var, rhs: ('a', '2a(n-1) - a(n-2) + c')
+var, rhs: ('a', '2a(n-1) - a(n-2) + c')
+var, rhs: ('a', '2a(n-1) - a(n-2) + 32 \\quad \\text{for } n \\geq 3')
+latex_matches[-2:] = [('a', '2*latex_seq(n-1) - latex_seq(n-2) + c'), ('a', '2*latex_seq(n-1) - latex_seq(n-2) + 32 ')]
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2)')
+('a', '1-')
+('d', "an² + bn + c. Let's take some values. For n=1 *(difference between term 2* and 1), latex_seq(1)=17. For n=2, latex_seq(2)=48. For n=3, latex_seq(3)=80. Let's set up equations:")
+('d', "0.5*n² +29.5*n -13. Let's test for n=4: 0.5*(16) +29.5*4 -13 = 8 + 118 -13 = 113. But the actual first difference for n=4 *(term 5 - term4) *is 258-146=112. Close but not exact. Hmm. Maybe there's a mistake here. Alternatively, perhaps the quadratic approach isn't the right way")
+('a', "p*latex_seq(n-1) + q*latex_seq(n-2). Let's take terms 2, 3, 4, etc")
+('a', 'latex_seq(n-1) + d(n-1), where d(n-1) *is the first difference between latex_seq(n-1) *and latex_seq(n-2). So if we can find a recurrence for d(n), then we can find a recurrence for latex_seq(n)')
+('d', 'latex_seq(n-1) + 32. Except for the first step, which is latex_seq(2) = latex_seq(1) +31')
+('d', "latex_seq(n-1) + 32, except for n=2* where it's +31. But how to model this? Maybe there's a general formula for latex_seq(n). Let's see:")
+('d', "latex_seq(n-1) + 32, except for n=2* where the increment is 31* instead of 32. But perhaps there's a way to write this as a recurrence with a constant increment. Let's adjust for the initial step. For example, if we consider that for n ≥3, latex_seq(n) = latex_seq(n-1) +32. Then for n=3, latex_seq(3)=latex_seq(2)+32=48+32=80, which matches. For n=4, 80+32=112, etc. But for n=2, it's 17+31=48. So the recurrence for latex_seq(n) *is:")
+('d', 'latex_seq(n-1) +32')
+('a', 'latex_seq(n-1) +d(n-1), and d(n-1) *for n ≥2* is d(n-1) = d(n-2) + 32 *(for n ≥3). So for n ≥3, d(n-1) = d(n-2) +32. Therefore, substituting into latex_seq(n):')
+('a', 'latex_seq(n-1) + d(n-1)')
+('a', '(latex_seq(n-2) +d(n-2)) + (d(n-2) +32)')
+('a', 'latex_seq(n-1) + d(n-1)')
+('a', 'latex_seq(n-1) + (latex_seq(n-1) - latex_seq(n-2))')
+('a', '2*latex_seq(n-1) -latex_seq(n-2)')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32, for n ≥3')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32, with initial terms latex_seq(0)=1, latex_seq(1)=18')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32* holds for n ≥3, but not for n=2. Therefore, the correct recurrence is:')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32* for n ≥3')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32')
+('a', '2*latex_seq(n-1) - latex_seq(n-2) + 32, for n ≥ 2')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) + c, where c is 32* for n ≥3* and 31* for n=2')
+('a', 'A + Bn +16*n²')
+('a', "1 +n +16*n², but adjusted for the discrepancy at n=2. Wait, but according to the general solution, latex_seq(2)=1 +2 +16*4=3+64=67, but actual latex_seq(2)=66. So there's an error of -1* at n=2. This suggests that the particular solution needs to be adjusted. However, since the recurrence for n≥3* is correct, and the discrepancy is only at n=2, perhaps we can proceed with the general solution for n≥3* and use the initial conditions to express the solution")
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32. This is a linear nonhomogeneous recurrence. The solution would be the homogeneous solution plus a particular solution. As before, the homogeneous solution is A + Bn, and the particular solution is 16*n². Therefore, the general solution for n≥3* is latex_seq(n) = A + Bn +16*n². To find A and B, we can use the values at n=2* and n=3')
+('a', '2 +0*n +16*n²=2 +16*n²')
+('a', "2 +16*n². Let's check for n=0* and n=1:")
+('a', '2 +16*n² is valid for n≥1, but not for n=0. However, since the original recurrence starts affecting from n≥3, and the initial conditions are given for n=0,1,2, we can write the closed-form as:')
+('a', '16*n² + 2* for n ≥1, with latex_seq(0)=1')
+('a', '16*n² + 2* for n ≥1, and latex_seq(0)=1')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32')
+('a', "2*latex_seq(n-1) -latex_seq(n-2) + c, where c is 32* for n ≥3* and 31* for n=2. However, this isn't a standard recurrence")
+('a', "16*n² +2. Let's express this in terms of previous terms")
+('a', '16*n² +2')
+('a', '16*n² +2. But for n=0, latex_seq(0)=1, which is not equal to 16*0² +2=2. Therefore, the closed-form latex_seq(n)=16*n² +2* is valid for n ≥1, but not for n=0. Therefore, when we compute the recurrence for n=2, using the closed-form for latex_seq(2), latex_seq(1), and latex_seq(0), we get:')
+('a', '16*n² +2* is only valid for n≥1, and the initial term latex_seq(0)=1* breaks the pattern. Therefore, the correct recurrence is:')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) +32')
+('a', '2*latex_seq(n-1) - latex_seq(n-2) + 32* for n ≥ 3')
+('a', '2*latex_seq(n-1) -latex_seq(n-2) + c(n), where c(n) *is 32* for n ≥3* and 31* for n=2')
+('a', '16*n² +2, then for n ≥1, the recurrence latex_seq(n) = 2*latex_seq(n-1) -latex_seq(n-2) +32* holds for n ≥3, but for n=2, it would require a different constant. However, since the problem provides the sequence starting from latex_seq(0), and the initial terms are given, the correct recurrence is as stated')
+('a', '2*latex_seq(n-1)-latex_seq(n-2)+32. This recurrence would hold for n ≥3, since for n=2, using latex_seq(2)=66, latex_seq(1)=18, latex_seq(0)=1, we get 66 - 2*18 +1=31≠32. But if we start the recurrence from n=3, it works')
+('a', '2*latex_seq(n-1) - latex_seq(n-2) + 32')
+('a', '1, 18, 66, 146, 258, \\dots')
+('a', '2*latex_seq(n-1) - latex_seq(n-2) + c')
+('a', '2*latex_seq(n-1) - latex_seq(n-2) + c')
+('a', '2*latex_seq(n-1) - latex_seq(n-2) + 32 ')
+len(latex_matches) = 48
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 18, 66, 146, 258, 402, 578, 786, 1026, 1298, 1602, 1938, 2306, 2706, 3138, 3602, 4098, 4626, 5186, 5778, 6402, 7058, 7746, 8466, 9218]
+    if n < len(init):
+        return init[n]
+    return 2*latex_seq(n-1) - latex_seq(n-2) + 32 
+
+
+
+-- decoding response finished
+Ground truth: A010006 ,1,18,66,146,258,402,578,786,1026,1298,1602,1938,2306,2706,3138,3602,4098,4626,5186,5778,6402,7058,7746,8466,9218,10002,10818,11666,12546,13458,14402,15378,16386,17426,18498,19602,20738,21906,23106,24338,25602,26898,
+[dasco sequence loaded.]
+ground_truth = [1, 18, 66, 146, 258, 402, 578, 786, 1026, 1298, 1602, 1938, 2306, 2706, 3138, 3602, 4098, 4626, 5186, 5778, 6402, 7058, 7746, 8466, 9218, 10002, 10818, 11666, 12546, 13458, 14402, 15378, 16386, 17426, 18498, 19602, 20738, 21906, 23106, 24338, 25602, 26898]
+len(ground_truth) = 42
+
+cores = False
+task_id = 1735
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [1, 18, 66, 146, 258, 402, 578, 786, 1026, 1298, 1602, 1938, 2306, 2706, 3138, 3602, 4098, 4626, 5186, 5778, 6402, 7058, 7746, 8466, 9218, 10002, 10818, 11666, 12546, 13458, 14402, 15378, 16386, 17426, 18498]
+len(seq_pred) = 35
+
+is_Dasco True
+

@@ -1,0 +1,73 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+8158
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+08158-8729.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 2, 2, 3, 4, 3, 4, 7, 7, 4, 5, 11, 14, 11, 5, 6, 16, 25, 25, 16, 6, 7, 22, 41, 50'
+question[-200:] = '**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 2, 2, 3, 4, 3, 4, 7, 7, 4, 5, 11, 14, 11, 5, 6, 16, 25, 25, 16, 6, 7, 22, 41, 50'
+inits = [1, 2, 2, 3, 4, 3, 4, 7, 7, 4, 5, 11, 14, 11, 5, 6, 16, 25, 25, 16, 6, 7, 22, 41, 50]
+code_blocks = ['import math\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef calculate_sequence(n):\n    if n == 0:\n        return 1\n\n    # Estimate m using the triangular number formula\n    m = int((math.sqrt(8 * n + 1) - 1) // 2)\n\n    # Adjust m to ensure T(m) <= n < T(m+1)\n    while m * (m + 1) // 2 > n:\n        m -= 1\n    while (m + 1) * (m + 2) // 2 <= n:\n        m += 1\n\n    t_m = m * (m + 1) // 2\n    k = n - t_m\n\n    if k == 0 or k == m:\n        return m + 1\n    else:\n        prev_row_start = (m - 1) * m // 2\n        index1 = prev_row_start + (k - 1)\n        index2 = prev_row_start + k\n        return calculate_sequence(index1) + calculate_sequence(index2)\n', 'for i in range(15):\n    print(f"calculate_sequence({i}) = {calculate_sequence(i)}")\n']
+
+Test code was censored for imports and manipulated to avoid user input and the code has actually changed for real!
+Here are all censored lines:
+import math
+from functools import lru_cache
+And here are all the manipulated lines:
+
+
+function_name = 'calculate_sequence'
+-- test_code 
+
+
+
+
+
+@lru_cache(maxsize=None)
+def calculate_sequence(n):
+    if n == 0:
+        return 1
+
+    # Estimate m using the triangular number formula
+    m = int((math.sqrt(8 * n + 1) - 1) // 2)
+
+    # Adjust m to ensure T(m) <= n < T(m+1)
+    while m * (m + 1) // 2 > n:
+        m -= 1
+    while (m + 1) * (m + 2) // 2 <= n:
+        m += 1
+
+    t_m = m * (m + 1) // 2
+    k = n - t_m
+
+    if k == 0 or k == m:
+        return m + 1
+    else:
+        prev_row_start = (m - 1) * m // 2
+        index1 = prev_row_start + (k - 1)
+        index2 = prev_row_start + k
+        return calculate_sequence(index1) + calculate_sequence(index2) 
+
+
+
+-- decoding response finished
+Ground truth: A051597 ,1,2,2,3,4,3,4,7,7,4,5,11,14,11,5,6,16,25,25,16,6,7,22,41,50,41,22,7,8,29,63,91,91,63,29,8,9,37,92,154,182,154,92,37,9,10,46,129,246,336,336,246,129,46,10,11,56,175,375,582,672,582,375,175,56,11,
+[dasco sequence loaded.]
+ground_truth = [1, 2, 2, 3, 4, 3, 4, 7, 7, 4, 5, 11, 14, 11, 5, 6, 16, 25, 25, 16, 6, 7, 22, 41, 50, 41, 22, 7, 8, 29, 63, 91, 91, 63, 29, 8, 9, 37, 92, 154, 182, 154, 92, 37, 9, 10, 46, 129, 246, 336, 336, 246, 129, 46, 10, 11, 56, 175, 375, 582, 672, 582, 375, 175, 56, 11]
+len(ground_truth) = 66
+
+cores = False
+task_id = 8158
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = calculate_sequence
+start = 0
+    seq_pred = [1, 2, 2, 3, 4, 3, 4, 7, 7, 4, 5, 11, 14, 11, 5, 6, 16, 25, 25, 16, 6, 7, 22, 41, 50, 41, 22, 7, 8, 29, 63, 91, 91, 63, 29]
+len(seq_pred) = 35
+
+is_Dasco True
+

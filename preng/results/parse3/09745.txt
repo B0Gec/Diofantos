@@ -1,0 +1,172 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+9745
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+09745-5561.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0'
+question[-200:] = '```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0'
+inits = [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+37
+('a', ' 1 if n is 7, 13, 19, 23, etc., else 0. But how to express this as a recurrence? It would require knowing the positions where the 1s occur, which seems arbitrary.')
+('a', " a(n-6) + something. Let's check:")
+('a', ' a(n-6), then a(7) = a(1) = 1. Correct.')
+('a', ' a(n-6), then a(23) = a(17) = 0. But in the sequence, a(23) is 1. So this breaks.')
+('a', " a(n-6) + something else. Let's see:")
+('a', " a(n-6) + a(n- something). But without more data points, it's hard to determine.")
+('a', ' a(n-6) for n ≥ 7, except for n=23. But again, this seems arbitrary.')
+('a', " a(n-1) + a(n-2) or similar. But given the sequence has many zeros, this seems unlikely. For example, a(2) = 0. If it were a Fibonacci-like sequence, a(2) would be a(1)+a(0)=1+1=2, which doesn't match. So that's not it.")
+('a', " 1 if n is in {0,1,7,13,19,23}, else 0. But how to express this as a recurrence? It would require knowing those specific positions, which isn't helpful.")
+('a', ' 1 if n is 0 or 1, or if n-7 is a previous term with a(7) = 1, and so on. But this is circular.')
+('a', " a(n-6) for n ≥ 6. Let's check:")
+('a', " a(n-6), then for n=6, a(6) = a(0) = 1, but in the sequence it's 0. So this doesn't hold. But for n=7, a(7)=a(1)=1, which is correct. For n=12, a(12)=a(6)=0 (since a(6) is 0), which matches the sequence. For n=13, a(13)=a(7)=1, which is correct. For n=19, a(19)=a(13)=1, correct. For n=23, a(23)=a(17)=0 (since a(17) is 0), but in the sequence, a(23) is 1. So this breaks. So the recurrence a(n) = a(n-6) works for most terms except n=6 and n=23. But why would a(6) be 0? If we adjust the recurrence to have exceptions, but that's not helpful.")
+('a', " a(n-6) for n ≥ 7. Let's check:")
+('a', " a(n-6) for n ≥ 7 works for all terms except n=23. But why is a(23) 1? If we look at the sequence, maybe there's another term in the recurrence. For example, maybe a(n) = a(n-6) + a(n- something). Let's see:")
+('a', " a(n-6) + a(n-4)? Let's check for other terms.")
+('a', " a(n-6) for n ≥ 7, except when n=23, where it's 1. But this is arbitrary.")
+('a', '1: 0,1,7,13,19,23. These numbers are all congruent to 0 or 1 modulo 6, except for 23, which is 23 mod 6 = 5. So that breaks the pattern.')
+('a', "1 are 0,1, and primes starting from 7 up to 23. But why 23? And why not include other primes like 2, 3, 5? Because in the sequence, a(2)=0, a(3)=0, a(5)=0. So this suggests that the 1s are at 0,1, and primes of the form 6k+1? Let's see:")
+('a', ' c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k). We can try to find the coefficients.')
+('a', ' p*a(n-1) + q*a(n-2).')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3).')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4).')
+('a', "1: 0,1,7,13,19,23. These numbers are all primes (except 0 and 1), but why these specific primes? 7,13,19,23 are primes, but so are others like 2,3,5, etc. But in the sequence, a(2)=0, a(3)=0, a(5)=0. So it's not all primes.")
+('a', "1: 0,1,7,13,19,23. These numbers are all congruent to 0 or 1 modulo 6, except for 23, which is 5 mod 6. But 23 is a prime. Maybe it's a special case.")
+('a', ' 1 if n is 0, 1, or a prime greater than 5, but that would include primes like 2,3,5, which are not in the sequence. So no.')
+('a', " 1 if n is 0, 1, or a prime that is part of a certain sequence. But without more information, it's hard to determine.")
+('a', " a(n-6) for n ≥ 7, except for n=23, where it's 1, but this is arbitrary. Alternatively, maybe there's a different step after 19. But without more terms, it's hard to say.")
+('a', " 1 if n is 0, 1, or a prime that is part of a certain arithmetic progression, but I can't see it.")
+('a', " 1 if n is 0, 1, or a prime that is part of a certain sequence, but I can't determine it. Alternatively, maybe it's a simple recurrence with a(0)=1, a(1)=1, and a(n) = a(n-6) for n ≥ 7, but this would give a(7)=a(1)=1, a(13)=a(7)=1, a(19)=a(13)=1, a(25)=a(19)=1, but in the given sequence, a(23)=1, which would not fit this pattern. So this suggests that the recurrence is not simply a(n) = a(n-6).")
+('a', " a(n-6), then a(23) would be a(17)=0, but it's 1. So that doesn't fit.")
+('a', ' a(n-6) + something. For example, a(7) = a(1) + 0 = 1, a(13) = a(7) + 0 = 1, a(19) = a(13) + 0 = 1, a(23) = a(17) + 1 = 0 + 1 = 1. But this is arbitrary and not based on any clear rule.')
+('a', " 1 if n is 0, 1, or a prime in the sequence [7,13,19,23], and 0 otherwise, but this is just a guess based on the given data. However, without more information, it's hard to determine the exact rule.")
+('a', " 1 if n is 0, 1, or a prime of the form 6k+1 up to 23, but 23 is not of that form. Alternatively, it might be that after every 6 steps, there's a 1, but with an exception at 23. This is too vague.")
+('a', " a(n-6) for n ≥ 7, but this doesn't explain a(23)=1. However, if there's a mistake in the sequence, and a(23) should be 0, then the recurrence would hold. But assuming the sequence is correct, I'm at a loss.")
+('a', " 1 if n is 0, 1, or a prime that is part of a certain sequence, and the user expects the answer to be that the next term is 0, following the previous pattern of 6 steps. But since the last 1 is at 23, which is 4 more than 19, it's unclear.")
+('a', " a(n-6) for n ≥ 7, which would give a(23) = a(17) = 0, but since the given sequence has a(23)=1, this suggests that there's an exception. Without more data, it's impossible to determine the exact rule, but the most likely intended pattern is a(n) = a(n-6), leading to the next term being 0. However, since the given sequence has a(23)=1, this might be a special case, and the next term after 23 would be 0.")
+('a', ' 1`:')
+var, rhs: ('a', '1 if n is 7, 13, 19, 23, etc., else 0. But how to express this as a recurrence? It would require knowing the positions where the 1s occur, which seems arbitrary.')
+var, rhs: ('a', "a(n-6) + something. Let's check:")
+var, rhs: ('a', 'a(n-6), then a(7) = a(1) = 1. Correct.')
+var, rhs: ('a', 'a(n-6), then a(23) = a(17) = 0. But in the sequence, a(23) is 1. So this breaks.')
+var, rhs: ('a', "a(n-6) + something else. Let's see:")
+var, rhs: ('a', "a(n-6) + a(n- something). But without more data points, it's hard to determine.")
+var, rhs: ('a', 'a(n-6) for n ≥ 7, except for n=23. But again, this seems arbitrary.')
+var, rhs: ('a', "a(n-1) + a(n-2) or similar. But given the sequence has many zeros, this seems unlikely. For example, a(2) = 0. If it were a Fibonacci-like sequence, a(2) would be a(1)+a(0)=1+1=2, which doesn't match. So that's not it.")
+var, rhs: ('a', "1 if n is in {0,1,7,13,19,23}, else 0. But how to express this as a recurrence? It would require knowing those specific positions, which isn't helpful.")
+var, rhs: ('a', '1 if n is 0 or 1, or if n-7 is a previous term with a(7) = 1, and so on. But this is circular.')
+var, rhs: ('a', "a(n-6) for n ≥ 6. Let's check:")
+var, rhs: ('a', "a(n-6), then for n=6, a(6) = a(0) = 1, but in the sequence it's 0. So this doesn't hold. But for n=7, a(7)=a(1)=1, which is correct. For n=12, a(12)=a(6)=0 (since a(6) is 0), which matches the sequence. For n=13, a(13)=a(7)=1, which is correct. For n=19, a(19)=a(13)=1, correct. For n=23, a(23)=a(17)=0 (since a(17) is 0), but in the sequence, a(23) is 1. So this breaks. So the recurrence a(n) = a(n-6) works for most terms except n=6 and n=23. But why would a(6) be 0? If we adjust the recurrence to have exceptions, but that's not helpful.")
+var, rhs: ('a', "a(n-6) for n ≥ 7. Let's check:")
+var, rhs: ('a', "a(n-6) for n ≥ 7 works for all terms except n=23. But why is a(23) 1? If we look at the sequence, maybe there's another term in the recurrence. For example, maybe a(n) = a(n-6) + a(n- something). Let's see:")
+var, rhs: ('a', "a(n-6) + a(n-4)? Let's check for other terms.")
+var, rhs: ('a', "a(n-6) for n ≥ 7, except when n=23, where it's 1. But this is arbitrary.")
+var, rhs: ('a', '1: 0,1,7,13,19,23. These numbers are all congruent to 0 or 1 modulo 6, except for 23, which is 23 mod 6 = 5. So that breaks the pattern.')
+var, rhs: ('a', "1 are 0,1, and primes starting from 7 up to 23. But why 23? And why not include other primes like 2, 3, 5? Because in the sequence, a(2)=0, a(3)=0, a(5)=0. So this suggests that the 1s are at 0,1, and primes of the form 6k+1? Let's see:")
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k). We can try to find the coefficients.')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2).')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3).')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4).')
+var, rhs: ('a', "1: 0,1,7,13,19,23. These numbers are all primes (except 0 and 1), but why these specific primes? 7,13,19,23 are primes, but so are others like 2,3,5, etc. But in the sequence, a(2)=0, a(3)=0, a(5)=0. So it's not all primes.")
+var, rhs: ('a', "1: 0,1,7,13,19,23. These numbers are all congruent to 0 or 1 modulo 6, except for 23, which is 5 mod 6. But 23 is a prime. Maybe it's a special case.")
+var, rhs: ('a', '1 if n is 0, 1, or a prime greater than 5, but that would include primes like 2,3,5, which are not in the sequence. So no.')
+var, rhs: ('a', "1 if n is 0, 1, or a prime that is part of a certain sequence. But without more information, it's hard to determine.")
+var, rhs: ('a', "a(n-6) for n ≥ 7, except for n=23, where it's 1, but this is arbitrary. Alternatively, maybe there's a different step after 19. But without more terms, it's hard to say.")
+var, rhs: ('a', "1 if n is 0, 1, or a prime that is part of a certain arithmetic progression, but I can't see it.")
+var, rhs: ('a', "1 if n is 0, 1, or a prime that is part of a certain sequence, but I can't determine it. Alternatively, maybe it's a simple recurrence with a(0)=1, a(1)=1, and a(n) = a(n-6) for n ≥ 7, but this would give a(7)=a(1)=1, a(13)=a(7)=1, a(19)=a(13)=1, a(25)=a(19)=1, but in the given sequence, a(23)=1, which would not fit this pattern. So this suggests that the recurrence is not simply a(n) = a(n-6).")
+var, rhs: ('a', "a(n-6), then a(23) would be a(17)=0, but it's 1. So that doesn't fit.")
+var, rhs: ('a', 'a(n-6) + something. For example, a(7) = a(1) + 0 = 1, a(13) = a(7) + 0 = 1, a(19) = a(13) + 0 = 1, a(23) = a(17) + 1 = 0 + 1 = 1. But this is arbitrary and not based on any clear rule.')
+var, rhs: ('a', "1 if n is 0, 1, or a prime in the sequence [7,13,19,23], and 0 otherwise, but this is just a guess based on the given data. However, without more information, it's hard to determine the exact rule.")
+var, rhs: ('a', "1 if n is 0, 1, or a prime of the form 6k+1 up to 23, but 23 is not of that form. Alternatively, it might be that after every 6 steps, there's a 1, but with an exception at 23. This is too vague.")
+var, rhs: ('a', "a(n-6) for n ≥ 7, but this doesn't explain a(23)=1. However, if there's a mistake in the sequence, and a(23) should be 0, then the recurrence would hold. But assuming the sequence is correct, I'm at a loss.")
+var, rhs: ('a', "1 if n is 0, 1, or a prime that is part of a certain sequence, and the user expects the answer to be that the next term is 0, following the previous pattern of 6 steps. But since the last 1 is at 23, which is 4 more than 19, it's unclear.")
+var, rhs: ('a', "a(n-6) for n ≥ 7, which would give a(23) = a(17) = 0, but since the given sequence has a(23)=1, this suggests that there's an exception. Without more data, it's impossible to determine the exact rule, but the most likely intended pattern is a(n) = a(n-6), leading to the next term being 0. However, since the given sequence has a(23)=1, this might be a special case, and the next term after 23 would be 0.")
+var, rhs: ('a', '1`:')
+latex_matches[-2:] = [('a', "latex_seq(n-6) *for n ≥ 7, which would give latex_seq(23) = latex_seq(17) = 0, but since the given sequence has latex_seq(23)=1, this suggests that there's an exception. Without more data, it's impossible to determine the exact rule, but the most likely intended pattern is latex_seq(n) = latex_seq(n-6), leading to the next term being 0. However, since the given sequence has latex_seq(23)=1, this might be a special case, and the next term after 23* would be 0"), ('a', '1`:')]
+('a', '1* if n is 7, 13, 19, 23, etc., else 0. But how to express this as a recurrence? It would require knowing the positions where the 1*s occur, which seems arbitrary')
+('a', '1-')
+('a', 'latex_seq(n-6), then latex_seq(7) = latex_seq(1) = 1. Correct')
+('a', 'latex_seq(n-6), then latex_seq(23) = latex_seq(17) = 0. But in the sequence, latex_seq(23) *is 1. So this breaks')
+('a', '1-')
+('a', '1-')
+('a', 'latex_seq(n-6) *for n ≥ 7, except for n=23. But again, this seems arbitrary')
+('a', "latex_seq(n-1) + latex_seq(n-2) *or similar. But given the sequence has many zeros, this seems unlikely. For example, latex_seq(2) = 0. If it were a Fibonacci-like sequence, latex_seq(2) *would be latex_seq(1)+latex_seq(0)=1+1=2, which doesn't match. So that's not it")
+('a', "1* if n is in {0,1,7,13,19,23}, else 0. But how to express this as a recurrence? It would require knowing those specific positions, which isn't helpful")
+('a', '1* if n is 0* or 1, or if n-7* is a previous term with latex_seq(7) = 1, and so on. But this is circular')
+('a', "latex_seq(n-6) *for n ≥ 6. Let's check:")
+('a', "latex_seq(n-6), then for n=6, latex_seq(6) = latex_seq(0) = 1, but in the sequence it's 0. So this doesn't hold. But for n=7, latex_seq(7)=latex_seq(1)=1, which is correct. For n=12, latex_seq(12)=latex_seq(6)=0 *(since latex_seq(6) *is 0), which matches the sequence. For n=13, latex_seq(13)=latex_seq(7)=1, which is correct. For n=19, latex_seq(19)=latex_seq(13)=1, correct. For n=23, latex_seq(23)=latex_seq(17)=0 *(since latex_seq(17) *is 0), but in the sequence, latex_seq(23) *is 1. So this breaks. So the recurrence latex_seq(n) = latex_seq(n-6) *works for most terms except n=6* and n=23. But why would latex_seq(6) *be 0? If we adjust the recurrence to have exceptions, but that's not helpful")
+('a', "latex_seq(n-6) *for n ≥ 7. Let's check:")
+('a', '1-')
+('a', "latex_seq(n-6) + latex_seq(n-4)? Let's check for other terms")
+('a', "latex_seq(n-6) *for n ≥ 7, except when n=23, where it's 1. But this is arbitrary")
+('a', '1: 0,1,7,13,19,23. These numbers are all congruent to 0* or 1* modulo 6, except for 23, which is 23* mod 6 = 5. So that breaks the pattern')
+('a', "1* are 0,1, and primes starting from 7* up to 23. But why 23? And why not include other primes like 2, 3, 5? Because in the sequence, latex_seq(2)=0, latex_seq(3)=0, latex_seq(5)=0. So this suggests that the 1*s are at 0,1, and primes of the form 6*k+1? Let's see:")
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + ... + ck*latex_seq(n-k). We can try to find the coefficients')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2)')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3)')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4)')
+('a', "1: 0,1,7,13,19,23. These numbers are all primes (except 0* and 1), but why these specific primes? 7,13,19,23* are primes, but so are others like 2,3,5, etc. But in the sequence, latex_seq(2)=0, latex_seq(3)=0, latex_seq(5)=0. So it's not all primes")
+('a', "1: 0,1,7,13,19,23. These numbers are all congruent to 0* or 1* modulo 6, except for 23, which is 5* mod 6. But 23* is a prime. Maybe it's a special case")
+('a', '1* if n is 0, 1, or a prime greater than* 5, but that would include primes like 2,3,5, which are not in the sequence. So no')
+('a', "1* if n is 0, 1, or a prime that is part of a certain sequence. But without more information, it's hard to determine")
+('a', "latex_seq(n-6) *for n ≥ 7, except for n=23, where it's 1, but this is arbitrary. Alternatively, maybe there's a different step after 19. But without more terms, it's hard to say")
+('a', "1* if n is 0, 1, or a prime that is part of a certain arithmetic progression, but I can't see it")
+('a', "1* if n is 0, 1, or a prime that is part of a certain sequence, but I can't determine it. Alternatively, maybe it's a simple recurrence with latex_seq(0)=1, latex_seq(1)=1, and latex_seq(n) = latex_seq(n-6) *for n ≥ 7, but this would give latex_seq(7)=latex_seq(1)=1, latex_seq(13)=latex_seq(7)=1, latex_seq(19)=latex_seq(13)=1, latex_seq(25)=latex_seq(19)=1, but in the given sequence, latex_seq(23)=1, which would not fit this pattern. So this suggests that the recurrence is not simply latex_seq(n) = latex_seq(n-6)")
+('a', "latex_seq(n-6), then latex_seq(23) *would be latex_seq(17)=0, but it's 1. So that doesn't fit")
+('a', '1-')
+('a', '1-')
+('a', "1* if n is 0, 1, or a prime of the form 6*k+1* up to 23, but 23* is not of that form. Alternatively, it might be that after every 6* steps, there's a 1, but with an exception at 23. This is too vague")
+('a', "latex_seq(n-6) *for n ≥ 7, but this doesn't explain latex_seq(23)=1. However, if there's a mistake in the sequence, and latex_seq(23) *should be 0, then the recurrence would hold. But assuming the sequence is correct, I'm at a loss")
+('a', "1* if n is 0, 1, or a prime that is part of a certain sequence, and the user expects the answer to be that the next term is 0, following the previous pattern of 6* steps. But since the last 1* is at 23, which is 4* more than* 19, it's unclear")
+('a', "latex_seq(n-6) *for n ≥ 7, which would give latex_seq(23) = latex_seq(17) = 0, but since the given sequence has latex_seq(23)=1, this suggests that there's an exception. Without more data, it's impossible to determine the exact rule, but the most likely intended pattern is latex_seq(n) = latex_seq(n-6), leading to the next term being 0. However, since the given sequence has latex_seq(23)=1, this might be a special case, and the next term after 23* would be 0")
+('a', '1`:')
+len(latex_matches) = 37
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]
+    if n < len(init):
+        return init[n]
+    return p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4) 
+
+
+
+-- decoding response finished
+Ground truth: A060396 ,1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,2,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,2,0,1,0,0,0,0,0,1,0,0,0,2,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,2,0,1,0,0,0,0,0,1,
+[dasco sequence loaded.]
+ground_truth = [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1]
+len(ground_truth) = 98
+
+cores = False
+task_id = 9745
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'p' is not defined

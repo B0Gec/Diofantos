@@ -1,0 +1,224 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+3467
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+03467-1337.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 10, 20, 30, 40, 50, 60, 70, 80, 90, 101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 201, 211, 221, 231, 241, 251'
+question[-200:] = 'me a recursive equation in a form of a Python code for the following number sequence: 10, 20, 30, 40, 50, 60, 70, 80, 90, 101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 201, 211, 221, 231, 241, 251'
+inits = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 201, 211, 221, 231, 241, 251]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+55
+('a', " a(n-1) +10. But then term 9 is 101. If we apply the same formula, a(9) would be 90 +10=100, but it's 101. So there's a deviation here. Similarly, term 9 is 101, which is 100 +1. Then term 10 is 111, which is 101 +10. So maybe after term 8, there's a change. But how to capture that in a recursive formula?")
+('a', " 10*(n+1) + (something). Wait, for n=0, 10*(0+1) =10. For n=1, 10*(1+1)=20. Up to n=8, 10*(8+1)=90. Then for n=9, 10*(9+1) =100, but the term is 101. So there's an addition of 1 starting at n=9. But how to model that recursively?")
+('a', " 10*(n+1) + (if n >=9 then 1 else 0). But that's not a recursive formula. The user wants a recursive formula, which depends on previous terms.")
+('a', ' a(n-1) + 10, except when n is a multiple of 9 or something. But again, how to express that in a recursive formula without using conditions based on n.')
+('a', " a(n-1) + 10, except when n is 9, then add 11. But that's not a general recursive formula. It's more of a piecewise function based on n's value, which isn't typical for recursive sequences.")
+('a', ' 10*(n+1) + (1 if n >=9 else 0). But again, this is a closed-form formula, not a recursive one.')
+('a', ' a(n-1) + 10, except when n ==9, then +11.')
+('a', " a(n-1) + 10 + (if n==9 then 1 else 0). But that's not a clean recursive formula. Alternatively, maybe there's a pattern where after a certain point, the increment changes once, then continues. But how?")
+('a', " a(n-1) + 10 + (if n ==9 then 1 else 0). But that's not a standard recursive formula. The user's examples have linear recursions, like Fibonacci or a(n) = 2*a(n-1) +1. So perhaps there's a linear recurrence here.")
+('a', " a(n-1) +10. But then why is a(9) 101 instead of 100? Because a(8) is 90, so a(9) should be 90+10=100. But it's 101. So there's an anomaly at n=9. How to model that?")
+('a', " a(n-1) + 10 + (if n ==9 then 1 else 0). But again, that's not a standard recursive formula. However, the user's examples include conditions in the base cases. For example, in Example 3, the function checks if n==0 and returns 1, else returns 2*... So maybe here, the base cases up to n=9 can be defined, and then for n>9, the recurrence is a(n) = a(n-1) +10. But why is a(9) 101?")
+('a', " a(n-1)+10), then a(9) would be 90+10=100. But it's 101. So there's a +1 at this point. How to model that?")
+('a', " a(n-1) +10. But then the base cases would need to include up to n=9. Let's check:")
+('a', ' a(n-1) +10.')
+('a', ' a(n-1) + something.')
+('a', " a(n-1) +10 except for n=9, where it's +11.")
+('a', ' 10*(n+1) + (if n >=9 then 1 else 0). But again, this is a closed-form formula.')
+('a', ' 10*(n+1) + (n-8)*(n-9)/2. But that seems arbitrary.')
+('a', ' 10*(n+1) +1. For example, n=9: 10*(9+1)+1=101. n=10: 10*(10+1)+1=111. And so on. So the general formula is:')
+('a', ' 10*(n+1) if n <=8,')
+('a', ' 10*(n+1) +1 if n >=9.')
+('a', ' a(n-1) +10 + (if n==9 then 1 else 0). But again, this is not a standard recursive formula.')
+('a', ' a(n-1) + 10 + (if n ==9 then 1 else 0). But this would require knowing n in the recursive function, which is possible with base cases.')
+('a', ' a(n-1)+10.')
+('a', ' 10*(n+1)+1. But how to express this recursively.')
+('a', " a(n-1) + 10. Because 10*(n+1)+1 = 10*(n) +1 +10 = a(n-1) +10. So for n >=9, the recurrence is a(n) = a(n-1)+10. But then why is a(9) 101 instead of 100? Because a(8) is 90, so a(9) should be 90+10=100. But it's 101. So there's a discrepancy here. This suggests that the recurrence for n >=9 is a(n) = a(n-1)+10 +1 (only for n=9). But that's not a general recurrence.")
+('a', " 10*(n+1)+1, then for n=9, it's 10*(9+1)+1=101. For n=10, 10*(10+1)+1=111. The difference between a(10) and a(9) is 10. Similarly, between a(11) and a(10) is 10. So for n >=9, the recurrence is a(n) = a(n-1)+10. But then why is a(9) 101? Because a(8) is 90, and a(9) = a(8)+10 +1. So there's an extra +1 at n=9. This suggests that the recurrence for n=9 is different from others. But how to model that in a recursive function.")
+('a', " a(n-1)+10. This would require defining base cases for n=0 to n=9. Let's check:")
+('a', ' a(n-1)+10.')
+('a', ' a(n-1)+10. However, this requires defining 10 base cases, which is not typical in the examples provided by the user. But given the terms, this seems to be the only way to capture the anomaly at n=9.')
+('a', ' 10*(n+1) + (n-8)*(n-9)/2. But this seems arbitrary and not helpful.')
+('a', ' 10*(n+1) + (if n >=9 then 1 else 0). But again, this is a closed-form formula.')
+('a', ' a(n-1) + 10 + (if n ==9 then 1 else 0). This would require knowing n in the recursive function, which is possible with base cases. For example:')
+('a', ' 10 if n=0,')
+('a', ' 20 if n=1,')
+('a', ' 90 if n=8,')
+('a', ' 101 if n=9,')
+('a', ' a(n-1) + 10 for n >=10.')
+('a', ' 101 + 10*(n-9). For example, n=9: 101 + 10*(0) = 101. n=10: 101 +10*(1)=111, etc. This is equivalent to a(n) = 10*(n+1) +1 for n >=9.')
+('a', ' 10*(n+1) + (n-8)*(n-9)/2. But this seems arbitrary.')
+('a', ' a(n-1) + 10 + (if n ==9 then 1 else 0). But this requires knowing n in the function, which is possible with base cases.')
+('a', ' a(n-1) +10.')
+('a', " 10*(n+1). For n=9 onwards, a(n) = 10*(n+1) +1. This suggests that there's a one-time addition of 1 at n=9. This could be modeled as a(n) = 10*(n+1) + (n >=9 ? 1 : 0). But again, this is a closed-form formula.")
+('a', " a(n-1) +10, except for n=9, where it's +11. But this is the same as before.")
+('a', " a(n-1) +10. However, since the user might expect a more concise answer, perhaps there's a different approach.")
+('a', " 10*(n+1) + (n-8)*(n-9)/2. Let's check for n=9: (9-8)*(9-9)/2 = 1*0/2=0. So a(9)=10*(10)+0=100, which is incorrect. So this doesn't work.")
+('a', ' a(n-1) + 10 + delta, where delta is 1 for n=9 and 0 otherwise. But this is the same as before.')
+('a', ' 10 if n=0,')
+('a', ' 20 if n=1,')
+('a', ' 90 if n=8,')
+('a', ' 101 if n=9,')
+('a', ' a(n-1) + 10 for n >=10.')
+('a', ' 10(n + 1)')
+('a', ' 10(n + 1) + 1')
+('a', ' a(n - 1) + 10')
+var, rhs: ('a', "a(n-1) +10. But then term 9 is 101. If we apply the same formula, a(9) would be 90 +10=100, but it's 101. So there's a deviation here. Similarly, term 9 is 101, which is 100 +1. Then term 10 is 111, which is 101 +10. So maybe after term 8, there's a change. But how to capture that in a recursive formula?")
+var, rhs: ('a', "10*(n+1) + (something). Wait, for n=0, 10*(0+1) =10. For n=1, 10*(1+1)=20. Up to n=8, 10*(8+1)=90. Then for n=9, 10*(9+1) =100, but the term is 101. So there's an addition of 1 starting at n=9. But how to model that recursively?")
+var, rhs: ('a', "10*(n+1) + (if n >=9 then 1 else 0). But that's not a recursive formula. The user wants a recursive formula, which depends on previous terms.")
+var, rhs: ('a', 'a(n-1) + 10, except when n is a multiple of 9 or something. But again, how to express that in a recursive formula without using conditions based on n.')
+var, rhs: ('a', "a(n-1) + 10, except when n is 9, then add 11. But that's not a general recursive formula. It's more of a piecewise function based on n's value, which isn't typical for recursive sequences.")
+var, rhs: ('a', '10*(n+1) + (1 if n >=9 else 0). But again, this is a closed-form formula, not a recursive one.')
+var, rhs: ('a', 'a(n-1) + 10, except when n ==9, then +11.')
+var, rhs: ('a', "a(n-1) + 10 + (if n==9 then 1 else 0). But that's not a clean recursive formula. Alternatively, maybe there's a pattern where after a certain point, the increment changes once, then continues. But how?")
+var, rhs: ('a', "a(n-1) + 10 + (if n ==9 then 1 else 0). But that's not a standard recursive formula. The user's examples have linear recursions, like Fibonacci or a(n) = 2*a(n-1) +1. So perhaps there's a linear recurrence here.")
+var, rhs: ('a', "a(n-1) +10. But then why is a(9) 101 instead of 100? Because a(8) is 90, so a(9) should be 90+10=100. But it's 101. So there's an anomaly at n=9. How to model that?")
+var, rhs: ('a', "a(n-1) + 10 + (if n ==9 then 1 else 0). But again, that's not a standard recursive formula. However, the user's examples include conditions in the base cases. For example, in Example 3, the function checks if n==0 and returns 1, else returns 2*... So maybe here, the base cases up to n=9 can be defined, and then for n>9, the recurrence is a(n) = a(n-1) +10. But why is a(9) 101?")
+var, rhs: ('a', "a(n-1)+10), then a(9) would be 90+10=100. But it's 101. So there's a +1 at this point. How to model that?")
+var, rhs: ('a', "a(n-1) +10. But then the base cases would need to include up to n=9. Let's check:")
+var, rhs: ('a', 'a(n-1) +10.')
+var, rhs: ('a', 'a(n-1) + something.')
+var, rhs: ('a', "a(n-1) +10 except for n=9, where it's +11.")
+var, rhs: ('a', '10*(n+1) + (if n >=9 then 1 else 0). But again, this is a closed-form formula.')
+var, rhs: ('a', '10*(n+1) + (n-8)*(n-9)/2. But that seems arbitrary.')
+var, rhs: ('a', '10*(n+1) +1. For example, n=9: 10*(9+1)+1=101. n=10: 10*(10+1)+1=111. And so on. So the general formula is:')
+var, rhs: ('a', '10*(n+1) if n <=8,')
+var, rhs: ('a', '10*(n+1) +1 if n >=9.')
+var, rhs: ('a', 'a(n-1) +10 + (if n==9 then 1 else 0). But again, this is not a standard recursive formula.')
+var, rhs: ('a', 'a(n-1) + 10 + (if n ==9 then 1 else 0). But this would require knowing n in the recursive function, which is possible with base cases.')
+var, rhs: ('a', 'a(n-1)+10.')
+var, rhs: ('a', '10*(n+1)+1. But how to express this recursively.')
+var, rhs: ('a', "a(n-1) + 10. Because 10*(n+1)+1 = 10*(n) +1 +10 = a(n-1) +10. So for n >=9, the recurrence is a(n) = a(n-1)+10. But then why is a(9) 101 instead of 100? Because a(8) is 90, so a(9) should be 90+10=100. But it's 101. So there's a discrepancy here. This suggests that the recurrence for n >=9 is a(n) = a(n-1)+10 +1 (only for n=9). But that's not a general recurrence.")
+var, rhs: ('a', "10*(n+1)+1, then for n=9, it's 10*(9+1)+1=101. For n=10, 10*(10+1)+1=111. The difference between a(10) and a(9) is 10. Similarly, between a(11) and a(10) is 10. So for n >=9, the recurrence is a(n) = a(n-1)+10. But then why is a(9) 101? Because a(8) is 90, and a(9) = a(8)+10 +1. So there's an extra +1 at n=9. This suggests that the recurrence for n=9 is different from others. But how to model that in a recursive function.")
+var, rhs: ('a', "a(n-1)+10. This would require defining base cases for n=0 to n=9. Let's check:")
+var, rhs: ('a', 'a(n-1)+10.')
+var, rhs: ('a', 'a(n-1)+10. However, this requires defining 10 base cases, which is not typical in the examples provided by the user. But given the terms, this seems to be the only way to capture the anomaly at n=9.')
+var, rhs: ('a', '10*(n+1) + (n-8)*(n-9)/2. But this seems arbitrary and not helpful.')
+var, rhs: ('a', '10*(n+1) + (if n >=9 then 1 else 0). But again, this is a closed-form formula.')
+var, rhs: ('a', 'a(n-1) + 10 + (if n ==9 then 1 else 0). This would require knowing n in the recursive function, which is possible with base cases. For example:')
+var, rhs: ('a', '10 if n=0,')
+var, rhs: ('a', '20 if n=1,')
+var, rhs: ('a', '90 if n=8,')
+var, rhs: ('a', '101 if n=9,')
+var, rhs: ('a', 'a(n-1) + 10 for n >=10.')
+var, rhs: ('a', '101 + 10*(n-9). For example, n=9: 101 + 10*(0) = 101. n=10: 101 +10*(1)=111, etc. This is equivalent to a(n) = 10*(n+1) +1 for n >=9.')
+var, rhs: ('a', '10*(n+1) + (n-8)*(n-9)/2. But this seems arbitrary.')
+var, rhs: ('a', 'a(n-1) + 10 + (if n ==9 then 1 else 0). But this requires knowing n in the function, which is possible with base cases.')
+var, rhs: ('a', 'a(n-1) +10.')
+var, rhs: ('a', "10*(n+1). For n=9 onwards, a(n) = 10*(n+1) +1. This suggests that there's a one-time addition of 1 at n=9. This could be modeled as a(n) = 10*(n+1) + (n >=9 ? 1 : 0). But again, this is a closed-form formula.")
+var, rhs: ('a', "a(n-1) +10, except for n=9, where it's +11. But this is the same as before.")
+var, rhs: ('a', "a(n-1) +10. However, since the user might expect a more concise answer, perhaps there's a different approach.")
+var, rhs: ('a', "10*(n+1) + (n-8)*(n-9)/2. Let's check for n=9: (9-8)*(9-9)/2 = 1*0/2=0. So a(9)=10*(10)+0=100, which is incorrect. So this doesn't work.")
+var, rhs: ('a', 'a(n-1) + 10 + delta, where delta is 1 for n=9 and 0 otherwise. But this is the same as before.')
+var, rhs: ('a', '10 if n=0,')
+var, rhs: ('a', '20 if n=1,')
+var, rhs: ('a', '90 if n=8,')
+var, rhs: ('a', '101 if n=9,')
+var, rhs: ('a', 'a(n-1) + 10 for n >=10.')
+var, rhs: ('a', '10(n + 1)')
+var, rhs: ('a', '10(n + 1) + 1')
+var, rhs: ('a', 'a(n - 1) + 10')
+latex_matches[-2:] = [('a', '10*(n + 1) + 1'), ('a', 'latex_seq(n - 1) + 10')]
+('a', "latex_seq(n-1) +10. But then term 9* is 101. If we apply the same formula, latex_seq(9) *would be 90 +10=100, but it's 101. So there's a deviation here. Similarly, term 9* is 101, which is 100 +1. Then term 10* is 111, which is 101 +10. So maybe after term 8, there's a change. But how to capture that in a recursive formula?")
+('a', '1-')
+('a', "10*(n+1) + (if n >=9* then* 1* else 0). But that's not a recursive formula. The user wants a recursive formula, which depends on previous terms")
+('a', '1-')
+('a', "latex_seq(n-1) + 10, except when n is 9, then add 11. But that's not a general recursive formula. It's more of a piecewise function based on n's value, which isn't typical for recursive sequences")
+('a', '10*(n+1) + (1* if n >=9* else 0). But again, this is a closed-form formula, not a recursive one')
+('a', 'latex_seq(n-1) + 10, except when n ==9, then +11')
+('a', "latex_seq(n-1) + 10 + (if n==9* then* 1* else 0). But that's not a clean recursive formula. Alternatively, maybe there's a pattern where after a certain point, the increment changes once, then continues. But how?")
+('a', "latex_seq(n-1) + 10 + (if n ==9* then* 1* else 0). But that's not a standard recursive formula. The user's examples have linear recursions, like Fibonacci or latex_seq(n) = 2*latex_seq(n-1) +1. So perhaps there's a linear recurrence here")
+('a', "latex_seq(n-1) +10. But then why is latex_seq(9) *101* instead of 100? Because latex_seq(8) *is 90, so latex_seq(9) *should be 90+10=100. But it's 101. So there's an anomaly at n=9. How to model that?")
+('a', "latex_seq(n-1) + 10 + (if n ==9* then* 1* else 0). But again, that's not a standard recursive formula. However, the user's examples include conditions in the base cases. For example, in Example 3, the function checks if n==0* and returns 1, else returns 2*... So maybe here, the base cases up to n=9* can be defined, and then for n>9, the recurrence is latex_seq(n) = latex_seq(n-1) +10. But why is latex_seq(9) *101?")
+('a', "latex_seq(n-1)+10), then latex_seq(9) *would be 90+10=100. But it's 101. So there's a +1* at this point. How to model that?")
+('a', "latex_seq(n-1) +10. But then the base cases would need to include up to n=9. Let's check:")
+('a', 'latex_seq(n-1) +10')
+('a', '1-')
+('a', "latex_seq(n-1) +10* except for n=9, where it's +11")
+('a', '10*(n+1) + (if n >=9* then* 1* else 0). But again, this is a closed-form formula')
+('a', '10*(n+1) + (n-8)*(n-9)/2. But that seems arbitrary')
+('a', '10*(n+1) +1. For example, n=9: 10*(9+1)+1=101. n=10: 10*(10+1)+1=111. And so on. So the general formula is:')
+('a', '10*(n+1) *if n <=8')
+('a', '10*(n+1) +1* if n >=9')
+('a', 'latex_seq(n-1) +10 + (if n==9* then* 1* else 0). But again, this is not a standard recursive formula')
+('a', 'latex_seq(n-1) + 10 + (if n ==9* then* 1* else 0). But this would require knowing n in the recursive function, which is possible with base cases')
+('a', 'latex_seq(n-1)+10')
+('a', '10*(n+1)+1. But how to express this recursively')
+('a', "latex_seq(n-1) + 10. Because 10*(n+1)+1 = 10*(n) +1 +10 = latex_seq(n-1) +10. So for n >=9, the recurrence is latex_seq(n) = latex_seq(n-1)+10. But then why is latex_seq(9) *101* instead of 100? Because latex_seq(8) *is 90, so latex_seq(9) *should be 90+10=100. But it's 101. So there's a discrepancy here. This suggests that the recurrence for n >=9* is latex_seq(n) = latex_seq(n-1)+10 +1 *(only for n=9). But that's not a general recurrence")
+('a', "10*(n+1)+1, then for n=9, it's 10*(9+1)+1=101. For n=10, 10*(10+1)+1=111. The difference between latex_seq(10) *and latex_seq(9) *is 10. Similarly, between latex_seq(11) *and latex_seq(10) *is 10. So for n >=9, the recurrence is latex_seq(n) = latex_seq(n-1)+10. But then why is latex_seq(9) *101? Because latex_seq(8) *is 90, and latex_seq(9) = latex_seq(8)+10 +1. So there's an extra +1* at n=9. This suggests that the recurrence for n=9* is different from others. But how to model that in a recursive function")
+('a', "latex_seq(n-1)+10. This would require defining base cases for n=0* to n=9. Let's check:")
+('a', 'latex_seq(n-1)+10')
+('a', 'latex_seq(n-1)+10. However, this requires defining 10* base cases, which is not typical in the examples provided by the user. But given the terms, this seems to be the only way to capture the anomaly at n=9')
+('a', '10*(n+1) + (n-8)*(n-9)/2. But this seems arbitrary and not helpful')
+('a', '10*(n+1) + (if n >=9* then* 1* else 0). But again, this is a closed-form formula')
+('a', 'latex_seq(n-1) + 10 + (if n ==9* then* 1* else 0). This would require knowing n in the recursive function, which is possible with base cases. For example:')
+('a', '10* if n=0')
+('a', '20* if n=1')
+('a', '90* if n=8')
+('a', '101* if n=9')
+('a', 'latex_seq(n-1) + 10* for n >=10')
+('a', '101 + 10*(n-9). For example, n=9: 101 + 10*(0) = 101. n=10: 101 +10*(1)=111, etc. This is equivalent to latex_seq(n) = 10*(n+1) +1* for n >=9')
+('a', '10*(n+1) + (n-8)*(n-9)/2. But this seems arbitrary')
+('a', 'latex_seq(n-1) + 10 + (if n ==9* then* 1* else 0). But this requires knowing n in the function, which is possible with base cases')
+('a', 'latex_seq(n-1) +10')
+('a', "10*(n+1). For n=9* onwards, latex_seq(n) = 10*(n+1) +1. This suggests that there's a one-time addition of 1* at n=9. This could be modeled as latex_seq(n) = 10*(n+1) + (n >=9 ? 1 : 0). But again, this is a closed-form formula")
+('a', "latex_seq(n-1) +10, except for n=9, where it's +11. But this is the same as before")
+('a', "latex_seq(n-1) +10. However, since the user might expect a more concise answer, perhaps there's a different approach")
+('a', "10*(n+1) + (n-8)*(n-9)/2. Let's check for n=9: (9-8)*(9-9)/2 = 1*0/2=0. So latex_seq(9)=10*(10)+0=100, which is incorrect. So this doesn't work")
+('a', '1-')
+('a', '10* if n=0')
+('a', '20* if n=1')
+('a', '90* if n=8')
+('a', '101* if n=9')
+('a', 'latex_seq(n-1) + 10* for n >=10')
+('a', '10*(n + 1)')
+('a', '10*(n + 1) + 1')
+('a', 'latex_seq(n - 1) + 10')
+len(latex_matches) = 55
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 201, 211, 221, 231, 241, 251]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n - 1) + 10 
+
+
+
+-- decoding response finished
+Ground truth: A028440 ,10,20,30,40,50,60,70,80,90,101,111,121,131,141,151,161,171,181,191,201,211,221,231,241,251,261,271,281,291,301,311,321,331,341,351,361,371,381,391,401,411,421,431,441,451,461,471,481,491,501,511,521,531,
+[dasco sequence loaded.]
+ground_truth = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 201, 211, 221, 231, 241, 251, 261, 271, 281, 291, 301, 311, 321, 331, 341, 351, 361, 371, 381, 391, 401, 411, 421, 431, 441, 451, 461, 471, 481, 491, 501, 511, 521, 531]
+len(ground_truth) = 53
+
+cores = False
+task_id = 3467
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 201, 211, 221, 231, 241, 251, 261, 271, 281, 291, 301, 311, 321, 331, 341, 351]
+len(seq_pred) = 35
+
+is_Dasco True
+

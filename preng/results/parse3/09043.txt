@@ -1,0 +1,254 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+9043
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+09043-7963.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 4, 8, 13, 20, 28, 37, 47, 59, 72, 86, 101, 117, 135, 154, 174, 195, 217, 240, 264, 290, 317, 345, 374, 404'
+question[-200:] = 'give me a recursive equation in a form of a Python code for the following number sequence: 1, 4, 8, 13, 20, 28, 37, 47, 59, 72, 86, 101, 117, 135, 154, 174, 195, 217, 240, 264, 290, 317, 345, 374, 404'
+inits = [1, 4, 8, 13, 20, 28, 37, 47, 59, 72, 86, 101, 117, 135, 154, 174, 195, 217, 240, 264, 290, 317, 345, 374, 404]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+65
+('a', " x*a(n-1) + y*a(n-2). Let's take some terms and set up equations.")
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3).')
+('a', " 0*a(n-1) +4*a(n-2) -3*a(n-3). Let's test this for n=4. a(4) should be 0*13 +4*8 -3*4 = 32 -12=20. Correct. For n=5: 0*20 +4*13 -3*8 = 52-24=28. Correct. For n=6: 0*28 +4*20 -3*13 = 80-39=41. But the actual a(6) is 37. So this doesn't hold. So the third-order assumption is invalid here. So maybe the recurrence isn't linear of order 3.")
+('a', ' a(n-1) + floor((n+2)/3) + something? Not sure.')
+('a', ' a(n-1) + a(n-k) + ... or something else.')
+('a', ' a(n-1) + something related to n. For example:')
+('d', ' a(n) - a(n-1). Given that d(1)=3, d(2)=4, d(3)=5, d(4)=7, d(5)=8, d(6)=9, d(7)=11, etc. Assuming the second differences are 1,1,2,1,1,2,...')
+('d', " an + b + c_n, where c_n is periodic with period 3. Let's try to find a, b, and c_n.")
+('d', "3 + 4k. Let's check:")
+('d', "4 + 4k. Let's check:")
+('d', "5 + 4(k-1). Let's check:")
+('d', ' 3 + 4q')
+('d', ' 4 + 4q')
+('d', ' 5 + 4q')
+('d', ' 3 + 4q + r, where q = floor((n-1)/3), r = (n-1) mod 3.')
+('d', ' 3 + 4*floor((n-1)/3) + ((n-1) mod 3).')
+('a', ' a(0) + sum_{k=1}^n d(k).')
+('S', ' sum_{k=1}^n d(k).')
+('S', ' 6q(q + 1) + [if r=1: 3 + 4q; if r=2: (3 + 4q) + (4 + 4q) = 7 + 8q; if r=0: 0]')
+('a', ' 1 + S(n), since a(0)=1 and S(n) is the sum from k=1 to n of d(k).')
+('a', ' 1 + 6q² + 6q')
+('a', ' 1 + 6q² + 10q + 3 = 6q² + 10q + 4')
+('a', ' 1 + 6q² + 14q + 7 = 6q² + 14q + 8')
+('a', ' 1 + 6*(n/3)^2 + 6*(n/3) = 1 + 6*(n²/9) + 6*(n/3) = 1 + (2n²)/3 + 2n')
+('a', ' 1 + 6q² + (6 + 4r)q + (0 if r=0, 3 if r=1, 7 if r=2)')
+('a', ' 1 + 6q² + 6q = 1 + 6*(n²/9) + 6*(n/3) = 1 + (2n²)/3 + 2n = (2n² + 6n)/3 + 1 = (2n(n + 3))/3 + 1')
+('a', ' An² + Bn + C + D*ω(n), where ω(n) is a periodic function with period 3 (like 0,1,2,...).')
+('a', ' 1 + 6q² + 6q')
+('a', ' 6q² + 10q + 4')
+('a', ' 6q² + 14q + 8')
+('a', ' 1 + 6q² + 6q')
+('a', ' 1 + 6q² + 10q + 3 (since earlier for r=1, the sum S(n) was 6q² + 10q + 3, and a(n) = 1 + S(n))')
+('S', ' 6q² + 10q + 3, so a(n) = 1 + 6q² + 10q + 3 = 6q² + 10q + 4.')
+('a', ' 6q² + 14q + 8.')
+('a', ' 1 + 6q² + 6q = 1 + 6q(q + 1)')
+('a', ' 1 + 6*(n/3)*(n/3 + 1) = 1 + 6*(n/3)*( (n + 3)/3 ) = 1 + 6*(n(n + 3))/9 = 1 + (2n(n + 3))/3')
+('a', ' 6q² + 10q + 4')
+('a', ' 6*((n - 1)/3)^2 + 10*((n - 1)/3) + 4')
+('a', ' 6q² + 14q + 8')
+('a', ' 6*((n - 2)/3)^2 + 14*((n - 2)/3) + 8')
+('a', ' 6q² + 14q + 8, with q = (n - 2)/3.')
+('a', " 2(n + 1)(n + 2)/3, which expands to 2(n² + 3n + 2)/3 = (2n² + 6n + 4)/3. And case 3 also gives the same expression. But this seems contradictory because for n=2 (r=2, q=0), a(2)=8. Let's check with the formula:")
+('a', ' 1 + (2n(n + 3))/3')
+('a', ' (2n² + 6n + 4)/3')
+('a', ' ⌊(2n² + 6n + 4)/3⌋ + correction term.')
+('a', ' 1 + (2n(n + 3))/3')
+('a', ' floor[(2n² + 6n + 4)/3] + δ(n), where δ(n) is 1 if n ≡0 mod 3, else 0.')
+('a', ' floor[(2n² +6n +4)/3] + 0? No, because floor[(2n² +6n +4)/3] would be equal to (2n² +6n)/3 +1, which is the case 1 formula. Whereas for other cases, (2n² +6n +4)/3 is already an integer. Therefore, we can write:')
+('a', ' floor[(2n² + 6n + 4)/3] if n ≡0 mod 3, but this seems not helpful.')
+('a', ' (2n² + 6n + 4)/3 + [1 - (n mod 3)]/3 when n ≡0 mod 3, but this seems convoluted.')
+('a', ' ⌊(2n² + 6n + 4)/3⌋')
+('a', ' \\frac{2n^2 + 6n + 4 - (n \\bmod 3)}{3}')
+('a', ' \\frac{2n^2 + 6n + 4 - \\delta}{3}, where δ is 1 if n ≡0 mod 3, else 0.')
+('a', ' \\left\\lfloor \\dfrac{2n^2 + 6n + 4}{3} \\right\\rfloor')
+('a', ' \\dfrac{2n^2 + 6n + 4 - (n \\bmod 3)}{3}')
+('a', ' (2n² +6n +3)/3')
+('a', ' (2n² +6n +4)/3')
+('a', ' \\left\\lfloor \\dfrac{2n^2 + 6n + 4}{3} \\right\\rfloor')
+('a', ' a(n-1) + 2n')
+('a', ' a(n-1) + 2n')
+('a', ' a(1) + \\sum_{k=2}^{n} 2k')
+('a', ' 4 + 2 \\sum_{k=2}^{n} k')
+('a', ' 4 + 2\\left( \\frac{n(n+1)}{2} - 1 \\right) = 4 + n(n+1) - 2 = n(n+1) + 2')
+('a', ' n(n+1) + 2 ')
+('a', ' n(n+1) + 2}')
+var, rhs: ('a', "x*a(n-1) + y*a(n-2). Let's take some terms and set up equations.")
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3).')
+var, rhs: ('a', "0*a(n-1) +4*a(n-2) -3*a(n-3). Let's test this for n=4. a(4) should be 0*13 +4*8 -3*4 = 32 -12=20. Correct. For n=5: 0*20 +4*13 -3*8 = 52-24=28. Correct. For n=6: 0*28 +4*20 -3*13 = 80-39=41. But the actual a(6) is 37. So this doesn't hold. So the third-order assumption is invalid here. So maybe the recurrence isn't linear of order 3.")
+var, rhs: ('a', 'a(n-1) + floor((n+2)/3) + something? Not sure.')
+var, rhs: ('a', 'a(n-1) + a(n-k) + ... or something else.')
+var, rhs: ('a', 'a(n-1) + something related to n. For example:')
+var, rhs: ('d', 'a(n) - a(n-1). Given that d(1)=3, d(2)=4, d(3)=5, d(4)=7, d(5)=8, d(6)=9, d(7)=11, etc. Assuming the second differences are 1,1,2,1,1,2,...')
+var, rhs: ('d', "an + b + c_n, where c_n is periodic with period 3. Let's try to find a, b, and c_n.")
+var, rhs: ('d', "3 + 4k. Let's check:")
+var, rhs: ('d', "4 + 4k. Let's check:")
+var, rhs: ('d', "5 + 4(k-1). Let's check:")
+var, rhs: ('d', '3 + 4q')
+var, rhs: ('d', '4 + 4q')
+var, rhs: ('d', '5 + 4q')
+var, rhs: ('d', '3 + 4q + r, where q = floor((n-1)/3), r = (n-1) mod 3.')
+var, rhs: ('d', '3 + 4*floor((n-1)/3) + ((n-1) mod 3).')
+var, rhs: ('a', 'a(0) + sum_{k=1}^n d(k).')
+var, rhs: ('S', 'sum_{k=1}^n d(k).')
+var, rhs: ('S', '6q(q + 1) + [if r=1: 3 + 4q; if r=2: (3 + 4q) + (4 + 4q) = 7 + 8q; if r=0: 0]')
+var, rhs: ('a', '1 + S(n), since a(0)=1 and S(n) is the sum from k=1 to n of d(k).')
+var, rhs: ('a', '1 + 6q² + 6q')
+var, rhs: ('a', '1 + 6q² + 10q + 3 = 6q² + 10q + 4')
+var, rhs: ('a', '1 + 6q² + 14q + 7 = 6q² + 14q + 8')
+var, rhs: ('a', '1 + 6*(n/3)^2 + 6*(n/3) = 1 + 6*(n²/9) + 6*(n/3) = 1 + (2n²)/3 + 2n')
+var, rhs: ('a', '1 + 6q² + (6 + 4r)q + (0 if r=0, 3 if r=1, 7 if r=2)')
+var, rhs: ('a', '1 + 6q² + 6q = 1 + 6*(n²/9) + 6*(n/3) = 1 + (2n²)/3 + 2n = (2n² + 6n)/3 + 1 = (2n(n + 3))/3 + 1')
+var, rhs: ('a', 'An² + Bn + C + D*ω(n), where ω(n) is a periodic function with period 3 (like 0,1,2,...).')
+var, rhs: ('a', '1 + 6q² + 6q')
+var, rhs: ('a', '6q² + 10q + 4')
+var, rhs: ('a', '6q² + 14q + 8')
+var, rhs: ('a', '1 + 6q² + 6q')
+var, rhs: ('a', '1 + 6q² + 10q + 3 (since earlier for r=1, the sum S(n) was 6q² + 10q + 3, and a(n) = 1 + S(n))')
+var, rhs: ('S', '6q² + 10q + 3, so a(n) = 1 + 6q² + 10q + 3 = 6q² + 10q + 4.')
+var, rhs: ('a', '6q² + 14q + 8.')
+var, rhs: ('a', '1 + 6q² + 6q = 1 + 6q(q + 1)')
+var, rhs: ('a', '1 + 6*(n/3)*(n/3 + 1) = 1 + 6*(n/3)*( (n + 3)/3 ) = 1 + 6*(n(n + 3))/9 = 1 + (2n(n + 3))/3')
+var, rhs: ('a', '6q² + 10q + 4')
+var, rhs: ('a', '6*((n - 1)/3)^2 + 10*((n - 1)/3) + 4')
+var, rhs: ('a', '6q² + 14q + 8')
+var, rhs: ('a', '6*((n - 2)/3)^2 + 14*((n - 2)/3) + 8')
+var, rhs: ('a', '6q² + 14q + 8, with q = (n - 2)/3.')
+var, rhs: ('a', "2(n + 1)(n + 2)/3, which expands to 2(n² + 3n + 2)/3 = (2n² + 6n + 4)/3. And case 3 also gives the same expression. But this seems contradictory because for n=2 (r=2, q=0), a(2)=8. Let's check with the formula:")
+var, rhs: ('a', '1 + (2n(n + 3))/3')
+var, rhs: ('a', '(2n² + 6n + 4)/3')
+var, rhs: ('a', '⌊(2n² + 6n + 4)/3⌋ + correction term.')
+var, rhs: ('a', '1 + (2n(n + 3))/3')
+var, rhs: ('a', 'floor[(2n² + 6n + 4)/3] + δ(n), where δ(n) is 1 if n ≡0 mod 3, else 0.')
+var, rhs: ('a', 'floor[(2n² +6n +4)/3] + 0? No, because floor[(2n² +6n +4)/3] would be equal to (2n² +6n)/3 +1, which is the case 1 formula. Whereas for other cases, (2n² +6n +4)/3 is already an integer. Therefore, we can write:')
+var, rhs: ('a', 'floor[(2n² + 6n + 4)/3] if n ≡0 mod 3, but this seems not helpful.')
+var, rhs: ('a', '(2n² + 6n + 4)/3 + [1 - (n mod 3)]/3 when n ≡0 mod 3, but this seems convoluted.')
+var, rhs: ('a', '⌊(2n² + 6n + 4)/3⌋')
+var, rhs: ('a', '\\frac{2n^2 + 6n + 4 - (n \\bmod 3)}{3}')
+var, rhs: ('a', '\\frac{2n^2 + 6n + 4 - \\delta}{3}, where δ is 1 if n ≡0 mod 3, else 0.')
+var, rhs: ('a', '\\left\\lfloor \\dfrac{2n^2 + 6n + 4}{3} \\right\\rfloor')
+var, rhs: ('a', '\\dfrac{2n^2 + 6n + 4 - (n \\bmod 3)}{3}')
+var, rhs: ('a', '(2n² +6n +3)/3')
+var, rhs: ('a', '(2n² +6n +4)/3')
+var, rhs: ('a', '\\left\\lfloor \\dfrac{2n^2 + 6n + 4}{3} \\right\\rfloor')
+var, rhs: ('a', 'a(n-1) + 2n')
+var, rhs: ('a', 'a(n-1) + 2n')
+var, rhs: ('a', 'a(1) + \\sum_{k=2}^{n} 2k')
+var, rhs: ('a', '4 + 2 \\sum_{k=2}^{n} k')
+var, rhs: ('a', '4 + 2\\left( \\frac{n(n+1)}{2} - 1 \\right) = 4 + n(n+1) - 2 = n(n+1) + 2')
+var, rhs: ('a', 'n(n+1) + 2')
+var, rhs: ('a', 'n(n+1) + 2}')
+latex_matches[-2:] = [('a', 'n*(n+1) + 2'), ('a', 'n*(n+1) + 2}')]
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2). Let's take some terms and set up equations")
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3)')
+('a', "0*latex_seq(n-1) +4*latex_seq(n-2) -3*latex_seq(n-3). Let's test this for n=4. latex_seq(4) *should be 0*13 +4*8 -3*4 = 32 -12=20. Correct. For n=5: 0*20 +4*13 -3*8 = 52-24=28. Correct. For n=6: 0*28 +4*20 -3*13 = 80-39=41. But the actual latex_seq(6) *is 37. So this doesn't hold. So the third-order assumption is invalid here. So maybe the recurrence isn't linear of order 3")
+('a', '1-')
+('a', '1-')
+('a', '1-')
+('d', 'a(n) - a(n-1). Given that latex_seq(1)=3, latex_seq(2)=4, latex_seq(3)=5, latex_seq(4)=7, latex_seq(5)=8, latex_seq(6)=9, latex_seq(7)=11, etc. Assuming the second differences are 1,1,2,1,1,2')
+('d', "an + b + c_n, where c_n is periodic with period 3. Let's try to find a, b, and c_n")
+('d', "3 + 4*k. Let's check:")
+('d', "4 + 4*k. Let's check:")
+('d', "5 + 4*(k-1). Let's check:")
+('d', '3 + 4*q')
+('d', '4 + 4*q')
+('d', '5 + 4*q')
+('d', '3 + 4*q + r, where q = math.floor((n-1)/3), r = (n-1) *mod 3')
+('d', '3 + 4*math.floor((n-1)/3) + ((n-1) *mod 3)')
+('a', 'latex_seq(0) + sum_{k=1}**n d(k)')
+('S', 'sum_{k=1}**n d(k)')
+('S', '6*q(q + 1) + (if r=1: 3 + 4*q; if r=2: (3 + 4*q) + (4 + 4*q) = 7 + 8*q; if r=0: 0)')
+('a', '1 + S(n), since latex_seq(0)=1* and S(n) *is the sum from k=1* to n of d(k)')
+('a', '1 + 6*q² + 6*q')
+('a', '1 + 6*q² + 10*q + 3 = 6*q² + 10*q + 4')
+('a', '1 + 6*q² + 14*q + 7 = 6*q² + 14*q + 8')
+('a', '1 + 6*(n/3)**2 + 6*(n/3) = 1 + 6*(n²/9) + 6*(n/3) = 1 + (2*n²)/3 + 2*n')
+('a', '1 + 6*q² + (6 + 4*r)*q + (0* if r=0, 3* if r=1, 7* if r=2)')
+('a', '1 + 6*q² + 6*q = 1 + 6*(n²/9) + 6*(n/3) = 1 + (2*n²)/3 + 2*n = (2*n² + 6*n)/3 + 1 = (2n*(n + 3))/3 + 1')
+('a', 'An² + Bn + C + D*ω(n), where ω(n) *is a periodic function with period 3 *(like 0,1,2,...)')
+('a', '1 + 6*q² + 6*q')
+('a', '6*q² + 10*q + 4')
+('a', '6*q² + 14*q + 8')
+('a', '1 + 6*q² + 6*q')
+('a', '1 + 6*q² + 10*q + 3 *(since earlier for r=1, the sum S(n) *was 6*q² + 10*q + 3, and latex_seq(n) = 1 + S(n))')
+('S', '6*q² + 10*q + 3, so a(n) = 1 + 6*q² + 10*q + 3 = 6*q² + 10*q + 4')
+('a', '6*q² + 14*q + 8')
+('a', '1 + 6*q² + 6*q = 1 + 6*q(q + 1)')
+('a', '1 + 6*(n/3)*(n/3 + 1) = 1 + 6*(n/3)*( (n + 3)/3 ) = 1 + 6*n*(n + 3))/9 = 1 + (2n*(n + 3))/3')
+('a', '6*q² + 10*q + 4')
+('a', '6*((n - 1)/3)**2 + 10*((n - 1)/3) + 4')
+('a', '6*q² + 14*q + 8')
+('a', '6*((n - 2)/3)**2 + 14*((n - 2)/3) + 8')
+('a', '6*q² + 14*q + 8, with q = (n - 2)/3')
+('a', "2*(n + 1)*(n + 2)/3, which expands to 2*(n² + 3*n + 2)/3 = (2*n² + 6*n + 4)/3. And case 3* also gives the same expression. But this seems contradictory because for n=2 *(r=2, q=0), latex_seq(2)=8. Let's check with the formula:")
+('a', '1 + (2n*(n + 3))/3')
+('a', '(2*n² + 6*n + 4)/3')
+('a', '⌊(2*n² + 6*n + 4)/3⌋ + correction term')
+('a', '1 + (2n*(n + 3))/3')
+('a', 'math.floor((2*n² + 6*n + 4)/3) + δ(n), where δ(n) *is 1* if n ≡0* mod 3, else 0')
+('a', 'math.floor((2*n² +6*n +4)/3) + 0? No, because math.floor((2*n² +6*n +4)/3) *would be equal to (2*n² +6*n)/3 +1, which is the case 1* formula. Whereas for other cases, (2*n² +6*n +4)/3* is already an integer. Therefore, we can write:')
+('a', 'math.floor((2*n² + 6*n + 4)/3) *if n ≡0* mod 3, but this seems not helpful')
+('a', '(2*n² + 6*n + 4)/3 + (1 - (n mod 3))/3* when n ≡0* mod 3, but this seems convoluted')
+('a', '⌊(2*n² + 6*n + 4)/3⌋')
+('a', '(2*n**2 + 6*n + 4 - (n \\bmod 3))/(3)')
+('a', '(2*n**2 + 6*n + 4 - \\delta)/(3), where δ is 1* if n ≡0* mod 3, else 0')
+('a', 'math.floor( \\dfrac{2*n**2 + 6*n + 4}{3} )')
+('a', '\\dfrac{2*n**2 + 6*n + 4 - (n \\bmod 3)}{3}')
+('a', '(2*n² +6*n +3)/3')
+('a', '(2*n² +6*n +4)/3')
+('a', 'math.floor( \\dfrac{2*n**2 + 6*n + 4}{3} )')
+('a', 'latex_seq(n-1) + 2*n')
+('a', 'latex_seq(n-1) + 2*n')
+('a', 'latex_seq(1) + \\sum_{k=2}**(n) *2*k')
+('a', '4 + 2 \\sum_{k=2}**(n) *k')
+('a', '4 + 2\\left( n*(n+1))/(2) - 1 \\right) = 4 + n*(n+1) - 2 = n*(n+1) + 2')
+('a', 'n*(n+1) + 2')
+('a', 'n*(n+1) + 2}')
+len(latex_matches) = 65
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 4, 8, 13, 20, 28, 37, 47, 59, 72, 86, 101, 117, 135, 154, 174, 195, 217, 240, 264, 290, 317, 345, 374, 404]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) + 2*n 
+
+
+
+-- decoding response finished
+Ground truth: A056738 ,1,4,8,13,20,28,37,47,59,72,86,101,117,135,154,174,195,217,240,264,290,317,345,374,404,435,467,500,535,571,608,646,685,725,766,808,851,896,942,989,1037,1086,1136,1187,1239,1292,1346,1402,1459,1517,1576,1636,
+[dasco sequence loaded.]
+ground_truth = [1, 4, 8, 13, 20, 28, 37, 47, 59, 72, 86, 101, 117, 135, 154, 174, 195, 217, 240, 264, 290, 317, 345, 374, 404, 435, 467, 500, 535, 571, 608, 646, 685, 725, 766, 808, 851, 896, 942, 989, 1037, 1086, 1136, 1187, 1239, 1292, 1346, 1402, 1459, 1517, 1576, 1636]
+len(ground_truth) = 52
+
+cores = False
+task_id = 9043
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [1, 4, 8, 13, 20, 28, 37, 47, 59, 72, 86, 101, 117, 135, 154, 174, 195, 217, 240, 264, 290, 317, 345, 374, 404, 454, 506, 560, 616, 674, 734, 796, 860, 926, 994]
+len(seq_pred) = 35
+
+is_Dasco False
+

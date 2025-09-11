@@ -1,0 +1,242 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+365
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+00365-8540.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 3, 9, 14, 19, 24, 30, 35, 40, 45, 51, 56, 61, 66, 71, 77, 82, 87, 92, 98, 103, 108, 113, 119, 124, 129'
+question[-200:] = 'ld you give me a recursive equation in a form of a Python code for the following number sequence: 3, 9, 14, 19, 24, 30, 35, 40, 45, 51, 56, 61, 66, 71, 77, 82, 87, 92, 98, 103, 108, 113, 119, 124, 129'
+inits = [3, 9, 14, 19, 24, 30, 35, 40, 45, 51, 56, 61, 66, 71, 77, 82, 87, 92, 98, 103, 108, 113, 119, 124, 129]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+61
+('a', " a(n-1) + 5 + (1 if (n-1) mod 5 == 0 else 0). Let's test this.")
+('a', " a(n-1) + 5 + (if (n) mod5 ==0 then 1 else 0). Let's test this:")
+('a', " 3 + 5n + floor((n)/5). Let's check:")
+('a', " 3 + 5n + floor((n+1)/5)? Let's check:")
+('a', ' 3 + 5n + floor(n/4)? No, that seems unlikely. ')
+('a', " 5n + 3 + floor((n)/5). Let's check:")
+('a', ' 5n + 3 + floor((n+1)/5). For n=0: 0+3 + floor(1/5)=3. Correct. n=1: 5+3 + floor(2/5)=8+0=8. Still no. ')
+('a', " 3 + 5n + floor((n)/5). Let's check:")
+('a', " 3 + 5n + floor((n+4)/5). Let's try:")
+('a', '3+5n + floor((n+4)/5), for n=5: 3+25 + floor(9/5)=28+1=29. But actual is 30. So discrepancy here. ')
+('a', ' 3 + 5n + floor((n+4)/5). For n=5, floor((5+4)/5)=floor(9/5)=1. So 3+25+1=29. But actual is 30. So missing 1. ')
+('a', " 3 + 5n + floor((n+4)/5). For n=0 to 4, it works. For n=5, it gives 29, but actual is 30. So perhaps there's an extra +1 for n≥5? That seems arbitrary. ")
+('a', ' 3 + 5n + floor((n+4)/5) + ... something. ')
+('a', " a(n-1) + 5 + (1 if (n-1) mod 5 == 4 else 0). Let's check:")
+('a', ' 5n + c + k, where k is some periodic function. Given that the sequence starts at 3, and for n=0, a(0)=3=5*0 +c +k(0). So c +k(0)=3. For n=1, a(1)=9=5*1 +c +k(1) → 5 +c +k(1)=9 → c +k(1)=4. For n=2, a(2)=14=10 +c +k(2) → c +k(2)=4. For n=3, a(3)=15 +c +k(3)=19 → c +k(3)=4. For n=4, 20 +c +k(4)=24 → c +k(4)=4. For n=5, 25 +c +k(5)=30 → c +k(5)=5. For n=6, 30 +c +k(6)=35 → c +k(6)=5. And so on. So it seems that c +k(n) is 3 for n=0, and 4 for n=1-4, 5 for n=5-9, etc. So c +k(n) = floor((n+4)/5) +3? Not sure. ')
+('k', ' floor((n+4)/5). For n=0: floor(4/5)=0 → c=3. For n=1: floor(5/5)=1 → c +1=4 → c=3. For n=5: floor(9/5)=1 → c +1=5 → c=4. But earlier c=3. Contradiction. ')
+('a', ' a(n-1) + 5 + (1 if (n-1) mod5 ==0 else 0). ')
+('a', ' a(n-1) + 5 + (1 if (n-1) mod5 ==0 else 0) for n ≥1.  ')
+('a', ' a(0) + 5*n + number_of_extra_1s ')
+('a', "3 +5*5 +1=3+25+1=29. But actual a(5)=30. So there's an error here. ")
+('a', 'a(0) +5*n + number_of_extra_1s. ')
+('a', " 3 +5*n + number_of_extra_1s. For n=5, this is 3+25+1=29, but actual is 30. So there's a missing 1. ")
+('a', ' a(n-1) +5 + (1 if (n-1) mod5 ==0 else 0). ')
+('a', ' a(0) +5n + number_of_extra_1s. ')
+('a', '3+5n + number_of_extra_1s is correct. For n=5, it gives 3+25+1=29, which matches. ')
+('a', ' 3 +5n + floor((n+4)/5). ')
+('a', ' 5n + floor((n+4)/5) +3. ')
+('a', '3+5n +q. ')
+('a', '3+5n + (n+4 -r)/5 =3 + (25n +n +4 -r)/5 =3 + (26n +4 -r)/5. ')
+('a', '3 +5n + floor((n+4)/5). ')
+('a', ' 3 + (5n + floor((n+4)/5)). ')
+('a', ' 3 +5n + floor((n+4)/5)  ')
+('a', ' 3 + floor((26n +4)/5). ')
+('a', ' 3 + 5n + floor((n + 4)/5). ')
+('a', ' 3 + 5n + floor((n - 1)/5) + 1 = 4 + 5n + floor((n - 1)/5). ')
+('a', ' 3 +5n + floor((n+4)/5)  ')
+('a', '3 +30k +0 +0=3 +30k  ')
+('a', '3 +30k +5r +1=4 +30k +5r  ')
+('a', '3 +30k=3 +6*5k=3 +6n. ')
+('a', '3 +6n. ')
+('a', '4 +30k +5r. ')
+('a', '4 +6(n -r) +5r=4 +6n -6r +5r=4 +6n -r. ')
+('a', '3 +6n  ')
+('a', '4 +6n -r ')
+('a', ' 6n + 3, if n ≡0 mod5  ')
+('a', ' 6n +4 -r, where r=n mod5, for r≠0. ')
+('a', '6n +4 - (n mod5), when n mod5 ≠0  ')
+('a', '6n +3, when n mod5=0. ')
+('a', '6n +3 + [if n mod5 ≠0 then 1 - (n mod5) else 0]. ')
+('a', '4 +6n -r. ')
+('a', '6n +4 -r. ')
+('a', ' 6n + 3 - ((n mod5) - 0 if n mod5=0 else (n mod5 -1)). ')
+('a', ' 3 + 5n + floor((n + 4)/5). ')
+('a', ' floor((26n +4)/5) +3. ')
+('a', ' \\left\\lfloor \\dfrac{26n + 4}{5} \\right\\rfloor + 3. ')
+('a', ' 3 + 5n + \\left\\lfloor \\dfrac{n + 4}{5} \\right\\rfloor. ')
+('a', ' \\left\\lfloor \\dfrac{26n + 4}{5} \\right\\rfloor + 3. ')
+('a', ' 3 + 5n + floor((n + 4)/5). ')
+('a', ' a(n-1) + 5 + \\begin{cases} 1 & \\text{if } (n-1) \\mod 5 = 4 \\\\ 0 & \\text{otherwise} \\end{cases}')
+('a', ' a(0) + 5n + \\left\\lfloor \\frac{n}{5} \\right\\rfloor')
+('a', ' 3 + 5n + \\left\\lfloor \\frac{n}{5} \\right\\rfloor')
+var, rhs: ('a', "a(n-1) + 5 + (1 if (n-1) mod 5 == 0 else 0). Let's test this.")
+var, rhs: ('a', "a(n-1) + 5 + (if (n) mod5 ==0 then 1 else 0). Let's test this:")
+var, rhs: ('a', "3 + 5n + floor((n)/5). Let's check:")
+var, rhs: ('a', "3 + 5n + floor((n+1)/5)? Let's check:")
+var, rhs: ('a', '3 + 5n + floor(n/4)? No, that seems unlikely.')
+var, rhs: ('a', "5n + 3 + floor((n)/5). Let's check:")
+var, rhs: ('a', '5n + 3 + floor((n+1)/5). For n=0: 0+3 + floor(1/5)=3. Correct. n=1: 5+3 + floor(2/5)=8+0=8. Still no.')
+var, rhs: ('a', "3 + 5n + floor((n)/5). Let's check:")
+var, rhs: ('a', "3 + 5n + floor((n+4)/5). Let's try:")
+var, rhs: ('a', '3+5n + floor((n+4)/5), for n=5: 3+25 + floor(9/5)=28+1=29. But actual is 30. So discrepancy here.')
+var, rhs: ('a', '3 + 5n + floor((n+4)/5). For n=5, floor((5+4)/5)=floor(9/5)=1. So 3+25+1=29. But actual is 30. So missing 1.')
+var, rhs: ('a', "3 + 5n + floor((n+4)/5). For n=0 to 4, it works. For n=5, it gives 29, but actual is 30. So perhaps there's an extra +1 for n≥5? That seems arbitrary.")
+var, rhs: ('a', '3 + 5n + floor((n+4)/5) + ... something.')
+var, rhs: ('a', "a(n-1) + 5 + (1 if (n-1) mod 5 == 4 else 0). Let's check:")
+var, rhs: ('a', '5n + c + k, where k is some periodic function. Given that the sequence starts at 3, and for n=0, a(0)=3=5*0 +c +k(0). So c +k(0)=3. For n=1, a(1)=9=5*1 +c +k(1) → 5 +c +k(1)=9 → c +k(1)=4. For n=2, a(2)=14=10 +c +k(2) → c +k(2)=4. For n=3, a(3)=15 +c +k(3)=19 → c +k(3)=4. For n=4, 20 +c +k(4)=24 → c +k(4)=4. For n=5, 25 +c +k(5)=30 → c +k(5)=5. For n=6, 30 +c +k(6)=35 → c +k(6)=5. And so on. So it seems that c +k(n) is 3 for n=0, and 4 for n=1-4, 5 for n=5-9, etc. So c +k(n) = floor((n+4)/5) +3? Not sure.')
+var, rhs: ('k', 'floor((n+4)/5). For n=0: floor(4/5)=0 → c=3. For n=1: floor(5/5)=1 → c +1=4 → c=3. For n=5: floor(9/5)=1 → c +1=5 → c=4. But earlier c=3. Contradiction.')
+var, rhs: ('a', 'a(n-1) + 5 + (1 if (n-1) mod5 ==0 else 0).')
+var, rhs: ('a', 'a(n-1) + 5 + (1 if (n-1) mod5 ==0 else 0) for n ≥1.')
+var, rhs: ('a', 'a(0) + 5*n + number_of_extra_1s')
+var, rhs: ('a', "3 +5*5 +1=3+25+1=29. But actual a(5)=30. So there's an error here.")
+var, rhs: ('a', 'a(0) +5*n + number_of_extra_1s.')
+var, rhs: ('a', "3 +5*n + number_of_extra_1s. For n=5, this is 3+25+1=29, but actual is 30. So there's a missing 1.")
+var, rhs: ('a', 'a(n-1) +5 + (1 if (n-1) mod5 ==0 else 0).')
+var, rhs: ('a', 'a(0) +5n + number_of_extra_1s.')
+var, rhs: ('a', '3+5n + number_of_extra_1s is correct. For n=5, it gives 3+25+1=29, which matches.')
+var, rhs: ('a', '3 +5n + floor((n+4)/5).')
+var, rhs: ('a', '5n + floor((n+4)/5) +3.')
+var, rhs: ('a', '3+5n +q.')
+var, rhs: ('a', '3+5n + (n+4 -r)/5 =3 + (25n +n +4 -r)/5 =3 + (26n +4 -r)/5.')
+var, rhs: ('a', '3 +5n + floor((n+4)/5).')
+var, rhs: ('a', '3 + (5n + floor((n+4)/5)).')
+var, rhs: ('a', '3 +5n + floor((n+4)/5)')
+var, rhs: ('a', '3 + floor((26n +4)/5).')
+var, rhs: ('a', '3 + 5n + floor((n + 4)/5).')
+var, rhs: ('a', '3 + 5n + floor((n - 1)/5) + 1 = 4 + 5n + floor((n - 1)/5).')
+var, rhs: ('a', '3 +5n + floor((n+4)/5)')
+var, rhs: ('a', '3 +30k +0 +0=3 +30k')
+var, rhs: ('a', '3 +30k +5r +1=4 +30k +5r')
+var, rhs: ('a', '3 +30k=3 +6*5k=3 +6n.')
+var, rhs: ('a', '3 +6n.')
+var, rhs: ('a', '4 +30k +5r.')
+var, rhs: ('a', '4 +6(n -r) +5r=4 +6n -6r +5r=4 +6n -r.')
+var, rhs: ('a', '3 +6n')
+var, rhs: ('a', '4 +6n -r')
+var, rhs: ('a', '6n + 3, if n ≡0 mod5')
+var, rhs: ('a', '6n +4 -r, where r=n mod5, for r≠0.')
+var, rhs: ('a', '6n +4 - (n mod5), when n mod5 ≠0')
+var, rhs: ('a', '6n +3, when n mod5=0.')
+var, rhs: ('a', '6n +3 + [if n mod5 ≠0 then 1 - (n mod5) else 0].')
+var, rhs: ('a', '4 +6n -r.')
+var, rhs: ('a', '6n +4 -r.')
+var, rhs: ('a', '6n + 3 - ((n mod5) - 0 if n mod5=0 else (n mod5 -1)).')
+var, rhs: ('a', '3 + 5n + floor((n + 4)/5).')
+var, rhs: ('a', 'floor((26n +4)/5) +3.')
+var, rhs: ('a', '\\left\\lfloor \\dfrac{26n + 4}{5} \\right\\rfloor + 3.')
+var, rhs: ('a', '3 + 5n + \\left\\lfloor \\dfrac{n + 4}{5} \\right\\rfloor.')
+var, rhs: ('a', '\\left\\lfloor \\dfrac{26n + 4}{5} \\right\\rfloor + 3.')
+var, rhs: ('a', '3 + 5n + floor((n + 4)/5).')
+var, rhs: ('a', 'a(n-1) + 5 + \\begin{cases} 1 & \\text{if } (n-1) \\mod 5 = 4 \\\\ 0 & \\text{otherwise} \\end{cases}')
+var, rhs: ('a', 'a(0) + 5n + \\left\\lfloor \\frac{n}{5} \\right\\rfloor')
+var, rhs: ('a', '3 + 5n + \\left\\lfloor \\frac{n}{5} \\right\\rfloor')
+latex_matches[-2:] = [('a', 'latex_seq(0) + 5*n + math.floor( (n)/(5) )'), ('a', '3 + 5*n + math.floor( (n)/(5) )')]
+('a', "latex_seq(n-1) + 5 + (1* if (n-1) *mod 5 == 0* else 0). Let's test this")
+('a', "latex_seq(n-1) + 5 + (if (n) *mod5 ==0* then* 1* else 0). Let's test this:")
+('a', "3 + 5*n + math.floor((n)/5). Let's check:")
+('a', "3 + 5*n + math.floor((n+1)/5)? Let's check:")
+('a', '3 + 5*n + math.floor(n/4)? No, that seems unlikely')
+('a', "5*n + 3 + math.floor((n)/5). Let's check:")
+('a', '5*n + 3 + math.floor((n+1)/5). For n=0: 0+3 + math.floor(1/5)=3. Correct. n=1: 5+3 + math.floor(2/5)=8+0=8. Still no')
+('a', "3 + 5*n + math.floor((n)/5). Let's check:")
+('a', "3 + 5*n + math.floor((n+4)/5). Let's try:")
+('a', '3+5*n + math.floor((n+4)/5), for n=5: 3+25 + math.floor(9/5)=28+1=29. But actual is 30. So discrepancy here')
+('a', '3 + 5*n + math.floor((n+4)/5). For n=5, math.floor((5+4)/5)=math.floor(9/5)=1. So 3+25+1=29. But actual is 30. So missing 1')
+('a', "3 + 5*n + math.floor((n+4)/5). For n=0* to 4, it works. For n=5, it gives 29, but actual is 30. So perhaps there's an extra +1* for n≥5? That seems arbitrary")
+('a', '1-')
+('a', "latex_seq(n-1) + 5 + (1* if (n-1) *mod 5 == 4* else 0). Let's check:")
+('a', '5*n + c + k, where k is some periodic function. Given that the sequence starts at 3, and for n=0, latex_seq(0)=3=5*0 +c +k(0). So c +k(0)=3. For n=1, latex_seq(1)=9=5*1 +c +k(1) → 5 +c +k(1)=9 → c +k(1)=4. For n=2, latex_seq(2)=14=10 +c +k(2) → c +k(2)=4. For n=3, latex_seq(3)=15 +c +k(3)=19 → c +k(3)=4. For n=4, 20 +c +k(4)=24 → c +k(4)=4. For n=5, 25 +c +k(5)=30 → c +k(5)=5. For n=6, 30 +c +k(6)=35 → c +k(6)=5. And so on. So it seems that c +k(n) *is 3* for n=0, and 4* for n=1-4, 5* for n=5-9, etc. So c +k(n) = math.floor((n+4)/5) +3? Not sure')
+('k', 'math.floor((n+4)/5). For n=0: math.floor(4/5)=0 → c=3. For n=1: math.floor(5/5)=1 → c +1=4 → c=3. For n=5: math.floor(9/5)=1 → c +1=5 → c=4. But earlier c=3. Contradiction')
+('a', 'latex_seq(n-1) + 5 + (1* if (n-1) *mod5 ==0* else 0)')
+('a', 'latex_seq(n-1) + 5 + (1* if (n-1) *mod5 ==0* else 0) *for n ≥1')
+('a', 'latex_seq(0) + 5*n + number_of_extra_1*s')
+('a', "3 +5*5 +1=3+25+1=29. But actual latex_seq(5)=30. So there's an error here")
+('a', 'latex_seq(0) +5*n + number_of_extra_1*s')
+('a', "3 +5*n + number_of_extra_1*s. For n=5, this is 3+25+1=29, but actual is 30. So there's a missing 1")
+('a', 'latex_seq(n-1) +5 + (1* if (n-1) *mod5 ==0* else 0)')
+('a', 'latex_seq(0) +5*n + number_of_extra_1*s')
+('a', '3+5*n + number_of_extra_1*s is correct. For n=5, it gives 3+25+1=29, which matches')
+('a', '3 +5*n + math.floor((n+4)/5)')
+('a', '5*n + math.floor((n+4)/5) +3')
+('a', '3+5*n +q')
+('a', '3+5*n + (n+4 -r)/5 =3 + (25*n +n +4 -r)/5 =3 + (26*n +4 -r)/5')
+('a', '3 +5*n + math.floor((n+4)/5)')
+('a', '3 + (5*n + math.floor((n+4)/5))')
+('a', '3 +5*n + math.floor((n+4)/5)')
+('a', '3 + math.floor((26*n +4)/5)')
+('a', '3 + 5*n + math.floor((n + 4)/5)')
+('a', '3 + 5*n + math.floor((n - 1)/5) + 1 = 4 + 5*n + math.floor((n - 1)/5)')
+('a', '3 +5*n + math.floor((n+4)/5)')
+('a', '3 +30*k +0 +0=3 +30*k')
+('a', '3 +30*k +5*r +1=4 +30*k +5*r')
+('a', '3 +30*k=3 +6*5*k=3 +6*n')
+('a', '3 +6*n')
+('a', '4 +30*k +5*r')
+('a', '4 +6*(n -r) +5*r=4 +6*n -6*r +5*r=4 +6*n -r')
+('a', '3 +6*n')
+('a', '4 +6*n -r')
+('a', '6*n + 3, if n ≡0* mod5')
+('a', '6*n +4 -r, where r=n mod5, for r≠0')
+('a', '6*n +4 - (n mod5), when n mod5 ≠0')
+('a', '6*n +3, when n mod5=0')
+('a', '6*n +3 + (if n mod5 ≠0* then* 1 - (n mod5) *else 0)')
+('a', '4 +6*n -r')
+('a', '6*n +4 -r')
+('a', '6*n + 3 - ((n mod5) - 0* if n mod5=0* else (n mod5 -1))')
+('a', '3 + 5*n + math.floor((n + 4)/5)')
+('a', 'math.floor((26*n +4)/5) +3')
+('a', 'math.floor( \\dfrac{26*n + 4}{5} ) + 3')
+('a', '3 + 5*n + math.floor( \\dfrac{n + 4}{5} )')
+('a', 'math.floor( \\dfrac{26*n + 4}{5} ) + 3')
+('a', '3 + 5*n + math.floor((n + 4)/5)')
+('a', '1-')
+('a', 'latex_seq(0) + 5*n + math.floor( (n)/(5) )')
+('a', '3 + 5*n + math.floor( (n)/(5) )')
+len(latex_matches) = 61
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [3, 9, 14, 19, 24, 30, 35, 40, 45, 51, 56, 61, 66, 71, 77, 82, 87, 92, 98, 103, 108, 113, 119, 124, 129]
+    if n < len(init):
+        return init[n]
+    return latex_seq(0) + 5*n + math.floor( (n)/(5) ) 
+
+
+
+-- decoding response finished
+Ground truth: A001968 ,3,9,14,19,24,30,35,40,45,51,56,61,66,71,77,82,87,92,98,103,108,113,119,124,129,134,140,145,150,155,161,166,171,176,181,187,192,197,202,208,213,218,223,229,234,239,244,250,255,260,265,270,276,281,286,291,
+[dasco sequence loaded.]
+ground_truth = [3, 9, 14, 19, 24, 30, 35, 40, 45, 51, 56, 61, 66, 71, 77, 82, 87, 92, 98, 103, 108, 113, 119, 124, 129, 134, 140, 145, 150, 155, 161, 166, 171, 176, 181, 187, 192, 197, 202, 208, 213, 218, 223, 229, 234, 239, 244, 250, 255, 260, 265, 270, 276, 281, 286, 291]
+len(ground_truth) = 56
+
+cores = False
+task_id = 365
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [3, 9, 14, 19, 24, 30, 35, 40, 45, 51, 56, 61, 66, 71, 77, 82, 87, 92, 98, 103, 108, 113, 119, 124, 129, 133, 138, 143, 148, 153, 159, 164, 169, 174, 179]
+len(seq_pred) = 35
+
+is_Dasco False
+

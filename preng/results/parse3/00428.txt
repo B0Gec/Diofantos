@@ -1,0 +1,100 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+428
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+00428-1145.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 2, 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, 101, 109, 113, 137, 149, 157, 173, 181, 193, 197, 229, 233, 241'
+question[-200:] = 'give me a recursive equation in a form of a Python code for the following number sequence: 2, 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, 101, 109, 113, 137, 149, 157, 173, 181, 193, 197, 229, 233, 241'
+inits = [2, 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, 101, 109, 113, 137, 149, 157, 173, 181, 193, 197, 229, 233, 241]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+13
+('term', ' a*term(n-1) + b*term(n-2).')
+('term', " a*term(n-1) + b*term(n-2) + c*term(n-3). But with only three terms, it's hard to determine. Let's take terms 2,5,13,17. Let's see if there's a pattern. For term3 (17), perhaps it's term2 + something. 13 + 4=17. Term4 is 29. 17 + 12=29. Term5 is 37. 29 +8=37. Term6 is 41. 37+4=41. Term7 is 53. 41+12=53. Hmm, the differences between terms are 3, 8, 4, 12, 8, 4, 12, 8, 12, 8, 4, 8, 4, 24, etc. Not obvious.")
+('term', " term(n-1) + term(n-2) + c. Let's check:")
+('term', ' term(n-1) + 2*term(n-2). For term2: 5 + 2*2=9, not 13. No.')
+('term', " term(n-1) + 4 if the result is prime, else term(n-1) + 8, and so on. Let's check:")
+('term', " sum_{k=0}^{n-1} term(k) + c. Let's check:")
+('term', ' sum_{k=0}^{n-1} term(k) + something else. Not helpful.')
+('term', ' a*term(n-1) + b*term(n-2) for n ≥ 2.')
+('term', " -31*term(n-1) + 84*term(n-2). Let's check for n=3: -31*5 +84*2 = -155 + 168 = 13, which is not 17. Wait, no, for n=3, it should be term(3) = -31*term(2) +84*term(1) = -31*13 +84*5 = -403 + 420 = 17. Oh, that works! Let's check for n=4: term(4) should be -31*term(3) +84*term(2) = -31*17 +84*13 = -527 + 1092 = 565. But the actual term4 is 29. 565 ≠ 29. So this doesn't work. Hence, the assumption of a second-order linear recurrence with constant coefficients is invalid.")
+('term', ' a*term(n-1) + b*term(n-2) + c*term(n-3).')
+('term', ' previous term + next prime. Not sure.')
+('a', ' a_{n-1} + d_{n-1}')
+('a', ' a_{n-1} + d_{n-1}')
+var, rhs: ('term', 'a*term(n-1) + b*term(n-2).')
+var, rhs: ('term', "a*term(n-1) + b*term(n-2) + c*term(n-3). But with only three terms, it's hard to determine. Let's take terms 2,5,13,17. Let's see if there's a pattern. For term3 (17), perhaps it's term2 + something. 13 + 4=17. Term4 is 29. 17 + 12=29. Term5 is 37. 29 +8=37. Term6 is 41. 37+4=41. Term7 is 53. 41+12=53. Hmm, the differences between terms are 3, 8, 4, 12, 8, 4, 12, 8, 12, 8, 4, 8, 4, 24, etc. Not obvious.")
+var, rhs: ('term', "term(n-1) + term(n-2) + c. Let's check:")
+var, rhs: ('term', 'term(n-1) + 2*term(n-2). For term2: 5 + 2*2=9, not 13. No.')
+var, rhs: ('term', "term(n-1) + 4 if the result is prime, else term(n-1) + 8, and so on. Let's check:")
+var, rhs: ('term', "sum_{k=0}^{n-1} term(k) + c. Let's check:")
+var, rhs: ('term', 'sum_{k=0}^{n-1} term(k) + something else. Not helpful.')
+var, rhs: ('term', 'a*term(n-1) + b*term(n-2) for n ≥ 2.')
+var, rhs: ('term', "-31*term(n-1) + 84*term(n-2). Let's check for n=3: -31*5 +84*2 = -155 + 168 = 13, which is not 17. Wait, no, for n=3, it should be term(3) = -31*term(2) +84*term(1) = -31*13 +84*5 = -403 + 420 = 17. Oh, that works! Let's check for n=4: term(4) should be -31*term(3) +84*term(2) = -31*17 +84*13 = -527 + 1092 = 565. But the actual term4 is 29. 565 ≠ 29. So this doesn't work. Hence, the assumption of a second-order linear recurrence with constant coefficients is invalid.")
+var, rhs: ('term', 'a*term(n-1) + b*term(n-2) + c*term(n-3).')
+var, rhs: ('term', 'previous term + next prime. Not sure.')
+var, rhs: ('a', 'a_{n-1} + d_{n-1}')
+var, rhs: ('a', 'a_{n-1} + d_{n-1}')
+latex_matches[-2:] = [('a', 'latex_seq(n-1) + d_{n-1}'), ('a', 'latex_seq(n-1) + d_{n-1}')]
+('term', 'a*latex_seq(n-1) + b*latex_seq(n-2)')
+('term', '1-')
+('term', "latex_seq(n-1) + latex_seq(n-2) + c. Let's check:")
+('term', 'latex_seq(n-1) + 2*latex_seq(n-2). For term2: 5 + 2*2=9, not 13. No')
+('term', "latex_seq(n-1) + 4* if the result is prime, else latex_seq(n-1) + 8, and so on. Let's check:")
+('term', "sum_{k=0}**(n-1) *latex_seq(k) + c. Let's check:")
+('term', '1-')
+('term', 'a*latex_seq(n-1) + b*latex_seq(n-2) *for n ≥ 2')
+('term', "-31*latex_seq(n-1) + 84*latex_seq(n-2). Let's check for n=3: -31*5 +84*2 = -155 + 168 = 13, which is not 17. Wait, no, for n=3, it should be latex_seq(3) = -31*latex_seq(2) +84*latex_seq(1) = -31*13 +84*5 = -403 + 420 = 17. Oh, that works! Let's check for n=4: latex_seq(4) *should be -31*latex_seq(3) +84*latex_seq(2) = -31*17 +84*13 = -527 + 1092 = 565. But the actual term4* is 29. 565 ≠ 29. So this doesn't work. Hence, the assumption of a second-order linear recurrence with constant coefficients is invalid")
+('term', 'a*latex_seq(n-1) + b*latex_seq(n-2) + c*latex_seq(n-3)')
+('term', 'previous term + next prime. Not sure')
+('a', 'latex_seq(n-1) + d_{n-1}')
+('a', 'latex_seq(n-1) + d_{n-1}')
+len(latex_matches) = 13
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [2, 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, 101, 109, 113, 137, 149, 157, 173, 181, 193, 197, 229, 233, 241]
+    if n < len(init):
+        return init[n]
+    return a*latex_seq(n-1) + b*latex_seq(n-2) + c*latex_seq(n-3) 
+
+
+
+-- decoding response finished
+Ground truth: A002313 ,2,5,13,17,29,37,41,53,61,73,89,97,101,109,113,137,149,157,173,181,193,197,229,233,241,257,269,277,281,293,313,317,337,349,353,373,389,397,401,409,421,433,449,457,461,509,521,541,557,569,577,593,601,613,617,
+[dasco sequence loaded.]
+ground_truth = [2, 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, 101, 109, 113, 137, 149, 157, 173, 181, 193, 197, 229, 233, 241, 257, 269, 277, 281, 293, 313, 317, 337, 349, 353, 373, 389, 397, 401, 409, 421, 433, 449, 457, 461, 509, 521, 541, 557, 569, 577, 593, 601, 613, 617]
+len(ground_truth) = 55
+
+cores = False
+task_id = 428
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'a' is not defined. Did you mean: 'a0'?

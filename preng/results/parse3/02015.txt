@@ -1,0 +1,218 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+2015
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+02015-1708.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0'
+question[-200:] = '```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0'
+inits = [0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+53
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3). Let's pick some terms and set up equations.")
+('a', " ... then for n=3, 1 = ... but with previous terms all zero, unless there's a constant term. But the examples given earlier didn't have constants. Wait, in example 3, there was a +1. So maybe there's a nonhomogeneous recurrence.")
+('a', " (a(n-1) + a(n-2) + ... ) mod m. Let's try to see.")
+('a', " a(n-1) + a(n-2). But for n=3, a(3) = 1. If a(3) = a(2) + a(1) = 0 + 0 = 0, which doesn't match. So that's not it.")
+('a', " a(n-3)? Let's check. For n=3, a(3)=1. a(0)=0. No. Not matching.")
+('a', ' a(n-4)? For n=4, a(4)=1. a(0)=0. No.')
+('a', " a(n-1) XOR something. But that's more of a bitwise operation. Let's think differently.")
+('a', " a(n-7). Let's check for some terms. For example, a(7) is 0. a(0) is 0. So that matches. a(8) is 1. a(1) is 0. No. Doesn't match. So not a period of 7.")
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3). Let's pick some equations.")
+('a', ' a(n-1) * a(n-2) + ... but that seems complicated.')
+('a', ' c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k). We can set up equations to solve for the coefficients.')
+('a', " a(n-1) + a(n-4) or something. Let's test for some terms.")
+('a', " a(n-7). Let's check some terms:")
+('a', " (a(n-1) + something) mod 2. Let's check:")
+('a', " (a(n-1) + a(n-4)) mod 2. Let's test this hypothesis.")
+('a', " (a(n-1) + a(n-2) + a(n-3)) mod 2. Let's check for n=3: a(3) = (a(2) + a(1) + a(0)) mod 2 = (0+0+0) mod 2 = 0. But a(3) is 1. So no.")
+('a', ' (a(n-1) + a(n-3)) mod 2. For n=3: (a(2) + a(0)) mod 2 = 0+0=0. No.')
+('a', ' a(n-4) + a(n-7) or something. For example, for n=7: a(7) = a(3) + a(0) = 1 + 0 = 1, but a(7) is 0. No.')
+('a', ' a(n-4) - a(n-7). For n=7: 1 - 0 = 1. No.')
+('a', ' (n mod k) ... but that seems arbitrary.')
+('a', " x*a(n-1) + y*a(n-2). Let's pick some equations.")
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3). Let's pick equations for n=3, 4, 5, etc.")
+('a', " w*a(n-1) + x*a(n-2) + y*a(n-3) + z*a(n-4). Let's use n=4, 5, 6, 7 to set up equations.")
+('a', ' -a(n-1) + 0*a(n-2) + 0*a(n-3) + 1*a(n-4), or simplified: a(n) = -a(n-1) + a(n-4).')
+('a', " a(n-7). Let's check some terms:")
+('a', " a(n-4) - a(n-1), as previously derived, but it failed at n=11. Let's see what happens if we proceed:")
+('a', ' -a(n-4) + a(n-1). For n=7: -a(3) + a(6) = -1 + 1 = 0. Correct. For n=8: -a(4) + a(7) = -1 + 0 = -1, but actual is 1. No.')
+('a', ' a(n-4) + a(n-1). For n=7: 1 + 0 = 1, but actual is 0. No.')
+('a', ' c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k).')
+('a', " c1*a(n-1). This would mean the sequence is geometric, which it's not. Order 2: a(n) = c1*a(n-1) + c2*a(n-2). Let's set up equations using known terms.")
+('a', ' c1*a(n-1) + c2*a(n-2) + c3*a(n-3).')
+('a', ' c1*a(n-1) + c2*a(n-2) + c3*a(n-3) + c4*a(n-4).')
+('a', " -a(n-1) + a(n-4), which worked for some terms but failed at n=11. Let's see if there's a pattern in the errors.")
+('a', " -a(n-1) + a(n-4) + 2, but that introduces a constant, which is unlikely. Alternatively, maybe there's a different term in the recurrence.")
+('a', " -a(n-1) + a(n-4) works for some terms but fails at others. This suggests that either the recurrence is more complex, or there's a different pattern.")
+('a', " -a(n-1) + a(n-4) + c*a(n-k). Let's see if we can find such a term.")
+('a', ' -a(n-1) + a(n-4) + 2*a(n-5).')
+('a', ' -a(n-1) + a(n-4) + 2*a(n-5) + d*a(n-6). For n=21: 1 = -a(20) + a(17) + 2*a(16) + d*a(15) = -1 + 0 + 0 + d*0 = -1. To get 1, need d*a(15) = 2. But a(15)=0, so impossible. Maybe another term.')
+('a', " -a(n-1) + a(n-4) works for most terms, except at certain points. Let's see if those exceptions have a pattern. The failures occur at n=11,19,20,21,23,24. These are spaced by 8, 1, 1, 3, 1. Not obvious.")
+('a', " -a(n-1) + a(n-4), and the failures are due to missing terms, perhaps the correct recurrence is of higher order. Let's try to derive it using more equations.")
+('a', ' c1*a(n-1) + c2*a(n-2) + c3*a(n-3) + c4*a(n-4) + c5*a(n-5).')
+('a', ' 0*a(n-1) + 1*a(n-2) + 0*a(n-3) + (-1)*a(n-4) + 1*a(n-5)')
+('a', ' a(n-2) - a(n-4) + a(n-5)')
+('a', ' a(n-2) - a(n-4) + a(n-5).')
+('a', ' -a(n-1) + a(n-4) is closer, and the discrepancies are due to missing terms or a different pattern.')
+('a', ' -a(n-1) + a(n-4), and check if that works with the given terms.')
+('a', ' -a(n-1) + a(n-4):')
+('a', ' a(n-1) - a(n-4):')
+('a', ' a(n-1) + a(n-2)')
+('a', ' a(n-1) + a(n-2) $).')
+('a', ' a(n-1) + a(n-2)')
+('a', ' a(n-1) + a(n-2) $).')
+('a', ' a(n-1) + a(n-2) $).')
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3). Let's pick some terms and set up equations.")
+var, rhs: ('a', "... then for n=3, 1 = ... but with previous terms all zero, unless there's a constant term. But the examples given earlier didn't have constants. Wait, in example 3, there was a +1. So maybe there's a nonhomogeneous recurrence.")
+var, rhs: ('a', "(a(n-1) + a(n-2) + ... ) mod m. Let's try to see.")
+var, rhs: ('a', "a(n-1) + a(n-2). But for n=3, a(3) = 1. If a(3) = a(2) + a(1) = 0 + 0 = 0, which doesn't match. So that's not it.")
+var, rhs: ('a', "a(n-3)? Let's check. For n=3, a(3)=1. a(0)=0. No. Not matching.")
+var, rhs: ('a', 'a(n-4)? For n=4, a(4)=1. a(0)=0. No.')
+var, rhs: ('a', "a(n-1) XOR something. But that's more of a bitwise operation. Let's think differently.")
+var, rhs: ('a', "a(n-7). Let's check for some terms. For example, a(7) is 0. a(0) is 0. So that matches. a(8) is 1. a(1) is 0. No. Doesn't match. So not a period of 7.")
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3). Let's pick some equations.")
+var, rhs: ('a', 'a(n-1) * a(n-2) + ... but that seems complicated.')
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k). We can set up equations to solve for the coefficients.')
+var, rhs: ('a', "a(n-1) + a(n-4) or something. Let's test for some terms.")
+var, rhs: ('a', "a(n-7). Let's check some terms:")
+var, rhs: ('a', "(a(n-1) + something) mod 2. Let's check:")
+var, rhs: ('a', "(a(n-1) + a(n-4)) mod 2. Let's test this hypothesis.")
+var, rhs: ('a', "(a(n-1) + a(n-2) + a(n-3)) mod 2. Let's check for n=3: a(3) = (a(2) + a(1) + a(0)) mod 2 = (0+0+0) mod 2 = 0. But a(3) is 1. So no.")
+var, rhs: ('a', '(a(n-1) + a(n-3)) mod 2. For n=3: (a(2) + a(0)) mod 2 = 0+0=0. No.')
+var, rhs: ('a', 'a(n-4) + a(n-7) or something. For example, for n=7: a(7) = a(3) + a(0) = 1 + 0 = 1, but a(7) is 0. No.')
+var, rhs: ('a', 'a(n-4) - a(n-7). For n=7: 1 - 0 = 1. No.')
+var, rhs: ('a', '(n mod k) ... but that seems arbitrary.')
+var, rhs: ('a', "x*a(n-1) + y*a(n-2). Let's pick some equations.")
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3). Let's pick equations for n=3, 4, 5, etc.")
+var, rhs: ('a', "w*a(n-1) + x*a(n-2) + y*a(n-3) + z*a(n-4). Let's use n=4, 5, 6, 7 to set up equations.")
+var, rhs: ('a', '-a(n-1) + 0*a(n-2) + 0*a(n-3) + 1*a(n-4), or simplified: a(n) = -a(n-1) + a(n-4).')
+var, rhs: ('a', "a(n-7). Let's check some terms:")
+var, rhs: ('a', "a(n-4) - a(n-1), as previously derived, but it failed at n=11. Let's see what happens if we proceed:")
+var, rhs: ('a', '-a(n-4) + a(n-1). For n=7: -a(3) + a(6) = -1 + 1 = 0. Correct. For n=8: -a(4) + a(7) = -1 + 0 = -1, but actual is 1. No.')
+var, rhs: ('a', 'a(n-4) + a(n-1). For n=7: 1 + 0 = 1, but actual is 0. No.')
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + ... + ck*a(n-k).')
+var, rhs: ('a', "c1*a(n-1). This would mean the sequence is geometric, which it's not. Order 2: a(n) = c1*a(n-1) + c2*a(n-2). Let's set up equations using known terms.")
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + c3*a(n-3).')
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + c3*a(n-3) + c4*a(n-4).')
+var, rhs: ('a', "-a(n-1) + a(n-4), which worked for some terms but failed at n=11. Let's see if there's a pattern in the errors.")
+var, rhs: ('a', "-a(n-1) + a(n-4) + 2, but that introduces a constant, which is unlikely. Alternatively, maybe there's a different term in the recurrence.")
+var, rhs: ('a', "-a(n-1) + a(n-4) works for some terms but fails at others. This suggests that either the recurrence is more complex, or there's a different pattern.")
+var, rhs: ('a', "-a(n-1) + a(n-4) + c*a(n-k). Let's see if we can find such a term.")
+var, rhs: ('a', '-a(n-1) + a(n-4) + 2*a(n-5).')
+var, rhs: ('a', '-a(n-1) + a(n-4) + 2*a(n-5) + d*a(n-6). For n=21: 1 = -a(20) + a(17) + 2*a(16) + d*a(15) = -1 + 0 + 0 + d*0 = -1. To get 1, need d*a(15) = 2. But a(15)=0, so impossible. Maybe another term.')
+var, rhs: ('a', "-a(n-1) + a(n-4) works for most terms, except at certain points. Let's see if those exceptions have a pattern. The failures occur at n=11,19,20,21,23,24. These are spaced by 8, 1, 1, 3, 1. Not obvious.")
+var, rhs: ('a', "-a(n-1) + a(n-4), and the failures are due to missing terms, perhaps the correct recurrence is of higher order. Let's try to derive it using more equations.")
+var, rhs: ('a', 'c1*a(n-1) + c2*a(n-2) + c3*a(n-3) + c4*a(n-4) + c5*a(n-5).')
+var, rhs: ('a', '0*a(n-1) + 1*a(n-2) + 0*a(n-3) + (-1)*a(n-4) + 1*a(n-5)')
+var, rhs: ('a', 'a(n-2) - a(n-4) + a(n-5)')
+var, rhs: ('a', 'a(n-2) - a(n-4) + a(n-5).')
+var, rhs: ('a', '-a(n-1) + a(n-4) is closer, and the discrepancies are due to missing terms or a different pattern.')
+var, rhs: ('a', '-a(n-1) + a(n-4), and check if that works with the given terms.')
+var, rhs: ('a', '-a(n-1) + a(n-4):')
+var, rhs: ('a', 'a(n-1) - a(n-4):')
+var, rhs: ('a', 'a(n-1) + a(n-2)')
+var, rhs: ('a', 'a(n-1) + a(n-2) $).')
+var, rhs: ('a', 'a(n-1) + a(n-2)')
+var, rhs: ('a', 'a(n-1) + a(n-2) $).')
+var, rhs: ('a', 'a(n-1) + a(n-2) $).')
+latex_matches[-2:] = [('a', 'latex_seq(n-1) + latex_seq(n-2) $)'), ('a', 'latex_seq(n-1) + latex_seq(n-2) $)')]
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3). Let's pick some terms and set up equations")
+('a', "then for n=3, 1 = ... but with previous terms all zero, unless there's a constant term. But the examples given earlier didn't have constants. Wait, in example 3, there was a +1. So maybe there's a nonhomogeneous recurrence")
+('a', "(latex_seq(n-1) + latex_seq(n-2) + ... ) *mod m. Let's try to see")
+('a', "latex_seq(n-1) + latex_seq(n-2). But for n=3, latex_seq(3) = 1. If latex_seq(3) = latex_seq(2) + latex_seq(1) = 0 + 0 = 0, which doesn't match. So that's not it")
+('a', "latex_seq(n-3)? Let's check. For n=3, latex_seq(3)=1. latex_seq(0)=0. No. Not matching")
+('a', 'latex_seq(n-4)? For n=4, latex_seq(4)=1. latex_seq(0)=0. No')
+('a', '1-')
+('a', "latex_seq(n-7). Let's check for some terms. For example, latex_seq(7) *is 0. latex_seq(0) *is 0. So that matches. latex_seq(8) *is 1. latex_seq(1) *is 0. No. Doesn't match. So not a period of 7")
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3). Let's pick some equations")
+('a', 'latex_seq(n-1) * latex_seq(n-2) + ... but that seems complicated')
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + ... + ck*latex_seq(n-k). We can set up equations to solve for the coefficients')
+('a', '1-')
+('a', "latex_seq(n-7). Let's check some terms:")
+('a', '1-')
+('a', "(latex_seq(n-1) + latex_seq(n-4)) *mod 2. Let's test this hypothesis")
+('a', "(latex_seq(n-1) + latex_seq(n-2) + latex_seq(n-3)) *mod 2. Let's check for n=3: latex_seq(3) = (latex_seq(2) + latex_seq(1) + latex_seq(0)) *mod 2 = (0+0+0) *mod 2 = 0. But latex_seq(3) *is 1. So no")
+('a', '(latex_seq(n-1) + latex_seq(n-3)) *mod 2. For n=3: (latex_seq(2) + latex_seq(0)) *mod 2 = 0+0=0. No')
+('a', '1-')
+('a', 'latex_seq(n-4) - latex_seq(n-7). For n=7: 1 - 0 = 1. No')
+('a', '(n mod k) ... but that seems arbitrary')
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2). Let's pick some equations")
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3). Let's pick equations for n=3, 4, 5, etc")
+('a', "w*latex_seq(n-1) + x*latex_seq(n-2) + y*latex_seq(n-3) + z*latex_seq(n-4). Let's use n=4, 5, 6, 7* to set up equations")
+('a', '-latex_seq(n-1) + 0*latex_seq(n-2) + 0*latex_seq(n-3) + 1*latex_seq(n-4), or simplified: latex_seq(n) = -latex_seq(n-1) + latex_seq(n-4)')
+('a', "latex_seq(n-7). Let's check some terms:")
+('a', "latex_seq(n-4) - latex_seq(n-1), as previously derived, but it failed at n=11. Let's see what happens if we proceed:")
+('a', '-latex_seq(n-4) + latex_seq(n-1). For n=7: -latex_seq(3) + latex_seq(6) = -1 + 1 = 0. Correct. For n=8: -latex_seq(4) + latex_seq(7) = -1 + 0 = -1, but actual is 1. No')
+('a', 'latex_seq(n-4) + latex_seq(n-1). For n=7: 1 + 0 = 1, but actual is 0. No')
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + ... + ck*latex_seq(n-k)')
+('a', "c1*latex_seq(n-1). This would mean the sequence is geometric, which it's not. Order 2: latex_seq(n) = c1*latex_seq(n-1) + c2*latex_seq(n-2). Let's set up equations using known terms")
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + c3*latex_seq(n-3)')
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + c3*latex_seq(n-3) + c4*latex_seq(n-4)')
+('a', "-latex_seq(n-1) + latex_seq(n-4), which worked for some terms but failed at n=11. Let's see if there's a pattern in the errors")
+('a', "-latex_seq(n-1) + latex_seq(n-4) + 2, but that introduces a constant, which is unlikely. Alternatively, maybe there's a different term in the recurrence")
+('a', "-latex_seq(n-1) + latex_seq(n-4) *works for some terms but fails at others. This suggests that either the recurrence is more complex, or there's a different pattern")
+('a', "-latex_seq(n-1) + latex_seq(n-4) + c*latex_seq(n-k). Let's see if we can find such a term")
+('a', '-latex_seq(n-1) + latex_seq(n-4) + 2*latex_seq(n-5)')
+('a', '-latex_seq(n-1) + latex_seq(n-4) + 2*latex_seq(n-5) + d*latex_seq(n-6). For n=21: 1 = -latex_seq(20) + latex_seq(17) + 2*latex_seq(16) + d*latex_seq(15) = -1 + 0 + 0 + d*0 = -1. To get 1, need d*latex_seq(15) = 2. But latex_seq(15)=0, so impossible. Maybe another term')
+('a', "-latex_seq(n-1) + latex_seq(n-4) *works for most terms, except at certain points. Let's see if those exceptions have a pattern. The failures occur at n=11,19,20,21,23,24. These are spaced by 8, 1, 1, 3, 1. Not obvious")
+('a', "-latex_seq(n-1) + latex_seq(n-4), and the failures are due to missing terms, perhaps the correct recurrence is of higher order. Let's try to derive it using more equations")
+('a', 'c1*latex_seq(n-1) + c2*latex_seq(n-2) + c3*latex_seq(n-3) + c4*latex_seq(n-4) + c5*latex_seq(n-5)')
+('a', '0*latex_seq(n-1) + 1*latex_seq(n-2) + 0*latex_seq(n-3) + (-1)*latex_seq(n-4) + 1*latex_seq(n-5)')
+('a', 'latex_seq(n-2) - latex_seq(n-4) + latex_seq(n-5)')
+('a', 'latex_seq(n-2) - latex_seq(n-4) + latex_seq(n-5)')
+('a', '-latex_seq(n-1) + latex_seq(n-4) *is closer, and the discrepancies are due to missing terms or a different pattern')
+('a', '-latex_seq(n-1) + latex_seq(n-4), and check if that works with the given terms')
+('a', '-latex_seq(n-1) + latex_seq(n-4):')
+('a', 'latex_seq(n-1) - latex_seq(n-4):')
+('a', 'latex_seq(n-1) + latex_seq(n-2)')
+('a', 'latex_seq(n-1) + latex_seq(n-2) $)')
+('a', 'latex_seq(n-1) + latex_seq(n-2)')
+('a', 'latex_seq(n-1) + latex_seq(n-2) $)')
+('a', 'latex_seq(n-1) + latex_seq(n-2) $)')
+len(latex_matches) = 53
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) + latex_seq(n-2) 
+
+
+
+-- decoding response finished
+Ground truth: A011659 ,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,0,1,1,1,
+[dasco sequence loaded.]
+ground_truth = [0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1]
+len(ground_truth) = 81
+
+cores = False
+task_id = 2015
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+len(seq_pred) = 35
+
+is_Dasco False
+

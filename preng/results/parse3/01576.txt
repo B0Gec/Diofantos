@@ -1,0 +1,188 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+1576
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+01576-9447.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 54, 73, 94, 123, 157, 201, 252, 318, 393, 488, 598, 732, 887, 1076'
+question[-200:] = ' you give me a recursive equation in a form of a Python code for the following number sequence: 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 54, 73, 94, 123, 157, 201, 252, 318, 393, 488, 598, 732, 887, 1076'
+inits = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 54, 73, 94, 123, 157, 201, 252, 318, 393, 488, 598, 732, 887, 1076]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+43
+('a', ' a(n-1) + a(n-2) - something. But original sequence is 1,1,2,3,5,7,11,15,22,30,41...')
+('a', " a(n-1) + a(n-2), then 1+1=2. That works. Term 3 is 3. 2+1=3. That works. Term 4 is 5. 3+2=5. Term 5 is 7. 5+3=8, but actual is 7. So that breaks. So the Fibonacci recurrence doesn't hold here. ")
+('a', " a(n-1) + a(n-2) - something. Let's check for term 5: 5 + 3 - 1 =7. Term 5 is 7. What about term 6? Actual is 11. If previous terms are 7 and 5. 7+5=12. 12 - something =11. So subtract 1 again? Then term 6 would be 12-1=11. Term 7: 11 +7=18. Subtract something? Actual is 15. 18-3=15. Hmm, inconsistent. ")
+('a', " a(n-2) + a(n-k) for some k. Let me think. Let's look at term 5: 7. Previous terms are 5 (term4), 3 (term3), 2 (term2), etc. 5 + 3 - 1? Not sure. ")
+('a', ' x*a(n-1) + y*a(n-2) + ... ')
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3).')
+('a', ' a(n-1) + a(n-2) - something. For example, for n=5, 5+3 - something=7 → something=1. For n=6, 7+5 - something=11 → something=1. For n=7, 11+7 - something=15 → something=3. For n=8, 15+11 - something=22 → something=4. For n=9, 22+15 - something=30 → something=7. For n=10, 30+22 - something=41 → something=11. ')
+('a', " a(n-1) + a(n-2) - a(n-k) for some k. Let's try for n=5: a(5)=a(4)+a(3) - a(1) → 5+3-1=7. Correct. For n=6: a(5)+a(4) - a(1) →7+5-1=11. Correct. For n=7: a(6)+a(5) - a(3) →11+7-3=15. Correct. For n=8: a(7)+a(6) - a(4) →15+11-5=21. But actual a(8) is 22. So discrepancy here. Hmm. ")
+('a', " a(n-1) + a(n-2) - a(n-5). Let's check for n=5: a(5)=a(4)+a(3)-a(0). 5+3-1=7. Correct. For n=6: a(5)+a(4)-a(1)=7+5-1=11. Correct. For n=7: a(6)+a(5)-a(2)=11+7-2=16. But actual a(7) is 15. No. ")
+('a', " a(n-1) + a(n-2) - a(n-5). Let's test this:")
+('a', " a(n-1) + a(n-2) - a(n-3). Let's try:")
+('a', " a(n-1) + a(n-2) - a(n-4). Let's try:")
+('a', ' a(n-1) + a(n-2) - a(n-4) + something. For n=6, need to add 1. For n=8, add 1. For n=11, subtract 1. Not sure. ')
+('a', ' a(n-1) + a(n-2) - a(n-4) + correction term. But this is getting too speculative. ')
+('a', " p*a(n-1) + q*a(n-2). Let's set up equations using the known terms.")
+('a', " a(n-1) + a(n-2), which is the Fibonacci sequence. But our sequence diverges from Fibonacci starting at n=5. So this suggests that the recurrence is not of order 2 for all terms, or there's a different recurrence.")
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3).')
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4).')
+('a', ' a(n-1) + a(n-2) - something, or similar.')
+('a', " a(n-1) + a(n-2) - a(n-k) for some k. Let's see:")
+('a', " a(n-1) + a(n-2) - a(n-3). Let's test:")
+('a', ' a(n-1) + a(n-2) - a(n-4)? For n=5: 5+3-1=7, which matches. For n=6: 7+5-1=11, which matches. For n=7: 11+7-2=16≠15. Close but not quite.')
+('a', " a(n-1) + a(n-2) - a(n-4) + something. For n=8: 15+11 - a(4)=26-5=21, but actual is 22. So need to add 1. Where could that 1 come from? Maybe there's an adjustment based on some condition.")
+('a', " a(n-1) + a(n-2) - a(n-3). Let's check:")
+('a', " a(n-1)+a(n-2) - a(n-4). For n=5: 7=7 (5+3-1=7). For n=6: 11=7+5-1=11. For n=7: 15=11+7-3=15 (since a(3)=3). For n=8: 22=15+11-5=21, but actual is 22. So need to add 1. Maybe there's an adjustment when n≥8? Not sure.")
+('a', " a(n-1) + a(n-2) - a(n-4) + c, where c is some constant or function. For n=8, it would need to be +1. For n=9: a(8)=22, a(7)=15, a(6)=11. So 22+15 - a(5)=37-7=30, which matches a(9)=30. So for n=9, it works without adjustment. For n=8, it was off by 1. Maybe there's a different pattern.")
+('a', " p*a(n-1) + q*a(n-2). Let's set up equations for some terms.")
+('a', " 0.5*a(n-1) + 1.5*a(n-2). Let's test this on a(7):")
+('a', ' p*a(n-1) + q*a(n-2) + r*a(n-3).')
+('a', ' 1*a(n-1) + 2*a(n-2) -2*a(n-3).')
+('a', " a(n-1) + a(n-2) - something. But without more information, it's hard to say.")
+('a', ' a(n-1) + a(n-2) - a(n-k) for some k, but this is speculative.')
+('a', " a(n-1) + 2a(n-2) - 2a(n-3) - something. But without more data points, it's hard to adjust.")
+('a', ' floor(φ*a(n-1)), but this is too vague.')
+('a', " a(n-1) + a(n-2) - a(n-3), but let's test this:")
+('a', ' a(n-1) + a(n-2) - a(n-k) for some k. This is too vague.')
+('a', ' a(n-1) + 2a(n-2) - 2a(n-3)')
+('a', " a(n-1) + 2a(n-2) - 2a(n-3), but it fails for n ≥ 8. This suggests that either there's an error in the sequence provided, or the pattern is more complex and requires additional analysis.")
+('a', ' 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 55, 77, 108, 149, 201, 265, 341, 440, 566, 726, 922, 1165, 1470')
+('a', ' a_{n-1} + 2a_{n-2} - 2a_{n-3}')
+('a', ' a_{n-1} + 2a_{n-2} - 2a_{n-3} - \\delta_n')
+('a', ' a_{n-1} + 2a_{n-2} - 2a_{n-3} ')
+('a', ' a_{n-1} + 2a_{n-2} - 2a_{n-3}}')
+var, rhs: ('a', 'a(n-1) + a(n-2) - something. But original sequence is 1,1,2,3,5,7,11,15,22,30,41...')
+var, rhs: ('a', "a(n-1) + a(n-2), then 1+1=2. That works. Term 3 is 3. 2+1=3. That works. Term 4 is 5. 3+2=5. Term 5 is 7. 5+3=8, but actual is 7. So that breaks. So the Fibonacci recurrence doesn't hold here.")
+var, rhs: ('a', "a(n-1) + a(n-2) - something. Let's check for term 5: 5 + 3 - 1 =7. Term 5 is 7. What about term 6? Actual is 11. If previous terms are 7 and 5. 7+5=12. 12 - something =11. So subtract 1 again? Then term 6 would be 12-1=11. Term 7: 11 +7=18. Subtract something? Actual is 15. 18-3=15. Hmm, inconsistent.")
+var, rhs: ('a', "a(n-2) + a(n-k) for some k. Let me think. Let's look at term 5: 7. Previous terms are 5 (term4), 3 (term3), 2 (term2), etc. 5 + 3 - 1? Not sure.")
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + ...')
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3).')
+var, rhs: ('a', 'a(n-1) + a(n-2) - something. For example, for n=5, 5+3 - something=7 → something=1. For n=6, 7+5 - something=11 → something=1. For n=7, 11+7 - something=15 → something=3. For n=8, 15+11 - something=22 → something=4. For n=9, 22+15 - something=30 → something=7. For n=10, 30+22 - something=41 → something=11.')
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-k) for some k. Let's try for n=5: a(5)=a(4)+a(3) - a(1) → 5+3-1=7. Correct. For n=6: a(5)+a(4) - a(1) →7+5-1=11. Correct. For n=7: a(6)+a(5) - a(3) →11+7-3=15. Correct. For n=8: a(7)+a(6) - a(4) →15+11-5=21. But actual a(8) is 22. So discrepancy here. Hmm.")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-5). Let's check for n=5: a(5)=a(4)+a(3)-a(0). 5+3-1=7. Correct. For n=6: a(5)+a(4)-a(1)=7+5-1=11. Correct. For n=7: a(6)+a(5)-a(2)=11+7-2=16. But actual a(7) is 15. No.")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-5). Let's test this:")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-3). Let's try:")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-4). Let's try:")
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-4) + something. For n=6, need to add 1. For n=8, add 1. For n=11, subtract 1. Not sure.')
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-4) + correction term. But this is getting too speculative.')
+var, rhs: ('a', "p*a(n-1) + q*a(n-2). Let's set up equations using the known terms.")
+var, rhs: ('a', "a(n-1) + a(n-2), which is the Fibonacci sequence. But our sequence diverges from Fibonacci starting at n=5. So this suggests that the recurrence is not of order 2 for all terms, or there's a different recurrence.")
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3).')
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3) + s*a(n-4).')
+var, rhs: ('a', 'a(n-1) + a(n-2) - something, or similar.')
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-k) for some k. Let's see:")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-3). Let's test:")
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-4)? For n=5: 5+3-1=7, which matches. For n=6: 7+5-1=11, which matches. For n=7: 11+7-2=16≠15. Close but not quite.')
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-4) + something. For n=8: 15+11 - a(4)=26-5=21, but actual is 22. So need to add 1. Where could that 1 come from? Maybe there's an adjustment based on some condition.")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-3). Let's check:")
+var, rhs: ('a', "a(n-1)+a(n-2) - a(n-4). For n=5: 7=7 (5+3-1=7). For n=6: 11=7+5-1=11. For n=7: 15=11+7-3=15 (since a(3)=3). For n=8: 22=15+11-5=21, but actual is 22. So need to add 1. Maybe there's an adjustment when n≥8? Not sure.")
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-4) + c, where c is some constant or function. For n=8, it would need to be +1. For n=9: a(8)=22, a(7)=15, a(6)=11. So 22+15 - a(5)=37-7=30, which matches a(9)=30. So for n=9, it works without adjustment. For n=8, it was off by 1. Maybe there's a different pattern.")
+var, rhs: ('a', "p*a(n-1) + q*a(n-2). Let's set up equations for some terms.")
+var, rhs: ('a', "0.5*a(n-1) + 1.5*a(n-2). Let's test this on a(7):")
+var, rhs: ('a', 'p*a(n-1) + q*a(n-2) + r*a(n-3).')
+var, rhs: ('a', '1*a(n-1) + 2*a(n-2) -2*a(n-3).')
+var, rhs: ('a', "a(n-1) + a(n-2) - something. But without more information, it's hard to say.")
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-k) for some k, but this is speculative.')
+var, rhs: ('a', "a(n-1) + 2a(n-2) - 2a(n-3) - something. But without more data points, it's hard to adjust.")
+var, rhs: ('a', 'floor(φ*a(n-1)), but this is too vague.')
+var, rhs: ('a', "a(n-1) + a(n-2) - a(n-3), but let's test this:")
+var, rhs: ('a', 'a(n-1) + a(n-2) - a(n-k) for some k. This is too vague.')
+var, rhs: ('a', 'a(n-1) + 2a(n-2) - 2a(n-3)')
+var, rhs: ('a', "a(n-1) + 2a(n-2) - 2a(n-3), but it fails for n ≥ 8. This suggests that either there's an error in the sequence provided, or the pattern is more complex and requires additional analysis.")
+var, rhs: ('a', '1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 55, 77, 108, 149, 201, 265, 341, 440, 566, 726, 922, 1165, 1470')
+var, rhs: ('a', 'a_{n-1} + 2a_{n-2} - 2a_{n-3}')
+var, rhs: ('a', 'a_{n-1} + 2a_{n-2} - 2a_{n-3} - \\delta_n')
+var, rhs: ('a', 'a_{n-1} + 2a_{n-2} - 2a_{n-3}')
+var, rhs: ('a', 'a_{n-1} + 2a_{n-2} - 2a_{n-3}}')
+latex_matches[-2:] = [('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3)'), ('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3)}')]
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-2), then* 1+1=2. That works. Term 3* is 3. 2+1=3. That works. Term 4* is 5. 3+2=5. Term 5* is 7. 5+3=8, but actual is 7. So that breaks. So the Fibonacci recurrence doesn't hold here")
+('a', '1-')
+('a', "latex_seq(n-2) + latex_seq(n-k) *for some k. Let me think. Let's look at term 5: 7. Previous terms are 5 *(term4), 3 *(term3), 2 *(term2), etc. 5 + 3 - 1? Not sure")
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) +')
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3)')
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-k) *for some k. Let's try for n=5: latex_seq(5)=latex_seq(4)+latex_seq(3) - latex_seq(1) → 5+3-1=7. Correct. For n=6: latex_seq(5)+latex_seq(4) - latex_seq(1) →7+5-1=11. Correct. For n=7: latex_seq(6)+latex_seq(5) - latex_seq(3) →11+7-3=15. Correct. For n=8: latex_seq(7)+latex_seq(6) - latex_seq(4) →15+11-5=21. But actual latex_seq(8) *is 22. So discrepancy here. Hmm")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-5). Let's check for n=5: latex_seq(5)=latex_seq(4)+latex_seq(3)-latex_seq(0). 5+3-1=7. Correct. For n=6: latex_seq(5)+latex_seq(4)-latex_seq(1)=7+5-1=11. Correct. For n=7: latex_seq(6)+latex_seq(5)-latex_seq(2)=11+7-2=16. But actual latex_seq(7) *is 15. No")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-5). Let's test this:")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3). Let's try:")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4). Let's try:")
+('a', '1-')
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4) + correction term. But this is getting too speculative')
+('a', "p*latex_seq(n-1) + q*latex_seq(n-2). Let's set up equations using the known terms")
+('a', "latex_seq(n-1) + latex_seq(n-2), which is the Fibonacci sequence. But our sequence diverges from Fibonacci starting at n=5. So this suggests that the recurrence is not of order 2* for all terms, or there's a different recurrence")
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3)')
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3) + s*latex_seq(n-4)')
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-k) *for some k. Let's see:")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3). Let's test:")
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4)? For n=5: 5+3-1=7, which matches. For n=6: 7+5-1=11, which matches. For n=7: 11+7-2=16≠15. Close but not quite')
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3). Let's check:")
+('a', "latex_seq(n-1)+latex_seq(n-2) - latex_seq(n-4). For n=5: 7=7 *(5+3-1=7). For n=6: 11=7+5-1=11. For n=7: 15=11+7-3=15 *(since latex_seq(3)=3). For n=8: 22=15+11-5=21, but actual is 22. So need to add 1. Maybe there's an adjustment when n≥8? Not sure")
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-4) + c, where c is some constant or function. For n=8, it would need to be +1. For n=9: latex_seq(8)=22, latex_seq(7)=15, latex_seq(6)=11. So 22+15 - latex_seq(5)=37-7=30, which matches latex_seq(9)=30. So for n=9, it works without adjustment. For n=8, it was off by 1. Maybe there's a different pattern")
+('a', "p*latex_seq(n-1) + q*latex_seq(n-2). Let's set up equations for some terms")
+('a', "0.5*latex_seq(n-1) + 1.5*latex_seq(n-2). Let's test this on latex_seq(7):")
+('a', 'p*latex_seq(n-1) + q*latex_seq(n-2) + r*latex_seq(n-3)')
+('a', '1*latex_seq(n-1) + 2*latex_seq(n-2) -2*latex_seq(n-3)')
+('a', '1-')
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-k) *for some k, but this is speculative')
+('a', '1-')
+('a', 'math.floor(φ*latex_seq(n-1)), but this is too vague')
+('a', "latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-3), but let's test this:")
+('a', 'latex_seq(n-1) + latex_seq(n-2) - latex_seq(n-k) *for some k. This is too vague')
+('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3)')
+('a', "latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3), but it fails for n ≥ 8. This suggests that either there's an error in the sequence provided, or the pattern is more complex and requires additional analysis")
+('a', '1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 55, 77, 108, 149, 201, 265, 341, 440, 566, 726, 922, 1165, 1470')
+('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3)')
+('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3) - \\delta_n')
+('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3)')
+('a', 'latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3)}')
+len(latex_matches) = 43
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 54, 73, 94, 123, 157, 201, 252, 318, 393, 488, 598, 732, 887, 1076]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) + 2*latex_seq(n-2) - 2*latex_seq(n-3) 
+
+
+
+-- decoding response finished
+Ground truth: A008632 ,1,1,2,3,5,7,11,15,22,30,41,54,73,94,123,157,201,252,318,393,488,598,732,887,1076,1291,1549,1845,2194,2592,3060,3589,4206,4904,5708,6615,7658,8825,10158,11651,13343,15231,17365,19735,22402,25361,28670,
+[dasco sequence loaded.]
+ground_truth = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 54, 73, 94, 123, 157, 201, 252, 318, 393, 488, 598, 732, 887, 1076, 1291, 1549, 1845, 2194, 2592, 3060, 3589, 4206, 4904, 5708, 6615, 7658, 8825, 10158, 11651, 13343, 15231, 17365, 19735, 22402, 25361, 28670]
+len(ground_truth) = 47
+
+cores = False
+task_id = 1576
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 41, 54, 73, 94, 123, 157, 201, 252, 318, 393, 488, 598, 732, 887, 1076, 1386, 1764, 2384, 3140, 4380, 5892, 8372, 11396, 16356, 22404]
+len(seq_pred) = 35
+
+is_Dasco False
+

@@ -1,0 +1,140 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+9502
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+09502-8338.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52'
+question[-200:] = ':**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52'
+inits = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+27
+('a', ' a(n-1) + 2, except for certain cases. But how to express that in a recursive function. For example, if the function is supposed to return a(n) = a(n-1) + 2, except when n=10, then add 3. But how would that fit into a general recursive formula?')
+('a', " 2*(n+1) + 1? Let's check:")
+('a', " a(n-1) + 2. But then why does a(10) equal 23? Because a(9) is 20. So a(10) = 20 + 3. But according to the recurrence a(n) = a(n-1) + 2, it should be 22. But it's 23. So there's a one-time addition here. How to model that in a recursive formula?")
+('a', " a(n-1) + 2 for all n ≥ 1, except when n=10, where it's a(9) +3. But how to express that in a recursive function. The problem is that in a recursive function, the formula must depend on previous terms and possibly n. But if there's a special case for n=10, then the function would need to check for that. However, the user's examples don't have such special cases. For example, in Example 2, the recurrence is 2*a(n-1) +1, which is a standard linear recurrence. So perhaps there's a different pattern here.")
+('a', ' a(n-1) + 2 + some condition. But how?')
+('a', " a(n-1) + 2, except when n is a multiple of some number. But I don't see an obvious pattern here. For example, n=10 is the only one with +3. ")
+('a', " 2n + 2 for n < 10, and then for n ≥10, a(n) = 2n + 3. Let's check:")
+('a', ' 2n + something. For n=10: 2*10 +3=23. For n=11: 2*11 +3=25. For n=21: 2*21 +4=46. So the added value increases by 1 at some point. Not sure.')
+('a', " 23 + 2*(n-10). Let's check for n=10: 23 + 0=23. Correct. For n=11: 23 +2=25. Correct. For n=21: 23 + 2*(21-10) = 23 +22=45. But the actual term is 46. So that doesn't fit. Hmm. What about for n=21, the term is 46. According to this formula, it should be 45. So there's another discrepancy. So maybe there's another jump at n=21? Let me check the terms. The sequence given by the user up to n=24 is 52. Let's compute according to the formula for n≥10: a(n) = 23 + 2*(n-10). For n=21: 23 + 2*(11) = 23+22=45. But the actual term is 46. So there's a +1 here. Similarly, for n=21, the term is 46. So perhaps there's another jump at n=21. But the user's sequence shows that after 43 (n=20), the next term is 46 (n=21). So from 43 to 46 is +3. Then from 46 to 48 is +2, and so on. So there's another +3 at n=21. This suggests that there are multiple points where the increment is +3 instead of +2. But how to model that in a recursive formula?")
+('a', " a(n-1) +2. But then the base cases would need to include a(10), which is possible. Let's see:")
+('a', ' a(n-1) + 2.')
+('a', " a(n-1) + n. But in this case, the base cases would need to include up to a(10). But the user's sequence has 25 terms, so maybe there are more such jumps. For example, at n=21, the term is 46, which is 43 +3. So perhaps there's another jump at n=21. If that's the case, then the base cases would need to include a(21) = 46, and for n>21, a(n) = a(n-1) +2. But this seems like a lot of base cases and not a general formula. ")
+('a', ' a(n-1) + 2, except when n is a multiple of some number, like 10, then add 3. But how to express that in a recursive formula. For example:')
+('a', " 23 + 2*(n-10). Let's check for n=10: 23 + 0=23. Correct. For n=11: 23 +2=25. Correct. For n=21: 23 + 2*(11) = 23 +22=45. But the actual term is 46. So there's a discrepancy here. What about n=21? The actual term is 46. According to this formula, it should be 45. So there's an extra +1 here. Maybe there's another jump at n=21. Let me check the next terms. For n=22: 48. According to the formula, it should be 45 +2=47. But actual is 48. So another +1. Similarly, for n=23: 50. According to formula: 47 +2=49. Actual is 50. So another +1. And n=24: 52. Formula: 49 +2=51. Actual is 52. So there's a pattern where from n=21 onwards, there's an additional +1 every step. But why?")
+('a', " a(n-1) +3. But that would make the terms increase by 3, which they don't. They increase by 2. So this is confusing.")
+('a', " a(n-1) +2, but with an initial jump at n=10. However, this would require defining a base case at n=10, which is 23, and then for n>10, a(n) = a(n-1) +2. This would fit the given sequence up to n=20, but then at n=21, there's another jump to 46, which would require another base case. This seems unlikely, but perhaps the user's sequence is only up to n=10, and the rest is a red herring. However, the user provided terms up to n=24, so this approach would not work.")
+('a', " 2n + 2 for n < 10, and for n ≥10, a(n) = 2n + 3, but this doesn't fit the term at n=21. Alternatively, perhaps there's a different recurrence that I'm missing.")
+('a', " 2n + 2 for n < 10, and for n ≥10, a(n) = a(n-1) +2, with a(10) = 23. This would fit the given terms up to n=20, but not beyond. However, since the user provided terms up to n=24, this suggests that there's another rule at n=21. Given that, perhaps the correct recurrence is a(n) = a(n-1) +2, with a(10) = 23 and a(21) = 46. But this would require multiple base cases, which is not typical for such problems.")
+('a', " 2n + 2. For n ≥10, a(n) = a(n-1) +2, with a(10) = 23. This would generate the sequence up to n=20 as given, but the term at n=21 would be 45, which doesn't match the user's 46. However, since the user's sequence shows 46 at n=21, there must be another rule. Perhaps there's a mistake in the user's sequence, or perhaps there's an additional rule at n=21. Without more information, it's difficult to say.")
+('a', " a(n-1) +2 for n ≥1, with a(0) = 2, but with an adjustment at n=10 to set a(10) = 23. This would fit the given terms up to n=20, and the user might have made a mistake in the term at n=21. Alternatively, if we consider that the user's sequence is correct, then there must be another rule, but without further information, it's impossible to determine.")
+('a', ' a(n-1) +2 for n ≥1, with a(0) = 2, and an adjustment at n=10 to set a(10) = 23. This would give the recurrence:')
+('a', ' a(n-1) + 2 for n ≥ 1, with a(0) = 2, and a special case at n=10 where a(10) = 23 instead of 22 (which would be 20 + 2*2=24). But this is not a standard recurrence.')
+('a', ' a(n-1) + 2 with a(0) = 2.')
+('a', ' 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 $  ')
+('a', ' 2n + 2 \\quad \\text{for } 0 \\leq n \\leq 9')
+('a', ' 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52 $  ')
+('a', ' 2n + 2 $.')
+var, rhs: ('a', 'a(n-1) + 2, except for certain cases. But how to express that in a recursive function. For example, if the function is supposed to return a(n) = a(n-1) + 2, except when n=10, then add 3. But how would that fit into a general recursive formula?')
+var, rhs: ('a', "2*(n+1) + 1? Let's check:")
+var, rhs: ('a', "a(n-1) + 2. But then why does a(10) equal 23? Because a(9) is 20. So a(10) = 20 + 3. But according to the recurrence a(n) = a(n-1) + 2, it should be 22. But it's 23. So there's a one-time addition here. How to model that in a recursive formula?")
+var, rhs: ('a', "a(n-1) + 2 for all n ≥ 1, except when n=10, where it's a(9) +3. But how to express that in a recursive function. The problem is that in a recursive function, the formula must depend on previous terms and possibly n. But if there's a special case for n=10, then the function would need to check for that. However, the user's examples don't have such special cases. For example, in Example 2, the recurrence is 2*a(n-1) +1, which is a standard linear recurrence. So perhaps there's a different pattern here.")
+var, rhs: ('a', 'a(n-1) + 2 + some condition. But how?')
+var, rhs: ('a', "a(n-1) + 2, except when n is a multiple of some number. But I don't see an obvious pattern here. For example, n=10 is the only one with +3.")
+var, rhs: ('a', "2n + 2 for n < 10, and then for n ≥10, a(n) = 2n + 3. Let's check:")
+var, rhs: ('a', '2n + something. For n=10: 2*10 +3=23. For n=11: 2*11 +3=25. For n=21: 2*21 +4=46. So the added value increases by 1 at some point. Not sure.')
+var, rhs: ('a', "23 + 2*(n-10). Let's check for n=10: 23 + 0=23. Correct. For n=11: 23 +2=25. Correct. For n=21: 23 + 2*(21-10) = 23 +22=45. But the actual term is 46. So that doesn't fit. Hmm. What about for n=21, the term is 46. According to this formula, it should be 45. So there's another discrepancy. So maybe there's another jump at n=21? Let me check the terms. The sequence given by the user up to n=24 is 52. Let's compute according to the formula for n≥10: a(n) = 23 + 2*(n-10). For n=21: 23 + 2*(11) = 23+22=45. But the actual term is 46. So there's a +1 here. Similarly, for n=21, the term is 46. So perhaps there's another jump at n=21. But the user's sequence shows that after 43 (n=20), the next term is 46 (n=21). So from 43 to 46 is +3. Then from 46 to 48 is +2, and so on. So there's another +3 at n=21. This suggests that there are multiple points where the increment is +3 instead of +2. But how to model that in a recursive formula?")
+var, rhs: ('a', "a(n-1) +2. But then the base cases would need to include a(10), which is possible. Let's see:")
+var, rhs: ('a', 'a(n-1) + 2.')
+var, rhs: ('a', "a(n-1) + n. But in this case, the base cases would need to include up to a(10). But the user's sequence has 25 terms, so maybe there are more such jumps. For example, at n=21, the term is 46, which is 43 +3. So perhaps there's another jump at n=21. If that's the case, then the base cases would need to include a(21) = 46, and for n>21, a(n) = a(n-1) +2. But this seems like a lot of base cases and not a general formula.")
+var, rhs: ('a', 'a(n-1) + 2, except when n is a multiple of some number, like 10, then add 3. But how to express that in a recursive formula. For example:')
+var, rhs: ('a', "23 + 2*(n-10). Let's check for n=10: 23 + 0=23. Correct. For n=11: 23 +2=25. Correct. For n=21: 23 + 2*(11) = 23 +22=45. But the actual term is 46. So there's a discrepancy here. What about n=21? The actual term is 46. According to this formula, it should be 45. So there's an extra +1 here. Maybe there's another jump at n=21. Let me check the next terms. For n=22: 48. According to the formula, it should be 45 +2=47. But actual is 48. So another +1. Similarly, for n=23: 50. According to formula: 47 +2=49. Actual is 50. So another +1. And n=24: 52. Formula: 49 +2=51. Actual is 52. So there's a pattern where from n=21 onwards, there's an additional +1 every step. But why?")
+var, rhs: ('a', "a(n-1) +3. But that would make the terms increase by 3, which they don't. They increase by 2. So this is confusing.")
+var, rhs: ('a', "a(n-1) +2, but with an initial jump at n=10. However, this would require defining a base case at n=10, which is 23, and then for n>10, a(n) = a(n-1) +2. This would fit the given sequence up to n=20, but then at n=21, there's another jump to 46, which would require another base case. This seems unlikely, but perhaps the user's sequence is only up to n=10, and the rest is a red herring. However, the user provided terms up to n=24, so this approach would not work.")
+var, rhs: ('a', "2n + 2 for n < 10, and for n ≥10, a(n) = 2n + 3, but this doesn't fit the term at n=21. Alternatively, perhaps there's a different recurrence that I'm missing.")
+var, rhs: ('a', "2n + 2 for n < 10, and for n ≥10, a(n) = a(n-1) +2, with a(10) = 23. This would fit the given terms up to n=20, but not beyond. However, since the user provided terms up to n=24, this suggests that there's another rule at n=21. Given that, perhaps the correct recurrence is a(n) = a(n-1) +2, with a(10) = 23 and a(21) = 46. But this would require multiple base cases, which is not typical for such problems.")
+var, rhs: ('a', "2n + 2. For n ≥10, a(n) = a(n-1) +2, with a(10) = 23. This would generate the sequence up to n=20 as given, but the term at n=21 would be 45, which doesn't match the user's 46. However, since the user's sequence shows 46 at n=21, there must be another rule. Perhaps there's a mistake in the user's sequence, or perhaps there's an additional rule at n=21. Without more information, it's difficult to say.")
+var, rhs: ('a', "a(n-1) +2 for n ≥1, with a(0) = 2, but with an adjustment at n=10 to set a(10) = 23. This would fit the given terms up to n=20, and the user might have made a mistake in the term at n=21. Alternatively, if we consider that the user's sequence is correct, then there must be another rule, but without further information, it's impossible to determine.")
+var, rhs: ('a', 'a(n-1) +2 for n ≥1, with a(0) = 2, and an adjustment at n=10 to set a(10) = 23. This would give the recurrence:')
+var, rhs: ('a', 'a(n-1) + 2 for n ≥ 1, with a(0) = 2, and a special case at n=10 where a(10) = 23 instead of 22 (which would be 20 + 2*2=24). But this is not a standard recurrence.')
+var, rhs: ('a', 'a(n-1) + 2 with a(0) = 2.')
+var, rhs: ('a', '2, 4, 6, 8, 10, 12, 14, 16, 18, 20 $')
+var, rhs: ('a', '2n + 2 \\quad \\text{for } 0 \\leq n \\leq 9')
+var, rhs: ('a', '23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52 $')
+var, rhs: ('a', '2n + 2 $.')
+latex_matches[-2:] = [('a', '23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52 $'), ('a', '2*n + 2 $')]
+('a', 'latex_seq(n-1) + 2, except for certain cases. But how to express that in a recursive function. For example, if the function is supposed to return latex_seq(n) = latex_seq(n-1) + 2, except when n=10, then add 3. But how would that fit into a general recursive formula?')
+('a', "2*(n+1) + 1? Let's check:")
+('a', "latex_seq(n-1) + 2. But then why does latex_seq(10) *equal 23? Because latex_seq(9) *is 20. So latex_seq(10) = 20 + 3. But according to the recurrence latex_seq(n) = latex_seq(n-1) + 2, it should be 22. But it's 23. So there's a one-time addition here. How to model that in a recursive formula?")
+('a', "latex_seq(n-1) + 2* for all n ≥ 1, except when n=10, where it's latex_seq(9) +3. But how to express that in a recursive function. The problem is that in a recursive function, the formula must depend on previous terms and possibly n. But if there's a special case for n=10, then the function would need to check for that. However, the user's examples don't have such special cases. For example, in Example 2, the recurrence is 2*latex_seq(n-1) +1, which is a standard linear recurrence. So perhaps there's a different pattern here")
+('a', 'latex_seq(n-1) + 2 + some condition. But how?')
+('a', "latex_seq(n-1) + 2, except when n is a multiple of some number. But I don't see an obvious pattern here. For example, n=10* is the only one with +3")
+('a', "2*n + 2* for n < 10, and then for n ≥10, latex_seq(n) = 2*n + 3. Let's check:")
+('a', '1-')
+('a', "23 + 2*(n-10). Let's check for n=10: 23 + 0=23. Correct. For n=11: 23 +2=25. Correct. For n=21: 23 + 2*(21-10) = 23 +22=45. But the actual term is 46. So that doesn't fit. Hmm. What about for n=21, the term is 46. According to this formula, it should be 45. So there's another discrepancy. So maybe there's another jump at n=21? Let me check the terms. The sequence given by the user up to n=24* is 52. Let's compute according to the formula for n≥10: latex_seq(n) = 23 + 2*(n-10). For n=21: 23 + 2*(11) = 23+22=45. But the actual term is 46. So there's a +1* here. Similarly, for n=21, the term is 46. So perhaps there's another jump at n=21. But the user's sequence shows that after 43 *(n=20), the next term is 46 *(n=21). So from 43* to 46* is +3. Then from 46* to 48* is +2, and so on. So there's another +3* at n=21. This suggests that there are multiple points where the increment is +3* instead of +2. But how to model that in a recursive formula?")
+('a', "latex_seq(n-1) +2. But then the base cases would need to include latex_seq(10), which is possible. Let's see:")
+('a', 'latex_seq(n-1) + 2')
+('a', "latex_seq(n-1) + n. But in this case, the base cases would need to include up to latex_seq(10). But the user's sequence has 25* terms, so maybe there are more such jumps. For example, at n=21, the term is 46, which is 43 +3. So perhaps there's another jump at n=21. If that's the case, then the base cases would need to include latex_seq(21) = 46, and for n>21, latex_seq(n) = latex_seq(n-1) +2. But this seems like a lot of base cases and not a general formula")
+('a', 'latex_seq(n-1) + 2, except when n is a multiple of some number, like 10, then add 3. But how to express that in a recursive formula. For example:')
+('a', "23 + 2*(n-10). Let's check for n=10: 23 + 0=23. Correct. For n=11: 23 +2=25. Correct. For n=21: 23 + 2*(11) = 23 +22=45. But the actual term is 46. So there's a discrepancy here. What about n=21? The actual term is 46. According to this formula, it should be 45. So there's an extra +1* here. Maybe there's another jump at n=21. Let me check the next terms. For n=22: 48. According to the formula, it should be 45 +2=47. But actual is 48. So another +1. Similarly, for n=23: 50. According to formula: 47 +2=49. Actual is 50. So another +1. And n=24: 52. Formula: 49 +2=51. Actual is 52. So there's a pattern where from n=21* onwards, there's an additional +1* every step. But why?")
+('a', "latex_seq(n-1) +3. But that would make the terms increase by 3, which they don't. They increase by 2. So this is confusing")
+('a', "latex_seq(n-1) +2, but with an initial jump at n=10. However, this would require defining a base case at n=10, which is 23, and then for n>10, latex_seq(n) = latex_seq(n-1) +2. This would fit the given sequence up to n=20, but then at n=21, there's another jump to 46, which would require another base case. This seems unlikely, but perhaps the user's sequence is only up to n=10, and the rest is a red herring. However, the user provided terms up to n=24, so this approach would not work")
+('a', "2*n + 2* for n < 10, and for n ≥10, latex_seq(n) = 2*n + 3, but this doesn't fit the term at n=21. Alternatively, perhaps there's a different recurrence that I'm missing")
+('a', "2*n + 2* for n < 10, and for n ≥10, latex_seq(n) = latex_seq(n-1) +2, with latex_seq(10) = 23. This would fit the given terms up to n=20, but not beyond. However, since the user provided terms up to n=24, this suggests that there's another rule at n=21. Given that, perhaps the correct recurrence is latex_seq(n) = latex_seq(n-1) +2, with latex_seq(10) = 23* and latex_seq(21) = 46. But this would require multiple base cases, which is not typical for such problems")
+('a', "2*n + 2. For n ≥10, latex_seq(n) = latex_seq(n-1) +2, with latex_seq(10) = 23. This would generate the sequence up to n=20* as given, but the term at n=21* would be 45, which doesn't match the user's 46. However, since the user's sequence shows 46* at n=21, there must be another rule. Perhaps there's a mistake in the user's sequence, or perhaps there's an additional rule at n=21. Without more information, it's difficult to say")
+('a', "latex_seq(n-1) +2* for n ≥1, with latex_seq(0) = 2, but with an adjustment at n=10* to set latex_seq(10) = 23. This would fit the given terms up to n=20, and the user might have made a mistake in the term at n=21. Alternatively, if we consider that the user's sequence is correct, then there must be another rule, but without further information, it's impossible to determine")
+('a', 'latex_seq(n-1) +2* for n ≥1, with latex_seq(0) = 2, and an adjustment at n=10* to set latex_seq(10) = 23. This would give the recurrence:')
+('a', 'latex_seq(n-1) + 2* for n ≥ 1, with latex_seq(0) = 2, and a special case at n=10* where latex_seq(10) = 23* instead of 22 *(which would be 20 + 2*2=24). But this is not a standard recurrence')
+('a', 'latex_seq(n-1) + 2* with latex_seq(0) = 2')
+('a', '2, 4, 6, 8, 10, 12, 14, 16, 18, 20 $')
+('a', '2*n + 2 ')
+('a', '23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52 $')
+('a', '2*n + 2 $')
+len(latex_matches) = 27
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52]
+    if n < len(init):
+        return init[n]
+    return latex_seq(n-1) + 2 
+
+
+
+-- decoding response finished
+Ground truth: A059534 ,2,4,6,8,10,12,14,16,18,20,23,25,27,29,31,33,35,37,39,41,43,46,48,50,52,54,56,58,60,62,64,66,69,71,73,75,77,79,81,83,85,87,89,92,94,96,98,100,102,104,106,108,110,112,115,117,119,121,123,125,127,129,131,133,
+[dasco sequence loaded.]
+ground_truth = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 69, 71, 73, 75, 77, 79, 81, 83, 85, 87, 89, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 115, 117, 119, 121, 123, 125, 127, 129, 131, 133]
+len(ground_truth) = 64
+
+cores = False
+task_id = 9502
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+    seq_pred = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72]
+len(seq_pred) = 35
+
+is_Dasco False
+

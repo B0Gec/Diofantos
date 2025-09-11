@@ -1,0 +1,196 @@
+(True, True)
+(True, False)
+(True, False)
+is_lookup = False
+4585
+Evaluation of results//obat-dasco25-10k-merged/
+files[:15] = ['03672-3063.json', '01864-9213.json', '04915-4881.json', '09022-5430.json', '05482-3020.json', '08054-6082.json', '08752-4529.json', '00498-3029.json', '00649-1318.json', '03454-3880.json', '08954-7331.json', '09172-4278.json', '07901-3106.json', '09253-3950.json', '01368-5513.json']
+04585-8067.json
+question = 'You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.\n\n**Instructions:**\n\n1.  I will provide you with the first 15 to 25 terms of an integer sequence.\n2.  Your goal is to find the exact recursive equation that generates this sequence.\n3.  You **must** provide your answer **only** in the form of a standard Python recursive function.\n4.  The function must be named `calculate_sequence`.\n5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).\n6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.\n\n**Examples:**\n\n**Example 1:**\n*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n**Example 2:**\n*   **Given Sequence:** `0, 1, 2, 5, 12, 29, 70, 169, 408, 985, 2378, 5741, 13860, 33461, 80782`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 0\n        elif n == 1:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + calculate_sequence(n-2)\n    ```\n\n**Example 3:**\n*   **Given Sequence:** `1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767`\n*   **Expected Output:**\n    ```python\n    def calculate_sequence(n):\n        if n == 0:\n            return 1\n        else:\n            return 2 * calculate_sequence(n-1) + 1\n    ```\n\n---\n\n**Your Task:**\n\nCould you give me a recursive equation in a form of a Python code for the following number sequence: 1, 2, 3, 5, 6, 10, 13, 19, 25, 35, 45, 62, 79, 104, 133, 173, 217, 279, 348, 440, 546, 683, 840, 1043, 1275'
+question[-200:] = 'u give me a recursive equation in a form of a Python code for the following number sequence: 1, 2, 3, 5, 6, 10, 13, 19, 25, 35, 45, 62, 79, 104, 133, 173, 217, 279, 348, 440, 546, 683, 840, 1043, 1275'
+inits = [1, 2, 3, 5, 6, 10, 13, 19, 25, 35, 45, 62, 79, 104, 133, 173, 217, 279, 348, 440, 546, 683, 840, 1043, 1275]
+code_blocks = []
+Seems no Python code was found!
+Started parsing latex equation, if any.
+45
+('a', " a(n-2) + a(n-3) + something. Let's try for term3: 5. If it's a(1) + a(0) = 2+1=3. Not 5. Hmm.")
+('a', " a(n-1) + a(n-3). Let's check:")
+('a', ' a(n-2) + a(n-3)? For term3: a(1)+a(0)=2+1=3. No.')
+('a', " a(n-1) + a(n-3). Let's check term3: 5 = 2 (a(2)) + a(0) 1? 2+1=3. No.")
+('a', " x*a(n-1) + y*a(n-2). Let's try for n=2,3,4,5.")
+('a', ' x*a(1) + y*a(0). So 3 = x*2 + y*1. ')
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3). Let's take terms for n=3,4,5,6.")
+('a', ' a(n-1) + something, and for odd n, a(n) = a(n-2) + something else. ')
+('a', " a(n-1) + a(n-3). Let's check:")
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3). Let's set up equations using known terms.")
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3), then for n=3:')
+('a', " 0.5*a(n-1) + 3.5*a(n-2) -3.5*a(n-3). Let's check if this works for n=6.")
+('a', ' x*a(n-1) + y*a(n-2) + z*a(n-3) + w*a(n-4).')
+('a', " x*a(n-1) + y*a(n-2) + z*a(n-3). Let's try to find x, y, z.")
+('a', ' a(n-1) + a(n-2), with a(0)=1, a(1)=1, then:')
+('a', " a(n-2) + a(n-3), but that would be a tribonacci sequence. Wait, the user's sequence is 1, 1, 1, 2, 3, 5, 8, 13, 21, etc. Let's see:")
+('a', " a(n-1) + a(n-2) for n >= 2, but with initial conditions a(0)=1, a(1)=1, a(2)=1. Wait, but normally the Fibonacci recurrence is a(n) = a(n-1) + a(n-2) for n >= 2, with a(0)=0, a(1)=1. If we set a(0)=1, a(1)=1, then a(2) would be 2, but in the user's sequence, a(2) is 1. So perhaps there's a different recurrence here. Alternatively, maybe the user's sequence is the Fibonacci sequence starting from a different index. For example, if we take the standard Fibonacci sequence F(n), where F(0)=0, F(1)=1, F(2)=1, F(3)=2, etc., then the user's sequence could be F(n-1) + 1 or something else. But looking at the terms:")
+('a', ' a(n-1) + a(n-2) for n >= 3')
+('A', ' A(n-1) + A(n-2) for n >= 3')
+('A', ' A(n-1) + A(n-2). The standard Fibonacci sequence F(n) satisfies F(n) = F(n-1) + F(n-2) for n >= 2, with F(0)=0, F(1)=1.')
+('A', " F(n). But A(0)=1=F(2), A(1)=1=F(2), A(2)=1=F(2). So perhaps A(n) = F(n-2) for n >= 2? Let's check:")
+('A', " F(n-1) + something. Let's see:")
+('A', ' F(n). But how to express A(n) for all n?')
+('A', ' A(n-1) + A(n-2) for n >= 3, with initial conditions A(0)=1, A(1)=1, A(2)=1.')
+('A', ' α * phi^n + β * psi^n.')
+('A', " A(n-1) + A(n-2) for n >= 2, then with A(0)=1, A(1)=1, we would have A(2)=2, but the user's sequence has A(2)=1. Therefore, there's a contradiction here. This suggests that either the recurrence is different, or the initial conditions are different.")
+('A', " A(n-1) + A(n-2) for n >= 3, with A(0)=1, A(1)=1, A(2)=1. This is a valid setup, but it's a third-order initial condition for a second-order recurrence. Wait, no, for a second-order recurrence, you need two initial conditions. Here, the recurrence starts at n=3, so we need two initial conditions, say A(0) and A(1), and then A(2) can be computed if needed. But in this case, the user has provided A(0)=1, A(1)=1, A(2)=1, which is three initial conditions. However, if the recurrence is for n >= 3, then A(2) is part of the initial conditions and not determined by the recurrence. So it's okay to have three initial conditions here.")
+('A', ' A(n-1) + A(n-2) for n >= 3, with A(0)=1, A(1)=1, A(2)=1.')
+('A', ' F(n). But what about A(0), A(1), A(2)? ')
+('A', " F(n-1) + something. Let's see:")
+('A', ' F(n). Therefore, if we can express A(n) in terms of F(n), then for n >=3, A(n) = F(n). But what about for n=0,1,2?')
+('A', ' F(n). Then:')
+('A', ' F(n) for n >=3. Therefore, to compute A(100), we can compute F(100), the 100th Fibonacci number, with F(0)=0, F(1)=1.')
+('A', ' F(n).')
+('A', " F(n). But wait, A(0)=1=F(2)=1? No, F(0)=0. Wait, there's confusion here.")
+('A', ' F(n) for n >= 2, but A(0)=1=F(2)=1, A(1)=1=F(2)=1, A(2)=1=F(2)=1? No, F(2)=1. So for n >=2, A(n) = F(2) ?')
+('A', " F(n). But for n=2, A(2)=1, which is equal to F(3) - F(2) ? No. Let's clarify:")
+('A', ' F(n). For n=0,1,2, A(n)=1, which is equal to F(2)=1 for n=0 and n=1 and n=2. Wait, no. For n=0, A(0)=1=F(2). For n=1, A(1)=1=F(2). For n=2, A(2)=1=F(2). For n=3, A(3)=2=F(3). For n=4, A(4)=3=F(4), etc.')
+('A', ' F(n) if n >=3, but for n=2, A(2)=F(2)=1. Wait, but F(2)=1, so actually for n >=2, A(n)=F(n). But then why does the recurrence start at n=3? Because for n=2, A(2)=F(2)=1, which is consistent with the recurrence A(n)=A(n-1)+A(n-2) for n >=2, since A(2)=A(1)+A(0)=1+1=2? Wait, no! This is the contradiction again.')
+('A', 'A(n-1)+A(n-2), with A(0)=1, A(1)=1, A(2)=1. And for n >=3, this leads to A(n)=F(n), where F(n) is the standard Fibonacci sequence with F(0)=0, F(1)=1.')
+('A', 'A(n-1)+A(n-2), and with A(0)=1, A(1)=1, A(2)=1, this leads to A(n)=F(n) for n >=3, where F(n) is the standard Fibonacci sequence.')
+('A', ' A(n-1) + A(n-2) $')
+('F', ' F(n-1) + F(n-2) $ for $ n \\geq 2 $')
+('A', ' F(n) $, where $ F(n) $ is the standard Fibonacci number.')
+('A', ' F(n) $ for $ n \\geq 3 $, we have:')
+var, rhs: ('a', "a(n-2) + a(n-3) + something. Let's try for term3: 5. If it's a(1) + a(0) = 2+1=3. Not 5. Hmm.")
+var, rhs: ('a', "a(n-1) + a(n-3). Let's check:")
+var, rhs: ('a', 'a(n-2) + a(n-3)? For term3: a(1)+a(0)=2+1=3. No.')
+var, rhs: ('a', "a(n-1) + a(n-3). Let's check term3: 5 = 2 (a(2)) + a(0) 1? 2+1=3. No.")
+var, rhs: ('a', "x*a(n-1) + y*a(n-2). Let's try for n=2,3,4,5.")
+var, rhs: ('a', 'x*a(1) + y*a(0). So 3 = x*2 + y*1.')
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3). Let's take terms for n=3,4,5,6.")
+var, rhs: ('a', 'a(n-1) + something, and for odd n, a(n) = a(n-2) + something else.')
+var, rhs: ('a', "a(n-1) + a(n-3). Let's check:")
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3). Let's set up equations using known terms.")
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3), then for n=3:')
+var, rhs: ('a', "0.5*a(n-1) + 3.5*a(n-2) -3.5*a(n-3). Let's check if this works for n=6.")
+var, rhs: ('a', 'x*a(n-1) + y*a(n-2) + z*a(n-3) + w*a(n-4).')
+var, rhs: ('a', "x*a(n-1) + y*a(n-2) + z*a(n-3). Let's try to find x, y, z.")
+var, rhs: ('a', 'a(n-1) + a(n-2), with a(0)=1, a(1)=1, then:')
+var, rhs: ('a', "a(n-2) + a(n-3), but that would be a tribonacci sequence. Wait, the user's sequence is 1, 1, 1, 2, 3, 5, 8, 13, 21, etc. Let's see:")
+var, rhs: ('a', "a(n-1) + a(n-2) for n >= 2, but with initial conditions a(0)=1, a(1)=1, a(2)=1. Wait, but normally the Fibonacci recurrence is a(n) = a(n-1) + a(n-2) for n >= 2, with a(0)=0, a(1)=1. If we set a(0)=1, a(1)=1, then a(2) would be 2, but in the user's sequence, a(2) is 1. So perhaps there's a different recurrence here. Alternatively, maybe the user's sequence is the Fibonacci sequence starting from a different index. For example, if we take the standard Fibonacci sequence F(n), where F(0)=0, F(1)=1, F(2)=1, F(3)=2, etc., then the user's sequence could be F(n-1) + 1 or something else. But looking at the terms:")
+var, rhs: ('a', 'a(n-1) + a(n-2) for n >= 3')
+var, rhs: ('A', 'A(n-1) + A(n-2) for n >= 3')
+var, rhs: ('A', 'A(n-1) + A(n-2). The standard Fibonacci sequence F(n) satisfies F(n) = F(n-1) + F(n-2) for n >= 2, with F(0)=0, F(1)=1.')
+var, rhs: ('A', "F(n). But A(0)=1=F(2), A(1)=1=F(2), A(2)=1=F(2). So perhaps A(n) = F(n-2) for n >= 2? Let's check:")
+var, rhs: ('A', "F(n-1) + something. Let's see:")
+var, rhs: ('A', 'F(n). But how to express A(n) for all n?')
+var, rhs: ('A', 'A(n-1) + A(n-2) for n >= 3, with initial conditions A(0)=1, A(1)=1, A(2)=1.')
+var, rhs: ('A', 'α * phi^n + β * psi^n.')
+var, rhs: ('A', "A(n-1) + A(n-2) for n >= 2, then with A(0)=1, A(1)=1, we would have A(2)=2, but the user's sequence has A(2)=1. Therefore, there's a contradiction here. This suggests that either the recurrence is different, or the initial conditions are different.")
+var, rhs: ('A', "A(n-1) + A(n-2) for n >= 3, with A(0)=1, A(1)=1, A(2)=1. This is a valid setup, but it's a third-order initial condition for a second-order recurrence. Wait, no, for a second-order recurrence, you need two initial conditions. Here, the recurrence starts at n=3, so we need two initial conditions, say A(0) and A(1), and then A(2) can be computed if needed. But in this case, the user has provided A(0)=1, A(1)=1, A(2)=1, which is three initial conditions. However, if the recurrence is for n >= 3, then A(2) is part of the initial conditions and not determined by the recurrence. So it's okay to have three initial conditions here.")
+var, rhs: ('A', 'A(n-1) + A(n-2) for n >= 3, with A(0)=1, A(1)=1, A(2)=1.')
+var, rhs: ('A', 'F(n). But what about A(0), A(1), A(2)?')
+var, rhs: ('A', "F(n-1) + something. Let's see:")
+var, rhs: ('A', 'F(n). Therefore, if we can express A(n) in terms of F(n), then for n >=3, A(n) = F(n). But what about for n=0,1,2?')
+var, rhs: ('A', 'F(n). Then:')
+var, rhs: ('A', 'F(n) for n >=3. Therefore, to compute A(100), we can compute F(100), the 100th Fibonacci number, with F(0)=0, F(1)=1.')
+var, rhs: ('A', 'F(n).')
+var, rhs: ('A', "F(n). But wait, A(0)=1=F(2)=1? No, F(0)=0. Wait, there's confusion here.")
+var, rhs: ('A', 'F(n) for n >= 2, but A(0)=1=F(2)=1, A(1)=1=F(2)=1, A(2)=1=F(2)=1? No, F(2)=1. So for n >=2, A(n) = F(2) ?')
+var, rhs: ('A', "F(n). But for n=2, A(2)=1, which is equal to F(3) - F(2) ? No. Let's clarify:")
+var, rhs: ('A', 'F(n). For n=0,1,2, A(n)=1, which is equal to F(2)=1 for n=0 and n=1 and n=2. Wait, no. For n=0, A(0)=1=F(2). For n=1, A(1)=1=F(2). For n=2, A(2)=1=F(2). For n=3, A(3)=2=F(3). For n=4, A(4)=3=F(4), etc.')
+var, rhs: ('A', 'F(n) if n >=3, but for n=2, A(2)=F(2)=1. Wait, but F(2)=1, so actually for n >=2, A(n)=F(n). But then why does the recurrence start at n=3? Because for n=2, A(2)=F(2)=1, which is consistent with the recurrence A(n)=A(n-1)+A(n-2) for n >=2, since A(2)=A(1)+A(0)=1+1=2? Wait, no! This is the contradiction again.')
+var, rhs: ('A', 'A(n-1)+A(n-2), with A(0)=1, A(1)=1, A(2)=1. And for n >=3, this leads to A(n)=F(n), where F(n) is the standard Fibonacci sequence with F(0)=0, F(1)=1.')
+var, rhs: ('A', 'A(n-1)+A(n-2), and with A(0)=1, A(1)=1, A(2)=1, this leads to A(n)=F(n) for n >=3, where F(n) is the standard Fibonacci sequence.')
+var, rhs: ('A', 'A(n-1) + A(n-2) $')
+var, rhs: ('F', 'F(n-1) + F(n-2) $ for $ n \\geq 2 $')
+var, rhs: ('A', 'F(n) $, where $ F(n) $ is the standard Fibonacci number.')
+var, rhs: ('A', 'F(n) $ for $ n \\geq 3 $, we have:')
+latex_matches[-2:] = [('A', 'F(n) $, where $ F(n) $ is the standard Fibonacci number'), ('A', 'F(n) $ for $ n \\geq 3 $, we have:')]
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-3). Let's check:")
+('a', 'latex_seq(n-2) + latex_seq(n-3)? For term3: latex_seq(1)+latex_seq(0)=2+1=3. No')
+('a', "latex_seq(n-1) + latex_seq(n-3). Let's check term3: 5 = 2 *(latex_seq(2)) + latex_seq(0) *1? 2+1=3. No")
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2). Let's try for n=2,3,4,5")
+('a', 'x*latex_seq(1) + y*latex_seq(0). So 3 = x*2 + y*1')
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3). Let's take terms for n=3,4,5,6")
+('a', '1-')
+('a', "latex_seq(n-1) + latex_seq(n-3). Let's check:")
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3). Let's set up equations using known terms")
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3), then for n=3:')
+('a', "0.5*latex_seq(n-1) + 3.5*latex_seq(n-2) -3.5*latex_seq(n-3). Let's check if this works for n=6")
+('a', 'x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3) + w*latex_seq(n-4)')
+('a', "x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3). Let's try to find x, y, z")
+('a', 'latex_seq(n-1) + latex_seq(n-2), with latex_seq(0)=1, latex_seq(1)=1, then:')
+('a', "latex_seq(n-2) + latex_seq(n-3), but that would be a tribonacci sequence. Wait, the user's sequence is 1, 1, 1, 2, 3, 5, 8, 13, 21, etc. Let's see:")
+('a', '1-')
+('a', 'latex_seq(n-1) + latex_seq(n-2) *for n >= 3')
+('A', 'latex_seq(n-1) + latex_seq(n-2) *for n >= 3')
+('A', 'latex_seq(n-1) + latex_seq(n-2). The standard Fibonacci sequence F(n) *satisfies F(n) = F(n-1) + F(n-2) *for n >= 2, with F(0)=0, F(1)=1')
+('A', "F(n). But latex_seq(0)=1=F(2), latex_seq(1)=1=F(2), latex_seq(2)=1=F(2). So perhaps latex_seq(n) = F(n-2) *for n >= 2? Let's check:")
+('A', '1-')
+('A', 'F(n). But how to express latex_seq(n) *for all n?')
+('A', 'latex_seq(n-1) + latex_seq(n-2) *for n >= 3, with initial conditions latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1')
+('A', 'α * phi**n + β * psi**n')
+('A', "latex_seq(n-1) + latex_seq(n-2) *for n >= 2, then with latex_seq(0)=1, latex_seq(1)=1, we would have latex_seq(2)=2, but the user's sequence has latex_seq(2)=1. Therefore, there's a contradiction here. This suggests that either the recurrence is different, or the initial conditions are different")
+('A', "latex_seq(n-1) + latex_seq(n-2) *for n >= 3, with latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1. This is a valid setup, but it's a third-order initial condition for a second-order recurrence. Wait, no, for a second-order recurrence, you need two initial conditions. Here, the recurrence starts at n=3, so we need two initial conditions, say latex_seq(0) *and latex_seq(1), and then latex_seq(2) *can be computed if needed. But in this case, the user has provided latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1, which is three initial conditions. However, if the recurrence is for n >= 3, then latex_seq(2) *is part of the initial conditions and not determined by the recurrence. So it's okay to have three initial conditions here")
+('A', 'latex_seq(n-1) + latex_seq(n-2) *for n >= 3, with latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1')
+('A', 'F(n). But what about latex_seq(0), latex_seq(1), latex_seq(2)?')
+('A', '1-')
+('A', 'F(n). Therefore, if we can express latex_seq(n) *in terms of F(n), then for n >=3, latex_seq(n) = F(n). But what about for n=0,1,2?')
+('A', 'F(n). Then:')
+('A', 'F(n) *for n >=3. Therefore, to compute latex_seq(100), we can compute F(100), the 100*th Fibonacci number, with F(0)=0, F(1)=1')
+('A', 'F(n)')
+('A', "F(n). But wait, latex_seq(0)=1=F(2)=1? No, F(0)=0. Wait, there's confusion here")
+('A', 'F(n) *for n >= 2, but latex_seq(0)=1=F(2)=1, latex_seq(1)=1=F(2)=1, latex_seq(2)=1=F(2)=1? No, F(2)=1. So for n >=2, latex_seq(n) = F(2) ?')
+('A', "F(n). But for n=2, latex_seq(2)=1, which is equal to F(3) - F(2) ? No. Let's clarify:")
+('A', 'F(n). For n=0,1,2, latex_seq(n)=1, which is equal to F(2)=1* for n=0* and n=1* and n=2. Wait, no. For n=0, latex_seq(0)=1=F(2). For n=1, latex_seq(1)=1=F(2). For n=2, latex_seq(2)=1=F(2). For n=3, latex_seq(3)=2=F(3). For n=4, latex_seq(4)=3=F(4), etc')
+('A', 'F(n) *if n >=3, but for n=2, latex_seq(2)=F(2)=1. Wait, but F(2)=1, so actually for n >=2, latex_seq(n)=F(n). But then why does the recurrence start at n=3? Because for n=2, latex_seq(2)=F(2)=1, which is consistent with the recurrence latex_seq(n)=latex_seq(n-1)+latex_seq(n-2) *for n >=2, since latex_seq(2)=latex_seq(1)+latex_seq(0)=1+1=2? Wait, no! This is the contradiction again')
+('A', 'latex_seq(n-1)+latex_seq(n-2), with latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1. And for n >=3, this leads to latex_seq(n)=F(n), where F(n) *is the standard Fibonacci sequence with F(0)=0, F(1)=1')
+('A', 'latex_seq(n-1)+latex_seq(n-2), and with latex_seq(0)=1, latex_seq(1)=1, latex_seq(2)=1, this leads to latex_seq(n)=F(n) *for n >=3, where F(n) *is the standard Fibonacci sequence')
+('A', 'latex_seq(n-1) + latex_seq(n-2) $')
+('F', 'latex_seq(n-1) + latex_seq(n-2) $ for $ n \\geq 2 $')
+('A', 'F(n) $, where $ F(n) $ is the standard Fibonacci number')
+('A', 'F(n) $ for $ n \\geq 3 $, we have:')
+len(latex_matches) = 45
+
+Test code was censored for imports and manipulated to avoid user input but no changes were needed.
+Here are all censored lines:
+
+And here are all the manipulated lines:
+
+
+function_name = 'latex_seq'
+-- test_code 
+
+
+
+
+@lru_cache(maxsize=None)
+def latex_seq(n:int) -> int:
+    n = round(n)
+    init = [1, 2, 3, 5, 6, 10, 13, 19, 25, 35, 45, 62, 79, 104, 133, 173, 217, 279, 348, 440, 546, 683, 840, 1043, 1275]
+    if n < len(init):
+        return init[n]
+    return x*latex_seq(n-1) + y*latex_seq(n-2) + z*latex_seq(n-3) + w*latex_seq(n-4) 
+
+
+
+-- decoding response finished
+Ground truth: A035974 ,1,2,3,5,6,10,13,19,25,35,45,62,79,104,133,173,217,279,348,440,546,683,840,1043,1275,1567,1907,2328,2815,3416,4111,4957,5940,7125,8498,10148,12055,14327,16959,20075,23673,27920,32816,38562,45185,52923,
+[dasco sequence loaded.]
+ground_truth = [1, 2, 3, 5, 6, 10, 13, 19, 25, 35, 45, 62, 79, 104, 133, 173, 217, 279, 348, 440, 546, 683, 840, 1043, 1275, 1567, 1907, 2328, 2815, 3416, 4111, 4957, 5940, 7125, 8498, 10148, 12055, 14327, 16959, 20075, 23673, 27920, 32816, 38562, 45185, 52923]
+len(ground_truth) = 46
+
+cores = False
+task_id = 4585
+
+ --- <exe> --- Below are prints from the executed code: --- <exe> ---
+
+look 00107 for '    return latex_seq(n+1) - latex_seq_n' 
+function_name = latex_seq
+start = 0
+Traceback (most recent call last):
+  File "/ceph/grid/home/bgec/oeis/preng/oll_extract.py", line 629, in <module>
+    exec(test_code, allowed_builtins)
+  File "<string>", line 19, in <module>
+  File "<string>", line 19, in <listcomp>
+  File "<string>", line 7, in latex_seq
+NameError: name 'x' is not defined
