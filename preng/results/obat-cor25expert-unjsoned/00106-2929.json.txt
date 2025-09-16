@@ -1,0 +1,29 @@
+<think>
+Okay, let's see. The user provided the sequence: 0, 1, 11, 111, 1111, and so on. Hmm. So the first term is 0, then 1, then 11, which is 1 followed by another 1. Then each subsequent term adds another 1. So the pattern seems to be that each term after the first two is the previous term multiplied by 10 and then adding 1. Let me check.
+
+Looking at the terms:
+
+n=0: 0
+n=1: 1
+n=2: 11 (which is 1*10 + 1)
+n=3: 111 (11*10 +1)
+Yes, that seems to hold. So for n >= 2, the term is calculate_sequence(n-1) * 10 + 1. 
+
+But wait, the base cases are n=0 and n=1. So the recursive formula would be:
+
+if n == 0: return 0
+elif n == 1: return 1
+else: return previous term *10 +1.
+
+So the Python function should handle those base cases. Let me test this logic with the given terms. For n=2, it would be 1*10+1=11. Correct. For n=3, 11*10+1=111. Yep. So the recursion works here. Therefore, the function should be structured with those base cases and the recursive step.
+</think>
+
+```python
+def calculate_sequence(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return calculate_sequence(n-1) * 10 + 1
+```

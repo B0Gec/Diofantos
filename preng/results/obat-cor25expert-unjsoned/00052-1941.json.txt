@@ -1,0 +1,81 @@
+<think>
+Okay, let's see. I need to find the recursive formula for this sequence: 0, 1, 5, 14, 30, 55, 91, 140, 204, 285, 385, 506, 650, 819, 1015, 1240, 1496, 1785, 2109, 2470, 2870, 3311, 3795, 4324, 4900. 
+
+First, I'll look at the differences between consecutive terms. Let's calculate them:
+
+Term 0: 0
+Term 1: 1 → difference is 1-0=1
+Term 2: 5 → 5-1=4
+Term 3:14 →14-5=9
+Term4:30 →30-14=16
+Term5:55-30=25
+Term6:91-55=36
+Term7:140-91=49
+Term8:204-140=64
+Term9:285-204=81
+Term10:385-285=100
+Term11:506-385=121
+Term12:650-506=144
+Term13:819-650=169
+Term14:1015-819=196
+Term15:1240-1015=225
+Term16:1496-1240=256
+Term17:1785-1496=289
+Term18:2109-1785=324
+Term19:2470-2109=361
+Term20:2870-2470=400
+Term21:3311-2870=441
+Term22:3795-3311=484
+Term23:4324-3795=529
+Term24:4900-4324=576
+
+Looking at these differences: 1,4,9,16,25,36,49,64,81,100,121,144,169,196,225,256,289,324,361,400,441,484,529,576. Oh! These are perfect squares. The first difference is 1², then 2², 3², up to 24²? Wait, let's check. For example, between term 0 and 1, difference is 1². Between term1 and term2, difference is 2². Term2 to term3 is 3². So the pattern is that each term a(n) = a(n-1) + n². Wait, let's check for n=1. If n is the index, then for term 1 (n=1?), the difference would be 1². Let me check:
+
+Let me think. Let's suppose the sequence is 0-indexed. For term n, a(n) = a(n-1) + (n)^2? Let's test:
+
+a(0) = 0.
+
+a(1) = a(0) + 1² → 0 +1=1 ✔️
+
+a(2) = a(1) + 2² →1+4=5 ✔️
+
+a(3)=5+3²=5+9=14 ✔️
+
+Yes, that seems to fit. So the recursive formula is a(n) = a(n-1) + n², with base case a(0)=0.
+
+But the user wants a recursive function. However, recursion here would be straightforward. The base case is when n=0, return 0. Otherwise, return calculate_sequence(n-1) + n².
+
+Wait, but let's check for n=1. For example, if n is 1, then it's 1^2 + a(0) which is 1. Correct. So the function would be:
+
+def calculate_sequence(n):
+    if n == 0:
+        return 0
+    else:
+        return calculate_sequence(n-1) + n*n
+
+But let's check with the given terms. Let's compute a few terms with this formula.
+
+n=0 → 0 ✔️
+
+n=1 → 0 +1=1 ✔️
+
+n=2 →1 +4=5 ✔️
+
+n=3 →5+9=14 ✔️
+
+n=4 →14+16=30 ✔️. Yes, matches the given sequence. So this seems correct.
+
+But wait, let me check for n=24. The last term given is 4900 for n=24 (assuming 0-based up to 24). Let's compute the sum up to n=24. The formula for the sum of squares from 1^2 to k^2 is k(k+1)(2k+1)/6. For k=24, sum is 24*25*49 /6. Let me compute that:
+
+24*25=600, 600*49=29400. Divided by 6: 29400/6=4900. Which matches the last term. So yes, the sequence is the sum of squares up to n. Therefore, the recursive formula is indeed a(n) = a(n-1) + n², with a(0)=0.
+
+So the Python function should be as above. The base case is n==0 returns 0, else returns the recursive call plus n squared.
+</think>
+
+```python
+def calculate_sequence(n):
+    if n == 0:
+        return 0
+    else:
+        return calculate_sequence(n-1) + n * n
+```

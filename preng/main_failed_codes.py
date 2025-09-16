@@ -1052,9 +1052,21 @@ from functools import lru_cache
 # # Ground truth: A045368 ,2,5,19,23,37,47,61,79,89,103,107,131,149,163,173,191,229,233,257,271,313,317,331,359,373,383,397,401,439,443,457,467,499,509,523,541,569,593,607,653,677,691,709,719,733,
 # ground_truth = [2, 5, 19, 23, 37, 47, 61, 79, 89, 103, 107, 131, 149, 163, 173, 191, 229, 233, 257, 271, 313, 317, 331, 359, 373, 383, 397, 401, 439, 443, 457, 467, 499, 509, 523, 541, 569, 593, 607, 653, 677, 691, 709, 719, 733]
 
+#
+# @lru_cache(maxsize=None)
+# def a(n:int) -> int:
+#     inits = [1, 1, 2]
+#     if n < len(inits):
+#         return inits[n]
+#     return 4*a(n-1) - a(n-2) - 3*a(n-3)
 
+def a(n):
+    return (n+1)**n
 
-
+scalup = 50
+# ground_truth = [1, 1, 2, 4, 11, 34, 156, 1044, 12346, 274668, 12005168, 1018997864, 165091172592, 50502031367952, 29054155657235488, 31426485969804308768, 64001015704527557894928, 245935864153532932683719776, 1787577725145611700547878190848, 24637809253125004524383007491432768]
+ground_truth = [1, 2, 9, 64, 625, 7776, 117649, 2097152, 43046721, 1000000000, 25937424601, 743008370688, 23298085122481, 793714773254144, 29192926025390625, 1152921504606846976, 48661191875666868481, 2185911559738696531968, 104127350297911241532841, 5242880000000000000000000]
+ground_truth = [n**(n-1) for n in range(1, scalup )]
 
 # 21: 1,1, 1+1*1 = 2, 2 + 2*1 = 4
 # 1, 1, 2
@@ -1087,10 +1099,6 @@ gt = ground_truth
 
 
 
-start = 0
-# start = 1
-# start = 2
-
 scal = 37
 scal = 40
 # scal = 10
@@ -1116,20 +1124,25 @@ scal = 35
 scal = 38
 # scal = 40
 # print(gt)
+scal = scalup
 
 # # print(calculate_sequence(0))
 # print(calculate_sequence(1))
 # # print(calculate_sequence(2))
 # print(calculate_sequence(5))
 
-myrange = range(start, scal + start)
+
+start = 0
+# start = 1
+# start = 2
+myrange = range(start, start + min(scal, len(ground_truth)) )
 print(list(myrange))
 
 pred = [latex_seq(i) for i in myrange]
 # pred = [calculate_sequence(i) for i in myrange]
 # pred = [compute(i) for i in range(0, scal)]
 # pred = [count_ways(i) for i in range(0, scal)]
-# pred = [a(i) for i in range(start, scal + start)]
+pred = [a(i) for i in myrange]
 # pred = powerful_numbers
 # for i in range(1, scal):
 #     print(i, latex_seq(i))

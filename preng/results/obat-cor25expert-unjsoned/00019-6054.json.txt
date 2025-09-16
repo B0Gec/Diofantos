@@ -1,0 +1,15 @@
+<think>
+Okay, let's see. The user provided a sequence: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216.
+
+Hmm, looking at these numbers, they seem to be powers of 2. The first term is 1, which is 2^0. The second is 2^1=2, then 2^2=4, and so on. So each term is double the previous one. So the recursive formula would be a(n) = 2 * a(n-1), with the base case a(0) = 1.
+
+Let me check the examples. For example, in Example 2, the sequence was 0, 1, 2, 5, 12, etc., which followed a different recurrence. But here, the pattern is straightforward. Each term is multiplied by 2. So the Python function should be simple. The base case is when n=0, return 1. Otherwise, return 2 * calculate_sequence(n-1). Let me verify with the given terms. For n=0, returns 1. n=1: 2*1=2. n=2: 2*2=4. Yep, all terms match. So the function should be as such. No need for more complex recursions here. I think that's the correct formula.
+</think>
+
+```python
+def calculate_sequence(n):
+    if n == 0:
+        return 1
+    else:
+        return 2 * calculate_sequence(n-1)
+```

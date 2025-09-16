@@ -48,10 +48,11 @@ if __name__ == '__main__':
     # EXPERIMENT_ID = 'lookup-corev2'
     # EXPERIMENT_ID = 'lookup-corev3'
     # EXPERIMENT_ID = 'obatcor-eval'
-    EXPERIMENT_ID = 'parse2'
-    EXPERIMENT_ID = 'parse3'
+    EXPERIMENT_ID = 'obat-cor2'
+    # EXPERIMENT_ID = 'parse2'
+    # EXPERIMENT_ID = 'parse3'
 
-    is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2', 'lookup-corev3', 'obatcor-eval')
+    is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2', 'lookup-corev3', 'obatcor-eval', 'obat-cor2')
 
     df_dir = '../results/good/re2-transfoeis_acc2'
     mb_dir = '../results/goodmb/re2-mbtmN25'
