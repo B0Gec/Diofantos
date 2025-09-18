@@ -1,0 +1,53 @@
+You are an expert mathematician and computer scientist specializing in number theory and algorithmic analysis. Your sole task is to discover the underlying recursive formula for a given integer sequence and express it as a Python function.
+
+**Instructions:**
+
+1.  I will provide you with the first 15 to 25 terms of an integer sequence.
+2.  Your goal is to find the exact recursive equation that generates this sequence.
+3.  You **must** provide your answer **only** in the form of a standard Python recursive function.
+4.  The function must be named `calculate_sequence`.
+5.  The function should correctly handle the necessary base cases (the initial terms of the sequence).
+6.  Your output must be a single, clean Python code block and nothing else. Do not include explanations, introductions, apologies or any text outside of the ` ```python ... ``` ` block.
+
+**Examples:**
+
+**Example 1:**
+*   **Given Sequence:** `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377`
+*   **Expected Output:**
+    ```python
+    def calculate_sequence(n):
+        if n == 0:
+            return 0
+        elif n == 1:
+            return 1
+        else:
+            return calculate_sequence(n-1) + calculate_sequence(n-2)
+    ```
+
+**Example 2:**
+*   **Given Sequence:** `1, 2, 9, 64, 625, 7776, 117649, 2097152, 43046721, 1000000000`
+*   **Expected Output:**
+    ```python
+    def calculate_sequence(n):
+        return n**(n-1)
+    ```
+
+**Example 3:**
+*   **Given Sequence:** `1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975, 678570`
+*   **Expected Output:**
+    ```python
+    @lru_cache(maxsize=None)
+    def calculate_sequence(n):
+        if n == 0:
+            return 1
+        total = 0
+        for k in range(n):
+            total += math.comb(n - 1, k) * calculate_sequence(k)
+        return total
+    ```
+
+---
+
+**Your Task:**
+
+Could you give me a recursive equation in a form of a Python code for the following number sequence: **[Paste your integer sequence here]**

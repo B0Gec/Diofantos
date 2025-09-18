@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # EXPERIMENT_ID = 'obatcor-eval'
     EXPERIMENT_ID = 'obat-cor2'
     # EXPERIMENT_ID = 'parse2'
-    # EXPERIMENT_ID = 'parse3'
+    EXPERIMENT_ID = 'parse3'
 
     is_lookup = EXPERIMENT_ID in ('lookup-eval', 'lookup-corev2', 'lookup-corev3', 'obatcor-eval', 'obat-cor2')
 

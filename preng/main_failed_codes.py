@@ -876,17 +876,17 @@ def latex_seq(n):
 #         return a(m) * 10 + d + 1
 
 
-def a(n):
-    """a(n) =
-    \begin{cases}
-    a(n-1) + 1, & \text{if } (a(n-1) + 1) \mod 3 \neq 2 \text{ or } a(n-1) + 1 \leq 2 \\
-    a(n-1) + 2, & \text{otherwise}"""
-    if n == 0:
-        return 0
-    v = a(n-1) + 1
-    if (v % 3) != 2 or v <= 2:
-        return v
-    return v + 1
+# def a(n):
+#     """a(n) =
+#     \begin{cases}
+#     a(n-1) + 1, & \text{if } (a(n-1) + 1) \mod 3 \neq 2 \text{ or } a(n-1) + 1 \leq 2 \\
+#     a(n-1) + 2, & \text{otherwise}"""
+#     if n == 0:
+#         return 0
+#     v = a(n-1) + 1
+#     if (v % 3) != 2 or v <= 2:
+#         return v
+#     return v + 1
 
 
 # task 24
@@ -1149,30 +1149,95 @@ from functools import lru_cache
 #         return a(math.floor(n/2))
 
 
-@lru_cache(maxsize=None)
-def sigma_11(m):
-    return sum(d**11 for d in range(1, m + 1) if m % d == 0)
+# @lru_cache(maxsize=None)
+# def sigma_11(m):
+#     return sum(d**11 for d in range(1, m + 1) if m % d == 0)
+# 
+# 
+# @lru_cache(maxsize=None)
+# def a(n):
+#     if n == 0:
+#         return 1  # a(0) = τ(1) = 1
+#     result = sigma_11(n + 1)
+#     for k in range(n):
+#         result -= 24 * sigma_11(k + 1) * a(k)
+#     return result
+# 
 
 
-@lru_cache(maxsize=None)
-def a(n):
-    if n == 0:
-        return 1  # a(0) = τ(1) = 1
-    result = sigma_11(n + 1)
-    for k in range(n):
-        result -= 24 * sigma_11(k + 1) * a(k)
-    return result
+# def a(n):
+#     if n < 2:
+#         return 1
+# 
+#     # Sieve of Eratosthenes to find all primes up to n
+#     sieve = [True] * (n + 1)
+#     sieve[0] = sieve[1] = False
+#     for i in range(2, int(n ** 0.5) + 1):
+#         if sieve[i]:
+#             sieve[i*i : n+1 : i] = [False] * len(sieve[i*i : n+1 : i])
+# 
+#     # Extract primes and compute product
+#     primes = [i for i, is_prime in enumerate(sieve) if is_prime]
+#     product = 1
+#     for p in primes:
+#         product *= p
+# 
+#     return product
 
 
+# def is_abundant(n):
+#     """Check if a number is abundant."""
+#     return sum(i for i in range(1, n) if n % i == 0) > n
+# 
+# def nth_abundant(n, current=12, count=1):
+#     """
+#     Recursively find the nth abundant number.
+#     Starts checking from 12 (the first abundant number).
+#     """
+#     if count == n:
+#         return current
+#     if is_abundant(current):
+#         return nth_abundant(n, current + 1, count + 1)
+#     else:
+#         return nth_abundant(n, current + 1, count)
+
+#
+# def calculate_sequence(n):
+#     if n == 1:
+#         return 1
+#     else:
+#         return n ** (n - 1)
+
+# @lru_cache(maxsize=None)
+# def calculate_sequence(n):
+#     if n == 0:
+#         return 1
+#     total = 0
+#     for k in range(n):
+#         total += math.comb(n - 1, k) * calculate_sequence(k)
+#     return total
+
+def calculate_sequence(n):
+    return n**(n-1)
 
 scalup = 1000
+# ground_truth = [1, 2, 9, 64, 625, 7776, 117649, 2097152, 43046721, 1000000000, 25937424601, 743008370688, 23298085122481, 793714773254144, 29192926025390625, 1152921504606846976, 48661191875666868481, 2185911559738696531968, 104127350297911241532841, 5242880000000000000000000]
+ground_truth = [1, 2, 9, 64, 625, 7776, 117649, 2097152, 43046721, 1000000000]
+# ground_truth = [1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975, 678570, 4213597, 27644437, 190899322, 1382958545, 10480142147, 82864869804, 682076806159, 5832742205057, 51724158235372, 474869816156751, 4506715738447323, 44152005855084346, 445958869294805289, 4638590332229999353, 49631246523618756274]
+
+# ground_truth = [1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975, 678570]
+# ground_truth = [1, 2, 9, 64, 625, 7776, 117649, 2097152, 43046721, 1000000000]
+
+
 # ground_truth = [1, 1, 2, 4, 11, 34, 156, 1044, 12346, 274668, 12005168, 1018997864, 165091172592, 50502031367952, 29054155657235488, 31426485969804308768, 64001015704527557894928, 245935864153532932683719776, 1787577725145611700547878190848, 24637809253125004524383007491432768]
 # ground_truth = [1, 2, 9, 64, 625, 7776, 117649, 2097152, 43046721, 1000000000, 25937424601, 743008370688, 23298085122481, 793714773254144, 29192926025390625, 1152921504606846976, 48661191875666868481, 2185911559738696531968, 104127350297911241532841, 5242880000000000000000000]
 # ground_truth = [1, 2, 16, 272, 7936, 353792, 22368256, 1903757312, 209865342976, 29088885112832, 4951498053124096, 1015423886506852352, 246921480190207983616, 70251601603943959887872, 23119184187809597841473536, 8713962757125169296170811392, 3729407703720529571097509625856]
 # ground_truth = [1, 1, 4, 1, 6, 4, 8, 1, 13, 6, 12, 4, 14, 8, 24, 1, 18, 13, 20, 6, 32, 12, 24, 4, 31, 14, 40, 8, 30, 24, 32, 1,
 #          48, 18, 48, 13, 38, 20, 56, 6, 42, 32, 44, 12, 78, 24, 48, 4, 57, 31, 72, 14, 54, 40, 72, 8, 80, 30, 60, 24,
 #          62, 32, 104, 1, 84, 48, 68, 18, 96, 48, 72, 13, 74, 38, 124]
-ground_truth = [1, -24, 252, -1472, 4830, -6048, -16744, 84480, -113643, -115920, 534612, -370944, -577738, 401856, 1217160, 987136, -6905934, 2727432, 10661420, -7109760, -4219488, -12830688, 18643272, 21288960, -25499225, 13865712, -73279080, 24647168]
+# ground_truth = [1, -24, 252, -1472, 4830, -6048, -16744, 84480, -113643, -115920, 534612, -370944, -577738, 401856, 1217160, 987136, -6905934, 2727432, 10661420, -7109760, -4219488, -12830688, 18643272, 21288960, -25499225, 13865712, -73279080, 24647168]
+# ground_truth = [1, 1, 2, 6, 12, 60, 60, 420, 840, 2520, 2520, 27720, 27720, 360360, 360360, 360360, 720720, 12252240, 12252240, 232792560, 232792560, 232792560, 232792560, 5354228880, 5354228880, 26771144400, 26771144400, 80313433200, 80313433200, 2329089562800, 2329089562800]
+# ground_truth = [12, 18, 20, 24, 30, 36, 40, 42, 48, 54, 56, 60, 66, 70, 72, 78, 80, 84, 88, 90, 96, 100, 102, 104, 108, 112, 114, 120, 126, 132, 138, 140, 144, 150, 156, 160, 162, 168, 174, 176, 180, 186, 192, 196, 198, 200, 204, 208, 210, 216, 220, 222, 224, 228, 234, 240, 246, 252, 258, 260, 264, 270]
 
 # ground_truth = [n**(n-1) for n in range(1, scalup )]
 # ground_truth = [1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 1, 1, 2, 1, 2, 2]
@@ -1247,7 +1312,8 @@ scal = scalup
 
 
 start = 0
-# start = 1
+start = 1
+
 # 17
 # 18h-18:30
 # 17:45
@@ -1255,12 +1321,15 @@ start = 0
 myrange = range(start, start + min(scal, len(ground_truth)) )
 print(list(myrange))
 
+
 # pred = [latex_seq(i) for i in myrange]
-# pred = [calculate_sequence(i) for i in myrange]
+pred = [calculate_sequence(i) for i in myrange]
 # pred = [compute(i) for i in range(0, scal)]
 # pred = [count_ways(i) for i in range(0, scal)]
-pred = [a(i) for i in myrange]
+# pred = [a(i) for i in myrange]
 # pred = [term(i) for i in myrange]
+# pred = [nth_abundant(i) for i in myrange]
+
 
 # pred = powerful_numbers
 # for i in range(1, scal):

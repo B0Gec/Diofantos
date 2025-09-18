@@ -313,160 +313,160 @@ if __name__ == '__main__':
 
     # TASK_ID = 9090  # halucin (abstract words instead of function)  NameError: name 'increment' is not defined
     # TASK_ID = 9128  # Zanimivo, latex case? "  NameError: name 'previous_block_length' is not defined
-    # TASK_ID = 9206  # helper function defined in a earlier block #  NameError: name 'find_next' is not defined
+    TASK_ID = 9206  # helper function defined in a earlier block #  NameError: name 'find_next' is not defined
     # TASK_ID = 9265  #  *otherwise  #  NameError: name 'gcd' is not defined
     # TASK_ID = 9908  #  false, referring to undefined code.  NameError: name 'Sum_prev' is not defined"""
 
-    TASK_ID = 14  # not final answer #  NameError: name 'log2' is not defined
-    TASK_ID = 1923  # not final #  NameError: name 'log2' is not defined
-    TASK_ID = 2992  # ? very complex eq. #  NameError: name 'log2' is not defined
-    TASK_ID = 3868  # false #  NameError: name 'log2' is not defined
-    # TASK_ID = 5309  # self ref #  NameError: name 'log2' is not defined
-    # TASK_ID = 7075  #  #  NameError: name 'log2' is not defined
-    # TASK_ID = 8659  #  #  NameError: name 'log2' is not defined
-    # TASK_ID = 9377  #  #  NameError: name 'log2' is not defined"""
-
-    TASK_ID =   78  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    # TASK_ID = 2097  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    # TASK_ID = 3444  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    # TASK_ID = 3486  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    # TASK_ID = 4259  # false  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    # TASK_ID = 8874  # false  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    # TASK_ID = 9759  # complext, maybe check later  #  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
-    TASK_ID = 9899  # True, if manualy convert latex cases into formula   NameError: name 'sqrt' is not defined. Did you mean: 'start'?"""
-
-
-    # TASK_ID = 5544  #   # NameError: name 'ValueError' is not defined
-    # TASK_ID = 8824  #   # NameError: name 'ValueError' is not defined"""
-
-    TASK_ID = 6030  # false, abstract or not explicit  # NameError: name 'a_n' is not defined
-    # TASK_ID = 6257  #   # NameError: name 'a_n' is not defined
-    # TASK_ID = 6572  # false  # NameError: name 'a_n' is not defined"""
-    
-    # TASK_ID = 5215  #  true for all divmod # NameError: name 'divmod' is not defined
-    # TASK_ID = 6974  # true   # NameError: name 'divmod' is not defined
-    # TASK_ID = 8343  #  true  # NameError: name 'divmod' is not defined
-    TASK_ID = 385  # ?  # NameError: name 'is_prime' is not defined
-    TASK_ID = 706  #  True: helper function!  # NameError: name 'is_prime' is not defined
-    # TASK_ID = 462  # false/noerror with new  # NameError: name 'an' is not defined. Did you mean: 'n'?
-    # TASK_ID = 7821  # true (also with new code)!   # NameError: name 'an' is not defined. Did you mean: 'n'?
-    # TASK_ID = 557  # false both  # NameError: name 'mod10' is not defined
-    # TASK_ID = 704  #   # NameError: name 'mod10' is not defined"""
-
-    # TASK_ID = 3204 # these are all false unfortunately #   NameError: name 'set' is not defined
-    # TASK_ID = 8709 # false #   NameError: name 'set' is not defined
-    # TASK_ID = 4773 #  #   NameError: name 'odd' is not defined
-    # TASK_ID = 9176 #  #   NameError: name 'odd' is not defined
-    # TASK_ID = 5683 #  #   NameError: name 'prime' is not defined. Did you mean: 'print'?
-    # TASK_ID = 6996 #  #   NameError: name 'prime' is not defined. Did you mean: 'print'?
-
-    TASK_ID = 4253  # old code # NameError: round
-
-    # TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
-    # TASK_ID = 8671  #  #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
-
-    # TASK_ID = 5010  # mb \ zs
-
-    TASK_ID = 5024
-    TASK_ID = 5177
-    TASK_ID = 5229
-    TASK_ID = 5266
-    TASK_ID = 5283
-    TASK_ID = 5324
-    # TASK_ID = 5338  # mb \ zs
-
-    TASK_ID = 259
-    TASK_ID = 19
-    TASK_ID = 18
-
-    # [('00004', 'RecursionError: maximum recursion depth exceeded'),
-    #  ('00007', 'RecursionError: maximum recursion depth exceeded'),
-    #  ('00011', 'RecursionError: maximum recursion depth exceeded'),
-    #  ('00017', 'RecursionError: maximum recursion depth exceeded'), (
-
-    # cores-lookup:
-    # ['00024', '00049']
-    # ['00004', '00007', '00011', '00017', '00038', '00040', '00063', '00072', '00074', '00088', '00130', '00131', '00132', '00135', '00139', '00149', '00156', '00162']
-
-    TASK_ID = 24  # True!!
-    TASK_ID = 49
-    TASK_ID =  4
-
-
-    TASK_ID =  9  # first true
-    TASK_ID =  10  # sec true
-    TASK_ID =  11 # True
-    TASK_ID =  12 # false
-    TASK_ID =  14 # true
-    TASK_ID =  15  # false
-    TASK_ID =  19  # true
-    TASK_ID =  20  # false
-    TASK_ID =  21 # true
-    TASK_ID =  22  # false
-    TASK_ID =  23 # false
-    TASK_ID =  24 # true
-    # TASK_ID =  25 # false TASK_ID =  26 # false TASK_ID =  27 # false TASK_ID =  63 # false TASK_ID =  76 # false TASK_ID =  84 # false TASK_ID =  85 # false TASK_ID =  90 # false TASK_ID =  117 # false TASK_ID =  127 # false TASK_ID =  132 # false TASK_ID =  134 # false TASK_ID =  144 # false
-    
-    
-    #empty: ['00012' false, '00020' fal, '00024' true, '00025' f, '00027' f]
-# Recursion error: ['00003' false, '00005' fal, '00007' f, '00017' f, '00022' f,    |     '00063', '00076', '00084', '00085', '00090', '00117', '00127', '00132', '00134', '00144'] # all false (checked)
-    # 50 valueError
-    # Success: successes_true = ['00009' ja, '00010', '00011', '00014', '00019', '00021', '00030', '00032', '00039', '00088']
-    # other true: 24,
-    # really (id-eq): 9, 10, 11 (algo for primes), 14, 19, 21, 24, 30, 32, 39, 88.
-    # not really:
-
-
-    # obat cores (old llm experiments, new eval):
-    #empty: 4, 25, 96
-    TASK_ID = 35 # , 97: potentially true.
-
-    # trues = ['00002', '00009', '00010', '00011', '00012', '00014', '00017', '00019', '00021', '00024', '00029',
-        #       ?,        true,     t    t[hard] algo,  ?,      t,      t,      t           t,    t,        t,
-   # '00030', '00032', '00034', '00035', '00038', '00039', '00041', '00042', '00044', '00046', '00047',
-   #    t,      t,          t,    t,        t,      t,      t,          t,      t,      t,      t,
-   # '00048', '00050', '00051', '00052', '00056', '00057', '00069', '00070', '00072', '00075', '00077',
-    #     t,     t,      t,         t,     t,       t,      algo t?,    t,      t,      t,      t (to check properly),
-   # '00081', '00087', '00088', '00090', '00094', '00095', '00097', '00098', '00102', '00106', '00108',
-   #     t,     t,      t,       algo ?,    t   ,  t,        ? ,     seems t,   ? hard,  t,         t,
-   # '00111', '00112', '00114', '00123', '00130', '00133', '00136', '00159']
-   #     t,     t,      t,          t,      t,          ?      t,       ?
-
-    # empty: ['00004', '00025', '00096']
-    # 00022: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # 00031: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # 00054: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
-    # 00093: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
-    # 00129: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
-    # 00151: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
-
-    TASK_ID = 7
-    # 00007: NameError: name 'a' is not defined. Did you mean: 'a0'?
-    # 00053: NameError: name 'a' is not defined. Did you mean: 'a0'?
-    # 00028: NameError: name 'p' is not defined
-    # 00040: NameError: name 'p' is not defined
-    # 00045: NameError: name 'k' is not defined
-    # 00137: NameError: name 'k' is not defined
-    # 00005: NameError: name 'increment_odd' is not defined
-    # 00008: NameError: name 'w' is not defined
-    # 00058: NameError: name 'set' is not defined
-    # 00062: NameError: name 'c1' is not defined
-    # 00068: NameError: name 'd' is not defined
-    # 00113: NameError: name 'x' is not defined
-    # 00119: NameError: name 'gcd' is not defined
-    # 00135: NameError: name 'max' is not defined
-    # 00152: NameError: name 'c_1' is not defined
-
-
-    TASK_ID = 9992
-    # TASK_ID = 107
-    TASK_ID = 2140
-
-    # parse2: more than 50mins:
-    # TASK_ID = 6710
-    # TASK_ID = 8093
-    # TASK_ID = 5007
-    TASK_ID = 1091
+    # TASK_ID = 14  # not final answer #  NameError: name 'log2' is not defined
+    # TASK_ID = 1923  # not final #  NameError: name 'log2' is not defined
+    # TASK_ID = 2992  # ? very complex eq. #  NameError: name 'log2' is not defined
+    # TASK_ID = 3868  # false #  NameError: name 'log2' is not defined
+    # # TASK_ID = 5309  # self ref #  NameError: name 'log2' is not defined
+    # # TASK_ID = 7075  #  #  NameError: name 'log2' is not defined
+    # # TASK_ID = 8659  #  #  NameError: name 'log2' is not defined
+    # # TASK_ID = 9377  #  #  NameError: name 'log2' is not defined"""
+    #
+    # TASK_ID =   78  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # # TASK_ID = 2097  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # # TASK_ID = 3444  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # # TASK_ID = 3486  #   NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # # TASK_ID = 4259  # false  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # # TASK_ID = 8874  # false  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # # TASK_ID = 9759  # complext, maybe check later  #  NameError: name 'sqrt' is not defined. Did you mean: 'start'?
+    # TASK_ID = 9899  # True, if manualy convert latex cases into formula   NameError: name 'sqrt' is not defined. Did you mean: 'start'?"""
+    #
+    #
+    # # TASK_ID = 5544  #   # NameError: name 'ValueError' is not defined
+    # # TASK_ID = 8824  #   # NameError: name 'ValueError' is not defined"""
+    #
+    # TASK_ID = 6030  # false, abstract or not explicit  # NameError: name 'a_n' is not defined
+    # # TASK_ID = 6257  #   # NameError: name 'a_n' is not defined
+    # # TASK_ID = 6572  # false  # NameError: name 'a_n' is not defined"""
+    #
+    # # TASK_ID = 5215  #  true for all divmod # NameError: name 'divmod' is not defined
+    # # TASK_ID = 6974  # true   # NameError: name 'divmod' is not defined
+    # # TASK_ID = 8343  #  true  # NameError: name 'divmod' is not defined
+    # TASK_ID = 385  # ?  # NameError: name 'is_prime' is not defined
+    # TASK_ID = 706  #  True: helper function!  # NameError: name 'is_prime' is not defined
+    # # TASK_ID = 462  # false/noerror with new  # NameError: name 'an' is not defined. Did you mean: 'n'?
+    # # TASK_ID = 7821  # true (also with new code)!   # NameError: name 'an' is not defined. Did you mean: 'n'?
+    # # TASK_ID = 557  # false both  # NameError: name 'mod10' is not defined
+    # # TASK_ID = 704  #   # NameError: name 'mod10' is not defined"""
+    #
+#     # TASK_ID = 3204 # these are all false unfortunately #   NameError: name 'set' is not defined
+#     # TASK_ID = 8709 # false #   NameError: name 'set' is not defined
+#     # TASK_ID = 4773 #  #   NameError: name 'odd' is not defined
+#     # TASK_ID = 9176 #  #   NameError: name 'odd' is not defined
+#     # TASK_ID = 5683 #  #   NameError: name 'prime' is not defined. Did you mean: 'print'?
+#     # TASK_ID = 6996 #  #   NameError: name 'prime' is not defined. Did you mean: 'print'?
+#
+#     TASK_ID = 4253  # old code # NameError: round
+#
+#     # TASK_ID = 7543  #  #  NameError: name 'latex_seq_1' is not defined. Did you mean: 'latex_seq'?
+#     # TASK_ID = 8671  #  #  NameError: name 'latex_seq_k' is not defined. Did you mean: 'latex_seq'?
+#
+#     # TASK_ID = 5010  # mb \ zs
+#
+#     TASK_ID = 5024
+#     TASK_ID = 5177
+#     TASK_ID = 5229
+#     TASK_ID = 5266
+#     TASK_ID = 5283
+#     TASK_ID = 5324
+#     # TASK_ID = 5338  # mb \ zs
+#
+#     TASK_ID = 259
+#     TASK_ID = 19
+#     TASK_ID = 18
+#
+#     # [('00004', 'RecursionError: maximum recursion depth exceeded'),
+#     #  ('00007', 'RecursionError: maximum recursion depth exceeded'),
+#     #  ('00011', 'RecursionError: maximum recursion depth exceeded'),
+#     #  ('00017', 'RecursionError: maximum recursion depth exceeded'), (
+#
+#     # cores-lookup:
+#     # ['00024', '00049']
+#     # ['00004', '00007', '00011', '00017', '00038', '00040', '00063', '00072', '00074', '00088', '00130', '00131', '00132', '00135', '00139', '00149', '00156', '00162']
+#
+#     TASK_ID = 24  # True!!
+#     TASK_ID = 49
+#     TASK_ID =  4
+#
+#
+#     TASK_ID =  9  # first true
+#     TASK_ID =  10  # sec true
+#     TASK_ID =  11 # True
+#     TASK_ID =  12 # false
+#     TASK_ID =  14 # true
+#     TASK_ID =  15  # false
+#     TASK_ID =  19  # true
+#     TASK_ID =  20  # false
+#     TASK_ID =  21 # true
+#     TASK_ID =  22  # false
+#     TASK_ID =  23 # false
+#     TASK_ID =  24 # true
+#     # TASK_ID =  25 # false TASK_ID =  26 # false TASK_ID =  27 # false TASK_ID =  63 # false TASK_ID =  76 # false TASK_ID =  84 # false TASK_ID =  85 # false TASK_ID =  90 # false TASK_ID =  117 # false TASK_ID =  127 # false TASK_ID =  132 # false TASK_ID =  134 # false TASK_ID =  144 # false
+#
+#
+#     #empty: ['00012' false, '00020' fal, '00024' true, '00025' f, '00027' f]
+# # Recursion error: ['00003' false, '00005' fal, '00007' f, '00017' f, '00022' f,    |     '00063', '00076', '00084', '00085', '00090', '00117', '00127', '00132', '00134', '00144'] # all false (checked)
+#     # 50 valueError
+#     # Success: successes_true = ['00009' ja, '00010', '00011', '00014', '00019', '00021', '00030', '00032', '00039', '00088']
+#     # other true: 24,
+#     # really (id-eq): 9, 10, 11 (algo for primes), 14, 19, 21, 24, 30, 32, 39, 88.
+#     # not really:
+#
+#
+#     # obat cores (old llm experiments, new eval):
+#     #empty: 4, 25, 96
+#     TASK_ID = 35 # , 97: potentially true.
+#
+#     # trues = ['00002', '00009', '00010', '00011', '00012', '00014', '00017', '00019', '00021', '00024', '00029',
+#         #       ?,        true,     t    t[hard] algo,  ?,      t,      t,      t           t,    t,        t,
+#    # '00030', '00032', '00034', '00035', '00038', '00039', '00041', '00042', '00044', '00046', '00047',
+#    #    t,      t,          t,    t,        t,      t,      t,          t,      t,      t,      t,
+#    # '00048', '00050', '00051', '00052', '00056', '00057', '00069', '00070', '00072', '00075', '00077',
+#     #     t,     t,      t,         t,     t,       t,      algo t?,    t,      t,      t,      t (to check properly),
+#    # '00081', '00087', '00088', '00090', '00094', '00095', '00097', '00098', '00102', '00106', '00108',
+#    #     t,     t,      t,       algo ?,    t   ,  t,        ? ,     seems t,   ? hard,  t,         t,
+#    # '00111', '00112', '00114', '00123', '00130', '00133', '00136', '00159']
+#    #     t,     t,      t,          t,      t,          ?      t,       ?
+#
+#     # empty: ['00004', '00025', '00096']
+#     # 00022: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+#     # 00031: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+#     # 00054: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+#     # 00093: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
+#     # 00129: TypeError: unsupported operand type(s) for +: 'int' and 'ellipsis'
+#     # 00151: TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+#
+#     TASK_ID = 7
+#     # 00007: NameError: name 'a' is not defined. Did you mean: 'a0'?
+#     # 00053: NameError: name 'a' is not defined. Did you mean: 'a0'?
+#     # 00028: NameError: name 'p' is not defined
+#     # 00040: NameError: name 'p' is not defined
+#     # 00045: NameError: name 'k' is not defined
+#     # 00137: NameError: name 'k' is not defined
+#     # 00005: NameError: name 'increment_odd' is not defined
+#     # 00008: NameError: name 'w' is not defined
+#     # 00058: NameError: name 'set' is not defined
+#     # 00062: NameError: name 'c1' is not defined
+#     # 00068: NameError: name 'd' is not defined
+#     # 00113: NameError: name 'x' is not defined
+#     # 00119: NameError: name 'gcd' is not defined
+#     # 00135: NameError: name 'max' is not defined
+#     # 00152: NameError: name 'c_1' is not defined
+#
+#
+#     TASK_ID = 9992
+#     # TASK_ID = 107
+#     TASK_ID = 2140
+#
+#     # parse2: more than 50mins:
+#     # TASK_ID = 6710
+#     # TASK_ID = 8093
+#     # TASK_ID = 5007
+#     TASK_ID = 1091
 
 
     parser = argparse.ArgumentParser()

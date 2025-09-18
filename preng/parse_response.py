@@ -16,6 +16,7 @@ import re
 import textwrap
 from typing import Optional, Tuple, List
 
+# def dependency_solver(src, code_blocks):
 
 # ----------------------------------------------------------------------
 # 1. Helper: find the *best* recursive fn inside a Python code snippet
