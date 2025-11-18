@@ -159,14 +159,14 @@ job_id = 'mblinbs50'  # bitsize = 50   # this are the reported results dec6-dec1
 # # job_id = 'mbtmN25'    # max_order=20. This were once official results for n_input=25, before the bug was discovered
 # # job_id = 'mbtmN25-linrec_dasco'    # max_order=20. This were once official results for n_input=25 (and n_pred=1 and 10), before the bug was discovered
 # # job_id = 'rewritten-mbtmN25'    # incorrect results based on mbtmN25
-# job_id = 're2-mbtmN25'    # max_order=20. This are official Moadeeb results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
+job_id = 're2-mbtmN25'    # max_order=20. This are official Moadeeb results for n_input=25 (and n_pred=1 and 10) BUGSFREE hopefully.
 # job_id = 'rewritten-mbtmord20r'    # max_order=20. This are official Moadeeb results for n_input=15 (and n_pred=1 and 10) BUGSFREE hopefully.
 # job_id = 're2-mbtmN25-linrec_dasco'    # max_order=20. This are official results for n_input=25 (and n_pred=1 and 10) for linrec_dasco
 # job_id = 'rewritten-mbtmord20r-linrec_dasco'    # max_order=20. This are official results for n_input=15 (and n_pred=1 and 10) for linrec_dasco
 # # job_id = 'rewritten-n15_acc'
 # # job_id = 'rewritten-transfoeis_acc2'
 # # job_id = 're2-n15_acc'
-# job_id = 're3-n15_acc'    # this are official Diofantos results for n_input=15 (and n_pred=1 and 10)
+job_id = 're3-n15_acc'    # this are official Diofantos results for n_input=15 (and n_pred=1 and 10)
 # job_id = 're3-n15_acc-dasco_linrec'    # this are official dasco_linrec Diofantos results for n_input=15 (and n_pred=1 and 10)
 # job_id = 're2-transfoeis_acc2'  # this are official Diofantos results for n_input=25 (and n_pred=1 and 10)
 # job_id = 're2-transfoeis_acc2-dasco_linrec'  # this are dasco_linrec official Diofantos results for n_input=25 (and n_pred=1 and 10)

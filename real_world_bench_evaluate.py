@@ -33,7 +33,7 @@ from exact_ed import diofantos, grid_sympy
 from mb_oeis import moadeeb
 
 METHOD = 'Diofantos'
-METHOD = 'MoadeeB'
+# METHOD = 'MoadeeB'
 
 eq_disco = {'MoadeeB': moadeeb, 'Diofantos': diofantos}[METHOD]
 
@@ -163,7 +163,7 @@ def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=Non
 
 # # # Wheel Diofantos paper last 3 eqs. example:
 # Diofantos:
-# evaluate('wheel.csv', 2, 8, 1)
+evaluate('wheel.csv', 2, 8, 1)
 # # Edges(W_n) = n + Delta(W_n)
 # #   from before Delta(W_n) = n
 # #      -> Edges(W_n) = n + n = 2n
@@ -235,18 +235,31 @@ def evaluate(benchfile: str, target: int, eq_id_tex: int, d_max: int, chvars=Non
 # evaluate('riemann-roch.csv', None, 11, None)
 # # ['l(D) -deg(D) +g -1']
 # # i.e. l(D) = deg(D) - g + 1, i.e. eq. 11 done!
+# # Diofantos for merged section:
+# evaluate('riemann-roch.csv', 0, 10, 2, chvars=['lD', 'degD', 'g'])
+# # ['lD = degD - g + 1']  ... i.e. Done! Reconstructed!
+# # 1/0
 
 # evaluate('euler.csv', None, 12, None)
 # # ['E +(-3/2)*F +(-3/2)*Omega +3/2', 'V +(-1/2)*F +(-5/2)*Omega +1/2']
 # # i.e. 'V +(-1/2)*F +(-5/2)*Omega +1/2 - (E +(-3/2)*F +(-3/2)*Omega +3/2) = 0'
 # # i.e. 'V   - E +F  = Omega +1, done! eg. 12 solved!
+# # Diofantos for merged section:
+# evaluate('euler.csv', -1, 10, 2)
+# # [' Omega = F + V - E - 1']  ... i.e. Done! Reconstructed!
+# # 1/0
 
 
 # evaluate('symcomp.csv', None, 1314, None)
-# # ['b^2 -2*a +b +w1 -1', 'a^3 -a^2 +2*a*b -b*w1 +2*b -w2 +2']
-# # i.e. w1 = -b^2 +2*a -b +1 and
-# # w2 = a^3 -a^2 +2*a*b +2*b  +2 -b*w1 = a^3 -a^2 +2*a*b +2*b  +2 -b*( -b^2 +2*a -b +1) = a^3 -a^2 +2*a*b +2*b  +2 +b^3 -2*ab +b^2 -b
-# #    = a^3 -a^2 +b  +2 +b^3  +b^2
+# # # ['b^2 -2*a +b +w1 -1', 'a^3 -a^2 +2*a*b -b*w1 +2*b -w2 +2']
+# # # i.e. w1 = -b^2 +2*a -b +1 and
+# # # w2 = a^3 -a^2 +2*a*b +2*b  +2 -b*w1 = a^3 -a^2 +2*a*b +2*b  +2 -b*( -b^2 +2*a -b +1) = a^3 -a^2 +2*a*b +2*b  +2 +b^3 -2*ab +b^2 -b
+# # #    = a^3 -a^2 +b  +2 +b^3  +b^2
+# Diofantos for merged?
+# evaluate('symcomp.csv', -2, 1314, 2)  # ... -> [' w1 = 2*a - b**2 - b + 1']  ... successful reconstruction.
+# evaluate('symcomp.csv', -1, 1314, 3)  # ... -> [' w2 = a**3 - a**2 + b**3 + b**2 + b + 2']         ... successful reconstruction.
+
+# 1/0
 
 
 # eqs = evaluate('symcomp1.csv', None, 15, None)
@@ -381,7 +394,7 @@ print(df)
 
 # # # MoadeeB:
 # # # Eq. 9 (10.2.2025):
-# # eqs = evaluate('symcomp10_-3x2p3y2p3y.csv', 0, 15, 1)
+eqs = evaluate('symcomp10_-3x2p3y2p3y.csv', 0, 15, 1)
 # # # success
 # # # ['a/y -b/y -2', 'x/y -b/y -1', 'w3 +6*bx/y -3*b^2/y -3', 'ax/y -bx/y +(-1/2)*a^2/y +(1/2)*b^2/y', '1/y +bx/y +(-1/4)*a^2/y +(-3/4)*b^2/y', 'b/y^2 +2*b/y +(-1/4)*a^2x/y +(1/4)*b^2x/y +1', 'b^2/y*b^2x/y -bx/y*b^3/y +60*b/y +(-15/2)*a^2x/y +(75/2)*b^2x/y -30*b^3/y +30', 'b/y*b^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1', 'bx/y*b^2x/y -bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(1/4)*b^2/y*b^3/y +50*b/y +(-25/4)*a^2x/y +(125/4)*b^2x/y -25*b^3/y +25', 'b/y*a^2/y +bx/y*b^3/y +(-1/4)*a^2/y*b^3/y +(-3/4)*b^2/y*b^3/y +2*b/y -4*bx/y +(-1/4)*a^2x/y +(5/4)*b^2x/y -b^3/y +1']
 # # # i.e. 'w3 +6*bx/y -3*b^2/y -3',
