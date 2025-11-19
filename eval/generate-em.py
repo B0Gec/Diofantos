@@ -25,7 +25,9 @@ import random
 
 import numpy as np
 import pandas as pd
+import json
 import sympy
+from pandas import read_csv
 
 from ProGED.equation_discoverer import  EqDisco
 # from equation_discoverer_new import  EqDisco
@@ -130,7 +132,7 @@ print(f'{sym_constants = }')
 
 
 # 2. Calculate the output at two points (1, 2) and (2, 5) with C=3
-def data_set(cannonic_proged_expr, constants, shape=(4, 3), int_max_abs=INT_MAX_ABS):
+def data_set(cannonic_proged_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS):
     inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0], shape[1]))
     # 1/0
     print(f'{inits = }')
@@ -151,6 +153,7 @@ def data_set(cannonic_proged_expr, constants, shape=(4, 3), int_max_abs=INT_MAX_
     #
     return target_column, inits, dataset
 
+
 print(f'{const_expr = }')
 target_col, inits, ds = data_set(expr, constants)
 print(f'{ds = }')
@@ -168,24 +171,44 @@ print(f'{ds = }')
 df = pd.DataFrame(ds, columns=['target']+vars)
 print(df)
 
+bench_dir = 'slices/'
+
+# df.to_csv(bench_dir+'slice_test.csv', index=False)
+print('was saved before')
+
+# print( pd.read_csv(bench_dir+'slice_test.csv', index_col=0) )
+print( pd.read_csv(bench_dir+'slice_test.csv') )
+
 json_content = """
 {
   "name": "Exact equation discovery benchmark",
   "description": "Benchmark of 5 slices, stored as per-slice CSV files (4x3 each), with exact-equation metadata.",
+  "shape_per_slice": [5, 3],
+  "num_slices": 6,
+  "filename_convention_example": "slices/slice_000.csv",
   "version": "0.0.0",
-  "shape_per_slice": [4, 3],
-  "num_slices": 5,
-  "filename_convention_example": 'slices/slice_000.csv",
-
   "slices": [
     {
       "ID": "000",
       "equation": "eq_000",
       "path": "slices/slice_000.csv",
-      },
       "equation_skeleton": "y = a*x + b",
-      "chosen_constants": { "a": 2, "b": 1 },
-    },
-    # ...
-    
+      "chosen_constants": { "a": 2, "b": 1 }
+    }
+  ]
+}
 """
+json_mini = """
+{
+  "000": "eq_000",
+  "001": "eq_001"
+}
+"""
+
+l= json.loads(json_content)
+print(l)
+print(l['slices'][0]['path'])
+print(l['slices'][0]['ID'])
+print(l['slices'][0]['equation'])
+jd = json.loads(json_mini)
+print(f"{jd['000'] = }")
