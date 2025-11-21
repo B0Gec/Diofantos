@@ -22,6 +22,9 @@ Baby version:
   - all eqs = 5
 """
 import random
+from typing import List, Tuple
+import warnings
+import math
 
 import numpy as np
 import pandas as pd
@@ -39,9 +42,12 @@ from ProGED.model_box import ModelBox
 
 from SRToolkit.utils import expr_to_executable_function, tokens_to_tree, SymbolLibrary, expr_to_latex
 # from SRToolkit.utils.symbol_library import to_dict
+from SRToolkit.utils.expression_simplifier import simplify as srt_simplify
+from tokenizer_simple import tokenize_generic
 
 ## IMPORTANT: look in ProGED/testing_constants for accessing constants inside of models.
 
+random.seed(1)
 np.random.seed(1)
 
 
@@ -78,8 +84,15 @@ vars = [i.strip("'") for i in pg_vars]
 # # grammar = gc.grammar_from_template("universal_oeis", {})
 # grammar = gc.grammar_from_template("rational", {})
 
+
+scale = 6
+# scale = 10
+scale = 11
+# # scale = 9
+# scale = 100
+# scale = 101
 print(grammar)
-exprs = [grammar.generate_one() for _ in range(5)]
+exprs = [grammar.generate_one() for _ in range(scale)]
 exprs_full = exprs
 exprs = [e[0] for e in exprs_full]
 exprs_str = [''.join(e) for e in exprs]
@@ -95,120 +108,219 @@ for e in exprs:
 
 
 
-
-
-print('\nhere:\n')
-symbols = {"x": vars, "start": "S", "const": "C"}
-idx = 1
-# e = exprs[0]
-expr = exprs[idx]
-print(expr)
-exe_expr = expr_to_executable_function(expr, sl)
+# srtoolkit vs canonic
+expr = exprs[1]
+print(f'{expr = }')
+estr = "".join(expr)
+print(f'{estr = }')
+exe_expr = expr_to_executable_function(e, sl)
 
 m = ModelBox()
+symbols = {"x": vars, "start": "S", "const": "C"}
 # valid, expr = models.add_model(expr_str, symbols, model_generator, code=code, p=p)
-print(m)
+expr_can, symbols_params = m.string_to_canonic_expression(estr, symbols)
+print(f'{expr_can = }')
+print(f'{symbols_params = }')
 # 1/0
-
-estr = exprs_str[idx]
-print(f'{estr=}')
-# expr_can, symbols_params = m.string_to_canonic_expression(estr, symbols)
-# print(f'{expr_can = }')
-# print(f'{symbols_params = }')
-expr_sympyfied, sym_constants = m.enumerate_constants(estr, symbols)
+expr_sympyfied, sym_constants = m.enumerate_constants("".join(expr), symbols)
 print(f'{expr_sympyfied = }')
 
-random.seed(1)
-INT_MAX_ABS = 10
-# 1. Determine constants inside of equation skeleton:
-constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
-print(constants)
+# 1. Determine random constants inside of equation skeleton:
+# print(' if error due to zero division, have to repeat random constants and matrix')
+constants = [random.randint(-10, 10) for _ in range(len(sym_constants))]
+print(f'{constants = }')
 const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
 print(f'{const_expr = }')
-print(f'{str(const_expr) = }')
-print(f'{sym_constants = }')
+# print(f'{str(const_expr) = }')
+# print(f'{sym_constants = }')
 # exe_expr = expr_to_executable_function(expr_sy, sl)
-# 1/0
 
+# 2. Generate random matrix and target column:
+print(' if error due to zero division, have to repeat random constants and matrix')
+exe_expr = expr_to_executable_function(expr, sl)
+data_points = np.array([[1, 2], [2, 5]])
+inits = np.random.randint(-10, 10, size=(2, len(constants)))  # i.e. rhs
+output = exe_expr(inits, constants)
+print(output)
+
+simplify = srt_simplify
+expr = ["C", "+", "C" "*", "C", "+", "X_0", "*", "X_1", "/", "X_0"]
+expr = [ "(", "C", "*", "X_0", ")",  "/", "X_0"]
+expr = [ "(", "C", "*", "X_0", "+", "C", ")",  "/", "(", "C", "*", "X_0", "+", "C", ")"]
+print("".join(expr))
+print("".join(simplify(expr)))
+# 1/0
+# C+X_1
+
+print('\nSRToolkit vs Canonic expressions:')
+for expr in exprs:
+    print(''.join(expr))
+    # simple_expr = srt_simplify(expr, sl)
+    # print(f'{"".join(simple_expr) }')
+    m = ModelBox()
+    symbols = {"x": vars, "start": "S", "const": "C"}
+    expr_can, sym_constants = m.string_to_canonic_expression("".join(expr), symbols)
+    print(f'{expr_can = }')
+    print(sympy.srepr(expr_can))
+    expr_can_tokenized = tokenize_generic(expr_can)
+    print(f'{expr_can_tokenized = }')
+    exe_expr = expr_to_executable_function(expr_can_tokenized, sl)
+    # print(exe_expr(np.array([[1,2],[2,5]]), [3 for _ in range(len(sym_constants))]))
+    constants = [4 for i in range(len(sym_constants))]
+    inits = np.random.randint(-10, 10, size=(2, len(constants)))  # i.e. rhs
+    output = exe_expr(inits, constants)
+    print(output)
+
+    # expr_sympyfied, sym_constants = m.enumerate_constants("".join(simple_expr), symbols)
+    print(len(sym_constants))
+
+1/0
+print('\nCanonic expressions:')
+[print(m.string_to_canonic_expression("".join(expr), symbols)[0]) for expr in exprs]
+
+print('\nsrtool simplified:')
+print(exprs)
+[print("".join(srt_simplify(expr, sl))) for expr in exprs]
+# [print(srt_simplify(expr, sl)) for expr in exprs]
+
+
+1/0
+
+
+INT_MAX_ABS = 10
 
 # 2. Calculate the output at two points (1, 2) and (2, 5) with C=3
-def data_set(cannonic_proged_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS):
-    inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0], shape[1]))
-    # 1/0
-    print(f'{inits = }')
-    # # 1/0
+def data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS) -> np.ndarray:
+    """
+    Randomly generate *inits*, i.e. random integer matrix and the target column based on the given equation.
 
-    # data_points = np.array([[1, 2], [2, 5]])
-    # data_points = data
-    # # constants = [3]
-    # constants = [3, 2]
-    # constants = np.random.randint(-int_max_abs, int_max_abs, num_constants)
-    print(f'{constants = }')
-    output = exe_expr(inits, constants)
-    # Variable "output" should now contain np.array([7, 17])
-    print(output)
+    Inputs:
+        - executable expression : i.e. SRToolkit object which needs values assigned to generic constants when applied.
+        - constants: that skeleton expression needs to become full/concrete expression (look one above).
+        - dimensions: shape[0] x shape[1] of random matrix as a rhs base for calculating the target column of the dataset.
+        - max absolute value: of randomly generated integer values of rhs matrix (specifying the interval (-int_max_abs, int_max_abs))
+
+    Outputs:
+        ( - target column     : included in third output)
+        ( - random rhs matrix : included in third output)
+        - numpy dataset
+    """
+
+    inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0], shape[1]))  # i.e. rhs
+    # print(f'{inits = }')
+    # print(f'{constants = }')
+    output = executable_expr(inits, constants)
+    # print(output)
     target_column = np.array(output).reshape(-1, 1)
-    dataset = np.hstack((target_column, inits))
-    print(f'{target_column = }')
-    #
+    dataset = np.hstack((inits, target_column))
+    # print(f'{target_column = }')
     return target_column, inits, dataset
 
 
-print(f'{const_expr = }')
-target_col, inits, ds = data_set(expr, constants)
-print(f'{ds = }')
-# print(models)
+def create_dataset(expr: List, vars: List[str], id_slice: int = 0, num_slices: int = 6, bench_dir = None):
+    """
+    Take generated expression and generate corresponding matrix with random rhs values.
+        - expression: list of tokens (from generate_one or SRToolkit)
+        - variables: of rhs
+        - id of slice: where the dataset is stored
+        - num_slice: number of slices in the benchmark, to taylor the slicing numbering (e.g. slice_0125.csv vs slice_04.csv)
+    """
+
+    # print(expr)
+
+    expr_str = "".join(expr)
+    print(f'{expr_str=}')
+
+    m = ModelBox()
+    symbols = {"x": vars, "start": "S", "const": "C"}
+        # valid, expr = models.add_model(expr_str, symbols, model_generator, code=code, p=p)
+        # expr_can, symbols_params = m.string_to_canonic_expression(estr, symbols)
+        # print(f'{expr_can = }')
+        # print(f'{symbols_params = }')
+    expr_sympyfied, sym_constants = m.enumerate_constants(expr_str, symbols)
+    # print(f'{expr_sympyfied = }')
+
+    # 1. Determine random constants inside of equation skeleton:
+    # print(' if error due to zero division, have to repeat random constants and matrix')
+    constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+    # print(constants)
+    const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+    # print(f'{const_expr = }')
+    # print(f'{str(const_expr) = }')
+    # print(f'{sym_constants = }')
+    # exe_expr = expr_to_executable_function(expr_sy, sl)
+
+    # 2. Generate random matrix and target column:
+    print(' if error due to zero division, have to repeat random constants and matrix')
+    exe_expr = expr_to_executable_function(expr, sl)
+    _target_col, _inits, ds = data_set(exe_expr, constants)  # only ds needed
+    to_store = (const_expr, ds)
+    # print(f'{ds = }')
+        # print(models)
+
+
+    df = pd.DataFrame(ds, columns=vars+['target'])
+    print(df)
+
+    slice_code = f'{id_slice:0>{int(math.log10(num_slices-1))+1}}'
+    out_filename = f'{bench_dir}ds{slice_code}.csv'
+    print(f'{out_filename = }')
+    print(f'\n')
+    # 1/0
+
+    if bench_dir is not None:
+        msg = f"Warning........... Writing to file: {out_filename}!!"
+        warnings.warn(msg)
+        df.to_csv(out_filename, index=False)
+        print('Also printing:', msg)
+    else:
+        print('  -->> Nothing was written - just testing ...')
+    return const_expr, slice_code
+
+print('\ntesting create_dataset')
+BENCH_DIR = 'EEDBench-test/'
+idx = 1
+# e = exprs[0]
+expr = exprs[idx]
+create_dataset(expr, vars, id_slice=0, num_slices=3)
+# print(pd.read_csv(BENCH_DIR + 'ds000.csv'))
+
+
 # 1/0
 
-# estr = exprs_str[idx]
-# print(f'{estr=}')
-# expr, symbols_params = m.string_to_canonic_expression(estr, symbols)
-# print(f'{expr = }')
-# print(f'{symbols_params = }')
-#
 
-
-df = pd.DataFrame(ds, columns=['target']+vars)
-print(df)
-
-bench_dir = 'slices/'
-
-# df.to_csv(bench_dir+'slice_test.csv', index=False)
-print('was saved before')
-
-# print( pd.read_csv(bench_dir+'slice_test.csv', index_col=0) )
-print( pd.read_csv(bench_dir+'slice_test.csv') )
-
-json_content = """
-{
-  "name": "Exact equation discovery benchmark",
-  "description": "Benchmark of 5 slices, stored as per-slice CSV files (4x3 each), with exact-equation metadata.",
-  "shape_per_slice": [5, 3],
-  "num_slices": 6,
-  "filename_convention_example": "slices/slice_000.csv",
-  "version": "0.0.0",
-  "slices": [
+def create_json(exprs_and_slice_codes: List[Tuple[str]], json_filename=None) -> str:
+    """
+    Creates metadata json for slices, e.g.:
     {
-      "ID": "000",
-      "equation": "eq_000",
-      "path": "slices/slice_000.csv",
-      "equation_skeleton": "y = a*x + b",
-      "chosen_constants": { "a": 2, "b": 1 }
+      "000": "eq_000 (target = x+y**3)",
+      "001": "eq_001"
     }
-  ]
-}
-"""
-json_mini = """
-{
-  "000": "eq_000",
-  "001": "eq_001"
-}
-"""
+    """
+    equations_map = { code: f'target = {expr}' for expr, code in exprs_and_slice_codes }
 
-l= json.loads(json_content)
-print(l)
-print(l['slices'][0]['path'])
-print(l['slices'][0]['ID'])
-print(l['slices'][0]['equation'])
-jd = json.loads(json_mini)
-print(f"{jd['000'] = }")
+    if json_filename is not None:
+        warnings.warn(f"Warning........... Writing to file: {json_filename}!!")
+        with open(json_filename, 'w', encoding='utf-8') as f:
+            json.dump(equations_map, f, ensure_ascii=False, indent=4)
+        print(f'Written to file: {json_filename}')
+
+    return equations_map
+
+JSON_FILENAME = 'di_equations_map.json'
+print('\nTesting create_json:')
+#####print(create_json([('x+3*y*y', '001'), ('x*z+4*y**8', '004'), ], JSON_FILENAME))
+print(create_json([('x+3*y*y', '001'), ('x*z+4*y**8', '004'), ]))
+
+# print('loading:', json.load(open('di_equations_map.json')))
+
+
+print('\nTesting entire benchmark creation:')
+##File Creation:## expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs), bench_dir=BENCH_DIR) for i, e in enumerate(exprs)]
+##File Creation:## json_dict = create_json(expressions_and_slice_codes, JSON_FILENAME)
+expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs)) for i, e in enumerate(exprs)]
+json_dict = create_json(expressions_and_slice_codes)
+print('\nAfter:')
+print(json_dict)
+# print('bench blueprint:', json.load(open('di_equations_map.json')))
+# print(pd.read_csv(BENCH_DIR + 'ds5.csv'))
