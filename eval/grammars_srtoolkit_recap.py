@@ -128,7 +128,8 @@ print(e)
 print("".join(e))
 # 1/0
 # # Create an executable function from the expression
-# expr = expr_to_executable_function(["X_0", "+", "X_1", "*", "C"])
+expr = expr_to_executable_function(["X_0", "+", "X_1", "*", "C"])
+# expr = expr_to_executable_function(["-", "X_0"])  # raises error.
 expr = expr_to_executable_function(e, sl)
 # 1/0
 

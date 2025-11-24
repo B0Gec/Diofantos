@@ -13,6 +13,15 @@ Debatable:
     - 4. Ghost columns? I.e. do we keep ghost columns?
         Explain: if grammar( vars=[x,y,z]) generates e = x**2, do we keep y and z columns? Yes!
 
+    - 5. Integers vs rational values? I think, maybe leave certain percentage of data sets with rational values inside of them?
+
+    - 6. Grammar poly/rational? I think, rational, but not a high percentage of rational equations.
+        With grammar: rational = P/Q, where P and Q are polynomials. Reasons:
+            - easier to specify probability of poly vs. rational.
+            - to use simplify(P[X,Y,C]) / simplify(Q[X,Y,C]) to get simpler forms of rational equations. I.e.
+                    not simplify (P/Q) since it can result in (C*x+C)/(C*x+C) -> 1, which is not desired.
+
+    - 7. Number of variables? I think 5-20 max is reasonable? Equation involving more terms is already too complex.
 
 
 
@@ -20,6 +29,7 @@ Baby version:
   - range (-10, 10)
   - m x n = 4 x 3
   - all eqs = 5
+
 """
 import random
 from typing import List, Tuple
@@ -29,7 +39,7 @@ import math
 import numpy as np
 import pandas as pd
 import json
-import sympy
+import sympy as sp
 from pandas import read_csv
 
 from ProGED.equation_discoverer import  EqDisco
@@ -43,7 +53,10 @@ from ProGED.model_box import ModelBox
 from SRToolkit.utils import expr_to_executable_function, tokens_to_tree, SymbolLibrary, expr_to_latex
 # from SRToolkit.utils.symbol_library import to_dict
 from SRToolkit.utils.expression_simplifier import simplify as srt_simplify
+
+from eval.tokenizer_second import tokenize_denumerate
 from tokenizer_simple import tokenize_generic
+from tokenizer_second import tokenize_expr
 
 ## IMPORTANT: look in ProGED/testing_constants for accessing constants inside of models.
 
@@ -90,9 +103,10 @@ scale = 6
 scale = 11
 # # scale = 9
 # scale = 100
-# scale = 101
+scale = 101
 print(grammar)
-exprs = [grammar.generate_one() for _ in range(scale)]
+
+exprs = [grammar.generate_one() for _ in range(4*scale)]
 exprs_full = exprs
 exprs = [e[0] for e in exprs_full]
 exprs_str = [''.join(e) for e in exprs]
@@ -103,88 +117,54 @@ print(exprs)
 print('\nPrinting expressoins:')
 for e in exprs:
     print("".join(e))
-    expr = expr_to_executable_function(e, sl)
+    # expr = expr_to_executable_function(e, sl)
 
 
+def simplify_by_spliting(expr: List[str]) -> List[str]:
+    """If expression is rational fraction of two polynoimals, i.e. P/Q, split it into P and Q,
+    simplify them separately, and put together again.
+    # generate one -> split P/Q -> sympyify P and Q -> put together -> expr_to_executable_function.
+    """
 
+    # 2. split P/Q:
+    print(f"{'/' in expr = }")
+    print(len([n for n, e in enumerate(expr) if e == '/']))  # if len > 1: Raise error
+    if '/' not in expr:
+        # 4. put together P/Q:
+        expr_simple = srt_simplify(expr, sl)
+    else:
+        slash_index = expr.index('/')
+        if slash_index == 0 or slash_index == len(expr)-1:
+            raise ValueError('Invalid expression with / at start or end!')
+        numerator_tokens = expr[:slash_index]
+        denominator_tokens = expr[slash_index+1:]
 
-# srtoolkit vs canonic
-expr = exprs[1]
-print(f'{expr = }')
-estr = "".join(expr)
-print(f'{estr = }')
-exe_expr = expr_to_executable_function(e, sl)
+        # print(f'{numerator_tokens = }')
+        # print(f'{denominator_tokens = }')
+        # 3. simplify P and Q:
+        numerator_simple = srt_simplify(numerator_tokens, sl)
+        denominator_simple = srt_simplify(denominator_tokens, sl)
+        # print(f'{numerator_simple = }')
+        # print(f'{denominator_simple = }')
+        def bracket(tokens): return ['('] + tokens + [')'] if tokens[0] != '(' or tokens[-1] != ')' else tokens
+        numerator, denominator = [bracket(poly) for poly in [numerator_simple, denominator_simple]]
+        # print(f'{numerator = }')
+        expr_simple = numerator + ['/'] + denominator
+        # print(f'{expr_simple = }')
+    return expr_simple
 
-m = ModelBox()
-symbols = {"x": vars, "start": "S", "const": "C"}
-# valid, expr = models.add_model(expr_str, symbols, model_generator, code=code, p=p)
-expr_can, symbols_params = m.string_to_canonic_expression(estr, symbols)
-print(f'{expr_can = }')
-print(f'{symbols_params = }')
-# 1/0
-expr_sympyfied, sym_constants = m.enumerate_constants("".join(expr), symbols)
-print(f'{expr_sympyfied = }')
-
-# 1. Determine random constants inside of equation skeleton:
-# print(' if error due to zero division, have to repeat random constants and matrix')
-constants = [random.randint(-10, 10) for _ in range(len(sym_constants))]
-print(f'{constants = }')
-const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-print(f'{const_expr = }')
-# print(f'{str(const_expr) = }')
-# print(f'{sym_constants = }')
-# exe_expr = expr_to_executable_function(expr_sy, sl)
-
-# 2. Generate random matrix and target column:
-print(' if error due to zero division, have to repeat random constants and matrix')
-exe_expr = expr_to_executable_function(expr, sl)
-data_points = np.array([[1, 2], [2, 5]])
-inits = np.random.randint(-10, 10, size=(2, len(constants)))  # i.e. rhs
-output = exe_expr(inits, constants)
-print(output)
-
-simplify = srt_simplify
-expr = ["C", "+", "C" "*", "C", "+", "X_0", "*", "X_1", "/", "X_0"]
-expr = [ "(", "C", "*", "X_0", ")",  "/", "X_0"]
-expr = [ "(", "C", "*", "X_0", "+", "C", ")",  "/", "(", "C", "*", "X_0", "+", "C", ")"]
+# 1. choose expression:
+expr = exprs[2]
+print(f"Testing on chosen expression: {expr}")
 print("".join(expr))
-print("".join(simplify(expr)))
+expr_simple = simplify_by_spliting(expr)
+
+# for e in exprs:
+#     print(''.join(e))
+#     simple_e = simplify_by_spliting(e)
+#     print(f'Simplified: {"".join(simple_e)}')
+#     print('---')
 # 1/0
-# C+X_1
-
-print('\nSRToolkit vs Canonic expressions:')
-for expr in exprs:
-    print(''.join(expr))
-    # simple_expr = srt_simplify(expr, sl)
-    # print(f'{"".join(simple_expr) }')
-    m = ModelBox()
-    symbols = {"x": vars, "start": "S", "const": "C"}
-    expr_can, sym_constants = m.string_to_canonic_expression("".join(expr), symbols)
-    print(f'{expr_can = }')
-    print(sympy.srepr(expr_can))
-    expr_can_tokenized = tokenize_generic(expr_can)
-    print(f'{expr_can_tokenized = }')
-    exe_expr = expr_to_executable_function(expr_can_tokenized, sl)
-    # print(exe_expr(np.array([[1,2],[2,5]]), [3 for _ in range(len(sym_constants))]))
-    constants = [4 for i in range(len(sym_constants))]
-    inits = np.random.randint(-10, 10, size=(2, len(constants)))  # i.e. rhs
-    output = exe_expr(inits, constants)
-    print(output)
-
-    # expr_sympyfied, sym_constants = m.enumerate_constants("".join(simple_expr), symbols)
-    print(len(sym_constants))
-
-1/0
-print('\nCanonic expressions:')
-[print(m.string_to_canonic_expression("".join(expr), symbols)[0]) for expr in exprs]
-
-print('\nsrtool simplified:')
-print(exprs)
-[print("".join(srt_simplify(expr, sl))) for expr in exprs]
-# [print(srt_simplify(expr, sl)) for expr in exprs]
-
-
-1/0
 
 
 INT_MAX_ABS = 10
@@ -274,7 +254,7 @@ def create_dataset(expr: List, vars: List[str], id_slice: int = 0, num_slices: i
         df.to_csv(out_filename, index=False)
         print('Also printing:', msg)
     else:
-        print('  -->> Nothing was written - just testing ...')
+        print('  -->>  Nothing was written - just testing ...')
     return const_expr, slice_code
 
 print('\ntesting create_dataset')
@@ -315,12 +295,205 @@ print(create_json([('x+3*y*y', '001'), ('x*z+4*y**8', '004'), ]))
 # print('loading:', json.load(open('di_equations_map.json')))
 
 
+def genetate_full_expr(expr: List[str]) -> List[str]:
+
+    m = ModelBox()
+    symbols = {"x": vars, "start": "S", "const": "C"}
+    expr_sympyfied, sym_constants = m.enumerate_constants("".join(expr), symbols)
+    # print(f'{expr_sympyfied = }')
+
+    # 1. Determine random constants inside of equation skeleton:
+    # print(' if error due to zero division, have to repeat random constants and matrix')
+    constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+    const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+    print(f'{constants = }')
+    print(f'{const_expr = }')
+
+    # 2. Generate random matrix and target column:
+    print(' if error due to zero division, have to repeat random constants and matrix')
+    exe_expr = expr_to_executable_function(expr, sl)
+    return const_expr
+
+
+def non_equivalent_exprs(exprs: List[str]) -> List[str]:
+    """From a list of expressions, return only non-equivalent ones.
+    I.e. if two expressions are equivalent, keep only one of them.
+    """
+    uniques = []
+    for i, expr in enumerate(exprs):
+        if i % 10 == 0:
+            print(f'Checking expr {i}/{len(exprs)} for equivalence...')
+        is_equivalent = False
+        for u_expr in uniques:
+            if sp.simplify(sp.sympify(expr) - sp.sympify(u_expr) ) == 0:
+                is_equivalent = True
+                break
+        if not is_equivalent:
+            uniques.append(expr)
+    return uniques
+
+
 print('\nTesting entire benchmark creation:')
+simplified = [simplify_by_spliting(expr) for expr in exprs]
+for i, (e, se) in enumerate(zip(exprs, simplified)):
+    print(f'Expr {i}: {"".join(e)}  -->  {"".join(se)}')
+
+print(' ----- - - -- - - - - - - - ---- ')
+for i, se in enumerate(simplified):
+    print(f'Expr {i}:  {"".join(se)}')
+
+print(f'{len(simplified)} simplified expressions')
+uniques = []
+for expr in simplified:
+    if expr not in uniques:
+        uniques.append(expr)
+
+print(' ----- - - -- - - - - - - - ---- ')
+for i, us in enumerate(uniques):
+    print(f'Expr {i}:  {"".join(us)}')
+
+
+print(f'{len(simplified)} simplified expressions')
+print(f'{len(uniques)} unique simplified expressions')
+print(f"{len([ue for ue in uniques if '/' in ue]) = } rational unique simplified expressions")
+print(f"{len([ue for ue in uniques if '/' in ue])/len(uniques) *100 = } % are rational unique simplified expressions")
+if len(uniques) < scale:
+    raise BufferError('Not enough unique simplified expressions generated according to the scale - increase the scale multiplier!!')
+simplified = uniques
+for i, us in enumerate(simplified):
+    print(f'Unique expr {i}: {"".join(us)}')
+
+
+print(f'{len(uniques)} unique simplified expressions')
+# Alternative way of generating: first all constant (full) expressions, then all datasets.
+full_exprs = [genetate_full_expr(e) for e in simplified]
+print(f'{len(full_exprs)} full expressions')
+uniques = []
+for expr in full_exprs:
+    if expr not in uniques:
+        uniques.append(expr)
+print(f'{len(uniques)} unique full expressions')
+
+for i, ne in enumerate(full_exprs):
+    print(f'Expr {i}: {ne}')
+
+# Todo:
+#  - test 1/C*x with 0 constant values.
+#  - time complexity. Non-equivalence takes the most of the time.
+
+1/0
+non_equivs = non_equivalent_exprs(full_exprs)
+for i, ne in enumerate(non_equivs):
+    print(f'Expr {i}: {ne}')
+
+print(f'{len(non_equivs)} unique non-equivalent full expressions')
+1/0
+
+
 ##File Creation:## expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs), bench_dir=BENCH_DIR) for i, e in enumerate(exprs)]
 ##File Creation:## json_dict = create_json(expressions_and_slice_codes, JSON_FILENAME)
-expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs)) for i, e in enumerate(exprs)]
+expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs)) for i, e in enumerate(simplified)]
 json_dict = create_json(expressions_and_slice_codes)
 print('\nAfter:')
 print(json_dict)
 # print('bench blueprint:', json.load(open('di_equations_map.json')))
 # print(pd.read_csv(BENCH_DIR + 'ds5.csv'))
+1/0
+
+
+
+if __name__ == '__main__':
+
+    print('\nin __Main__:')
+    # srtoolkit vs canonic
+    mobi = ["(", "C", "*", "x", "+", "C", ")", "/", "(", "C", "+", "C", "*", "x" ")"]
+    expr = exprs[1]
+    expr = mobi
+    print(f'{expr = }')
+    estr = "".join(expr)
+    print(f'{estr = }')
+    exe_expr = expr_to_executable_function(e, sl)
+    print('here now')
+    1/0
+
+    ## ProGED's canonic not required anymore, but number of constants is:
+    m = ModelBox()
+    symbols = {"x": vars, "start": "S", "const": "C"}
+    # # valid, expr = models.add_model(expr_str, symbols, model_generator, code=code, p=p)
+    # expr_can, symbols_params = m.string_to_canonic_expression(estr, symbols)
+    # print(f'{expr_can = }')
+    # print(f'{symbols_params = }')
+    # # 1/0
+    expr_sympyfied, sym_constants = m.enumerate_constants("".join(expr), symbols)
+    print(f'{expr_sympyfied = }')
+
+
+    # 1. Determine random constants inside of equation skeleton:
+    # print(' if error due to zero division, have to repeat random constants and matrix')
+    constants = [random.randint(-10, 10) for _ in range(len(sym_constants))]
+    # constants = [2, 2, 1, 1]
+    print(f'{constants = }')
+    const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+    print(f'{const_expr = }')
+    # 1/0
+    # print(f'{str(const_expr) = }')
+    # print(f'{sym_constants = }')
+    # exe_expr = expr_to_executable_function(expr_sy, sl)
+
+
+    # 2. Generate random matrix and target column:
+    print(' if error due to zero division, have to repeat random constants and matrix')
+    # print(f'{expr_can = }')
+    # expr = tokenize_denumerate(expr_can)
+    print(f'{expr = }')
+    # exe_expr = expr_to_executable_function(expr, sl)
+    data_points = np.array([[1, 2], [2, 5]])
+    inits = np.random.randint(-10, 10, size=(2, len(vars)))  # i.e. rhs
+    print(f'{inits = }')
+    print(f'{constants = }')
+    output = exe_expr(inits, [1,3,555555,46,5,43,5,3,4,4,2,234,3])
+    print(output)
+    # 1/0
+
+    simplify = srt_simplify
+    expr = ["C", "+", "C" "*", "C", "+", "X_0", "*", "X_1", "/", "X_0"]
+    expr = [ "(", "C", "*", "X_0", ")",  "/", "X_0"]
+    expr = [ "(", "C", "*", "X_0", "+", "C", ")",  "/", "(", "C", "*", "X_0", "+", "C", ")"]
+    print("".join(expr))
+    print("".join(simplify(expr)))
+    # 1/0
+    # C+X_1
+
+    print('\nSRToolkit vs Canonic expressions:')
+    for expr in exprs:
+        print(''.join(expr))
+        # simple_expr = srt_simplify(expr, sl)
+        # print(f'{"".join(simple_expr) }')
+        m = ModelBox()
+        symbols = {"x": vars, "start": "S", "const": "C"}
+        expr_can, sym_constants = m.string_to_canonic_expression("".join(expr), symbols)
+        print(f'{expr_can = }')
+        print(sp.srepr(expr_can))
+        expr_can_tokenized = tokenize_generic(expr_can)
+        print(f'{expr_can_tokenized = }')
+        exe_expr = expr_to_executable_function(expr_can_tokenized, sl)
+        # print(exe_expr(np.array([[1,2],[2,5]]), [3 for _ in range(len(sym_constants))]))
+        constants = [4 for i in range(len(sym_constants))]
+        inits = np.random.randint(-10, 10, size=(2, len(constants)))  # i.e. rhs
+        output = exe_expr(inits, constants)
+        print(output)
+
+        # expr_sympyfied, sym_constants = m.enumerate_constants("".join(simple_expr), symbols)
+        print(len(sym_constants))
+
+    1/0
+    print('\nCanonic expressions:')
+    [print(m.string_to_canonic_expression("".join(expr), symbols)[0]) for expr in exprs]
+
+    print('\nsrtool simplified:')
+    print(exprs)
+    [print("".join(srt_simplify(expr, sl))) for expr in exprs]
+    # [print(srt_simplify(expr, sl)) for expr in exprs]
+
+
+    1/0
