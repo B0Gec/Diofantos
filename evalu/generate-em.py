@@ -54,8 +54,8 @@ from SRToolkit.utils import expr_to_executable_function, tokens_to_tree, SymbolL
 # from SRToolkit.utils.symbol_library import to_dict
 from SRToolkit.utils.expression_simplifier import simplify as srt_simplify
 
-from eval.tokenizer_second import tokenize_denumerate
-from tokenizer_simple import tokenize_generic
+# from eval.tokenizer_second import tokenize_denumerate
+# from tokenizer_simple import tokenize_generic
 from tokenizer_second import tokenize_expr
 
 ## IMPORTANT: look in ProGED/testing_constants for accessing constants inside of models.
@@ -103,10 +103,33 @@ scale = 6
 scale = 11
 # # scale = 9
 # scale = 100
-scale = 101
+scale = 50
+# scale = 101
+# scale = 500
+# scale = 1500
+# scale = 4000
+# 343 unique simplified expressions - record
+# 743 unique simplified expressions - record
+# 1428 unique simplified expressions - record (vs 15000 gen)
+# 50 s for 26000 simplified and 2039 unique full expressions
+# 1:28s 52000 simplified expressions  3377 unique simplified expressions
+# 1:34s 56000 simplified expressions  3539 unique simplified expressions
+
+# 26s for 54 non-equivalent    # predicting: 1m for 100, 10m for 1000, 1h40m for 10k; 1h for 5k
+# 5m for 163 non-equivalent
+
+# quick failsafe:
+# 26s for 54 non-equivalent (of 154 simplified)   # predicting: 1m for 100, 10m for 1000, 1h40m for 10k; 1h for 5k
+# 4:40s for 161 non-equivalent (of 163 full and 700 simplified)
+
+
 print(grammar)
 
-exprs = [grammar.generate_one() for _ in range(4*scale)]
+multiplier_scale = 4
+multiplier_scale = 10  #1860 unique vs 1500 specified
+multiplier_scale = 14  #1860 unique vs 1500 specified
+multiplier_scale = 14
+exprs = [grammar.generate_one() for _ in range(multiplier_scale*scale)]
 exprs_full = exprs
 exprs = [e[0] for e in exprs_full]
 exprs_str = [''.join(e) for e in exprs]
@@ -127,8 +150,10 @@ def simplify_by_spliting(expr: List[str]) -> List[str]:
     """
 
     # 2. split P/Q:
-    print(f"{'/' in expr = }")
-    print(len([n for n, e in enumerate(expr) if e == '/']))  # if len > 1: Raise error
+    # print(f"{'/' in expr = }")
+    # print(len([n for n, e in enumerate(expr) if e == '/']))  # if len > 1: Raise error
+    if len([n for n, e in enumerate(expr) if e == '/']) > 1:
+        raise ValueError('Expression with more than one / Grammar failed!')
     if '/' not in expr:
         # 4. put together P/Q:
         expr_simple = srt_simplify(expr, sl)
@@ -191,6 +216,8 @@ def data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS) 
     # print(f'{constants = }')
     output = executable_expr(inits, constants)
     # print(output)
+    if any([np.isnan(target) or np.isinf(target) for target in output]):
+        raise ValueError('Generated dataset contains NaN or Inf values - have to regenerate!!')
     target_column = np.array(output).reshape(-1, 1)
     dataset = np.hstack((inits, target_column))
     # print(f'{target_column = }')
@@ -295,52 +322,94 @@ print(create_json([('x+3*y*y', '001'), ('x*z+4*y**8', '004'), ]))
 # print('loading:', json.load(open('di_equations_map.json')))
 
 
-def genetate_full_expr(expr: List[str]) -> List[str]:
+def generate_full_expr(expr: List[str], num_tries: int = 10) -> Tuple[List[int], str]:
+    """Generate random constants inside of expression skeleton until the
+    legit full expression is produced.
+    """
 
+    # 0. Prepare the testing ground:
     m = ModelBox()
     symbols = {"x": vars, "start": "S", "const": "C"}
     expr_sympyfied, sym_constants = m.enumerate_constants("".join(expr), symbols)
-    # print(f'{expr_sympyfied = }')
+    print(f'{expr_sympyfied = }')
 
     # 1. Determine random constants inside of equation skeleton:
     # print(' if error due to zero division, have to repeat random constants and matrix')
-    constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+    found_constants = False
+    for i in range(num_tries):
+        print(f'Try {i+1}/{num_tries} to generate full expression without NaN/Inf in dataset:')
+        constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+        print(f'{constants = }')
+        const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+        print(f'{const_expr = }')
+        exe_expr = expr_to_executable_function(expr, sl)
+        target = exe_expr(np.array([[1]*len(vars)]), constants)[0]
+        print(f'{target = }')
+
+        if np.isnan(target) or np.isinf(target):
+            msg = 'Generated target value has NaN or Inf value - have to regenerate!!'
+            warnings.warn(msg)
+            for i in range(10):
+                # 2. Generate random matrix and target column:
+                inits = np.random.randint(1, 10, size=(1, len(vars)))
+                target = exe_expr(inits, constants)[0]
+                print(f'{target = }')
+                if np.isnan(target) or np.isinf(target):
+                    warnings.warn(msg)
+                    # 1 / 0
+                else:
+                    found_constants = True
+                    break
+            print('These constants were invalid, trying again with some others ...')
+        else:
+            found_constants = True
+            break
+
+    if not found_constants:
+        raise ValueError('Could not generate full expression without NaN/Inf in dataset - increase num_tries!!')
+
     const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-    print(f'{constants = }')
-    print(f'{const_expr = }')
-
-    # 2. Generate random matrix and target column:
-    print(' if error due to zero division, have to repeat random constants and matrix')
-    exe_expr = expr_to_executable_function(expr, sl)
-    return const_expr
 
 
-def non_equivalent_exprs(exprs: List[str]) -> List[str]:
+    print(f'exiting generate full: {expr_sympyfied = }')
+    # print(f'{constants = }')
+    # print(f'{const_expr = }')
+
+    return constants, const_expr
+
+
+def non_equivalent_exprs(exprs: Tuple[List[str], Tuple[List[int], str]]) -> List[str]:
     """From a list of expressions, return only non-equivalent ones.
     I.e. if two expressions are equivalent, keep only one of them.
     """
     uniques = []
-    for i, expr in enumerate(exprs):
+    for i, (expr, (consts, const_expr)) in enumerate(exprs):
         if i % 10 == 0:
             print(f'Checking expr {i}/{len(exprs)} for equivalence...')
         is_equivalent = False
-        for u_expr in uniques:
-            if sp.simplify(sp.sympify(expr) - sp.sympify(u_expr) ) == 0:
+        for u_expr, (u_consts, u_const_expr) in uniques:
+            if sp.simplify(sp.sympify(const_expr) - sp.sympify(u_const_expr) ) == 0:
                 is_equivalent = True
                 break
         if not is_equivalent:
-            uniques.append(expr)
+            uniques.append((expr, (consts, const_expr)))
     return uniques
+
+
+print('generating full expressions:')
+print(generate_full_expr(exprs[0]))
+# 1/0
 
 
 print('\nTesting entire benchmark creation:')
 simplified = [simplify_by_spliting(expr) for expr in exprs]
-for i, (e, se) in enumerate(zip(exprs, simplified)):
-    print(f'Expr {i}: {"".join(e)}  -->  {"".join(se)}')
+# for i, (e, se) in enumerate(zip(exprs, simplified)):
+#     print(f'Expr {i}: {"".join(e)}  -->  {"".join(se)}')
+#
+# print(' ----- - - -- - - - - - - - ---- ')
+# for i, se in enumerate(simplified):
+#     print(f'Expr {i}:  {"".join(se)}')
 
-print(' ----- - - -- - - - - - - - ---- ')
-for i, se in enumerate(simplified):
-    print(f'Expr {i}:  {"".join(se)}')
 
 print(f'{len(simplified)} simplified expressions')
 uniques = []
@@ -352,41 +421,55 @@ print(' ----- - - -- - - - - - - - ---- ')
 for i, us in enumerate(uniques):
     print(f'Expr {i}:  {"".join(us)}')
 
-
+num_of = {'simplified expressions': len(simplified),}
 print(f'{len(simplified)} simplified expressions')
 print(f'{len(uniques)} unique simplified expressions')
+num_of.update({'unique simplified expressions': len(uniques),})
 print(f"{len([ue for ue in uniques if '/' in ue]) = } rational unique simplified expressions")
 print(f"{len([ue for ue in uniques if '/' in ue])/len(uniques) *100 = } % are rational unique simplified expressions")
 if len(uniques) < scale:
     raise BufferError('Not enough unique simplified expressions generated according to the scale - increase the scale multiplier!!')
 simplified = uniques
-for i, us in enumerate(simplified):
-    print(f'Unique expr {i}: {"".join(us)}')
+# for i, us in enumerate(simplified):
+#     print(f'Unique expr {i}: {"".join(us)}')
 
 
 print(f'{len(uniques)} unique simplified expressions')
 # Alternative way of generating: first all constant (full) expressions, then all datasets.
-full_exprs = [genetate_full_expr(e) for e in simplified]
+full_exprs = [(e, generate_full_expr(e)) for e in simplified]
 print(f'{len(full_exprs)} full expressions')
+num_of.update({'full expressions': len(full_exprs),})
 uniques = []
 for expr in full_exprs:
     if expr not in uniques:
         uniques.append(expr)
 print(f'{len(uniques)} unique full expressions')
 
-for i, ne in enumerate(full_exprs):
-    print(f'Expr {i}: {ne}')
+num_of.update({'unique full expressions': len(uniques),})
+# for i, ne in enumerate(full_exprs):
+#     print(f'Expr {i}: {ne}')
 
+print("\n".join([f"{k}: {v}" for k,v in num_of.items()]))
+
+# Done:
+#   - time complexity. Non-equivalence takes the most of the time.
 # Todo:
 #  - test 1/C*x with 0 constant values.
-#  - time complexity. Non-equivalence takes the most of the time.
+#       - [Solution seems]: We 1/0 will always produce inf or nan. So we are safe in that regard, if we try the simplest case for every chosen constants.
+#  - 1/x  may produce 1/0 if x=0 in the generated dataset.
+#       - [Solution 1]: Generate each row of dataset untill wanted shape is produced.
+#       - [Solution 2]: Generate random datasets untill one causes no errors (isnan/isinf).
 
-1/0
+
+# 1/0
 non_equivs = non_equivalent_exprs(full_exprs)
 for i, ne in enumerate(non_equivs):
     print(f'Expr {i}: {ne}')
 
+
+num_of.update({'unique non-equivalent full expressions': len(non_equivs),})
 print(f'{len(non_equivs)} unique non-equivalent full expressions')
+print("\n".join([f"{k}: {v}" for k,v in num_of.items()]))
 1/0
 
 
@@ -405,6 +488,40 @@ print(json_dict)
 if __name__ == '__main__':
 
     print('\nin __Main__:')
+    # testing zoo/x:
+    # dataset
+    zoo = ["(", "C", ")", "/", "(", "C", "*", "x", ")"]
+
+    consts = [3, 0]
+    # consts = [3, 1]
+    # consts = [3]
+    expr = zoo
+    print(f'{expr = }')
+    estr = "".join(expr)
+    print(f'{estr = }')
+    full_expr = generate_full_expr(simplify_by_spliting(expr), consts)
+    print(f'{full_expr = }')
+    exe_expr = expr_to_executable_function(expr, sl)
+    # print(data_set(exe_expr, [], shape=(5,3)))
+    inits = np.random.randint(1, 10, size=(4, 3) )
+    print(f'{inits = }')
+    # print(f'{constants = }')
+    output = exe_expr(inits, consts)
+    print(output)
+    print(type(output[0]))
+    print(np.isnan(output[0]))
+    print(np.isinf(output[0]))
+    print([np.isinf(n) for n in output])
+    1/0
+    print(type(output))
+    # print([(3, 5), (3, 8), (3, 2), (3, 7)])
+    target_column = np.array(output).reshape(-1, 1)
+    dataset = np.hstack((inits, target_column))
+
+    1/0
+    ### End of testing zoo
+
+
     # srtoolkit vs canonic
     mobi = ["(", "C", "*", "x", "+", "C", ")", "/", "(", "C", "+", "C", "*", "x" ")"]
     expr = exprs[1]
