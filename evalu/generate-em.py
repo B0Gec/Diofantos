@@ -23,6 +23,8 @@ Debatable:
 
     - 7. Number of variables? I think 5-20 max is reasonable? Equation involving more terms is already too complex.
 
+    - 8. Implicit equations? I think, no since impractical. Would need non-linear solvers.
+            Maybe well known equations with solutions only?
 
 
 Baby version:
@@ -108,16 +110,16 @@ vars = [i.strip("'") for i in pg_vars]
 
 scale = 6
 # scale = 10
-scale = 11
-# # # scale = 9
-scale = 15
-# scale = 19
+# scale = 11
+# # # # scale = 9
+# scale = 15
+# # scale = 19
 scale = 20
-# # scale = 100
+# scale = 100
 # # scale = 50
 # # scale = 101
-# # scale = 500
-# # scale = 1500
+# scale = 500
+# scale = 1000
 # scale = 5000
 # 343 unique simplified expressions - record
 # 743 unique simplified expressions - record
@@ -126,15 +128,21 @@ scale = 20
 # 1:28s 52000 simplified expressions  3377 unique simplified expressions
 # 1:34s 56000 simplified expressions  3539 unique simplified expressions
 
-# 26s for 54 non-equivalent    # predicting: 1m for 100, 10m for 1000, 1h40m for 10k; 1h for 5k
-# 5m for 163 non-equivalent
+#   26s for 54 non-equivalent    # predicting: 1m for 100, 10m for 1000, 1h40m for 10k; 1h for 5k
+#   5m for 163 non-equivalent
 
 # quick failsafe:
 # 26s for 54 non-equivalent (of 154 simplified)   # predicting: 1m for 100, 10m for 1000, 1h40m for 10k; 1h for 5k
-# 4:40s for 161 non-equivalent (of 163 full and 700 simplified)
+# 4:40s (280s) for 161 non-equivalent (of 163 full and 700 simplified)  # predicting: 25m for 320 nons, 1h25m for 640 nons, 7h20m for 1280 nons
 
 # p/q q + dataset failsafe:
-# 1m8s for 82 non-equivalent (of 300 simplified)
+# 1m8s (70s) for 82 non-equivalent (of 300 simplified)
+# 16m24s (985s) for 278 non-equivalent (of 1500 simplified)
+#
+# p/q q + dataset failsafe:
+# 1m8s (70s) for 82 non-equivalent (of 300 simplified)
+# 16m24s (985s) for 278 non-equivalent (of 1500 simplified)
+# 192m4.661s = 3.2h (7500s) for 846 non-equivalent (of 1860 simplified)
 
 print(grammar)
 
@@ -168,13 +176,9 @@ def fraction_split(expr: List[str]) -> Tuple[List[str], List[str]]:
     return numerator_tokens, denominator_tokens
 
 def fraction_join(numerator: List[str], denominator: List[str]) -> List[str]:
-    print(f'Joining fraction from numerator: {numerator} and denominator: {denominator}')
     def bracket(tokens): return ['('] + tokens + [')'] if tokens[0] != '(' or tokens[-1] != ')' else tokens
     numerator, denominator = bracket(numerator), bracket(denominator)
-    print(f'{numerator = }')
-    print(f'{denominator = }')
     expr_joined = numerator + ['/'] + denominator
-    print(f'{expr_joined}')
     return expr_joined
 
 
@@ -193,12 +197,6 @@ def simplify_by_spliting(expr: List[str]) -> List[str]:
         # 4. put together P/Q:
         expr_simple = srt_simplify(expr, sl)
     else:
-        # remove next 5 lines:
-        # slash_index = expr.index('/')
-        # if slash_index == 0 or slash_index == len(expr)-1:
-        #     raise ValueError('Invalid expression with / at start or end!')
-        # numerator_tokens = expr[:slash_index]
-        # denominator_tokens = expr[slash_index+1:]
         numerator_tokens, denominator_tokens = fraction_split(expr)
 
         # print(f'{numerator_tokens = }')
@@ -206,14 +204,7 @@ def simplify_by_spliting(expr: List[str]) -> List[str]:
         # 3. simplify P and Q:
         numerator_simple = srt_simplify(numerator_tokens, sl)
         denominator_simple = srt_simplify(denominator_tokens, sl)
-        # print(f'{numerator_simple = }')
-        # print(f'{denominator_simple = }')
 
-        # remove next 4 lines:
-        # def bracket(tokens): return ['('] + tokens + [')'] if tokens[0] != '(' or tokens[-1] != ')' else tokens
-        # numerator, denominator = [bracket(poly) for poly in [numerator_simple, denominator_simple]]
-        # # print(f'{numerator = }')
-        # expr_simple = numerator + ['/'] + denominator
         expr_simple = fraction_join(numerator_simple, denominator_simple)
         # print(f'{expr_simple = }')
     return expr_simple
@@ -291,14 +282,7 @@ def data_set_fraction(executable_expr: Tuple[callable], constants: Tuple[List[in
         inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0], shape[1]))  # i.e. rhs
         target_column = executable_expr(inits, constants)
     else:
-        found_constants = False
         pre_inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0]*num_tries, shape[1]))
-        # for i in range(num_tries):
-
-        # print(f'Try {i+1}/{num_tries} to generate dataset from full expression without NaN/Inf')
-        # inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0], shape[1]))  # i.e. rhs
-        # print(f'{inits = }')
-        # print(f'{constants = }')
 
         pre_Q_column = executable_expr[1](pre_inits, constants[1])
         Q_nonzero = [(i, val) for i, val in enumerate(pre_Q_column) if val != 0][:shape[0]]
@@ -311,9 +295,6 @@ def data_set_fraction(executable_expr: Tuple[callable], constants: Tuple[List[in
         if 0 in Q_column:
             # warnings.warn('Generated values of Q contains zero ( => P/0) - have to regenerate!!')
             raise ValueError('Bug!! - a big one! Generated values of Q contains zero although I checked against it!!')
-        # else:
-        #     found_constants = True
-        #     break
 
         # if not found_constants:
         #     raise ValueError('Could not generate dataset without NaN/Inf - increase num_tries!!')
@@ -343,22 +324,13 @@ def create_dataset(expr: List, vars: List[str], id_slice: int = 0, num_slices: i
 
     m = ModelBox()
     symbols = {"x": vars, "start": "S", "const": "C"}
-        # valid, expr = models.add_model(expr_str, symbols, model_generator, code=code, p=p)
-        # expr_can, symbols_params = m.string_to_canonic_expression(estr, symbols)
-        # print(f'{expr_can = }')
-        # print(f'{symbols_params = }')
     expr_sympyfied, sym_constants = m.enumerate_constants(expr_str, symbols)
-    # print(f'{expr_sympyfied = }')
 
     # 1. Determine random constants inside of equation skeleton:
     # print(' if error due to zero division, have to repeat random constants and matrix')
     constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
     # print(constants)
     const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-    # print(f'{const_expr = }')
-    # print(f'{str(const_expr) = }')
-    # print(f'{sym_constants = }')
-    # exe_expr = expr_to_executable_function(expr_sy, sl)
 
     # 2. Generate random matrix and target column:
     print(' if error due to zero division, have to repeat random constants and matrix')
@@ -440,8 +412,8 @@ def generate_full_expr(expr: List[str], num_tries: int = 10) -> Tuple[List[int],
     # print(' if error due to zero division, have to repeat random constants and matrix')
     found_constants = False
     for i in range(num_tries):
-        print(f'Try {i+1}/{num_tries} to generate full expression without NaN/Inf in dataset:')
         constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+        print(f'Try {i+1}/{num_tries} to generate full expression without NaN/Inf in dataset:')
         print(f'{constants = }')
         const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
         print(f'{const_expr = }')
@@ -463,10 +435,10 @@ def generate_full_expr(expr: List[str], num_tries: int = 10) -> Tuple[List[int],
                 else:
                     found_constants = True
                     break
-            print('These constants were invalid, trying again with some others ...')
         else:
             found_constants = True
             break
+        print('These constants were invalid, trying again with some others ...')
 
     if not found_constants:
         raise ValueError('Could not generate full expression without NaN/Inf in dataset - increase num_tries!!')
@@ -508,9 +480,6 @@ def generate_full_expr_fraction(expr: List[str], num_tries: int = 10) -> Tuple[L
     if sp.simplify(sp.sympify("".join(Q))) == 0:
         raise ValueError('Grammar generated expression that has zero denominator - invalid equation!!')
 
-    # generate nonzero Q.
-
-
     # 0. Prepare the testing ground:
     expr_sympyfied, sym_constants = model_box.enumerate_constants("".join(Q), pged_symbols)
     print(f'{expr_sympyfied = }')
@@ -519,14 +488,14 @@ def generate_full_expr_fraction(expr: List[str], num_tries: int = 10) -> Tuple[L
     # print(' if error due to zero division, have to repeat random constants and matrix')
     found_constants = False
     for i in range(num_tries):
-        print(f'Try {i+1}/{num_tries} to generate non-zero denominator:')
+        print(f'Try {i}/{num_tries} to generate non-zero denominator:')
         constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
         const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-        print(f'{constants = }')
+        # print(f'{constants = }')
         print(f'{const_expr = }')
         exe_expr = expr_to_executable_function(Q, sl)
         target = exe_expr(np.array([[1]*len(vars)]), constants)[0]
-        print(f'{target = }')
+        # print(f'{target = }')
 
         if target == 0:
             msg = 'Generated target value of denominator is zero - have to regenerate!!'
@@ -535,10 +504,9 @@ def generate_full_expr_fraction(expr: List[str], num_tries: int = 10) -> Tuple[L
                 # 2. Generate random matrix and target column:
                 inits = np.random.randint(1, 10, size=(1, len(vars)))
                 target = exe_expr(inits, constants)[0]
-                print(f'{target = }')
+                # print(f'{target = }')
                 if target == 0:
-                    warnings.warn(f'try random dataset: {i}/10; with expression {const_expr}:' + msg)
-                    print('These constants were invalid, trying again with some others ...')
+                    warnings.warn(f'try random dataset: {i}/10; ' + msg)
                 else:
                     found_constants = True
                     break
@@ -549,7 +517,12 @@ def generate_full_expr_fraction(expr: List[str], num_tries: int = 10) -> Tuple[L
 
         if found_constants:  # not important, since EXTREMELY unlikely, but just in case:
             if sp.simplify(sp.sympify(const_expr)) == 0:
-                raise warnings.warn('Sneaky! Zero denominator although nonzero values on dataset!!!')
+                ext_msg = f'try random dataset: {i}/10; with expression {const_expr}, and inits {inits}: sneaky bastard!'
+                print(f'{target = }')
+                print(f'{num_tries = }')
+                print(ext_msg)
+                warnings.warn(ext_msg)
+                raise ValueError('Sneaky! Zero denominator although nonzero values on dataset!!!')
     if not found_constants:
         raise ValueError('Could not generate full non-zero polynomial expression!! - increase num_tries?')
 
@@ -662,9 +635,10 @@ non_equivs = non_equivalent_exprs(full_uniques)
 for i, expr_tuple in enumerate(non_equivs):
     print(f'Expr {i}: {expr_tuple[2]}')  # const_expr
 
-# 1/0
+1/0
 # datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(5, len(vars)))) for _, consts, const_expr, exe_expr in non_equivs]
-datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), expr_debug=const_expr,  num_tries=20))
+# datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), expr_debug=const_expr,  num_tries=20))
+datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), num_tries=20))
             for _, consts, const_expr, exe_expr in non_equivs]
 
 for i, (const_expr, (target_col, inits, ds)) in enumerate(datasets):
