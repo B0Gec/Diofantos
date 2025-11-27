@@ -45,6 +45,7 @@ import random
 from typing import List, Tuple
 import warnings
 import math
+import argparse
 
 import numpy as np
 import pandas as pd
@@ -108,18 +109,20 @@ vars = [i.strip("'") for i in pg_vars]
 # grammar = gc.grammar_from_template("rational", {})
 
 
+
 scale = 6
 # scale = 10
 # scale = 11
 # # # # scale = 9
 # scale = 15
-# # scale = 19
+scale = 19
 scale = 20
-# scale = 100
+scale = 100
 # # scale = 50
 # # scale = 101
 # scale = 500
 # scale = 1000
+
 # scale = 5000
 # 343 unique simplified expressions - record
 # 743 unique simplified expressions - record
@@ -145,6 +148,11 @@ scale = 20
 # 192m4.661s = 3.2h (7500s) for 846 non-equivalent (of 1860 simplified)
 
 print(grammar)
+parser = argparse.ArgumentParser()
+parser.add_argument("--scale", type=int, default=scale)
+args = parser.parse_args()
+scale = args.scale
+
 
 multiplier_scale = 4
 multiplier_scale = 10  #1860 unique vs 1500 specified
@@ -477,6 +485,8 @@ def generate_full_expr_fraction(expr: List[str], num_tries: int = 10) -> Tuple[L
     # -1. Split P/Q on P and Q.
     P, Q = fraction_split(expr)
 
+    # Q = ['C', '*', 'x', '^', '2', '+', 'C']
+
     if sp.simplify(sp.sympify("".join(Q))) == 0:
         raise ValueError('Grammar generated expression that has zero denominator - invalid equation!!')
 
@@ -488,39 +498,50 @@ def generate_full_expr_fraction(expr: List[str], num_tries: int = 10) -> Tuple[L
     # print(' if error due to zero division, have to repeat random constants and matrix')
     found_constants = False
     for i in range(num_tries):
-        print(f'Try {i}/{num_tries} to generate non-zero denominator:')
+        print(f'\n  Try {i}/{num_tries} to generate non-zero denominator:')
         constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+        print(f'{constants = }')
+        # if i == 0:
+        # constants = [0, 0]
         const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-        # print(f'{constants = }')
+        print(f'{constants = }')
         print(f'{const_expr = }')
+        # 1/0
         exe_expr = expr_to_executable_function(Q, sl)
         target = exe_expr(np.array([[1]*len(vars)]), constants)[0]
-        # print(f'{target = }')
+        print(f'{target = }')
 
         if target == 0:
             msg = 'Generated target value of denominator is zero - have to regenerate!!'
             warnings.warn(msg)
             for i in range(10):
+                print(f'\n    try: {i}/10 inits')
                 # 2. Generate random matrix and target column:
                 inits = np.random.randint(1, 10, size=(1, len(vars)))
                 target = exe_expr(inits, constants)[0]
-                # print(f'{target = }')
+                print(f'{target = }')
                 if target == 0:
                     warnings.warn(f'try random dataset: {i}/10; ' + msg)
                 else:
+                    print('---- reovlution here ----')
                     found_constants = True
                     break
+            if found_constants:
+                break
+
             print('These constants seem invalid, trying again with some others ...')
         else:
+            print('---- contra-reovlution here ----')
             found_constants = True
             break
 
         if found_constants:  # not important, since EXTREMELY unlikely, but just in case:
             if sp.simplify(sp.sympify(const_expr)) == 0:
+                print(f'{found_constants = }')
                 ext_msg = f'try random dataset: {i}/10; with expression {const_expr}, and inits {inits}: sneaky bastard!'
+                print(ext_msg)
                 print(f'{target = }')
                 print(f'{num_tries = }')
-                print(ext_msg)
                 warnings.warn(ext_msg)
                 raise ValueError('Sneaky! Zero denominator although nonzero values on dataset!!!')
     if not found_constants:
@@ -635,7 +656,7 @@ non_equivs = non_equivalent_exprs(full_uniques)
 for i, expr_tuple in enumerate(non_equivs):
     print(f'Expr {i}: {expr_tuple[2]}')  # const_expr
 
-1/0
+# 1/0
 # datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(5, len(vars)))) for _, consts, const_expr, exe_expr in non_equivs]
 # datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), expr_debug=const_expr,  num_tries=20))
 datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), num_tries=20))
