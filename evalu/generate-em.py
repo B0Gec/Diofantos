@@ -103,7 +103,13 @@ sl = SymbolLibrary.default_symbols(num_variables=len(pg_vars))
 vars = [i.strip("'") for i in pg_vars]
 # mysymbols = ["+", "*", "/", "(", ")", "C", 'x', 'y', 'z'] + vars_clean+vars
 # slib = SymbolLibrary().from_symbol_list(["+", "*", "/", "(", ")", "C", ] + vars_clean, num_variables=len(vars))  # does not work!
-[sl.add_symbol(var, 'var', 5, f"X[:, {n}]", var) for n, var in enumerate(vars)]
+# [sl.add_symbol(var, 'var', 5, f"X[:, {n}]", var) for n, var in enumerate(vars)]
+[sl.add_symbol(var, 'var', 5, f"X[:, {n}].astype('O')", var) for n, var in enumerate(vars)]
+# sl.add_symbol('X_0', 'var', 5, "X[:, 0].astype('O')", 'x')
+sl.add_symbol( "C", symbol_type="const", precedence=5, np_fn="np.full(X.shape[0], C[{}]).astype('O')", latex_str=r"C_{{{}}}", )
+
+# print(20)
+# 1/0
 
 # # grammar = gc.grammar_from_template("universal_oeis", {})
 # grammar = gc.grammar_from_template("rational", {})
@@ -115,9 +121,9 @@ scale = 6
 # scale = 11
 # # # # scale = 9
 # scale = 15
-scale = 19
-scale = 20
-scale = 100
+# scale = 19
+# scale = 20
+# scale = 100
 # # scale = 50
 # # scale = 101
 # scale = 500
@@ -146,6 +152,10 @@ scale = 100
 # 1m8s (70s) for 82 non-equivalent (of 300 simplified)
 # 16m24s (985s) for 278 non-equivalent (of 1500 simplified)
 # 192m4.661s = 3.2h (7500s) for 846 non-equivalent (of 1860 simplified)
+# > 17h (17h - 10h = 10+7=17h) for 1870 (of 2120) non-equivalent (of 27000 simplified, scale=1800)
+# > 18h (17h - 11h = 10+8=18h) for 1910 (of 2120) non-equivalent (of 27000 simplified, scale=1800)
+# 22h20m for 2085 non-equivalent (of 27000 simplified, scale=1800)
+
 
 print(grammar)
 parser = argparse.ArgumentParser()
@@ -254,20 +264,31 @@ def data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS, 
     for i in range(num_tries):
         # print(f'Try {i+1}/{num_tries} to generate dataset from full expression without NaN/Inf')
         inits = np.random.randint(-int_max_abs, int_max_abs, size=(shape[0], shape[1]))  # i.e. rhs
-        # print(f'{inits = }')
+        print(f'{inits = }')
         # print(f'{constants = }')
-
-        target_column = executable_expr(inits, constants)
-        # print(target_column)
-
-        if any([np.isnan(target) or np.isinf(target) for target in target_column]):
-            warnings.warn('Generated dataset contains NaN or Inf values - have to regenerate!!')
-        else:
+        try:
+            target_column = executable_expr(inits, constants)
+            # print(target_column)
             found_constants = True
             break
+        except ZeroDivisionError:
+            msg = '\n\n   - - \                                                               / - -  \n'
+            msg +=    '    - - \                                                             / - - - \n'
+            msg +=    '   - - - >   Excepted ZeroDivisionError - have to regenerate!!       < - - - -\n\n'
+            print(msg)
+            warnings.warn(msg)
+            if found_constants:
+                warnings.warn('found_constants is set to True - Terrible!! Should fix this bug!!')
+
+    # if any([np.isnan(target) or np.isinf(target) for target in target_column]):
+        #     warnings.warn('Generated dataset contains NaN or Inf values - have to regenerate!!')
+        # else:
+        #     found_constants = True
+        #     break
 
     if not found_constants:
-        raise ValueError('Could not generate dataset without NaN/Inf - increase num_tries!!')
+        # raise ValueError('Could not generate dataset without NaN/Inf - increase num_tries!!')
+        raise ValueError('Could not generate dataset without zero division - increase num_tries!!')
     target_column = np.array(target_column).reshape(-1, 1)
     dataset = np.hstack((inits, target_column))
     # print(f'{target_column = }')
@@ -337,8 +358,9 @@ def create_dataset(expr: List, vars: List[str], id_slice: int = 0, num_slices: i
     # 1. Determine random constants inside of equation skeleton:
     # print(' if error due to zero division, have to repeat random constants and matrix')
     constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
-    # print(constants)
+    print(constants)
     const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+    print(f'{const_expr = }')
 
     # 2. Generate random matrix and target column:
     print(' if error due to zero division, have to repeat random constants and matrix')
@@ -422,12 +444,12 @@ def generate_full_expr(expr: List[str], num_tries: int = 10) -> Tuple[List[int],
     for i in range(num_tries):
         constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
         print(f'Try {i+1}/{num_tries} to generate full expression without NaN/Inf in dataset:')
-        print(f'{constants = }')
+        # print(f'{constants = }')
         const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-        print(f'{const_expr = }')
+        # print(f'{const_expr = }')
         exe_expr = expr_to_executable_function(expr, sl)
         target = exe_expr(np.array([[1]*len(vars)]), constants)[0]
-        print(f'{target = }')
+        # print(f'{target = }')
 
         if np.isnan(target) or np.isinf(target):
             msg = 'Generated target value has NaN or Inf value - have to regenerate!!'
@@ -567,7 +589,7 @@ def non_equivalent_exprs(expr_tuples: List[Tuple[List[str], List[int], str, sl]]
     unique_simplified = []
     for i, expr_tuple in enumerate(expr_tuples):
         if i % 10 == 0:
-            print(f'Checking expr {i}/{len(expr_tuples)} for equivalence...')
+            print(f'Checking expr {i}/{len(expr_tuples)} for equivalence... Time is {pd.Timestamp.now()}')
         is_equivalent = False
         for simple_expr in unique_simplified:
             # if sp.simplify(sp.sympify(const_expr) - sp.sympify(u_const_expr) ) == 0:
@@ -669,7 +691,7 @@ for i, (const_expr, (target_col, inits, ds)) in enumerate(datasets):
 num_of.update({'unique non-equivalent full expressions': len(non_equivs),})
 print(f'{len(non_equivs)} unique non-equivalent full expressions')
 print("\n".join([f"{k}: {v}" for k,v in num_of.items()]))
-1/0
+# 1/0
 
 
 ##File Creation:## expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs), bench_dir=BENCH_DIR) for i, e in enumerate(exprs)]
@@ -680,16 +702,37 @@ print('\nAfter:')
 print(json_dict)
 # print('bench blueprint:', json.load(open('di_equations_map.json')))
 # print(pd.read_csv(BENCH_DIR + 'ds5.csv'))
-1/0
+# 1/0
 
 
 
 if __name__ == '__main__':
 
     print('\nin __Main__:')
-    # testing zoo/x:
-    # dataset
-    zoo = ["(", "C", ")", "/", "(", "C", "*", "x", ")"]
+    
+    
+    # testing big-int problem:  (hypothesis: actually no problems)
+    # simple numpy problem:
+    c = 2349082304982304445
+    npc = np.array([c])
+    print(f'{npc.dtype = }')
+    print(f'{npc ** 2  = }')
+    print(f'{c ** 2    = }')
+    print(f'{npc.astype("O") ** 2  = }')
+
+    # srtoolkit problem:
+    inits = np.array([[c], [3], [4]])
+    biginto = ["x", "^", "2"]
+    exe_expr = expr_to_executable_function(biginto, sl)
+    ds = exe_expr(inits, [])
+    print(f'{ds = }')
+
+    old_code = ["X_0", "^", "2"]
+    exe_expr_old = expr_to_executable_function(old_code, sl)
+    ds_old = exe_expr_old(inits, [])
+    print(f'{ds_old = }')
+
+    1/0
 
     consts = [3, 0]
     # consts = [3, 1]
