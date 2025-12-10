@@ -1,30 +1,40 @@
 """
 Debatable:
-    - 1. Random m x n integer matrix:
-        - 1.1 dimensions m x n : i.e. inits [ oeis equivalent of initial sequence terms, i.e. maxtrix of m rows an n columns (where v is variable) ]
-        - 1.2 range of integers(/rational numbers :P) : e.g. (-1000, 1000)? (maybe distribution for at least some samples  with large numbers. ]
+    - 1. Random 20 x 5 integer matrix:
+        - 1.1 dimensions 20 x 5 : i.e. inits [ oeis equivalent of initial sequence terms, i.e. maxtrix of m rows an n columns (where v is variable) ]
+        - 1.2 range of integers(/rational numbers :P) : e.g. (-10, 10)? (maybe distribution for at least some samples  with large numbers. ]
     - 2. range of integer constants in equations (I assume it should be the same as 1.2.
 
     - 3. How to store this benchmark:
         - 10k equations as a text list.
-        - 10k data sets : as 10k x m x n tensors. (maybe 10k files yay!)
-        - Actually: dictionary of {eq_str: m x n tensor}
+        - 10k data sets : as 10k x 20 x 6 tensors. (maybe 10k files yay!)
+        - Actually: dictionary of {eq_str: 20 x 6 tensor}
 
-    - 4. Ghost columns? I.e. do we keep ghost columns?
-        Explain: if grammar( vars=[x,y,z]) generates e = x**2, do we keep y and z columns? Yes!
+    - 4. Ghost columns? I.e. do we keep ghost columns? Yes!
+        Explain: if grammar( vars=[x,y,z]) generates e = x**2, do we keep y and z columns? Yes! (it is a bigger challenge)
 
-    - 5. Integers vs rational values? I think, maybe leave certain percentage of data sets with rational values inside of them?
+    - 5. Integers vs rational values? Integers only!
 
-    - 6. Grammar poly/rational? I think, rational, but not a high percentage of rational equations.
-        With grammar: rational = P/Q, where P and Q are polynomials. Reasons:
-            - easier to specify probability of poly vs. rational.
+    - 6. Grammar poly/rational? Partly poly grammar! 1/5 of equations with rational grammar.
+        With grammar: rational = P/Q, where P and Q are polynomials.
             - to use simplify(P[X,Y,C]) / simplify(Q[X,Y,C]) to get simpler forms of rational equations. I.e.
                     not simplify (P/Q) since it can result in (C*x+C)/(C*x+C) -> 1, which is not desired.
+        After polynomial data set is created, a smaller dasa set with purely rational grammar is created and has
+            the amount of equations equals to 1/5 of poly equations.
 
-    - 7. Number of variables? I think 5-20 max is reasonable? Equation involving more terms is already too complex.
+    - 7. Number of variables? 5 (or 3).
 
-    - 8. Implicit equations? I think, no since impractical. Would need non-linear solvers.
-            Maybe well known equations with solutions only?
+    - 8. Implicit equations? Maybe, will try.
+        Plan to try: randomly chose all variables except one, and then solve for the last variable
+        (zeros of univariable polynomial). In this way, we generate each row on itself. If no solution, chose different
+        values for variables and different "target" variable.
+        Polynomials only (implicit rationals does not really make sense).
+
+    - 9. Integer values of target variable equal to rational equations.
+        Plan: for each equation/skeleton try a lot of variable value combinations, until we get an integer or
+            the compute time budget is reached.
+            If seems no success in general, try every time multiplying two leading monomials by the same (prime) number.
+                E.g. (3x - 1000)/(6x + 7).
 
 
 Baby version:
@@ -171,10 +181,16 @@ multiplier_scale = 15
 multiplier_scale = 3 if scale < 20 else multiplier_scale
 # multiplier_scale = 5
 # multiplier_scale = 10
-exprs = [grammar.generate_one() for _ in range(multiplier_scale*scale)]
-exprs_full = exprs
-exprs = [e[0] for e in exprs_full]
-exprs_str = [''.join(e) for e in exprs]
+
+def generate_expressions():
+
+    exprs = [grammar.generate_one() for _ in range(multiplier_scale*scale)]
+    exprs_full = exprs
+    exprs = [e[0] for e in exprs_full]
+    exprs_str = [''.join(e) for e in exprs]
+    return exprs, exprs_str
+
+exprs, exprs_str =  generate_expressions()
 print(exprs_str)
 print(exprs)
 
