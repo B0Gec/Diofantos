@@ -39,12 +39,15 @@ EXECUTE_REAL = True
 
 
 OEISformer = True
-# OEISformer = False
+OEISformer = False
 if OEISformer:
     from loadtrans import dict_csv, dasco_dict, csv_input
     N_INPUT = 15
     N_INPUT = 25
     print(f'OEISformer: True, n_input: {N_INPUT}, special input database used.')
+
+ORE_ALGEBRA = False  # default settings
+ORE_ALGEBRA = True  # testing guessing from gfun
 
 METHOD = 'Diofantos'
 # METHOD = 'SINDy'
@@ -639,6 +642,12 @@ else:
 
         eqs_explicit = []
         # try:
+        if ORE_ALGEBRA:
+            from ore_alg import oraj
+            seq = unnan(csv[seq_id])
+            eq = oraj(seq, True, 1)
+            print(f'\n\n{eq = }', '\nis Disco:', 'True' if eq else 'False', '\n\n\nExiting after running sage code with zero division:')
+            1/0
         if SINDy:
             print('Attempting SINDy (or Mavi) for', seq_id)
             # if GROUND_TRUTH:

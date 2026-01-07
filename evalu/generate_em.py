@@ -639,6 +639,7 @@ for expr in simplified:
     if expr not in uniques:
         uniques.append(expr)
 
+# 1/0
 print(' ----- - - -- - - - - - - - ---- ')
 for i, us in enumerate(uniques):
     print(f'Expr {i}:  {"".join(us)}')
@@ -710,23 +711,22 @@ print("\n".join([f"{k}: {v}" for k,v in num_of.items()]))
 # 1/0
 
 
-##File Creation:## expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs), bench_dir=BENCH_DIR) for i, e in enumerate(exprs)]
-##File Creation:## json_dict = create_json(expressions_and_slice_codes, JSON_FILENAME)
-expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs)) for i, e in enumerate(simplified)]
-json_dict = create_json(expressions_and_slice_codes)
-print('\nAfter:')
-print(json_dict)
-# print('bench blueprint:', json.load(open('di_equations_map.json')))
-# print(pd.read_csv(BENCH_DIR + 'ds5.csv'))
-# 1/0
-
 
 
 if __name__ == '__main__':
 
     print('\nin __Main__:')
-    
-    
+
+    ##File Creation:## expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs), bench_dir=BENCH_DIR) for i, e in enumerate(exprs)]
+    ##File Creation:## json_dict = create_json(expressions_and_slice_codes, JSON_FILENAME)
+    expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs)) for i, e in enumerate(simplified)]
+    json_dict = create_json(expressions_and_slice_codes)
+    print('\nAfter:')
+    print(json_dict)
+    # print('bench blueprint:', json.load(open('di_equations_map.json')))
+    # print(pd.read_csv(BENCH_DIR + 'ds5.csv'))
+    # 1/0
+
     # testing big-int problem:  (hypothesis: actually no problems)
     # simple numpy problem:
     c = 2349082304982304445
