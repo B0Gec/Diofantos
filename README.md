@@ -136,6 +136,7 @@ their combinations up to degree *d*.
 - pytest (optional)
 
 
+
 ## Other prerequisites
 We need the CoCoA software [apcocoa](https://apcocoa.uni-passau.de) containing Moeller-Buchberger algorithm (function IdealOfPoints).
 
