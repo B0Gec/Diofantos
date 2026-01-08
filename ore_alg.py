@@ -50,9 +50,31 @@ def oraj(data: list, execute_cmd=False, verbosity=0):
 
 if __name__ == "__main__":
 
-    # oraj([0, 1, 1, 2, 3, 5, 8])
-    ans = oraj([0, 1, 1, 2, 3, 5, 8], execute_cmd=True)
-    print(ans)
-    ans = oraj([0, 1, 1, 2], execute_cmd=True)
-    print(ans, len(ans))
-    # print(len(ans))
+    ORAJ = False
+    # ORAJ = True
+    if ORAJ:
+        # oraj([0, 1, 1, 2, 3, 5, 8])
+        ans = oraj([0, 1, 1, 2, 3, 5, 8], execute_cmd=True)
+        print(ans)
+        ans = oraj([0, 1, 1, 2], execute_cmd=True)
+        print(ans, len(ans))
+        # print(len(ans))
+
+    # results analysis
+    ANALYZE = False
+    ANALYZE = True
+    if ANALYZE:
+        import os
+        files = sorted(os.listdir('./results/ore_algebra0'))
+        print(files)
+        for file in files[:160]:
+            if file[-3:] == 'out':
+                with open(f"./results/ore_algebra0/{file}", 'r') as f:
+                    # print(f.read())
+                    eq, is_disco = re.findall('eq = \'(.*)\'.+\nis Disco: (\w+)', f.read())[0]
+                    if is_disco == 'True':
+                        # print(f'{file}:', eq)
+                        # print(f'{file}:', eq.strip('\\n'))
+                        eq = eq[:-2] if eq[-2:] == '\\n' else eq
+                        print(f'{file}:', eq[:100])
+
