@@ -2,6 +2,35 @@ Count: At least 44.
 6 overfitted.
 
 
+New positives:
+- 99 (A001764) 
+
+fails (g = google table, e.g. g19 = 17.out):
+g19 (A58)
+g99 (A1699)
+g118 (A2658)
+g138 (A6894)
+
+
+Cons: seems to be Guessing cannot discover a(n) = a(n-1)^2. since output
+is polynomial with coeficients polynomial in n, i.e. sum p_i(n) * S^i.
+Output polynomial can be seen as implicit equation, linear in variables a(n-i) with 
+coeficients again being polynomials in n.
+If recurrence cannot be expressed in this form, guessing will likely fail.
+On the contrary, \MB\ can discover also equations non-linear (i.e. polynomial) in variables a(n-i) which resulted in 3 reconstructions (2 of them were actually discoveries), where guessing failed.
+
+Cons2: 
+We detected also a few false positives. Often the equation a(n) = 0 or a(n) = a(n-1), i.e. constant sequence was falsely detected.
+
+
+In contrast, guessing discovered equation for A1764, 2*n*(2n+1)*a(n) - 3*(3n-1)*(3n-2)*a(n-1) = 0 which \MB\ did not. We attribute this to high degree of polynomial in variables (n, a(n-i)) which are more challenging than \MB\ or \DP.
+In that prospect, we assume Guessing works better when higher degrees of polynomials in n are present while still remainig linear in a(n-i).
+
+- -- -- - - ---- - - - - -- -- - - ---- - - - - -- -- - - ---- - - - -
+
+
+
+
 00001.out: (-n^44 + 4277*n^43 - 8866625*n^42 + 11870617569*n^41 - 11537150820895*n^40 + 8675772370784191*n^39 -
 00009.out: -Sn^2 + Sn + 1
 00010.out: -Sn^2 + 1
@@ -11,12 +40,15 @@ Count: At least 44.
 00021.out: -Sn^2 + Sn + n + 1
 00024.out: (-n - 2)*Sn + 4*n + 2
 00029.out: (-n^2 - n - 2)*Sn + n^2 + 3*n + 4
+
 00030.out: -Sn^2 + 2*Sn + 1
 00032.out: -Sn + n + 1
 00033.out: 1
 00034.out: -Sn^2 + (n + 1)*Sn + n + 1
 00038.out: -Sn^2 + Sn + 1
+
 00039.out: -n*Sn + n + 2
+
 00041.out: Sn^2 - 3*Sn + 2
 00042.out: -Sn + 3
 00043.out: -Sn^2 + (2*n + 3)*Sn - n^2 - n
@@ -44,6 +76,7 @@ Count: At least 44.
 00081.out: -Sn + 2*n + 1
 00087.out: (-n + 15)*Sn^49 + (n - 17)*Sn^48 - 2*Sn^47 + 2*Sn^46 - 6*Sn^45 + 6*Sn^44 - 2*Sn^43 + 2*Sn^42 - 14*Sn
 00088.out: -Sn^2 + 2*Sn + 1
+
 00091.out: (-n - 3)*Sn^2 + 2*Sn + 4*n + 4
 
 00092.out: -Sn + 1
@@ -57,6 +90,7 @@ Count: At least 44.
 00108.out: -n*Sn + n + 2
 00109.out: (-n - 2)*Sn^2 + (2*n + 3)*Sn + 3*n + 3
 00111.out: -Sn^4 + 4*Sn^2 - 1
+
 00112.out: -Sn^4 + 4*Sn^2 - 1
 00114.out: -Sn^4 + 2*Sn^3 - 2*Sn + 1
 00115.out: 1
