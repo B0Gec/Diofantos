@@ -112,8 +112,8 @@ This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
   - results/goodmb  (MoadeeB only):
     - `mblinbs50`   linrec
     - `mbcor`      core
-    - `mbtmord20r`  TM-OEIS n_input=15 (n_pred=1 and 10)
-    - `mbtmN25`     TM-OEIS n_input=25 (n_pred=1 and 10)
+    - `rewritten-mbtmord20r`  TM-OEIS n_input=15 (n_pred=1 and 10)
+    - `re2-mbtmN25`     TM-OEIS n_input=25 (n_pred=1 and 10)
   - results/good  (Diofantos and sindy only):
     - `dilin`      Diofantos linrec
     - `dicorrep`   Diofantos core
@@ -121,8 +121,8 @@ This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
     - `sicor1114`  SINDy-tuned core
     - `sdlin`      SINDy-default linrec
     - `sdcor2`     SINDy-default core
-    - `transfoeis_acc2` Diofantos TM-OEIS n_input=25 (and n_pred=1 and 10)
-    - `n15_acc`         Diofantos TM-OEIS n_input=15 (and n_pred=1 and 10)
+    - `re2-transfoeis_acc2` Diofantos TM-OEIS n_input=25 (and n_pred=1 and 10)
+    - `re3-n15_acc`         Diofantos TM-OEIS n_input=15 (and n_pred=1 and 10)
 
 ## Features
 - algebraic equations with variables `n`, `a(n-k)` for all *k* up to chosen order and
