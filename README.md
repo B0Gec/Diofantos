@@ -6,23 +6,23 @@ _"Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting the 
 
 MoadeeB is an algorithm implemented in Python for the discovery of exact equations (e.g. from integer sequences).
 
-## Development branch:
+## About the main (development, `oeis`) branch:
 This is the branch of the latest code release of MoadeeB, while the main `oeis` branch is intended for development only. 
  
 Therefore, consider the recommended usage of stable version, available in:
 - this, _MoadeeB_ branch (https://github.com/B0Gec/Diofantos/tree/MoadeeB)
 - a pre-release, equivalent to this branch: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
 
-TL;DR: Following the recommended git procedure below (_Get essential files via git_), you get the same files from the above release/branch.
+TL;DR: Following the recommended git procedure below (_Get essential files via git_), you get the same files as from the above release/branch.
 
 
 ## How to set up MoadeeB
 
-To reproduce results, one could use container as an alternative to installing Python dependencies listed below.
+To reproduce results, one could use [container](https://github.com/B0Gec/Diofantos/tree/MoadeeB?tab=readme-ov-file#apptainersingularity-container) (instructions below) as an alternative to installing Python dependencies listed below.
 
 Otherwise, go ahead and install the dependencies in a new python environment.
 
-Nonetheless, you will also need the CoCoA software as described in Prerequisites below.
+Nonetheless, you will also need the CoCoA software as described in Other prerequisites below.
 
 After that, you can clone the repository, but I recommend getting only (instead of all 7GB results) the following files (or directories):
 
