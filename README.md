@@ -13,7 +13,7 @@ Therefore, consider the recommended usage of stable version, available in:
 - this, _MoadeeB_ branch (https://github.com/B0Gec/Diofantos/tree/MoadeeB)
 - a pre-release, equivalent to this branch: https://github.com/B0Gec/Diofantos/releases/tag/v2.0.0_m2025_2_15
 
-TL;DR: Following the recommended git procedure below (_Get essential files via git_), you get the same files as from the above release/branch.
+TL;DR: Following the recommended git procedure below (_Get essential files via git or Zenodo_), you get the same files as from the above release/branch.
 
 
 ## How to set up MoadeeB
@@ -42,7 +42,7 @@ After that, you can clone the repository, but I recommend getting only (instead 
 
 The list above is not checked so please make sure there are no import errors.
 
-### Get essential files via git
+### Get essential files via git or Zenodo
 
 I find it easiest to use git to make an efficient clone to automatically download the essential files to try out the method. Run these commands in terminal: 
 ```bash
@@ -52,6 +52,8 @@ git restore --source HEAD exact_ed.py diophantine_solver.py doones.py cores_test
 ```
 
 In the end download `linear_database_newbl.csv` manually (182.8MB) from my Zenodo repository (https://doi.org/10.5281/zenodo.13767012), since it is stored as git lfs (large files) and they seem to be hard to download as a single file.
+
+Alternatively, obtaining the essential files from the first release might be even easier from Zenodo repository: https://doi.org/10.5281/zenodo.18391903.
 
 And ignore files under the GitHub "Assets" section of the GitHub's release page.
 
@@ -88,7 +90,7 @@ No ground truth :(  -  checked against website ground truth.
 True  -  "manual" check if equation is correct.  
 ```
 
-This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
+This (Fibonacci) example was tested on 26.2.2024, 18.2.2025 and 28.1.2026.
 
 ## Apptainer/Singularity container:
 - Results from paper can be reproduced by running the doones.py file from python from the Singularity container obtained 
@@ -123,6 +125,7 @@ This (Fibonacci) example was tested on 26.2.2024 and 18.2.2025.
     - `sdcor2`     SINDy-default core
     - `re2-transfoeis_acc2` Diofantos TM-OEIS n_input=25 (and n_pred=1 and 10)
     - `re3-n15_acc`         Diofantos TM-OEIS n_input=15 (and n_pred=1 and 10)
+  - `results/ore_algebra0` (Guessing algorithm)
 
 ## Features
 - algebraic equations with variables `n`, `a(n-k)` for all *k* up to chosen order and
