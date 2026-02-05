@@ -2,13 +2,13 @@
 Debatable:
     - 1. Random 20 x 5 integer matrix:
         - 1.1 dimensions 20 x 5 : i.e. inits [ oeis equivalent of initial sequence terms, i.e. maxtrix of m rows an n columns (where v is variable) ]
-        - 1.2 range of integers(/rational numbers :P) : e.g. (-10, 10)? (maybe distribution for at least some samples  with large numbers. ]
-    - 2. range of integer constants in equations (I assume it should be the same as 1.2.
+        - 1.2 range of integers(/rational numbers :P) : e.g. (-10, 10)? (maybe distribution for at least some samples  with large numbers. ]  #[I think (-10, 10) is decided.]
+    - 2. range of integer constants in equations (I assume it should be the same as 1.2.) [I think this (-10, 10) is decided.]
 
     - 3. How to store this benchmark:
         - 10k equations as a text list.
-        - 10k data sets : as 10k x 20 x 6 tensors. (maybe 10k files yay!)
-        - Actually: dictionary of {eq_str: 20 x 6 tensor}
+        - [decided]: 10k data sets + json file with dictionary {'filename': 'eq_str'} : 10k files yay!
+        - dictionary: file of {eq_str: 20 x 6 tensor}
 
     - 4. Ghost columns? I.e. do we keep ghost columns? Yes!
         Explain: if grammar( vars=[x,y,z]) generates e = x**2, do we keep y and z columns? Yes! (it is a bigger challenge)
@@ -22,7 +22,7 @@ Debatable:
         After polynomial data set is created, a smaller dasa set with purely rational grammar is created and has
             the amount of equations equals to 1/5 of poly equations.
 
-    - 7. Number of variables? 5 (or 3).
+    - 7. Number of variables? 5 (or 3). [I think decided 5].
 
     - 8. Implicit equations? Maybe, will try.
         Plan to try: randomly chose all variables except one, and then solve for the last variable
@@ -50,7 +50,17 @@ Solution:
     - Only check Q != 0 on the generated random matrix values as well as constants!
     - then return exe_exprs(P), exe_exprs(Q) separately.
     - use simplify(exeP(inits)/exeQ(inits)).
+
+Recap:
+    - new, after meet: usual integer polys, maybe implicit poly (mb and llm only), rational?: no problem - no need to provide integer
+        target values (comparing only mb and llms, for which rational numbers non-problematic).
+    - Compare: poly: dp, mb, sdy, llm; impol: mb, llm; ratio:  mb, llm.
+        - How many (proportion) of explicit poly, rational or implicit
+
+
 """
+
+
 import random
 from typing import List, Tuple
 import warnings

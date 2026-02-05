@@ -645,7 +645,8 @@ else:
         if ORE_ALGEBRA:
             from ore_alg import oraj
             seq = unnan(csv[seq_id])
-            eq = oraj(seq, True, 1)
+            # eq = oraj(seq, True, 1)
+            eq = oraj(seq, True, is_berlekamp='fricas')
             print(f'\n\n{eq = }', '\nis Disco:', 'True' if eq else 'False', '\n\n\nExiting after running sage code with zero division:')
             1/0
         if SINDy:

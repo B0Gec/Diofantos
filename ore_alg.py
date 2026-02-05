@@ -15,7 +15,7 @@ def oraj(data: list, execute_cmd=False, is_berlekamp=False, verbosity=0):
 
     # limit data length
     data = data[:200]
-    if is_berlekamp:
+    if is_berlekamp == True:
         if len(data) % 2 != 0:
             data = data[:-1]
 
@@ -26,15 +26,21 @@ def oraj(data: list, execute_cmd=False, is_berlekamp=False, verbosity=0):
 
     sage_code = f"../miniforge3/envs/sage/bin/sage -c \"from ore_algebra import *;"
     sage_code += f"data = {data};print(guess(data, OreAlgebra(ZZ['n'], 'Sn')))\""
-    if is_berlekamp:
+    if is_berlekamp == True:
         berlekamp_massey_code = "../miniforge3/envs/sage/bin/sage -c "
         berlekamp_massey_code += "\"from sage.matrix.berlekamp_massey import berlekamp_massey;\n"
         berlekamp_massey_code += f"data = {data};\npoly = berlekamp_massey(data);\nprint(poly)\""
 
+    if is_berlekamp == "fricas":
+        fricas_code = "echo \"1+2\" | fricas -nosman"
+        fricas_code = f"echo \"guessPRec({data})\" | fricas -nosman"
+
     # b) execute cocoa file
     command = sage_code
-    if is_berlekamp:
+    if is_berlekamp == True:
         command = berlekamp_massey_code
+    elif is_berlekamp == "fricas":
+        command = fricas_code
 
     if verbosity > 0:
         print(command)
@@ -57,13 +63,18 @@ def oraj(data: list, execute_cmd=False, is_berlekamp=False, verbosity=0):
 if __name__ == "__main__":
 
     ORAJ = False
-    # ORAJ = True
+    ORAJ = True
     if ORAJ:
+        seq = [0, 1, 1, 2, 3, 5, 8]
         # oraj([0, 1, 1, 2, 3, 5, 8])
         # ans = oraj([0, 1, 1, 2, 3, 5, 8], execute_cmd=True, is_berlekamp=True)
         # ans = oraj([0, 1, 1, 2, 3, 5, 8], execute_cmd=False, is_berlekamp=True, verbosity=1)
 
-        ans = oraj([13424224, 1, 1, 2, 3, 5, 8,13, 1, 2], execute_cmd=True, is_berlekamp=True, verbosity=1)
+        # ans = oraj([13424224, 1, 1, 2, 3, 5, 8,13, 1, 2], execute_cmd=True, is_berlekamp=True, verbosity=1)
+        # seq = [13424224, 1, 1, 2, 3, 5, 8, 13, 1, 2]
+        # ans = oraj(seq, execute_cmd=False, is_berlekamp='fricas', verbosity=1)
+        ans = oraj(seq, execute_cmd=True, is_berlekamp='fricas', verbosity=1)
+        # ans = oraj([13424224, 1, 1, 2, 3, 5, 8,13, 1, 2], execute_cmd=True, is_berlekamp='fricas', verbosity=1)
         print(ans)
         # ans = oraj([0, 1, 1, 2], execute_cmd=True)
         # print(ans, len(ans))
@@ -71,7 +82,7 @@ if __name__ == "__main__":
 
     # results analysis
     ANALYZE = False
-    ANALYZE = True
+    # ANALYZE = True
     if ANALYZE:
         import os
         # indir = 'ore_algebra0'
@@ -89,4 +100,3 @@ if __name__ == "__main__":
                         # print(f'{file}:', eq.strip('\\n'))
                         eq = eq[:-2] if eq[-2:] == '\\n' else eq
                         print(f'{file}:', eq[:100])
-
