@@ -41,6 +41,10 @@ Baby version:
   - range (-10, 10)
   - m x n = 4 x 3
   - all eqs = 5
+Full version:
+  - range (-10, 10)
+  - m x n = 20 x 5 (+1 target)
+  - all eqs = 50 imp, 50 ratio, 1-5k? poly
 
 Problems:
     - P/Q equations might generate rational values in target. => not managable by Diofantos. No problemo.
@@ -55,8 +59,10 @@ Recap:
     - new, after meet: usual integer polys, maybe implicit poly (mb and llm only), rational?: no problem - no need to provide integer
         target values (comparing only mb and llms, for which rational numbers non-problematic).
     - Compare: poly: dp, mb, sdy, llm; impol: mb, llm; ratio:  mb, llm.
-        - How many (proportion) of explicit poly, rational or implicit
-
+        - How many (proportion) of explicit poly, rational or implicit:
+            I guess 10 .. 10% of 100, 10 = 1% of 1k, 20 = 2% of 1k and 1% of 2k, 50 = 5% of 1k and 1% of 5k.
+            Maybe 50 implicit and 50 rational. Or 100/200/500 each.
+            Implicit: 50, rational: 50, poly: 2k.
 
 """
 
@@ -77,7 +83,7 @@ from ProGED.equation_discoverer import  EqDisco
 # from equation_discoverer_new import  EqDisco
 
 import ProGED.generators.grammar_construction as gc
-from ProGED.generators.grammar_construction import construct_production
+from ProGED.generators.grammar_construction import construct_production, grammar_from_template
 from ProGED.generators.grammar import GeneratorGrammar
 from ProGED.model_box import ModelBox
 
@@ -109,15 +115,33 @@ def rational_kind (p_R = [0.5, 0.5], p_P = [0.4, 0.6], p_M = [0.4, 0.6], p_vars 
     grammar += construct_production(left="V", items=variables, probs=p_vars)
     return grammar
 
+def poly (p_P = [0.4, 0.6], p_M = [0.4, 0.6], p_vars = [1], variables = ["'x'"]):
+    grammar = construct_production(left="S", items=["S '+' M", "M"], probs=p_P)
+    grammar += construct_production(left="M", items=["M '*' V", "'C'"], probs=p_M)
+    grammar += construct_production(left="V", items=variables, probs=p_vars)
+    return grammar
 
 # sets = {'p_P': [0.4, 0.6], 'p_M': [0.2, 0.8], 'p_vars': [1], 'variables': ["'x'"]}
 # grammar_str = construct_grammar_rational2(**sets)
 # sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [1], 'variables': ["'x'"]}
-pg_vars = ["'x'", "'y'", "'z'"]
+pg_vars = ["'x'", "'y'", "'z'"]  # baby
+# pg_vars = ["'x_1'", "'x_2'", "'x_3'", "'x_4'", "'x_5'"]  # full
+# pg_vars = ["'x'", "'y'", "'z'", "'target'"]
 sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
-grammar_str = rational_kind(**sets)
+poly_sets =               {'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
+# grammar_str = rational_kind(**sets)
+grammar_str = poly(**poly_sets)
 # grammar_str = GRAMMAR_LIBRARY[template_name](**generator_settings)
 grammar = GeneratorGrammar(grammar_str)
+
+# sett = {'p_S': [0.4, 0.6], 'p_T': [0.4, 0.6], 'p_vars': [1 for v in pg_vars], 'p_R': [0.6, 0.4], 'p_F': [], 'functions': [], 'variables': pg_vars}
+# # grammar = grammar_from_template("polynomial2", {})
+# grammar = grammar_from_template("polynomial2", sett)
+
+
+print(f'{grammar_str = }')
+print(f'{grammar = }')
+# 1/0
 
 sl = SymbolLibrary.default_symbols(num_variables=len(pg_vars))
 vars = [i.strip("'") for i in pg_vars]
@@ -316,6 +340,8 @@ def data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS, 
         # raise ValueError('Could not generate dataset without NaN/Inf - increase num_tries!!')
         raise ValueError('Could not generate dataset without zero division - increase num_tries!!')
     target_column = np.array(target_column).reshape(-1, 1)
+    # print(f'{inits = }')
+    # print(f'{target_column = }')
     dataset = np.hstack((inits, target_column))
     # print(f'{target_column = }')
     return target_column, inits, dataset
@@ -425,6 +451,225 @@ create_dataset(expr, vars, id_slice=0, num_slices=3)
 
 
 # 1/0
+
+def implicit(expr: List, vars: List[str]):
+    """
+    Started 5.2. for impol (implicit poly equations).
+
+    Kinda hard task. Why:
+        1. implicit means target y is nontrivialy expressed - i.e. sqrt emerges (not compatible).
+            - time consuming: this can be managed by trying to fit square under sqrt.
+        2. equation may turn out explicit.
+    """
+
+    # 0. Birocracy:
+    from sympy.solvers import solve
+    print('in implicit')
+    # id_slice: int = 0, num_slices: int = 6, bench_dir=None):
+
+    expr_str = "".join(expr)
+    print(f'{expr_str = }')
+    m = ModelBox()
+    symbols = {"x": vars, "start": "S", "const": "C"}
+    expr_sympyfied, sym_constants = m.enumerate_constants(expr_str, symbols)
+
+    # 1. Determine constants ('C') inside of equation skeleton:
+    # print(' if error due to zero division, have to repeat random constants and matrix')
+    constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+    print(constants)
+    const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+    const_expr = sp.sympify('x - 3 - 7*z')
+    const_expr = sp.sympify('x*x*y + z*z - r')
+    print(f'{const_expr = }')
+    # 1/0
+
+
+    # 2. Try your luck if equation is already explicit:
+    # var = vars[0]
+    print(f'{vars = }')
+    for var in vars:
+        print(f'{var = }')
+        sympy_solutions = solve(const_expr, var, quartics=False)  # to avoid Piecewise output like in: expr =' a(n)^4 +a(n) -n*a(n)^2 - n '
+        print('solutions:', sympy_solutions)
+        non_imaginary = [solution for solution in sympy_solutions if "I" not in str(solution)]
+        print('non_imaginary solutions:', non_imaginary)
+        # checked = [rhs for rhs in non_imaginary if check_explicit(rhs, seq)]
+        # explicits = [f'a(n) = {solution}' for solution in checked]
+
+        if non_imaginary:
+            var_col = vars.index(var)
+            print(f'{var_col = }')
+            print()
+
+            print(f'{non_imaginary[0] = }')
+            for solution in non_imaginary:
+                explicit = [char for char in str(solution)]
+                print(f'{explicit = }')
+                print(type(solution))
+                # sol_sympyfied, sol_constants = m.enumerate_constants(solution, symbols)
+                # evaled = solution.subs(list(zip([''], [1,1,1])))
+                evaled = solution.subs(list(zip(vars, [1,1,1])))
+                evaled = solution.subs(list(zip(['r', 'z', 'y'], [5,1,9])))
+                print(f'{evaled = }')
+                1/0
+
+                # print(f'{sol_constants = }')
+
+                # 1. Determine random constants inside of equation skeleton:
+                # print(' if error due to zero division, have to repeat random constants and matrix')
+                constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sol_constants))]
+                exe_expr = expr_to_executable_function(explicit, sl)
+                # _target_col, _inits, ds = data_set(exe_expr, [])  # only ds needed
+
+                # _target_col, _inits, ds = data_set(exe_expr, [], shape=(5, len(vars)-1), int_max_abs=INT_MAX_ABS, num_tries=10)
+
+
+
+            # ds = data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS, num_tries=10)
+
+            1/0
+
+    1/0
+    return
+
+
+# implicit(expr, vars)
+
+
+# 1/0
+
+
+print('-----', '\n'*3)
+def simplicit(expr: List, vars: List[str], tries_const=1, tries_rows=2):
+    """
+    Simple way of finding (implicit poly equations).
+
+    - expr: list of chars of expression (with unknown constants)
+    - vars: list of variables
+    - tries_const, tries_rows: how many random choices of constants or vars to get rational target value,
+        i.e. enough rational rows.
+
+    """
+
+    # 0. Birocracy:
+    from sympy.solvers import solve
+    print('in simplicit:')
+
+    expr_str = "".join(expr)
+    print(f'{expr_str = }')
+
+    print(f'{tries_const = }, {tries_rows = }')
+    # iters = math.floor(math.sqrt(implicit_scale))
+    # print(f'{iters = }')
+
+    options = []
+    for i in range(tries_const):
+        print(f'\n {i = }\n')
+        m = ModelBox()
+        symbols = {"x": vars, "start": "S", "const": "C"}
+        expr_sympyfied, sym_constants = m.enumerate_constants(expr_str, symbols)
+
+        # 1. Determine constants ('C') inside of equation skeleton:
+        # print(' if error due to zero division, have to repeat random constants and matrix')
+        constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
+        print(constants)
+        const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
+        # const_expr = sp.sympify('x - 3 - 7*z')
+        # const_expr = sp.sympify('x*x*y + z*z - r')
+        print(f'{const_expr = }')
+        # 1/0
+
+        # 1/0
+        rows = dict(zip(vars, [[] for _ in vars]))
+        # print(f'{rows = }')
+        # for var in vars:
+        # 1/0
+        for j in range(tries_rows):
+            # var = vars[0]
+
+            print(f'\n    {i=}, {j = }\n')
+            print(f'{vars = }')
+            for var in vars:
+                print(f'{var = }')
+                # var_col = vars.index(var)
+                # print(f'{var_col = }')
+                replace_vars = [i for i in vars if i != var]
+                print(f'{replace_vars = }')
+
+                print(f'{vars = }')
+                rand_vars = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(replace_vars))]
+                print(f'{rand_vars = }')
+                print('here', list(zip(replace_vars, rand_vars)))
+                # uni_poly = const_expr.subs([("'z'")])
+                # print(f'{uni_poly = }')
+                uni_poly = const_expr.subs(list(zip(replace_vars, rand_vars)))
+                print(f'{uni_poly = }')
+                # 1/0
+
+                sympy_solutions = solve(uni_poly, var, quartics=False)  # to avoid Piecewise output like in: expr =' a(n)^4 +a(n) -n*a(n)^2 - n '
+                print('solutions:', sympy_solutions)
+                non_imaginary = [solution for solution in sympy_solutions if True not in [wrong in str(solution) for wrong in ('I', 'sqrt', '**')] ]
+                print('non_imaginary solutions:', non_imaginary)
+                # checked = [rhs for rhs in non_imaginary if check_explicit(rhs, seq)]
+                # explicits = [f'a(n) = {solution}' for solution in checked]
+                # 1/0
+
+                for solution in non_imaginary:
+                    print(f'{solution = }')
+                    # simplified = sp.simplify(solution)
+                    simplified = solution
+                    print(f'{simplified = }')
+                    print('one row more seems to happen')
+                    row = list(zip(vars + [var], rand_vars + [simplified]))
+                    row_dict = dict(row)
+                    print(f'{row = }, {row_dict = }')
+
+                    [rows[var].append(row_dict[var]) for var in rows.keys()]
+                    print(f'{rows = }')
+        print(f'{rows = }')
+
+        # print(f'{rows.values() = }')
+        if list(rows.values())[0] != []:
+            options.append((const_expr, rows))
+
+    # options.append((const_expr, rows))
+
+    print(f'{rows = }')
+    print(f'{options = }')
+    for const_expr, option in options:
+        print(f'{len(list(option.values())[0])} rows: {const_expr}: {option = }')
+    # 1/0
+
+                # _target_col, _inits, ds = data_set(exe_expr, [], shape=(5, len(vars)-1), int_max_abs=INT_MAX_ABS, num_tries=10)
+            # ds = data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS, num_tries=10)
+
+            # 1/0
+
+    # 1/0
+    return options
+
+# simplicit(expr, vars, tries_const=5, tries_rows=20)
+# 1/0
+
+
+#
+def more_implicit(exprs: list, vars: List[str] = vars, tries_const=3, tries_rows=50):
+    print('-----', '\n'*3)
+
+    res = []
+    for expr in exprs:
+        options = simplicit(expr, vars=vars, tries_const=2, tries_rows=2)
+        res.append((expr, options))
+    for result  in res:
+        expr, options = result
+        print(f'\nexpr: {"".join(expr)}')
+        # print(f'\nexpr: {const_expr}\n')
+        print(f'options: {options}')
+        for const_expr, option in options:
+            print(f'{len(list(option.values())[0])} rows: {const_expr}: {option = }')
+
+    return
+
 
 
 def create_json(exprs_and_slice_codes: List[Tuple[str]], json_filename=None) -> str:
@@ -665,6 +910,8 @@ if len(uniques) < scale:
 simplified = uniques
 # for i, us in enumerate(simplified):
 #     print(f'Unique expr {i}: {"".join(us)}')
+more_implicit(uniques)
+1/0
 
 
 print(f'{len(uniques)} unique simplified expressions')
@@ -711,9 +958,13 @@ for i, expr_tuple in enumerate(non_equivs):
 datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), num_tries=20))
             for _, consts, const_expr, exe_expr in non_equivs]
 
+
 for i, (const_expr, (target_col, inits, ds)) in enumerate(datasets):
     print(f'\nDataset {i} for expression: {const_expr}')
     print(ds)
+
+# print('here i go')
+# 1/0
 
 num_of.update({'unique non-equivalent full expressions': len(non_equivs),})
 print(f'{len(non_equivs)} unique non-equivalent full expressions')
