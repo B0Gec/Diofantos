@@ -72,6 +72,7 @@ from typing import List, Tuple
 import warnings
 import math
 import argparse
+import re
 
 import numpy as np
 import pandas as pd
@@ -125,6 +126,7 @@ def poly (p_P = [0.4, 0.6], p_M = [0.4, 0.6], p_vars = [1], variables = ["'x'"])
 # grammar_str = construct_grammar_rational2(**sets)
 # sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [1], 'variables': ["'x'"]}
 pg_vars = ["'x'", "'y'", "'z'"]  # baby
+# pg_vars = ["'x'", "'y'", "'z'", "'w'", "'v'"]  # baby
 # pg_vars = ["'x_1'", "'x_2'", "'x_3'", "'x_4'", "'x_5'"]  # full
 # pg_vars = ["'x'", "'y'", "'z'", "'target'"]
 sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
@@ -161,17 +163,19 @@ sl.add_symbol( "C", symbol_type="const", precedence=5, np_fn="np.full(X.shape[0]
 
 
 scale = 6
-# scale = 10
-# scale = 11
-# # # # scale = 9
-# scale = 15
-# scale = 19
+scale = 10
+# # # scale = 11
+# # # # # # scale = 9
+# # # scale = 15
+# # scale = 18
+# # scale = 19
 # scale = 20
+# scale = 50
 # scale = 100
-# # scale = 50
-# # scale = 101
+# # scale = 200
+# # # # scale = 101
 # scale = 500
-# scale = 1000
+# # # scale = 1000
 
 # scale = 5000
 # 343 unique simplified expressions - record
@@ -212,6 +216,7 @@ multiplier_scale = 4
 multiplier_scale = 10  #1860 unique vs 1500 specified
 multiplier_scale = 14  #1860 unique vs 1500 specified
 multiplier_scale = 15
+multiplier_scale = 20
 multiplier_scale = 3 if scale < 20 else multiplier_scale
 # multiplier_scale = 5
 # multiplier_scale = 10
@@ -441,13 +446,13 @@ def create_dataset(expr: List, vars: List[str], id_slice: int = 0, num_slices: i
         print('  -->>  Nothing was written - just testing ...')
     return const_expr, slice_code
 
-print('\ntesting create_dataset')
-BENCH_DIR = 'EEDBench-test/'
-idx = 1
-# e = exprs[0]
-expr = exprs[idx]
-create_dataset(expr, vars, id_slice=0, num_slices=3)
-# print(pd.read_csv(BENCH_DIR + 'ds000.csv'))
+# print('\ntesting create_dataset')
+# BENCH_DIR = 'EEDBench-test/'
+# idx = 1
+# # e = exprs[0]
+# expr = exprs[idx]
+# create_dataset(expr, vars, id_slice=0, num_slices=3)
+# # print(pd.read_csv(BENCH_DIR + 'ds000.csv'))
 
 
 # 1/0
@@ -540,7 +545,7 @@ def implicit(expr: List, vars: List[str]):
 
 
 print('-----', '\n'*3)
-def simplicit(expr: List, vars: List[str], tries_const=1, tries_rows=2):
+def simplicit(expr: List, vars: List[str], proper=True, tries_const=1, tries_rows=2, const_express=None):
     """
     Simple way of finding (implicit poly equations).
 
@@ -553,18 +558,16 @@ def simplicit(expr: List, vars: List[str], tries_const=1, tries_rows=2):
 
     # 0. Birocracy:
     from sympy.solvers import solve
-    print('in simplicit:')
+    # print('in simplicit:')
 
     expr_str = "".join(expr)
     print(f'{expr_str = }')
-
-    print(f'{tries_const = }, {tries_rows = }')
-    # iters = math.floor(math.sqrt(implicit_scale))
-    # print(f'{iters = }')
+    #
+    # print(f'{tries_const = }, {tries_rows = }')
 
     options = []
     for i in range(tries_const):
-        print(f'\n {i = }\n')
+        # print(f'\n {i = }\n')
         m = ModelBox()
         symbols = {"x": vars, "start": "S", "const": "C"}
         expr_sympyfied, sym_constants = m.enumerate_constants(expr_str, symbols)
@@ -572,73 +575,100 @@ def simplicit(expr: List, vars: List[str], tries_const=1, tries_rows=2):
         # 1. Determine constants ('C') inside of equation skeleton:
         # print(' if error due to zero division, have to repeat random constants and matrix')
         constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
-        print(constants)
+        # print(constants)
         const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-        # const_expr = sp.sympify('x - 3 - 7*z')
-        # const_expr = sp.sympify('x*x*y + z*z - r')
-        print(f'{const_expr = }')
-        # 1/0
+        # print(f'{const_expr = }')
+        if const_express is not None:
+            const_expr, _ = m.enumerate_constants(const_express, symbols)
 
-        # 1/0
-        rows = dict(zip(vars, [[] for _ in vars]))
-        # print(f'{rows = }')
-        # for var in vars:
+        # unipoly? Check if only one variable is present (kinda useless, or at least less interesting)
+        if len([var for var in vars if var in str(const_expr)]) <= 1:
+            # print( const_expr , 'is univariate poly')
+            continue
+        elif str(const_expr)[-1] in vars or str(const_expr)[-3:-1] == '**':  #(0,0,0) obvious solution
+            print( const_expr, 'trivial zero solutions possible')
+            continue
+        elif len(re.findall('\*\*', str(const_expr))) < 2:
+            print( const_expr, 'most probably explicit equation (only one potential ** symbol')
+            continue
+
+        # rows = dict(zip(vars, [[] for _ in vars]))
+        rows = []
         # 1/0
         for j in range(tries_rows):
-            # var = vars[0]
 
-            print(f'\n    {i=}, {j = }\n')
-            print(f'{vars = }')
+            # print(f'\n    {i=}, {j = }\n')
+            # # print(f'{vars = }')
             for var in vars:
-                print(f'{var = }')
-                # var_col = vars.index(var)
-                # print(f'{var_col = }')
+                # print(f'{var = }')
                 replace_vars = [i for i in vars if i != var]
-                print(f'{replace_vars = }')
+                # print(f'{replace_vars = }')
 
-                print(f'{vars = }')
+                # print(f'{vars = }')
                 rand_vars = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(replace_vars))]
-                print(f'{rand_vars = }')
-                print('here', list(zip(replace_vars, rand_vars)))
-                # uni_poly = const_expr.subs([("'z'")])
-                # print(f'{uni_poly = }')
+                # print(f'{rand_vars = }')
+                # print('here', list(zip(replace_vars, rand_vars)))
                 uni_poly = const_expr.subs(list(zip(replace_vars, rand_vars)))
-                print(f'{uni_poly = }')
+                # print(f'{uni_poly = }')
                 # 1/0
 
                 sympy_solutions = solve(uni_poly, var, quartics=False)  # to avoid Piecewise output like in: expr =' a(n)^4 +a(n) -n*a(n)^2 - n '
-                print('solutions:', sympy_solutions)
-                non_imaginary = [solution for solution in sympy_solutions if True not in [wrong in str(solution) for wrong in ('I', 'sqrt', '**')] ]
-                print('non_imaginary solutions:', non_imaginary)
-                # checked = [rhs for rhs in non_imaginary if check_explicit(rhs, seq)]
-                # explicits = [f'a(n) = {solution}' for solution in checked]
-                # 1/0
+                # print('solutions:', sympy_solutions)
+                non_imaginary = [solution for solution in sympy_solutions if 'I' not in str(solution) ]
+                proper_implicit = [solution for solution in non_imaginary if True in [sq_root in str(solution) for sq_root in ('sqrt', '**')] ]
+                simples = [solution for solution in non_imaginary if solution not in proper_implicit]
+                # print('non_imaginary solutions:', non_imaginary)
+                solutions = simples
+                # solutions = proper_implicit
+                if proper:
+                    solutions = non_imaginary
 
-                for solution in non_imaginary:
-                    print(f'{solution = }')
+                for solution in solutions:
+                    # print(f'{solution = }')
                     # simplified = sp.simplify(solution)
                     simplified = solution
-                    print(f'{simplified = }')
-                    print('one row more seems to happen')
-                    row = list(zip(vars + [var], rand_vars + [simplified]))
+                    # print(f'{simplified = }')
+                    # print('one row more seems to happen')
+                    if len(replace_vars) != len(rand_vars):
+                        raise IndexError
+                    row = list(zip(replace_vars + [var], rand_vars + [simplified]))
+                    # print(f'{vars + [var] = }')
                     row_dict = dict(row)
-                    print(f'{row = }, {row_dict = }')
+                    # print(f'{row = }, {row_dict = }')
 
-                    [rows[var].append(row_dict[var]) for var in rows.keys()]
-                    print(f'{rows = }')
-        print(f'{rows = }')
+                    # if len(rows['x']) < 20:
+                    # [rows[var].append(row_dict[var]) for var in rows.keys()]
+                    rows.append(row_dict) if row_dict not in rows else None
+                    # print(f'{rows = }')
+        # print(f'{rows = }')
 
         # print(f'{rows.values() = }')
-        if list(rows.values())[0] != []:
-            options.append((const_expr, rows))
+        # if list(rows.values())[0] != [] or False:
+        if rows != [] or False:
+            rows_dict = dict(zip(vars, [[] for _ in vars]))
+            for row in rows:
+                [rows_dict[var].append(row[var]) for var in rows_dict.keys()]
+
+
+            # if True in [impl in str(rows.values()) for impl in ('**', 'sqrt')]:
+                # proper
+            # print(list(rows.values()))
+
+            if proper:
+                for var in rows.values():
+                    if len([sol for sol in var if True in [sq_root in str(sol) for sq_root in ('**', 'sqrt')]] ) == len(var):
+                        options.append((const_expr, rows_dict))
+            else:
+                print(f'{const_expr = }, {rows_dict = }')
+                options.append((const_expr, rows_dict))
 
     # options.append((const_expr, rows))
 
-    print(f'{rows = }')
-    print(f'{options = }')
-    for const_expr, option in options:
-        print(f'{len(list(option.values())[0])} rows: {const_expr}: {option = }')
-    # 1/0
+    # print(f'{rows = }')
+    # print(f'{options = }')
+    # # for const_expr, option in options:
+    # #     print(f'{len(list(option.values())[0])} rows: {const_expr}: {option = }')
+    # # 1/0
 
                 # _target_col, _inits, ds = data_set(exe_expr, [], shape=(5, len(vars)-1), int_max_abs=INT_MAX_ABS, num_tries=10)
             # ds = data_set(executable_expr, constants, shape=(5, 3), int_max_abs=INT_MAX_ABS, num_tries=10)
@@ -648,29 +678,102 @@ def simplicit(expr: List, vars: List[str], tries_const=1, tries_rows=2):
     # 1/0
     return options
 
+random.seed(0)
 # simplicit(expr, vars, tries_const=5, tries_rows=20)
+# simplicit( 'C*x^2+C', vars, tries_const=9, tries_rows=5)
+# simplicit('(C*x^2)*y^2+C', vars, tries_const=29, tries_rows=5)
+
 # 1/0
 
 
+# random.seed(0)
 #
-def more_implicit(exprs: list, vars: List[str] = vars, tries_const=3, tries_rows=50):
+def more_implicit(exprs: list, vars: List[str] = vars, phase='const', tries_const=3, tries_rows=2):
     print('-----', '\n'*3)
 
     res = []
     for expr in exprs:
-        options = simplicit(expr, vars=vars, tries_const=2, tries_rows=2)
+        options = None
+        if phase == 'explore':
+            options = simplicit(expr, vars, True,  8, 2)
+        elif phase == 'exploit':
+            options = simplicit(expr, vars, False, 19, 50)
+        elif phase == 'const':
+            options = simplicit(expr, vars, False, 1, 80, expr)
+            const_expr, option = options[0]
+            # print(f'{options[0] = }')
+            print( f'{len(list(option.values())[0])} rows, {len(str(const_expr))} chars: {const_expr}: {option = }')
         res.append((expr, options))
-    for result  in res:
+
+    res = [r for r in res if r[1] != []]  # nonempty results
+    for n, result  in enumerate(res):
         expr, options = result
-        print(f'\nexpr: {"".join(expr)}')
+        print(f'\nexpr {n}: {"".join(expr)}')
         # print(f'\nexpr: {const_expr}\n')
         print(f'options: {options}')
+        enough_rows = [opt for opt in options if len(list(opt[1].values())[0]) >= 20]
+        print(f'{enough_rows = }')
+        sorted_options = sorted(enough_rows, key=lambda x: len(str(x[0])), reverse=True)
+        print(f'--->  winner option: {sorted_options[0] if sorted_options != [] else []}\n')
         for const_expr, option in options:
-            print(f'{len(list(option.values())[0])} rows: {const_expr}: {option = }')
+            if len(list(option.values())[0]) >= 15*(phase != 'const'):
+                print(f'{len(list(option.values())[0])} rows, {len(str(const_expr))} chars: {const_expr}: {option = }')
+
+
+            # score = nrows - zeros.
+
+    if res == []:
+        print(f'\nno candidate, {res = }')
+    print('end of more_implicit.')
 
     return
 
+# simplicit('(C*x^2)*y^2+C', vars, tries_const=29, tries_rows=5)
+# more_implicit( ['C*x^2+C'], vars, tries_const=9, tries_rows=5)
+# more_implicit( ['(C*x^2)*y^2+C'], vars)
+# more_implicit( ['((((C*x^2)*z+C*x^2)+C*z^2)+C*z)+C' ], vars)
+# more_implicit( ['((C*x^2+(C*x)*z^2)+C*z)+C' ], vars, 'exploit')
 
+# more_implicit( [
+#     '(C*x^2+C*y^2)+C',
+#     '(C*x^2)*y^3+C',
+#     '(C*y^3)*z^2+C',
+#     '(C*x^2+C*z^2)+C',
+#     '(C*x^2)*y^3+C*z^2',
+#     '(((C*x^2+(C*y)*z)+C*y)+C*z^3)+C',
+#     '(((C*x^3)*y^2)*z^2+C*x)+C',
+#     '(C*y^2+C*z^2)+C',
+#     '(C*y^3+(C*y^2)*z^2)+C',
+#     '(C*y^2)*z^3+C',
+#     '(C*x^3)*z^2+C',
+#     '(C*x^4)*z^3+C',
+#     '((C*x^2)*y^3)*z^2+C',
+#     '(C*x^2+(C*x)*z^2)+C',
+#     '((C*x^3)*y^2+C*x)+C',
+#     '((C*x^2)*z+C*z^2)+C',
+#     '((C*y^2)*z+C*z^2)+C',
+#     '(((C*x^3)*y^3)*z^2+(C*x)*y^2)+C',
+#     '(C*x^3)*y^2+C',
+#     '(((C*x^2)*y^4)*z^2+C*z)+C',
+#     '((C*x^2+(C*y^2)*z^2)+(C*y)*z)+C',
+#     '(C*x^2)*z^3+C',
+#     ], vars, 'exploit')
+#
+
+
+exprs = [
+    '8*y**3*z**2 - 2',
+    '2*y**3 + 8*y**2*z**2 - 6',
+    '-5*x**4*z**3 + 10',
+    '-10*x**3*y**2 - x - 7',
+    '2*x**2*z - 10*z**2 + 10',
+    '-7*x**3*y**3*z**2 - 2*x*y**2 - 5',
+    '-7*x**2*y**4*z**2 + 7*z + 7',
+]
+more_implicit(exprs, vars, 'const')
+
+print('here')
+1/0
 
 def create_json(exprs_and_slice_codes: List[Tuple[str]], json_filename=None) -> str:
     """
@@ -910,6 +1013,7 @@ if len(uniques) < scale:
 simplified = uniques
 # for i, us in enumerate(simplified):
 #     print(f'Unique expr {i}: {"".join(us)}')
+# 1/0
 more_implicit(uniques)
 1/0
 
