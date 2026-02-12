@@ -577,7 +577,7 @@ def simplicit(expr: List, vars: List[str], proper=True, tries_const=1, tries_row
         constants = [random.randint(-INT_MAX_ABS, INT_MAX_ABS) for _ in range(len(sym_constants))]
         # print(constants)
         const_expr = expr_sympyfied.subs(list(zip(sym_constants, constants)))
-        # print(f'{const_expr = }')
+        print(f'{i}th {const_expr = }')
         if const_express is not None:
             const_expr, _ = m.enumerate_constants(const_express, symbols)
 
@@ -693,13 +693,14 @@ def more_implicit(exprs: list, vars: List[str] = vars, phase='const', tries_cons
 
     res = []
     for expr in exprs:
+        print(f'more_implicit, {expr = }')
         options = None
         if phase == 'explore':
             options = simplicit(expr, vars, True,  8, 2)
         elif phase == 'exploit':
-            options = simplicit(expr, vars, False, 19, 50)
+            options = simplicit(expr, vars, False, 20, 100)
         elif phase == 'const':
-            options = simplicit(expr, vars, False, 1, 80, expr)
+            options = simplicit(expr, vars, False, 1, 180, expr)
             const_expr, option = options[0]
             # print(f'{options[0] = }')
             print( f'{len(list(option.values())[0])} rows, {len(str(const_expr))} chars: {const_expr}: {option = }')
@@ -760,17 +761,25 @@ def more_implicit(exprs: list, vars: List[str] = vars, phase='const', tries_cons
 #     ], vars, 'exploit')
 #
 
+more_implicit( ['(C*y^3+(C*y^2)*z^2)+C',
+        '(((C*x^3)*y^3)*z^2+(C*x)*y^2)+C'], vars, 'exploit')
 
-exprs = [
-    '8*y**3*z**2 - 2',
-    '2*y**3 + 8*y**2*z**2 - 6',
-    '-5*x**4*z**3 + 10',
-    '-10*x**3*y**2 - x - 7',
-    '2*x**2*z - 10*z**2 + 10',
-    '-7*x**3*y**3*z**2 - 2*x*y**2 - 5',
-    '-7*x**2*y**4*z**2 + 7*z + 7',
-]
-more_implicit(exprs, vars, 'const')
+# exprs = [
+#     '8*y**3*z**2 - 2',
+#     '2*y**3 + 8*y**2*z**2 - 6',
+#     '-5*x**4*z**3 + 10',
+#     '-10*x**3*y**2 - x - 7',
+#     '2*x**2*z - 10*z**2 + 10',
+#     '-7*x**3*y**3*z**2 - 2*x*y**2 - 5',
+#     '-7*x**2*y**4*z**2 + 7*z + 7',
+# ]
+
+# list = [
+#     '2*y**3 + 8*y**2*z**2 - 6',
+#     '-7*x**3*y**3*z**2 - 2*x*y**2 - 5',
+# ]
+#
+# more_implicit(exprs, vars, 'const')
 
 print('here')
 1/0
