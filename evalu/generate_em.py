@@ -96,6 +96,8 @@ from SRToolkit.utils.expression_simplifier import simplify as srt_simplify
 # from tokenizer_simple import tokenize_generic
 from tokenizer_second import tokenize_expr
 
+from implicits import savem
+
 ## IMPORTANT: look in ProGED/testing_constants for accessing constants inside of models.
 
 random.seed(1)
@@ -126,13 +128,13 @@ def poly (p_P = [0.4, 0.6], p_M = [0.4, 0.6], p_vars = [1], variables = ["'x'"])
 # grammar_str = construct_grammar_rational2(**sets)
 # sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [1], 'variables': ["'x'"]}
 pg_vars = ["'x'", "'y'", "'z'"]  # baby
-# pg_vars = ["'x'", "'y'", "'z'", "'w'", "'v'"]  # baby
+pg_vars = ["'x'", "'y'", "'z'", "'w'", "'v'"]  # full
 # pg_vars = ["'x_1'", "'x_2'", "'x_3'", "'x_4'", "'x_5'"]  # full
 # pg_vars = ["'x'", "'y'", "'z'", "'target'"]
 sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
-poly_sets =               {'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
-# grammar_str = rational_kind(**sets)
-grammar_str = poly(**poly_sets)
+# poly_sets =               {'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
+grammar_str = rational_kind(**sets)
+# grammar_str = poly(**poly_sets)
 # grammar_str = GRAMMAR_LIBRARY[template_name](**generator_settings)
 grammar = GeneratorGrammar(grammar_str)
 
@@ -169,7 +171,7 @@ scale = 10
 # # # scale = 15
 # # scale = 18
 # # scale = 19
-# scale = 20
+scale = 20
 # scale = 50
 # scale = 100
 # # scale = 200
@@ -761,8 +763,8 @@ def more_implicit(exprs: list, vars: List[str] = vars, phase='const', tries_cons
 #     ], vars, 'exploit')
 #
 
-more_implicit( ['(C*y^3+(C*y^2)*z^2)+C',
-        '(((C*x^3)*y^3)*z^2+(C*x)*y^2)+C'], vars, 'exploit')
+# more_implicit( ['(C*y^3+(C*y^2)*z^2)+C',
+#         '(((C*x^3)*y^3)*z^2+(C*x)*y^2)+C'], vars, 'exploit')
 
 # exprs = [
 #     '8*y**3*z**2 - 2',
@@ -781,8 +783,8 @@ more_implicit( ['(C*y^3+(C*y^2)*z^2)+C',
 #
 # more_implicit(exprs, vars, 'const')
 
-print('here')
-1/0
+# print('here')
+# 1/0
 
 def create_json(exprs_and_slice_codes: List[Tuple[str]], json_filename=None) -> str:
     """
@@ -802,7 +804,7 @@ def create_json(exprs_and_slice_codes: List[Tuple[str]], json_filename=None) -> 
 
     return equations_map
 
-JSON_FILENAME = 'di_equations_map.json'
+JSON_FILENAME = 'EEDBench-test/di_equations_map.json'
 print('\nTesting create_json:')
 #####print(create_json([('x+3*y*y', '001'), ('x*z+4*y**8', '004'), ], JSON_FILENAME))
 print(create_json([('x+3*y*y', '001'), ('x*z+4*y**8', '004'), ]))
@@ -1023,8 +1025,8 @@ simplified = uniques
 # for i, us in enumerate(simplified):
 #     print(f'Unique expr {i}: {"".join(us)}')
 # 1/0
-more_implicit(uniques)
-1/0
+# more_implicit(uniques)
+# 1/0
 
 
 print(f'{len(uniques)} unique simplified expressions')
@@ -1071,13 +1073,17 @@ for i, expr_tuple in enumerate(non_equivs):
 datasets = [(const_expr, data_set_fraction(exe_expr, consts, shape=(20, len(vars)), num_tries=20))
             for _, consts, const_expr, exe_expr in non_equivs]
 
-
 for i, (const_expr, (target_col, inits, ds)) in enumerate(datasets):
     print(f'\nDataset {i} for expression: {const_expr}')
     print(ds)
 
-# print('here i go')
-# 1/0
+bench = [(str(const_expr), pd.DataFrame(ds, columns=vars+['target']))
+         for const_expr, (_, _, ds) in datasets]
+# print(bench[0])
+# print(bench[0][1])
+savem(bench, doWrite='WRITE', inside_dir='ratios', bench_dir='EEDBench-test')
+print('here i go')
+1/0
 
 num_of.update({'unique non-equivalent full expressions': len(non_equivs),})
 print(f'{len(non_equivs)} unique non-equivalent full expressions')
@@ -1091,6 +1097,12 @@ if __name__ == '__main__':
 
     print('\nin __Main__:')
 
+    ### NB [ New Block ] from 12.2.2026
+    print(datasets[0][1])
+    print(type(datasets[0][1]))
+    1/0
+    ### NB
+
     ##File Creation:## expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs), bench_dir=BENCH_DIR) for i, e in enumerate(exprs)]
     ##File Creation:## json_dict = create_json(expressions_and_slice_codes, JSON_FILENAME)
     expressions_and_slice_codes = [create_dataset(e, vars, i, len(exprs)) for i, e in enumerate(simplified)]
@@ -1099,7 +1111,7 @@ if __name__ == '__main__':
     print(json_dict)
     # print('bench blueprint:', json.load(open('di_equations_map.json')))
     # print(pd.read_csv(BENCH_DIR + 'ds5.csv'))
-    # 1/0
+    1/0
 
     # testing big-int problem:  (hypothesis: actually no problems)
     # simple numpy problem:

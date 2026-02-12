@@ -6,6 +6,7 @@
 
 import re
 import ast
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -85,4 +86,50 @@ for eq, ds in bench:
 
 print(len(bench))
 
+
+def savem(bench: List[Tuple[str,pd.DataFrame]], doWrite=False, inside_dir='implicits', bench_dir='EEDBench-test'):
+    """Save bench with (eqution, data frame) pairs into slices and json file."""
+    import math, json
+
+    num_slices = len(bench)
+    json_pairs = []
+    for id_, (eq, df) in enumerate(bench[:]):
+        slice_code = f'{id_:0>{int(math.log10(num_slices - 1)) + 1}}'
+        json_pairs.append((eq, slice_code))
+        out_filename = f'{bench_dir}/{inside_dir}/{inside_dir[0]}ds{slice_code}.csv'
+        if doWrite == 'WRITE':
+            df.to_csv(out_filename, index=False)
+            print(f'Written to file: {out_filename}.')
+        else:
+            print(f'{out_filename = }')
+
+
+    equations_map = { code: f'{expr} = 0' if inside_dir == 'implicits' else f'target = {expr}' for expr, code in json_pairs }
+
+    json_filename = f'{bench_dir}/{inside_dir}/{inside_dir}_map.json'
+    if doWrite == 'WRITE':
+        with open(json_filename, 'w', encoding='utf-8') as f:
+            json.dump(equations_map, f, ensure_ascii=False, indent=4)
+        print(f'Written to file: {json_filename}')
+    else:
+        print(f'{json_filename = }')
+    return
+
+bench_dir = 'EEDBench-test'
+inside_dir = 'implicits'
+# savem(bench, bench_dir, inside_dir)
+
+
+def rewrite_rational_json():
+    import json
+    with open('EEDBench-test/ratios_map.json' , 'r', encoding='utf-8') as f:
+        text = f.read()
+        newtext = re.sub('\"([^:\n"]+) = 0\"', '\"target = \g<1>\"', text)
+        print(newtext)
+    with open('EEDBench-test/ratios_map2.json', 'w', encoding='utf-8') as f:
+        json.dump(ast.literal_eval(newtext), f, ensure_ascii=False, indent=4)
+
+    return
+
+rewrite_rational_json()
 print(101)
