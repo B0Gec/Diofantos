@@ -131,10 +131,10 @@ pg_vars = ["'x'", "'y'", "'z'"]  # baby
 pg_vars = ["'x'", "'y'", "'z'", "'w'", "'v'"]  # full
 # pg_vars = ["'x_1'", "'x_2'", "'x_3'", "'x_4'", "'x_5'"]  # full
 # pg_vars = ["'x'", "'y'", "'z'", "'target'"]
-sets = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
-# poly_sets =               {'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
-grammar_str = rational_kind(**sets)
-# grammar_str = poly(**poly_sets)
+setts = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
+poly_setts =               {'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
+grammar_str = rational_kind(**setts)
+grammar_str = poly(**poly_setts)
 # grammar_str = GRAMMAR_LIBRARY[template_name](**generator_settings)
 grammar = GeneratorGrammar(grammar_str)
 
@@ -166,18 +166,19 @@ sl.add_symbol( "C", symbol_type="const", precedence=5, np_fn="np.full(X.shape[0]
 
 scale = 6
 scale = 10
-# # # scale = 11
-# # # # # # scale = 9
-# # # scale = 15
-# # scale = 18
-# # scale = 19
-scale = 20
-# scale = 50
+# # # # scale = 11
+# # # # # # # scale = 9
+# # # # scale = 15
+# # # scale = 18
+# # # scale = 19
+# scale = 20
+# # scale = 50
 # scale = 100
 # # scale = 200
-# # # # scale = 101
+# # # # # scale = 101
 # scale = 500
-# # # scale = 1000
+# # scale = 1000
+scale = 2000
 
 # scale = 5000
 # 343 unique simplified expressions - record
@@ -1081,7 +1082,9 @@ bench = [(str(const_expr), pd.DataFrame(ds, columns=vars+['target']))
          for const_expr, (_, _, ds) in datasets]
 # print(bench[0])
 # print(bench[0][1])
-savem(bench, doWrite='WRITE', inside_dir='ratios', bench_dir='EEDBench-test')
+# savem(bench, doWrite='no!', inside_dir='ratios', bench_dir='EEDBench-test')
+# savem(bench, doWrite='no!', inside_dir='polys', bench_dir='EEDBench-test')
+savem(bench, doWrite='WRITE', inside_dir='polys', bench_dir='EEDBench-test')
 print('here i go')
 1/0
 

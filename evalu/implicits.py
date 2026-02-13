@@ -106,7 +106,7 @@ def savem(bench: List[Tuple[str,pd.DataFrame]], doWrite=False, inside_dir='impli
 
     equations_map = { code: f'{expr} = 0' if inside_dir == 'implicits' else f'target = {expr}' for expr, code in json_pairs }
 
-    json_filename = f'{bench_dir}/{inside_dir}/{inside_dir}_map.json'
+    json_filename = f'{bench_dir}/{inside_dir}_map.json'
     if doWrite == 'WRITE':
         with open(json_filename, 'w', encoding='utf-8') as f:
             json.dump(equations_map, f, ensure_ascii=False, indent=4)
@@ -121,6 +121,7 @@ inside_dir = 'implicits'
 
 
 def rewrite_rational_json():
+    """One time usage only."""
     import json
     with open('EEDBench-test/ratios_map.json' , 'r', encoding='utf-8') as f:
         text = f.read()
@@ -131,5 +132,5 @@ def rewrite_rational_json():
 
     return
 
-rewrite_rational_json()
+# rewrite_rational_json()
 print(101)

@@ -53,3 +53,6 @@ print('\nPredicting time: ', predict_time(54))
 # For 5000 steps, it will take approx. 96 hours or 4 days.
 # For 10000 steps, it will take approx. 16 days.
 # 1/0
+
+
+# polynomial only: 890 const eqs .. 1h25min
