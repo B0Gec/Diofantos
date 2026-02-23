@@ -207,6 +207,8 @@ scale = 2000
 # > 18h (17h - 11h = 10+8=18h) for 1910 (of 2120) non-equivalent (of 27000 simplified, scale=1800)
 # 22h20m for 2085 non-equivalent (of 27000 simplified, scale=1800)
 
+# polynomials: 14:15-22:35 = 8:20h for 2257  non-equivalent scale=2000
+
 
 print(grammar)
 parser = argparse.ArgumentParser()
