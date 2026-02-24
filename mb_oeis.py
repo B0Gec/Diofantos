@@ -42,7 +42,7 @@ from mb_wrap import mb
 # from mavi_simplify import round_expr, divide_expr, simpl_disp, anform
 #
 
-def moadeeb(X: list[list], bitsize, sparsity, top_n):
+def moadeeb(X: list[list], bitsize, sparsity, top_n, var_names=None):
     """MoadeeB - MOeller-Buchberger Algorithm based Discovery of Exact Equations
 
     Taming Archimedes' Sand Reckoner to Unearth Exact Equations by Harvesting
@@ -66,7 +66,8 @@ def moadeeb(X: list[list], bitsize, sparsity, top_n):
     points = [i for n, i in enumerate(X) if not i in X[:n]]
     # print(f'{points = }')
     vars_cocoa = [f'x_{i}' for i in range(1, len(points[0])+1)]
-    first_generator, ideal = mb(points=points, execute_cmd=True, var_names=vars_cocoa)
+    var_names = vars_cocoa if var_names is None else var_names
+    first_generator, ideal = mb(points=points, execute_cmd=True, var_names=var_names)
     # print(f'{first_generator = },\n{ideal = }')
 
     eqs, human_eqs = ideal_to_eqs(ideal, max_bitsize=bitsize, max_complexity=sparsity, top_n=top_n, verbosity=0)
