@@ -14,14 +14,20 @@ Insights:
 
 import re
 
-fname = 'output-rational.txt'
+# fname = 'output-rational.txt'
+fname = 'output-polys.txt'
 
 with open(fname, 'r') as f:
     content = f.read()
 
     # print(content)
-    #datasets = re.findall(r'rds...\.csv:.+\n  rhs = (.+)\n   ([()]).+\n  is_equivalent = (.+)\n  total_successes = (\d+), success_rate = (.+)', content)
-    datasets = re.findall(r'(rds...\.csv.+)\n  (rhs = .+)\n   (\[.*\])\n  is_equivalent = (.+)\n  total_successes = (\d+), success_rate = (.+)', content)
+    if fname == 'output-rational.txt':
+        datasets = re.findall(r'(rds...\.csv.+)\n  (rhs = .+)\n   (\[.*\])\n  is_equivalent = (.+)\n  total_successes = (\d+), success_rate = (.+)', content)
+    else:
+        datasets = re.findall(
+        r'(pds\d+\.csv.+)\n  (rhs = .+)\n   (\[.*\])\n  is_equivalent = (.+)\n  total_successes = (\d+), success_rate = (.+)',
+        content)
+
     print(datasets)
     print(len(datasets))
     # 1/0
@@ -39,10 +45,13 @@ with open(fname, 'r') as f:
         # print(name)
 
         if eqs != '[]' and is_equivalent != 'True':
+        # if eqs != '[]' and is_equivalent == 'True':
         # if eqs == '[]':
             print(f'{eqs = }')
             print('wrong equation outputed !!!')
             raise ValueError('wrong equation outputed !!!')
+            # if this does not raise an error, the results are quite trustworthy in lowest possible score
+            #    (i.e. score is at least the reported one).
             1/0
         if ',' in eqs:
             print('more than one!!')

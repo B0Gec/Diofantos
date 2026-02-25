@@ -1,5 +1,7 @@
 """
 Just do it! ;)
+
+maybe shift data, so target is at the beginning (target, x, y, ... vs. x, y, ..., target).
 """
 
 
@@ -11,6 +13,7 @@ import sympy as sp
 
 # from exact_ed import diofantos
 from mb_oeis import moadeeb
+from sindy_oeis import sindy_eed
 
 
 def simple_are_equivalent(eq1, eq2):
@@ -21,9 +24,16 @@ def simple_are_equivalent(eq1, eq2):
 print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 
+# METHOD = 'moadeeb'
+METHOD = 'sindy'
+if METHOD in ('sindy', 'diofantos'):
+    DEGREE = 3
+
+
 benchs_dir = 'EEDBench'
 # bench = "implicits"
 bench = "ratios"
+bench = "polys"
 bench_dir = f'{benchs_dir}/{bench}'
 
 # Ground truth:
@@ -39,10 +49,13 @@ all_datasets, total_successes = len(datasets), 0
 progress_bar = 0
 print(f'  {all_datasets = }')
 
-start, end = 0, 43
-if bench == 'ratios':
+if bench in ('implicit', 'ratios'):
+    start, end = 0, 200
+if bench in ('polys'):
     start, end = 0, 3
-    # start, end = 0, 300
+    # start, end = 0, 30
+    # start, end = 0, 129
+    # start, end = 0, 3000
 
 for file_name in datasets[start: end]:
     progress_bar += 1
@@ -62,13 +75,35 @@ for file_name in datasets[start: end]:
         print('  ', moadeeb(ds, 50, 10, 10, col_names))  # (in paper for linrec. Core: sparsity 20) or bitsize 30  need to check.
         # results: e.g. i00: yes, i01: yes
 
-    elif bench == 'ratios':
-        ed_list =  moadeeb(ds, 50, 10, 10, col_names)  # (in paper for linrec. Core: sparsity 20) or bitsize 30  need to check.
-        print('  ', ed_list)
-        # results: e.g. r00: no, r01: yes, r02: yes, r3: no, r4-8: yes, r9: no.
-        # first bottom line: 7/10
+    elif bench in ('ratios', 'polys'):
 
-        is_equivalent = True in [simple_are_equivalent(sol, rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])]
+        if METHOD == 'moadeeb':
+            ed_list =  moadeeb(ds, 50, 10, 10, col_names)  # (in paper for linrec. Core: sparsity 20) or bitsize 30  need to check.
+            print('  ', ed_list)
+            # results: e.g. r00: no, r01: yes, r02: yes, r3: no, r4-8: yes, r9: no.
+            # first bottom line: 7/10
+
+            is_equivalent = True in [simple_are_equivalent(sol, rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])]
+            # sanity check:
+            # is_equivalent = True in [simple_are_equivalent('1', rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])]
+
+            # print()
+            # print('-->   ', [simple_are_equivalent(sol, rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])])
+            # print('-->   ', sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], []))
+            # print('-->   ', rhs)
+            # print()
+            #
+
+        # elif METHOD in ('sindy', 'diofantos'):
+        elif METHOD == 'sindy':
+            ds = [[1,2,3], [2,5,7]]
+            col_names = ['x', 'y', 'z']
+            DEGREE = 1
+            print(ds)
+            print(sp.Matrix(ds))
+            eq =  sindy_eed(sp.Matrix(ds), DEGREE, col_names)
+
+        1/0
         print(f'  {is_equivalent = }')
         total_successes += is_equivalent
         success_rate = total_successes/progress_bar
