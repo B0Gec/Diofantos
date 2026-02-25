@@ -47,12 +47,12 @@ if OEISformer:
     print(f'OEISformer: True, n_input: {N_INPUT}, special input database used.')
 
 ORE_ALGEBRA = False  # default settings
-ORE_ALGEBRA = True  # testing guessing from gfun
+# ORE_ALGEBRA = True  # testing guessing from gfun
 
 METHOD = 'Diofantos'
-# METHOD = 'SINDy'
+METHOD = 'SINDy'
 # METHOD = 'Mavi'
-METHOD = 'MB'
+# METHOD = 'MB'
 SINDy = True if METHOD in ('SINDy', 'Mavi') else False
 # SINDy = False
 SINDy_default = True
@@ -272,6 +272,7 @@ TASK_ID = 116
 TASK_ID = 111
 TASK_ID = 100
 TASK_ID = 97
+TASK_ID = 9
 
 
 JOB_ID = "000000"

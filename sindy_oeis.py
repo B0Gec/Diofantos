@@ -54,6 +54,26 @@ todo:
 """
 
 
+def sindy_eed(M: sp.Matrix, degree: int, col_names: list[str] = None):
+    """
+    Script for SINDy for exact equation discovery.
+    """
+
+    A, b = M[:, :-1], M[:, -1]
+    A, b = np.array(A, dtype=int), np.array(b, dtype=int)
+    model = ps.SINDy(
+        optimizer=ps.STLSQ(),
+        feature_library=ps.PolynomialLibrary(degree=degree),
+        feature_names=col_names,
+        discrete_time=True,
+    )
+    model.fit(A, x_dot=b)
+    x = sp.Matrix([round(i) for i in model.coefficients()[0]])
+    # model.print()
+
+    return x
+
+
 def heuristic(terms_avail):
     """Calculate/decide on max_order given the number of available terms (of size < 10**16)."""
     return round(terms_avail/2)
@@ -158,6 +178,8 @@ def sindy(seq: Union[list, sp.Matrix], d_max: int, max_order: int, threshold: fl
     # threshold = 0.1
 
     # print('threshold', threshold, 'degree', poly_degree, 'order', max_order, 'ensemble', ensemble)
+    print(f'{A = }')
+    print(f'{b = }')
 
     model = ps.SINDy(
         optimizer=ps.STLSQ(threshold=threshold),
@@ -178,9 +200,9 @@ def sindy(seq: Union[list, sp.Matrix], d_max: int, max_order: int, threshold: fl
     model.fit(A, x_dot=b, ensemble=ensemble, library_ensemble=library_ensemble)
     # print('after fit')
 
-    # model.print()
+    model.print()
     model.coefficients()
-    # print(model.coefficients())
+    print(model.coefficients())
     # x = sp.Matrix([round(i) for i in model.coefficients()[0][1:]])
     x = sp.Matrix([round(i) for i in model.coefficients()[0]])
     # x = sp.Matrix.vstack(sp.Matrix([0]), x)

@@ -11,7 +11,7 @@ import json
 import pandas as pd
 import sympy as sp
 
-# from exact_ed import diofantos
+from exact_ed import diofantos, solution_reference
 from mb_oeis import moadeeb
 from sindy_oeis import sindy_eed
 
@@ -26,8 +26,11 @@ print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 # METHOD = 'moadeeb'
 METHOD = 'sindy'
+print(f'{METHOD = }')
 if METHOD in ('sindy', 'diofantos'):
+    # DEGREE = 2
     DEGREE = 3
+    print(f'{DEGREE = }')
 
 
 benchs_dir = 'EEDBench'
@@ -52,18 +55,19 @@ print(f'  {all_datasets = }')
 if bench in ('implicit', 'ratios'):
     start, end = 0, 200
 if bench in ('polys'):
+    # start, end = 2, 3
     start, end = 0, 3
-    # start, end = 0, 30
-    # start, end = 0, 129
-    # start, end = 0, 3000
+    start, end = 0, 30
+    start, end = 0, 129
+    start, end = 0, 3000
 
 for file_name in datasets[start: end]:
     progress_bar += 1
     print(f'{file_name}:')
     num = file_name[3:-4]
     # print(f'  {ground_truth[num] = }')
-    rhs = ground_truth[num].split('= ')[1]
-    print(f'  {rhs = }')
+    gt_rhs = ground_truth[num].split('= ')[1]
+    print(f'  {gt_rhs = }')
     # 1/0
 
     ds_csv = pd.read_csv(f'{bench_dir}/{file_name}')
@@ -83,27 +87,36 @@ for file_name in datasets[start: end]:
             # results: e.g. r00: no, r01: yes, r02: yes, r3: no, r4-8: yes, r9: no.
             # first bottom line: 7/10
 
-            is_equivalent = True in [simple_are_equivalent(sol, rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])]
-            # sanity check:
-            # is_equivalent = True in [simple_are_equivalent('1', rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])]
+            candidates = sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])
 
-            # print()
-            # print('-->   ', [simple_are_equivalent(sol, rhs) for sol in sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], [])])
-            # print('-->   ', sum([ sp.solvers.solve(eq, 'target', quartics=False) for eq in ed_list], []))
-            # print('-->   ', rhs)
-            # print()
-            #
+
 
         # elif METHOD in ('sindy', 'diofantos'):
         elif METHOD == 'sindy':
-            ds = [[1,2,3], [2,5,7]]
-            col_names = ['x', 'y', 'z']
-            DEGREE = 1
-            print(ds)
-            print(sp.Matrix(ds))
-            eq =  sindy_eed(sp.Matrix(ds), DEGREE, col_names)
 
-        1/0
+            sol_ref = solution_reference(library=None, d_max=DEGREE, order=None, obs_vars=col_names[:-1])
+            # print(sol_ref)
+            eq_sp = sindy_eed(sp.Matrix(ds), DEGREE, col_names)
+            # print(eq_sp)
+            rhs = (eq_sp.transpose()*sp.Matrix(sol_ref))[0]
+            # print(f'{rhs = }')
+            eq = f'target = {rhs}'
+            # print(sol_ref)
+            print('  ', eq)
+            candidates = [rhs]
+            # print(f'{candidates = }')
+            # 1/0
+            # pds0128.csv: total_successes = 67, success_rate = 0.5193798449612403
+
+        is_equivalent = True in [simple_are_equivalent(candid, gt_rhs) for candid in candidates]
+        # sanity check:
+        # is_equivalent = True in [simple_are_equivalent('1', rhs) for sol in candidates]
+        # print()
+        # print('-->   ', [simple_are_equivalent(sol, gt_rhs) for sol in candidates])
+        # print('-->   ', candidates)
+        # print('-->   ', gt_rhs)
+        # print()
+
         print(f'  {is_equivalent = }')
         total_successes += is_equivalent
         success_rate = total_successes/progress_bar
