@@ -3,18 +3,20 @@ Just do it! ;)
 
 maybe shift data, so target is at the beginning (target, x, y, ... vs. x, y, ..., target).
 """
-
-
+import datetime
 import os
+import time
 
 import json
 import pandas as pd
 import sympy as sp
 
-from exact_ed import diofantos, solution_reference
+from exact_ed import diofantos, solution_reference, timer
 from mb_oeis import moadeeb
-from sindy_oeis import sindy_eed
+# from sindy_oeis import sindy_eed
 
+start_time = time.perf_counter()
+print('Current time:', datetime.datetime.now(), '\n')
 
 def simple_are_equivalent(eq1, eq2):
 
@@ -26,12 +28,18 @@ print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 # METHOD = 'moadeeb'
 METHOD = 'sindy'
+METHOD = 'diofantos'
 print(f'{METHOD = }')
 if METHOD in ('sindy', 'diofantos'):
-    # DEGREE = 2
-    DEGREE = 3
+    DEGREE = 2
+    # DEGREE = 3
+    DEGREE = 1
     print(f'{DEGREE = }')
-
+SCALE = 1
+# SCALE = 3
+# SCALE = 30
+# SCALE = 3000
+print(f'{SCALE = }')
 
 benchs_dir = 'EEDBench'
 # bench = "implicits"
@@ -55,11 +63,7 @@ print(f'  {all_datasets = }')
 if bench in ('implicit', 'ratios'):
     start, end = 0, 200
 if bench in ('polys'):
-    # start, end = 2, 3
-    start, end = 0, 3
-    start, end = 0, 30
-    start, end = 0, 129
-    start, end = 0, 3000
+    start, end = 0, SCALE
 
 for file_name in datasets[start: end]:
     progress_bar += 1
@@ -91,7 +95,6 @@ for file_name in datasets[start: end]:
 
 
 
-        # elif METHOD in ('sindy', 'diofantos'):
         elif METHOD == 'sindy':
 
             sol_ref = solution_reference(library=None, d_max=DEGREE, order=None, obs_vars=col_names[:-1])
@@ -108,6 +111,16 @@ for file_name in datasets[start: end]:
             # 1/0
             # pds0128.csv: total_successes = 67, success_rate = 0.5193798449612403
 
+        elif METHOD == 'diofantos':
+            x, eq = diofantos(sp.Matrix(ds), DEGREE, col_names)
+            rhs = eq[len(col_names[-1]) + 3:]
+            # print('x, eq', x, eq)
+            print('  ', eq)
+            # print(f'{rhs = }')
+            candidates = [rhs] if rhs != 'NOT RECONSTRUCTED :-(' else []
+            print(candidates)
+            # 1/0
+
         is_equivalent = True in [simple_are_equivalent(candid, gt_rhs) for candid in candidates]
         # sanity check:
         # is_equivalent = True in [simple_are_equivalent('1', rhs) for sol in candidates]
@@ -122,3 +135,11 @@ for file_name in datasets[start: end]:
         success_rate = total_successes/progress_bar
         print(f'  {total_successes = }, {success_rate = }')
 
+
+now, msg = timer(start_time, '\n\nWhole evaluation from the beginning of the script')
+print(msg)
+print('\nCurrent time:', datetime.datetime.now())
+
+# first timings: dp deg2: 16:45-18h ~ 1h.
+#                dp deg3: 16:45- >9h next day, i.e. > 16h.
+#               mb and sindy (all degrees) were quick: a few minutes.
