@@ -7,17 +7,32 @@ import re
 import json
 
 fname = 'results-implicits.txt'
-fname = 'output-polys-mb.txt'
+fname = 'result-rational.txt'
+# fname = 'output-polys-mb.txt'
+# fname = 'output-polys-sindy.txt'
+# fname = 'output-polys-dp-deg2.txt'
 bench_dir = 'EEDBench/'
-indir = 'polys' if 'polys' in fname else 'implicits'
+indir = 'polys' if 'polys' in fname else 'implicits' if 'implicits' in fname else 'ratios'
 
-"""
+
+""" mb
 pds2249.csv:
   rhs = '-3*v**2*x*z + 7*w**4 - 8'
    []
   is_equivalent = False
   total_successes = 706, success_rate = 0.31377777777777777
 """
+
+""" sindy
+pds2255.csv:
+  gt_rhs = '4*w**2 - 4*w*z + x + 9'
+   target = 4*w**2 - 4*w*z + x + 9
+  is_equivalent = True
+  total_successes = 618, success_rate = 0.27393617021276595
+"""
+
+is_implicit = 'implicits' in fname
+is_rational = 'rational' in fname
 
 count = 0
 with open(fname, 'r') as f:
@@ -27,44 +42,81 @@ with open(fname, 'r') as f:
 
     deg_success = dict()
     # print(content)
-    if 'implicits' in fname:
+    if is_implicit:
         datasets = re.findall(r'ids(\d+)\.csv.+\n   \[.+\n   (\w+)', content)
-    else:
+    elif is_rational:
+        """
+rds091.csv:
+  rhs = '(7)/(-9*y**2)'
+   []
+  is_equivalent = False
+  total_successes = 59, success_rate = 0.6413043478260869
+        """
+        datasets = re.findall(r'rds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
+    elif 'mb' in fname:
         datasets = re.findall(r'pds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
+    elif 'sindy' in fname:
+        datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   target.+\n  is_equivalent = (\w+)', content)
+    elif 'dp' in fname:
+        """
+        pds0002.csv:
+          gt_rhs = '5*v + 2'
+           target = 5*v + 2
+        ['5*v + 2']
+          is_equivalent = True
+          total_successes = 3, success_rate = 1.0
+        """
+        datasets = re.findall(r'pds(\d+)\.csv:.*\n  gt_rhs = .+\n   target = .*\n\[.*\]\n  is_equivalent = (\w+)', content)
 
-    # print(datasets)
+    print(datasets)
+    # print(len(datasets))
+    # print(sorted(list(set([i[0] for i in datasets]))))
+    # print(datasets[:40][-1])
+    # print(len(list(set([i[0] for i in datasets]))))
     # 1/0
 
     for num, answer in datasets:
         print(num, ':')
 
         # sanity check:
-        success = answer[0] == 'y' if 'implicits' in fname else (1 if answer == 'True' else 0)
+        success = answer[0] == 'y' if is_implicit else (1 if answer == 'True' else 0)
         count += success
 
         eq = ground_truth[num]
         print(eq)
-        split_direction = 0 if 'implicits' in fname else 1
+        split_direction = 0 if is_implicit else 1
         poly = eq.split('=')[split_direction]
-        # print(poly)
-        # minus = [poly.split('- ')[0]] + ['-' + p for p in poly.split('- ')[1:]]  # glej to, ce kaksen bug.
-        # print(minus)
 
-        monoms = sum([p.split('+ ') for p in poly.split('- ')], [])
-        # print(monoms)
-        eq_len = len(monoms)
-        # deg =
-        # print()
-        potents = [re.findall(r'([xyzwv]\**\**(\d*)\**)', monom) for monom in monoms]
-        # print(potents)
-        # monom = potents[0]
-        # print(monom)
-        degs = [0 if len(monom) == 0 else sum(int(var[1]) if var[1] != '' else 1 for var in monom) for monom in potents]
-        # [potency[1] for potency in monom]
-        # print(degs)
+        def max_degree(poly_eq):
 
-        max_deg = max(degs)
-        sum_degs = sum(degs)
+            poly = poly_eq
+            # print(poly)
+            # minus = [poly.split('- ')[0]] + ['-' + p for p in poly.split('- ')[1:]]  # glej to, ce kaksen bug.
+            # print(minus)
+
+            monoms = sum([p.split('+ ') for p in poly.split('- ')], [])
+            # print(monoms)
+            eq_len = len(monoms)
+            # print()
+            potents = [re.findall(r'([xyzwv]\**\**(\d*)\**)', monom) for monom in monoms]
+            # print(potents)
+            # monom = potents[0]
+            # print(monom)
+            degs = [0 if len(monom) == 0 else sum(int(var[1]) if var[1] != '' else 1 for var in monom) for monom in potents]
+            # [potency[1] for potency in monom]
+            # print(degs)
+
+            max_deg = max(degs)
+            sum_degs = sum(degs)
+            return max_deg, sum_degs
+
+        if is_rational and '/' in poly:
+            polys = poly.split('/')
+            max_deg, sum_degs = max(max_degree(polys[0])[0], max_degree(polys[1])[0] + 1), None
+            # print(max_deg, sum_degs)
+        else:
+            max_deg, sum_degs = max_degree(poly)
+
         print(f'{max_deg = }')
         # print(f'{sum_degs = }')
         # degs = [monom for monom in potents]

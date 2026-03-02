@@ -6,6 +6,7 @@ maybe shift data, so target is at the beginning (target, x, y, ... vs. x, y, ...
 import datetime
 import os
 import time
+import argparse
 
 import json
 import pandas as pd
@@ -13,7 +14,7 @@ import sympy as sp
 
 from exact_ed import diofantos, solution_reference, timer
 from mb_oeis import moadeeb
-# from sindy_oeis import sindy_eed
+from sindy_oeis import sindy_eed
 
 start_time = time.perf_counter()
 print('Current time:', datetime.datetime.now(), '\n')
@@ -28,17 +29,20 @@ print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 # METHOD = 'moadeeb'
 METHOD = 'sindy'
-METHOD = 'diofantos'
+# METHOD = 'diofantos'
 print(f'{METHOD = }')
+
 if METHOD in ('sindy', 'diofantos'):
     DEGREE = 2
-    # DEGREE = 3
-    DEGREE = 1
+    DEGREE = 3
+    # DEGREE = 1
+    # DEGREE = 4
+    DEGREE = 5
     print(f'{DEGREE = }')
 SCALE = 1
-# SCALE = 3
+SCALE = 3
 # SCALE = 30
-# SCALE = 3000
+SCALE = 3000
 print(f'{SCALE = }')
 
 benchs_dir = 'EEDBench'
@@ -49,11 +53,11 @@ bench_dir = f'{benchs_dir}/{bench}'
 
 # Ground truth:
 ground_truth = json.load(open(f'{bench_dir}_map.json'))
-print('Ground truth loaded:',  ground_truth)
+# print('Ground truth loaded:',  ground_truth)
 # 1/0
 
 datasets = sorted(os.listdir(bench_dir))
-print(f'{datasets = }')
+# print(f'{datasets = }')
 
 all_datasets, total_successes = len(datasets), 0
 # success_rate = total_successes/all_datasets
@@ -64,6 +68,14 @@ if bench in ('implicit', 'ratios'):
     start, end = 0, 200
 if bench in ('polys'):
     start, end = 0, SCALE
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--task_id", type=int, default=None)
+args = parser.parse_args()
+task_id = args.task_id
+if task_id is not None:
+    start, end = task_id, task_id+1
 
 for file_name in datasets[start: end]:
     progress_bar += 1
