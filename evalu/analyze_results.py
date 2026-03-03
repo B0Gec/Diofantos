@@ -22,7 +22,7 @@ fname = 'output-polys-mb.txt'
 # fname = 'dir'
 dirname = None
 # dirname = 'dopara-deg1'
-# dirname = 'dopara-deg3'
+dirname = 'dopa-deg3/summary'
 out_dir = f'cl-results/{dirname}/'
 
 
@@ -53,8 +53,12 @@ if dirname is None:
 
 else:
 
+    count = 1
     datasets = []
     files = sorted(os.listdir(out_dir))
+    # files = files[10*t:10*(t+1)]
+    scale = 4000
+    files = files[:scale]
     for f in files:
         print(f)
         with open(out_dir + f, 'r') as f:
@@ -64,11 +68,19 @@ else:
             r'(pds\d+\.csv.+)\n  (gt_rhs = .+)\n   target = .+\n(\[.*\])\n  is_equivalent = (.+)\n  total_successes = (\d+), success_rate = (.+)',
             content)
         datasets += dataset
+        if len(dataset) == 0:
+            print(content)
+        else:
+            if dataset[0][3] == 'True':
+                count += 1
+        print(f'{count = }; ', dataset)
+
     #     1/0
 
     # print(files)
+    print('\n')
     print(files[:5])
-    print(len(files))
+    print(f'{len(files) = }')
 
 
 # 1/0
@@ -78,7 +90,9 @@ print(f'{len(datasets) = }')
 # 1/0
 
 total = sum([ds[3] == 'True' for ds in datasets])
-success_rate = total/len(datasets)
+all_considered = int(files[-1][:5]) + 1
+print(f'{all_considered = }')
+success_rate = total/all_considered
 print('total successes:', total)
 print('success rate:', success_rate)
 # 1/0
