@@ -11,13 +11,15 @@ fname = 'results-implicits.txt'
 fname = 'result-rational.txt'
 # fname = 'output-polys-mb.txt'
 # fname = 'output-polys-sindy.txt'
-# fname = 'output-polys-dp-deg2.txt'
+fname = 'output-polys-dp-deg2.txt'
 bench_dir = 'EEDBench/'
 indir = 'polys' if 'polys' in fname else 'implicits' if 'implicits' in fname else 'ratios'
 
 dirmode = None
 # dirmode = 'dopara-deg1'
-dirmode = 'dopa-deg3/summary'
+# dirmode = 'dopa-deg3/summary'
+dirmode = 'dopa-deg3-wait9/summary'
+dir_maps = {'64686437': 0, '64685437': 1, '64684964': 2}
 out_dir = f'cl-results/{dirmode}/'
 
 
@@ -92,17 +94,25 @@ else:
         print(f)
         with open(out_dir + f, 'r') as f:
             content = f.read()
-        # print(content)
+        print(content)
         dataset = re.findall(
             r'pds(\d+)\.csv.+\n  gt_rhs = .+\n   target = .+\n\[.*\]\n  is_equivalent = (\w+)\n  total_successes = \d+, success_rate = .+',
             content)
-        datasets += dataset
-        # if len(dataset) == 0:
+
+        if len(dataset) == 0:
+            dataset = re.findall( r'array_subjob (\d+)_(\d+)\).+\n.+\n.+LIMIT', content)
+            if len(dataset) > 0:
+                num = str(dir_maps[dataset[0][0]]) + f'{dataset[0][1]:0>3}'
+                dataset = [(num, 'False')]
+            # print(dataset)
+            # 1/0
+
         #     print(content)
         # else:
         #     if dataset[0][1] == 'True':
         #         countn += 1
         # print(f'{countn = }; ', dataset)
+        datasets += dataset
 
     #     1/0
 
@@ -182,9 +192,15 @@ print(f'{len(datasets) = }')
 
 
 print(f'{count = }')
+print(f'Final success rate: {count/int(num) = }')
+print(f'Final success rate: {count/len(datasets) = }')
 
 for max_deg, success in sorted(deg_success.items(), key=lambda x: x[0]):
     print(f'{success[0]} out of {success[1]} polynomials, i.e. {round(100*success[0]/success[1], 2)} % of degree {max_deg} were discovered')
+
+
+# manual_deg_sizes = [15, 104, 548, 644]
+
 
 # deg_rest
 one_of_us = False
@@ -207,3 +223,17 @@ if one_of_us:
     print(f'fails + others = {fails} + {others} = {fails + others} =? {len(datasets)}')
 
 
+"""
+$ squeue --me
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+       64686437_39       all dopa-deg       R   20:16:18      1 wn051
+       64686437_47       all dopa-deg       R   20:16:18      1 wn051
+       64686437_53       all dopa-deg       R   20:16:18      1 wn057
+       64686437_54       all dopa-deg       R   20:16:18      1 wn061
+       64686437_57       all dopa-deg       R   20:16:18      1 wn061
+       64686437_63       all dopa-deg       R   20:16:18      1 wn060
+       64686437_67       all dopa-deg       R   20:16:18      1 wn060
+       64686437_70       all dopa-deg       R   20:16:20      1 wn051
+$ squeue --me  | wc
+      9      72     677
+"""
