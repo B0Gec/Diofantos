@@ -27,17 +27,17 @@ def simple_are_equivalent(eq1, eq2):
 print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 
-# METHOD = 'moadeeb'
+METHOD = 'moadeeb'
 METHOD = 'sindy'
 # METHOD = 'diofantos'
 print(f'{METHOD = }')
 
 if METHOD in ('sindy', 'diofantos'):
     DEGREE = 2
-    DEGREE = 3
+    # DEGREE = 3
     # DEGREE = 1
     # DEGREE = 4
-    DEGREE = 5
+    # DEGREE = 5
     print(f'{DEGREE = }')
 SCALE = 1
 SCALE = 3
@@ -147,6 +147,9 @@ for file_name in datasets[start: end]:
         success_rate = total_successes/progress_bar
         print(f'  {total_successes = }, {success_rate = }')
 
+if METHOD in ('sindy', 'diofantos'):
+    print(f'{DEGREE = }:')
+print(f'{METHOD = }:')
 
 now, msg = timer(start_time, '\n\nWhole evaluation from the beginning of the script')
 print(msg)

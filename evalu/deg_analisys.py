@@ -9,9 +9,12 @@ import json
 
 fname = 'results-implicits.txt'
 fname = 'result-rational.txt'
+fname = 'rationals-cut-mb.txt'
 # fname = 'output-polys-mb.txt'
+fname = 'cut-polys-mb.txt'
 # fname = 'output-polys-sindy.txt'
-fname = 'output-polys-dp-deg2.txt'
+fname = 'polys-cut-sindy-deg2'
+# fname = 'output-polys-dp-deg2.txt'
 bench_dir = 'EEDBench/'
 indir = 'polys' if 'polys' in fname else 'implicits' if 'implicits' in fname else 'ratios'
 
@@ -19,6 +22,7 @@ dirmode = None
 # dirmode = 'dopara-deg1'
 # dirmode = 'dopa-deg3/summary'
 dirmode = 'dopa-deg3-wait9/summary'
+dirmode = 'dopa-deg3-wait9/summary-cut'
 dir_maps = {'64686437': 0, '64685437': 1, '64684964': 2}
 out_dir = f'cl-results/{dirmode}/'
 
@@ -58,9 +62,18 @@ if dirmode is None:
       is_equivalent = False
       total_successes = 59, success_rate = 0.6413043478260869
             """
-            datasets = re.findall(r'rds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
+            """
+            rds098.csv:
+      gt_rhs = '(-8*z - 10)/(10*v*w*z**2)'
+       []
+      is_equivalent = False
+      total_successes = 62, success_rate = 0.6262626262626263
+    """
+            # datasets = re.findall(r'rds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)  # old
+            datasets = re.findall(r'rds(\d+)\.csv.+\n  gt_rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
         elif 'mb' in fname:
-            datasets = re.findall(r'pds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
+            # datasets = re.findall(r'pds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)  # old
+            datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
         elif 'sindy' in fname:
             datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   target.+\n  is_equivalent = (\w+)', content)
         elif 'dp' in fname:
@@ -89,6 +102,7 @@ else:
     files = sorted(os.listdir(out_dir))
     # files = files[10*t:10*(t+1)]
     scale = 4000
+    # scale = 2000
     files = files[:scale]
     for f in files:
         print(f)
@@ -124,6 +138,10 @@ else:
 
 ground_truth = json.load(open(f'{bench_dir}{indir}_map.json'))
 deg_success = dict()
+
+print(datasets[990:1000])
+print(datasets[1990:2000])
+1/0
 
 for num, answer in datasets:
     print(num, ':')
