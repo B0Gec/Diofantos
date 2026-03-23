@@ -12,6 +12,7 @@ dirmode = None
 # dirmode = 'dopara-deg1'
 # dirmode = 'dopa-deg3/summary'
 dirmode = 'dopa-deg3-wait9/summary'
+dirmode = 'dopa-deg3-wait9/summary-cut'
 out_dir = f'cl-results/{dirmode}/'
 
 

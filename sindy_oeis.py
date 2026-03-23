@@ -60,7 +60,12 @@ def sindy_eed(M: sp.Matrix, degree: int, col_names: list[str] = None):
     """
 
     A, b = M[:, :-1], M[:, -1]
-    A, b = np.array(A, dtype=int), np.array(b, dtype=int)
+    # print(f'{A = }')
+    # print(f'{b = }')
+    # A, b = np.array(A, dtype=int), np.array(b, dtype=int)
+    A, b = np.array(A, dtype=float), np.array(b, dtype=float)
+    # print(f'{A = }')
+    # print(f'{b = }')
     model = ps.SINDy(
         optimizer=ps.STLSQ(),
         feature_library=ps.PolynomialLibrary(degree=degree),

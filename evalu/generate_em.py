@@ -96,7 +96,7 @@ from SRToolkit.utils.expression_simplifier import simplify as srt_simplify
 # from tokenizer_simple import tokenize_generic
 from tokenizer_second import tokenize_expr
 
-from implicits import savem
+# from implicits import savem
 
 ## IMPORTANT: look in ProGED/testing_constants for accessing constants inside of models.
 
@@ -237,6 +237,7 @@ def generate_expressions():
 exprs, exprs_str =  generate_expressions()
 print(exprs_str)
 print(exprs)
+1/0
 
 
 print('\nPrinting expressoins:')
@@ -1086,7 +1087,7 @@ bench = [(str(const_expr), pd.DataFrame(ds, columns=vars+['target']))
 # print(bench[0][1])
 # savem(bench, doWrite='no!', inside_dir='ratios', bench_dir='EEDBench-test')
 # savem(bench, doWrite='no!', inside_dir='polys', bench_dir='EEDBench-test')
-savem(bench, doWrite='WRITE', inside_dir='polys', bench_dir='EEDBench-test')
+# savem(bench, doWrite='WRITE', inside_dir='polys', bench_dir='EEDBench-test')
 print('here i go')
 1/0
 

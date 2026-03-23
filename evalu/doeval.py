@@ -15,6 +15,7 @@ import sympy as sp
 from exact_ed import diofantos, solution_reference, timer
 from mb_oeis import moadeeb
 from sindy_oeis import sindy_eed
+from validateq import validate
 
 start_time = time.perf_counter()
 print('Current time:', datetime.datetime.now(), '\n')
@@ -34,11 +35,13 @@ print(f'{METHOD = }')
 
 if METHOD in ('sindy', 'diofantos'):
     DEGREE = 2
-    # DEGREE = 3
+    DEGREE = 3
     # DEGREE = 1
-    # DEGREE = 4
-    # DEGREE = 5
+    DEGREE = 4
+    DEGREE = 5
+    DEGREE = 10
     print(f'{DEGREE = }')
+
 SCALE = 1
 SCALE = 3
 # SCALE = 30
@@ -48,7 +51,7 @@ print(f'{SCALE = }')
 benchs_dir = 'EEDBench'
 # bench = "implicits"
 bench = "ratios"
-bench = "polys"
+# bench = "polys"
 bench_dir = f'{benchs_dir}/{bench}'
 
 # Ground truth:
@@ -65,7 +68,8 @@ progress_bar = 0
 print(f'  {all_datasets = }')
 
 if bench in ('implicit', 'ratios'):
-    start, end = 0, 200
+    # start, end = 0, 200
+    start, end = 0, SCALE
 if bench in ('polys'):
     start, end = 0, SCALE
 
@@ -109,10 +113,19 @@ for file_name in datasets[start: end]:
 
         elif METHOD == 'sindy':
 
-            sol_ref = solution_reference(library=None, d_max=DEGREE, order=None, obs_vars=col_names[:-1])
-            # print(sol_ref)
-            eq_sp = sindy_eed(sp.Matrix(ds), DEGREE, col_names)
-            # print(eq_sp)
+            for d_max in range(1, DEGREE+1):
+                # print(f'{d_max = }')
+                sol_ref = solution_reference(library=None, d_max=d_max, order=None, obs_vars=col_names[:-1])
+                # print(sol_ref)
+                # print(ds)
+                # print(sp.Matrix(ds))
+                # 1/0
+                eq_sp = sindy_eed(sp.Matrix(ds), d_max, col_names)
+                # print(eq_sp)
+
+                if validate(eq_sp, sol_ref, ds):
+                    break
+
             rhs = (eq_sp.transpose()*sp.Matrix(sol_ref))[0]
             # print(f'{rhs = }')
             eq = f'target = {rhs}'
@@ -120,11 +133,14 @@ for file_name in datasets[start: end]:
             print('  ', eq)
             candidates = [rhs]
             # print(f'{candidates = }')
-            # 1/0
-            # pds0128.csv: total_successes = 67, success_rate = 0.5193798449612403
 
         elif METHOD == 'diofantos':
-            x, eq = diofantos(sp.Matrix(ds), DEGREE, col_names)
+            for d_max in range(1, DEGREE+1):
+                print(f'{d_max = }')
+                x, eq = diofantos(sp.Matrix(ds), d_max, col_names)
+                if x != []:
+                    break
+
             rhs = eq[len(col_names[-1]) + 3:]
             # print('x, eq', x, eq)
             print('  ', eq)

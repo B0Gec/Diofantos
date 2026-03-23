@@ -11,9 +11,10 @@ fname = 'results-implicits.txt'
 fname = 'result-rational.txt'
 fname = 'rationals-cut-mb.txt'
 # fname = 'output-polys-mb.txt'
-fname = 'cut-polys-mb.txt'
+# fname = 'cut-polys-mb.txt'
 # fname = 'output-polys-sindy.txt'
-fname = 'polys-cut-sindy-deg2'
+# fname = 'polys-cut-sindy-deg2'
+fname = 'polys-cut-sindy-loop-maxdeg3.txt'
 # fname = 'output-polys-dp-deg2.txt'
 bench_dir = 'EEDBench/'
 indir = 'polys' if 'polys' in fname else 'implicits' if 'implicits' in fname else 'ratios'
@@ -21,8 +22,8 @@ indir = 'polys' if 'polys' in fname else 'implicits' if 'implicits' in fname els
 dirmode = None
 # dirmode = 'dopara-deg1'
 # dirmode = 'dopa-deg3/summary'
-dirmode = 'dopa-deg3-wait9/summary'
-dirmode = 'dopa-deg3-wait9/summary-cut'
+# dirmode = 'dopa-deg3-wait9/summary'
+# dirmode = 'dopa-deg3-wait9/summary-cut'
 dir_maps = {'64686437': 0, '64685437': 1, '64684964': 2}
 out_dir = f'cl-results/{dirmode}/'
 
@@ -75,7 +76,11 @@ if dirmode is None:
             # datasets = re.findall(r'pds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)  # old
             datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
         elif 'sindy' in fname:
-            datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   target.+\n  is_equivalent = (\w+)', content)
+            # datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   target.+\n  is_equivalent = (\w+)', content)  # old
+            datasets = re.findall(r'is_equivalent = (\w+).*\n.+\npds(\d+)\.csv', content)  # old
+            datasets = [(f'{int(ds[1])-1:0>4}', ds[0]) for ds in datasets]
+            # print(datasets)
+            # 1/0
         elif 'dp' in fname:
             """
             pds0002.csv:
@@ -104,9 +109,9 @@ else:
     scale = 4000
     # scale = 2000
     files = files[:scale]
-    for f in files:
-        print(f)
-        with open(out_dir + f, 'r') as f:
+    for filename in files:
+        # print(filename)
+        with open(out_dir + filename, 'r') as f:
             content = f.read()
         print(content)
         dataset = re.findall(
@@ -141,7 +146,9 @@ deg_success = dict()
 
 print(datasets[990:1000])
 print(datasets[1990:2000])
-1/0
+# datasets = datasets[:70]
+print(datasets)
+# 1/0
 
 for num, answer in datasets:
     print(num, ':')
