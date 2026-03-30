@@ -13,6 +13,8 @@ dirmode = None
 # dirmode = 'dopa-deg3/summary'
 dirmode = 'dopa-deg3-wait9/summary'
 dirmode = 'dopa-deg3-wait9/summary-cut'
+dirmode = 'sth-dp-d4/summary'
+dirmode = 'sth-dp4-1h/summary'
 out_dir = f'cl-results/{dirmode}/'
 
 
@@ -42,12 +44,15 @@ else:
         print(f)
         with open(out_dir + f, 'r') as f:
             content = f.read()
-        # print(content)
+        print(content)
+        # 1/0
 
         dataset = re.findall(
-            r'pds(\d+)\.csv.+\n  gt_rhs = .+\n   target = .+\n\[.*\]\n  is_equivalent = (\w+)\n  total_successes = \d+, success_rate = .+\n.*\n.*\n.*\n ([\d\.]+) seconds, .+ ([\d\.]+) minutes.+ ([\d\.]+) hours.',
+            # r'pds\d+\.csv.+\n  gt_rhs = .+\n   target = .+\n\[.*\]\n  is_equivalent = (\w+)\n  total_successes = \d+, success_rate = .+\n.*\n.*\n.*\n ([\d\.]+) seconds, .+ ([\d\.]+) minutes.+ ([\d\.]+) hours.',
+            r'  is_equivalent = (\w+)\n  total_successes = \d+, success_rate = .+(\n.*)+\n.*\n.*\n ([\d\.]+) seconds, .+ ([\d\.]+) minutes.+ ([\d\.]+) hours.',
             content)
-        # print(dataset)
+        print(dataset)
+        # 1/0
 
         if len(dataset) == 0:
             dataset = re.findall( r'array_subjob (\d+)_(\d+)\).+\n.+\n.+LIMIT', content)
@@ -71,7 +76,8 @@ else:
             print(f'{mins = }')
             print(f'{hs = }')
             # 1/0
-            if dataset[0][1] == 'True':
+
+            if dataset[0][0] == 'True':
                 true_times.append(sec)
                 true_minutes.append(mins)
                 true_hours.append(hs)
@@ -87,6 +93,7 @@ print(f'{limited = }')
 print(f'{fails = }')
 print(f'{non_equiv = }')
 print(f'{len(true_times) = }')
+
 print(f'{len(neg_hours) = }')
 print(f'totals: len(true_times) + non_equiv + limited + fails = {len(true_times)} + {limited} + {fails} + {non_equiv} ='
       f' {len(true_times) + limited + fails + non_equiv} ')
@@ -98,6 +105,7 @@ print(f'{max(true_hours) = }')
 print(f'{max(true_times)} =? {max(true_minutes)*60} =? {max(true_hours)*3600}')
 print(f'{max(neg_hours) = }')
 print(f'{min(neg_hours) = }')
+
 print(f'{len([t for t in true_times if t > 100]) = }')
 h_cut = [h for h in neg_hours if h > 45]
 h_cut = sorted([h for h in neg_hours if 40< h and h < 47])

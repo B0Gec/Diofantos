@@ -29,30 +29,36 @@ print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 
 METHOD = 'moadeeb'
-METHOD = 'sindy'
-# METHOD = 'diofantos'
+# METHOD = 'sindy'
+METHOD = 'diofantos'
 print(f'{METHOD = }')
 
 if METHOD in ('sindy', 'diofantos'):
     DEGREE = 2
-    DEGREE = 3
+    # DEGREE = 3
     # DEGREE = 1
     DEGREE = 4
-    DEGREE = 5
-    DEGREE = 10
+    # DEGREE = 5
+    # DEGREE = 10
     print(f'{DEGREE = }')
 
 SCALE = 1
 SCALE = 3
-# SCALE = 30
+SCALE = 5
+# SCALE = 9
+# SCALE = 20
 SCALE = 3000
 print(f'{SCALE = }')
 
 benchs_dir = 'EEDBench'
 # bench = "implicits"
 bench = "ratios"
-# bench = "polys"
+bench = "polys"
 bench_dir = f'{benchs_dir}/{bench}'
+
+if METHOD == 'moadeeb':
+    AMP_SCALE = 100
+    print(f'{AMP_SCALE = }')
 
 # Ground truth:
 ground_truth = json.load(open(f'{bench_dir}_map.json'))
@@ -102,7 +108,12 @@ for file_name in datasets[start: end]:
     elif bench in ('ratios', 'polys'):
 
         if METHOD == 'moadeeb':
-            ed_list =  moadeeb(ds, 50, 10, 10, col_names)  # (in paper for linrec. Core: sparsity 20) or bitsize 30  need to check.
+            def_settings = (50, 10, 10)
+            ample = tuple(i*AMP_SCALE for i in def_settings)
+            # # Default:
+            # ed_list =  moadeeb(ds, 50, 10, 10, col_names)  # (in paper for linrec. Core: sparsity 20) or bitsize 30  need to check.
+            # aljter:
+            ed_list =  moadeeb(ds, ample[0], ample[1], ample[2], col_names)  # (in paper for linrec. Core: sparsity 20) or bitsize 30  need to check.
             print('  ', ed_list)
             # results: e.g. r00: no, r01: yes, r02: yes, r3: no, r4-8: yes, r9: no.
             # first bottom line: 7/10
@@ -135,15 +146,17 @@ for file_name in datasets[start: end]:
             # print(f'{candidates = }')
 
         elif METHOD == 'diofantos':
-            for d_max in range(1, DEGREE+1):
-                print(f'{d_max = }')
-                x, eq = diofantos(sp.Matrix(ds), d_max, col_names)
-                if x != []:
-                    break
+            # for d_max in range(1, DEGREE+1):
+            d_max = DEGREE
+            print(f'{d_max = }')
+            x, eq = diofantos(sp.Matrix(ds), d_max, col_names)
+                # if x != []:
+                #     break
 
             rhs = eq[len(col_names[-1]) + 3:]
             # print('x, eq', x, eq)
             print('  ', eq)
+            # 1/0
             # print(f'{rhs = }')
             candidates = [rhs] if rhs != 'NOT RECONSTRUCTED :-(' else []
             print(candidates)
@@ -167,6 +180,11 @@ if METHOD in ('sindy', 'diofantos'):
     print(f'{DEGREE = }:')
 print(f'{METHOD = }:')
 
+if METHOD == 'moadeeb':
+    AMP_SCALE = 30
+    print(f'{AMP_SCALE = }')
+    print('Amplified also top_n list')
+
 now, msg = timer(start_time, '\n\nWhole evaluation from the beginning of the script')
 print(msg)
 print('\nCurrent time:', datetime.datetime.now())
@@ -174,3 +192,5 @@ print('\nCurrent time:', datetime.datetime.now())
 # first timings: dp deg2: 16:45-18h ~ 1h.
 #                dp deg3: 16:45- >9h next day, i.e. > 16h.
 #               mb and sindy (all degrees) were quick: a few minutes.
+
+# 26.3: mb amplified settings * 30, i.e. mag=1500, len=300; (same top_n): 654 success, 36 minutes.

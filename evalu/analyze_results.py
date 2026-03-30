@@ -23,6 +23,7 @@ fname = 'output-polys-mb.txt'
 dirname = None
 # dirname = 'dopara-deg1'
 dirname = 'dopa-deg3/summary'
+dirname = 'sth-dp-d4/summary'
 out_dir = f'cl-results/{dirname}/'
 
 
@@ -58,16 +59,19 @@ else:
     files = sorted(os.listdir(out_dir))
     # files = files[10*t:10*(t+1)]
     scale = 4000
+    scale = 1
     files = files[:scale]
     for f in files:
         print(f)
         with open(out_dir + f, 'r') as f:
             content = f.read()
         # print(content)
+
         dataset = re.findall(
             r'(pds\d+\.csv.+)\n  (gt_rhs = .+)\n   target = .+\n(\[.*\])\n  is_equivalent = (.+)\n  total_successes = (\d+), success_rate = (.+)',
             content)
         datasets += dataset
+        print(f'{datasets = }')
         if len(dataset) == 0:
             print(content)
         else:
