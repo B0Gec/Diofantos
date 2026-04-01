@@ -130,10 +130,10 @@ def savem(bench: List[Tuple[str,pd.DataFrame]], doWrite=False, inside_dir='impli
         print(f'{json_filename = }')
     return
 
-bench_dir = 'EEDBench-test'
-inside_dir = 'implicits'
-inside_dir = 'test'
-savem(bench, 'WRITE', inside_dir, bench_dir)
+# bench_dir = 'EEDBench-test'
+# inside_dir = 'implicits'
+# inside_dir = 'test'
+# savem(bench, 'WRITE', inside_dir, bench_dir)
 
 
 def rewrite_rational_json():

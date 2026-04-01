@@ -17,6 +17,8 @@ fname = 'rationals-cut-mb.txt'
 fname = 'polys-cut-sindy-loop-maxdeg3.txt'
 # fname = 'output-polys-dp-deg2.txt'
 fname = 'ratios-cut-sindy-loop-maxdeg10.txt'
+fname = 'polys-cut-sindy-loop-maxdeg5.txt'
+fname = 'polys-cut-sindy-loop-maxdeg10.txt'
 bench_dir = 'EEDBench/'
 
 dirmode = None
@@ -95,12 +97,13 @@ if dirmode is None:
             if is_rational:
                 # datasets = re.findall(r'is_equivalent = (\w+).*\n.+\nrds(\d+)\.csv', content)  # old
                 datasets = re.findall(r'is', content)  # old
-            print(datasets)
+            # print(datasets)
             datasets = [(f'{int(ds[1])-1:0>4}', ds[0]) for ds in datasets]
-            print(datasets)
-            print(content[:10])
-            print('here')
-            1/0
+            # print(datasets)
+            # print(content[:10])
+            # print(content[-10:])
+            # print('here')
+            # 1/0
         elif 'dp' in fname:
             """
             pds0002.csv:
@@ -178,6 +181,7 @@ else:
 
 ground_truth = json.load(open(f'{bench_dir}{indir}_map.json'))
 deg_success = dict()
+len_success = dict()
 
 print(datasets[990:1000])
 print(datasets[1990:2000])
@@ -205,7 +209,7 @@ for num, answer in datasets:
         # print(minus)
 
         monoms = sum([p.split('+ ') for p in poly.split('- ')], [])
-        # print(monoms)
+        print(f'{monoms = }')
         eq_len = len(monoms)
         # print()
         potents = [re.findall(r'([xyzwv]\**\**(\d*)\**)', monom) for monom in monoms]
@@ -218,16 +222,19 @@ for num, answer in datasets:
 
         max_deg = max(degs)
         sum_degs = sum(degs)
-        return max_deg, sum_degs
+        print(max_deg)
+        # 1/0
+        return max_deg, sum_degs, eq_len
 
     if is_rational and '/' in poly:
         polys = poly.split('/')
-        max_deg, sum_degs = max(max_degree(polys[0])[0], max_degree(polys[1])[0] + 1), None
+        max_deg, sum_degs, eq_len = max(max_degree(polys[0])[0], max_degree(polys[1])[0] + 1), None, max_degree(polys[0])[2] + max_degree(polys[1])[2]
         # print(max_deg, sum_degs)
     else:
-        max_deg, sum_degs = max_degree(poly)
+        max_deg, sum_degs, eq_len = max_degree(poly)
 
     print(f'{max_deg = }')
+    print(f'{eq_len = }')
     # print(f'{sum_degs = }')
     # degs = [monom for monom in potents]
 
@@ -239,6 +246,13 @@ for num, answer in datasets:
         # print('out')
         deg_success[max_deg] = (int(success), 1)
 
+    if eq_len in len_success:
+        # print('in')
+        count_succ, totals = len_success[eq_len]
+        len_success[eq_len] = (count_succ + success, totals + 1)
+    else:
+        # print('out')
+        len_success[eq_len] = (int(success), 1)
 
     if not success:
         print(eq, 'failed')
@@ -281,6 +295,31 @@ for deg, sr in sorted(deg_success.items(), key=lambda x: x[0]):
 
 if one_of_us:
     print(f'0 out of {fails} of degree {deg_rest} or more')
+    print(f'fails + others = {fails} + {others} = {fails + others} =? {len(datasets)}')
+
+
+print('\n'*3)
+for eq_len, success in sorted(len_success.items(), key=lambda x: x[0]):
+    print(f'{success[0]: >3} out of {success[1]: >3} polynomials, i.e. {round(100*success[0]/success[1], 2): >5} % of length {eq_len} were discovered')
+
+# len rest of them.
+one_of_us = False
+fails = 0
+others = 0
+for lenth, sr in sorted(len_success.items(), key=lambda x: x[0]):
+    if sr[0] == 0:
+        if not one_of_us:
+            len_rest = lenth
+        one_of_us = True
+        fails += sr[1]
+    else:
+        others += sr[1]
+        one_of_us = False
+        fails = 0
+    print('length', lenth, 'fails:', fails)
+
+if one_of_us:
+    print(f'0 out of {fails} of length {len_rest} or more')
     print(f'fails + others = {fails} + {others} = {fails + others} =? {len(datasets)}')
 
 
