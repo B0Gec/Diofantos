@@ -47,7 +47,7 @@ if OEISformer:
     print(f'OEISformer: True, n_input: {N_INPUT}, special input database used.')
 
 ORE_ALGEBRA = False  # default settings
-# ORE_ALGEBRA = True  # testing guessing from gfun
+ORE_ALGEBRA = True  # testing guessing from gfun
 
 METHOD = 'Diofantos'
 METHOD = 'SINDy'
@@ -126,7 +126,7 @@ VERBOSITY = 2  # dev scena
 # VERBOSITY = 3  # dev scenario
 
 DEBUG = True
-DEBUG = False
+# DEBUG = False
 
 # BUGLIST ignores blacklisting (runs also blacklisted) !!!!!
 # BUGLIST = True
@@ -135,7 +135,7 @@ BUGLIST_BLACKLISTING = True
 # BUGLIST ignores blacklisted sequences !!!!!
 
 CORELIST = True  # have to scrape core sequences!  # also for OEISformer
-# CORELIST = False
+CORELIST = False
 if BUGLIST:
     from buglist import buglist
 REAL_WORLD_BENCH = True
@@ -645,12 +645,16 @@ else:
         # try:
         if ORE_ALGEBRA:
             from ore_alg import oraj
-            seq = unnan(csv[seq_id])
+            seq, coeffs, truth = unpack_seq(seq_id, csv) if GROUND_TRUTH else (unnan(csv[seq_id]), None, None)
+            # seq = unnan(csv[seq_id])
+            print(seq)
+            # 1/0
             # eq = oraj(seq, True, 1)
             eq = oraj(seq, True, is_berlekamp='fricas')
             print(f'\n\n{eq = }', '\nis Disco:', 'True' if eq else 'False', '\n\n\nExiting after running sage code with zero division:')
-            1/0
-        if SINDy:
+            return [eq] + ['' for _ in range(10)]
+            # 1/0
+        elif SINDy:
             print('Attempting SINDy (or Mavi) for', seq_id)
             # if GROUND_TRUTH:
             # print(csv, seq_id)
