@@ -35,6 +35,7 @@ def diofantos(M: sp.Matrix, d_max: int, var_names: list[str] = None) -> (sp.Matr
 
     # b, A = M[:, -1], M[:, :-1]
     data, sol_ref = grid_sympy(seq=None, d_max=d_max, max_order=None, library=None, M=M, vars_obs=non_target_vars)
+    # print(f'{sol_ref = }')
     b, A = data[:, 0], data[:, 1:]
     verbosity = 2
     if verbosity >= 3:

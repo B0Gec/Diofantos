@@ -19,6 +19,8 @@ fname = 'polys-cut-sindy-loop-maxdeg3.txt'
 fname = 'ratios-cut-sindy-loop-maxdeg10.txt'
 fname = 'polys-cut-sindy-loop-maxdeg5.txt'
 fname = 'polys-cut-sindy-loop-maxdeg10.txt'
+# fname = 'ratios1k-mb.txt'
+fname = 'ratios1k-sindy-loopdeg10.txt'
 bench_dir = 'EEDBench/'
 
 dirmode = None
@@ -31,6 +33,8 @@ dirmode = None
 # dirmode = 'sth-dp4-1h'
 # dirmode = 'polys-dp-nl4'
 # dirmode = 'ratiost-dp3-/474707'
+dirmode = 'ratios1k-dp-nl4/489567'
+
 dir_maps = None
 # dir_maps = {'64686437': 0, '64685437': 1, '64684964': 2}
 # dir_maps = {'65474260': 0, '65474259': 1}
@@ -85,9 +89,11 @@ if dirmode is None:
       is_equivalent = False
       total_successes = 62, success_rate = 0.6262626262626263
     """
-            # datasets = re.findall(r'rds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)  # old
-            datasets = re.findall(r'rds(\d+)\.csv.+\n  gt_rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
-            datasets = re.findall(r'rds(\d+)\.csv:.*\n  gt_rhs = .+\n   target = .*\n  is_equivalent = (\w+)', content)   # ratios sindy deg 10
+            if 'mb' in fname:
+                # datasets = re.findall(r'rds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)  # old
+                datasets = re.findall(r'rds(\d+)\.csv.+\n  gt_rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
+            else:
+                datasets = re.findall(r'rds(\d+)\.csv:.*\n  gt_rhs = .+\n(?:d_max = .+\n)+   target = .*\n  is_equivalent = (\w+)', content)   # ratios sindy deg 10
         elif 'mb' in fname:
             # datasets = re.findall(r'pds(\d+)\.csv.+\n  rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)  # old
             datasets = re.findall(r'pds(\d+)\.csv.+\n  gt_rhs .+\n   \[.+\n  is_equivalent = (\w+)', content)
@@ -115,7 +121,7 @@ if dirmode is None:
             """
             datasets = re.findall(r'pds(\d+)\.csv:.*\n  gt_rhs = .+\n   target = .*\n\[.*\]\n  is_equivalent = (\w+)', content)
 
-        print(datasets)
+        print(f'{datasets = }')
         # print(len(datasets))
         # print(sorted(list(set([i[0] for i in datasets]))))
         # print(datasets[:40][-1])
@@ -140,7 +146,7 @@ else:
     for filename in files:
         print(filename)
         num = filename[1:5] if dir_maps is None else f'{dir_maps[filename[:8]]}{filename[11:14]}'
-        num = num[1:] if indir == 'ratios' else num
+        # num = num[1:] if indir == 'ratios' else num  # old code
         print(num)
         with open(out_dir + filename, 'r') as f:
             content = f.read()
@@ -187,7 +193,12 @@ print(datasets[990:1000])
 print(datasets[1990:2000])
 # datasets = datasets[:70]
 print(datasets)
+# print(f'{len(datasets) = }')
 # 1/0
+count_true_ratios = 0
+count_ratio_valued = 0
+count_success_polys = 0
+successful_ratios = []
 
 for num, answer in datasets:
     print(num, ':')
@@ -209,7 +220,7 @@ for num, answer in datasets:
         # print(minus)
 
         monoms = sum([p.split('+ ') for p in poly.split('- ')], [])
-        print(f'{monoms = }')
+        # print(f'{monoms = }')
         eq_len = len(monoms)
         # print()
         potents = [re.findall(r'([xyzwv]\**\**(\d*)\**)', monom) for monom in monoms]
@@ -222,7 +233,7 @@ for num, answer in datasets:
 
         max_deg = max(degs)
         sum_degs = sum(degs)
-        print(max_deg)
+        # print(max_deg)
         # 1/0
         return max_deg, sum_degs, eq_len
 
@@ -230,8 +241,27 @@ for num, answer in datasets:
         polys = poly.split('/')
         max_deg, sum_degs, eq_len = max(max_degree(polys[0])[0], max_degree(polys[1])[0] + 1), None, max_degree(polys[0])[2] + max_degree(polys[1])[2]
         # print(max_deg, sum_degs)
+        if max_degree(polys[1])[0] > 1:
+            count_true_ratios += 1
+        # elif success:
+        #     count_success_polys += 1
+        if success:
+            print('\n\nrational discovery!!!: ', poly, '\n\n')
+            successful_ratios.append(poly)
+        with open(f'EEDBench/ratios/rds{num}.csv', 'r') as f:
+            print(os.listdir('EEDBench/ratios/'))
+            content = f.read()
+            if '/' in content:
+                count_ratio_valued += 1
+                # raise ValueError('found division')
+            else:
+                if success:
+                    count_success_polys += 1
+
     else:
         max_deg, sum_degs, eq_len = max_degree(poly)
+        if success:
+            count_success_polys += 1
 
     print(f'{max_deg = }')
     print(f'{eq_len = }')
@@ -269,6 +299,15 @@ print(f'{num = }')
 print(f'{count = }')
 print(f'True final success rate: {count/(int(num)+1) = }')
 print(f'Final (missing files buggy) success rate: {count/len(datasets) = }')
+print(f'Polynomial success count: {count_success_polys }')
+print(f'Polynomials (rational-valued) inside benchmark: {1000-count_true_ratios }')
+print(f'Integer-valued polynomials in benchmark: {1000-count_ratio_valued}')
+
+print()
+# print(len(successful_ratios))
+# for poly in successful_ratios:
+#     print(poly)
+# print()
 
 for max_deg, success in sorted(deg_success.items(), key=lambda x: x[0]):
     print(f'{success[0]} out of {success[1]} polynomials, i.e. {round(100*success[0]/success[1], 2)} % of degree {max_deg} were discovered')

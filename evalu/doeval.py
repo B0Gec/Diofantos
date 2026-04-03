@@ -29,15 +29,15 @@ print(simple_are_equivalent("(x + 1)**2", "x**2 + 2*x + 1"))
 
 
 METHOD = 'moadeeb'
-# METHOD = 'sindy'
+METHOD = 'sindy'
 METHOD = 'diofantos'
 print(f'{METHOD = }')
 
 if METHOD in ('sindy', 'diofantos'):
     DEGREE = 2
-    # DEGREE = 3
+    DEGREE = 3
     # DEGREE = 1
-    DEGREE = 4
+    # DEGREE = 4
     # DEGREE = 5
     # DEGREE = 10
     print(f'{DEGREE = }')
@@ -53,11 +53,12 @@ print(f'{SCALE = }')
 benchs_dir = 'EEDBench'
 # bench = "implicits"
 bench = "ratios"
-bench = "polys"
+# bench = "polys"
 bench_dir = f'{benchs_dir}/{bench}'
 
 if METHOD == 'moadeeb':
-    AMP_SCALE = 100
+    AMP_SCALE = 30
+    AMP_SCALE = 1
     print(f'{AMP_SCALE = }')
 
 # Ground truth:
@@ -125,7 +126,7 @@ for file_name in datasets[start: end]:
         elif METHOD == 'sindy':
 
             for d_max in range(1, DEGREE+1):
-                # print(f'{d_max = }')
+                print(f'{d_max = }')
                 sol_ref = solution_reference(library=None, d_max=d_max, order=None, obs_vars=col_names[:-1])
                 # print(sol_ref)
                 # print(ds)
@@ -180,10 +181,6 @@ if METHOD in ('sindy', 'diofantos'):
     print(f'{DEGREE = }:')
 print(f'{METHOD = }:')
 
-if METHOD == 'moadeeb':
-    AMP_SCALE = 30
-    print(f'{AMP_SCALE = }')
-    print('Amplified also top_n list')
 
 now, msg = timer(start_time, '\n\nWhole evaluation from the beginning of the script')
 print(msg)
