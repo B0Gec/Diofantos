@@ -126,7 +126,7 @@ VERBOSITY = 2  # dev scena
 # VERBOSITY = 3  # dev scenario
 
 DEBUG = True
-# DEBUG = False
+DEBUG = False
 
 # BUGLIST ignores blacklisting (runs also blacklisted) !!!!!
 # BUGLIST = True
