@@ -2,7 +2,8 @@ import os
 import subprocess
 
 import re
-
+from fricas_location import fricas
+# fricas = 'fricas'
 
 def oraj(data: list, execute_cmd=False, is_berlekamp=False, verbosity=0):
     """Runs equation guessing via ore_algebra or alternatively berlekamp_massey algorithm.
@@ -32,8 +33,8 @@ def oraj(data: list, execute_cmd=False, is_berlekamp=False, verbosity=0):
         berlekamp_massey_code += f"data = {data};\npoly = berlekamp_massey(data);\nprint(poly)\""
 
     if is_berlekamp == "fricas":
-        fricas_code = "echo \"1+2\" | fricas -nosman"
-        fricas_code = f"echo \"guessPRec({data})\" | fricas -nosman"
+        fricas_code = f"echo \"1+2\" | {fricas} -nosman"
+        fricas_code = f"echo \"guessPRec({data})\" | {fricas} -nosman"
 
     # b) execute cocoa file
     command = sage_code
@@ -53,7 +54,16 @@ def oraj(data: list, execute_cmd=False, is_berlekamp=False, verbosity=0):
         p_status = p.wait()
 
         bash_res = output.decode()
-        return bash_res
+        print(bash_res)
+        content = re.findall('((?:.+\n){1,11}(.+)\n.+Type: List\(Expression\(Integer\)\))', bash_res)
+
+        # print(f'{content = }')
+        if len(content) > 0:
+            # print(f'{content[0][0] = }')
+            # print(f'eq = {content[0][1]}')
+            content = content[0][1]
+
+        return content
     print("NOT Executing LINUX command for real... just simulating command")
     raise ValueError('Not executing command for real!!')
 

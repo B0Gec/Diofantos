@@ -134,7 +134,7 @@ pg_vars = ["'x'", "'y'", "'z'", "'w'", "'v'"]  # full
 setts = {'p_R': [0.2, 0.8], 'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
 poly_setts =               {'p_P': [0.4, 0.6], 'p_M': [0.4, 0.6], 'p_vars': [round(1/len(pg_vars),2) for _ in pg_vars], 'variables': pg_vars}
 grammar_str = rational_kind(**setts)
-# grammar_str = poly(**poly_setts)
+grammar_str = poly(**poly_setts)
 # grammar_str = GRAMMAR_LIBRARY[template_name](**generator_settings)
 grammar = GeneratorGrammar(grammar_str)
 
@@ -685,11 +685,11 @@ def simplicit(expr: List, vars: List[str], proper=True, tries_const=1, tries_row
     return options
 
 random.seed(0)
-# simplicit(expr, vars, tries_const=5, tries_rows=20)
-# simplicit( 'C*x^2+C', vars, tries_const=9, tries_rows=5)
+simplicit(expr, vars, tries_const=5, tries_rows=20)
+simplicit( 'C*x^2+C', vars, tries_const=9, tries_rows=5)
 # simplicit('(C*x^2)*y^2+C', vars, tries_const=29, tries_rows=5)
 
-# 1/0
+1/0
 
 
 # random.seed(0)

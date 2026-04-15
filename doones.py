@@ -651,7 +651,7 @@ else:
             # 1/0
             # eq = oraj(seq, True, 1)
             eq = oraj(seq, True, is_berlekamp='fricas')
-            print(f'\n\n{eq = }', '\nis Disco:', 'True' if eq else 'False', '\n\n\nExiting after running sage code with zero division:')
+            print(f'\n\n{eq = }', '\nis Disco:', 'Maybe' if eq else 'False', '\n\n\nExiting after running sage code with zero division:')
             return [eq] + ['' for _ in range(10)]
             # 1/0
         elif SINDy:
